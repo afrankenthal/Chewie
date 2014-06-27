@@ -60,7 +60,8 @@ HEADERS       = include/mainwindow.h                                 \
     include/PixelMatrixCut.h \
     include/PixelMatrixCutButton.h \
     include/HanSoloFitter.h \
-    include/HanSoloTreeBrowser.h
+    include/HanSoloTreeBrowser.h \
+    include/hTreeBrowser.h
 
 
 
@@ -108,7 +109,8 @@ SOURCES       = src/EventManager.cpp              \
     src/PixelMatrixCut.cpp \
     src/PixelMatrixCutButton.cpp \
     src/HanSoloFitter.cpp \
-    src/HanSoloTreeBrowser.cpp
+    src/HanSoloTreeBrowser.cpp \
+    src/hTreeBrowser.cpp
 
 
 

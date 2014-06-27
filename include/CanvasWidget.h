@@ -24,7 +24,7 @@ class CanvasWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit CanvasWidget(QDialog * parent = 0);
+    explicit CanvasWidget(QWidget * parent = 0);
             ~CanvasWidget();
 
     void     divide      (int nx, int ny    ) ;

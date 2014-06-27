@@ -17,7 +17,7 @@
 #include <iostream>
 
 //===========================================================================
-CanvasWidget::CanvasWidget(QDialog * parent) :
+CanvasWidget::CanvasWidget(QWidget * parent) :
     QWidget(parent)
   ,ui(new Ui::CanvasWidget)
   , logX_(false)
