@@ -1,0 +1,12 @@
+<?xml encoding="ISO-8859-1"?>
+<!ELEMENT ChewieExpressConfiguration (Defaults)(Files+)>
+ <!ELEMENT Defaults()>
+ <!ATTLIST Defaults FilesPath       	   CDATA #REQUIRED>
+ <!ATTLIST Defaults Convert       	   CDATA #REQUIRED>
+ <!ATTLIST Defaults RunAnalysis       	   CDATA #REQUIRED>
+ <!ATTLIST Defaults NumberOfEvents    	   CDATA #REQUIRED>
+ <!ELEMENT Files (File+)>
+ <!ATTLIST Files Configuration CDATA #REQUIRED >
+ <!ATTLIST Files OutFileName   CDATA #REQUIRED >
+ <!ELEMENT File ()>
+ <!ATTLIST File  Name CDATA #REQUIRED >
