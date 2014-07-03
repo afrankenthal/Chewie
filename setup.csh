@@ -8,7 +8,7 @@
 #
 # Before running Monicelli, source YOUR own, PRIVATE **copy** of this file:
 setenv BASEDATADIR /home/data/TestBeam/2014_04_April
-#===============   rulinux01.dhcp.fnal.gov   ==============================================
+
 if(${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
 
   setenv MonicelliDir              ../Monicelli
@@ -36,11 +36,8 @@ if(${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
   setenv XERCESCLIB		   /opt/local/xerces/lib
   
   setenv LD_LIBRARY_PATH           /usr/lib64
-  
-endif
 
-#===============   rulinux02.dhcp.fnal.gov   ==============================================
-if(${HOSTNAME} == "rulinux02.dhcp.fnal.gov") then
+else if(${HOSTNAME} == "ftbftracker01.fnal.gov" || ${HOSTNAME} == "ftbftracker02.fnal.gov" || ${HOSTNAME} == "rulinux01.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux02.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
 
   setenv MonicelliDir              ../Monicelli
   setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
@@ -71,10 +68,7 @@ if(${HOSTNAME} == "rulinux02.dhcp.fnal.gov") then
   
   setenv LD_LIBRARY_PATH          /usr/lib64
   
-endif
-
-#===============   hercules.mib.infn.it   ==============================================
-if(${HOSTNAME} == "hercules.mib.infn.it" ) then
+else if(${HOSTNAME} == "hercules.mib.infn.it" ) then
 
   #===== Local directories
   setenv MonicelliDir              ../Monicelli

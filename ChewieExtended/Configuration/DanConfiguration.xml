@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<DanConfiguration>
+  <Dut_0>
+    <Charge>
+      <checkbox>true</checkbox>
+      <checkbox>false</checkbox>
+      <checkbox>true</checkbox>
+    </Charge>
+    <Efficiency>
+    </Efficiency>
+    <Resolution>
+    </Resolution>
+  </Dut_0>
+  <Dut_1>
+    <Charge>
+      <checkbox>false</checkbox>
+      <checkbox>true</checkbox>
+      <checkbox>false</checkbox>
+    </Charge>
+    <Efficiency>
+    </Efficiency>
+    <Resolution>
+    </Resolution>
+  </Dut_1>
+  <Dut_2>
+    <Charge>
+      <checkbox>false</checkbox>
+      <checkbox>true</checkbox>
+      <checkbox>false</checkbox> 
+    </Charge>
+    <Efficiency>
+    </Efficiency>
+    <Resolution>
+    </Resolution>
+  </Dut_2>
+  <Dut_3>
+    <Charge>
+      <checkbox>false</checkbox>
+      <checkbox>true</checkbox>
+      <checkbox>false</checkbox> 
+    </Charge>
+    <Efficiency>
+    </Efficiency>
+    <Resolution>
+    </Resolution>
+  </Dut_3>
+  
+  
+</DanConfiguration>
