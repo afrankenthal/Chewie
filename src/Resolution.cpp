@@ -52,8 +52,8 @@ void Resolution::destroy(void)
     for(std::vector<TH1F*>::iterator it=hYresidualsClusterSize2_.begin(); it!=hYresidualsClusterSize2_.end(); it++) delete *it; hYresidualsClusterSize2_.clear();
     for(std::vector<TH1F*>::iterator it=hYresidualsDigital_     .begin(); it!=hYresidualsDigital_     .end(); it++) delete *it; hYresidualsDigital_     .clear();
 
-    for(std::vector<TH1F*>::iterator it=hPredictedXErrors_      .begin(); it!=hPredictedXErrors_      .end(); it++) delete *it; hPredictedXErrors_      .clear();
-    for(std::vector<TH1F*>::iterator it=hPredictedYErrors_      .begin(); it!=hPredictedYErrors_      .end(); it++) delete *it; hPredictedYErrors_      .clear();
+    for(std::map<std::string,TH1F*>::iterator it=hPredictedXErrors_      .begin(); it!=hPredictedXErrors_      .end(); it++) delete it->second; hPredictedXErrors_      .clear();
+    for(std::map<std::string,TH1F*>::iterator it=hPredictedYErrors_      .begin(); it!=hPredictedYErrors_      .end(); it++) delete it->second; hPredictedYErrors_      .clear();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,9 +61,9 @@ void Resolution::predictedErrors(bool pass, int planeID, const Data& data, int t
 {
     if(!pass)
         return;
-
-    THREADED(hPredictedXErrors_[planeID-8])->Fill(data.getXErrorPredictedGlobal(planeID));
-    THREADED(hPredictedYErrors_[planeID-8])->Fill(data.getYErrorPredictedGlobal(planeID));
+    std::string planeName = thePlaneMapping_->getPlaneName(planeID);
+    THREADED(hPredictedXErrors_[planeName])->Fill(data.getXErrorPredictedGlobal(planeID));
+    THREADED(hPredictedYErrors_[planeName])->Fill(data.getYErrorPredictedGlobal(planeID));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -526,7 +526,7 @@ void Resolution::analyze(const Data& data, int threadNumber)//WARNING: You can't
         xResolution(xResolutionCut,p,data,threadNumber);
         yResolution(yResolutionCut,p,data,threadNumber);
 
-       if(thePlaneMapping_->getPlaneName(p).find("Dut")!=std::string::npos)
+       if(thePlaneMapping_->getPlaneName(p).find("Dut") != std::string::npos)
            predictedErrors(errorsCut,p,data,threadNumber);
     }
 }
@@ -560,11 +560,11 @@ void Resolution::endJob(void)
 
         if(thePlaneMapping_->getPlaneName(p).find("Dut")!=std::string::npos)
         {
-            ADD_THREADED(hPredictedXErrors_[p-8]);
-            ADD_THREADED(hPredictedYErrors_[p-8]);
+            ADD_THREADED(hPredictedXErrors_[thePlaneMapping_->getPlaneName(p)]);
+            ADD_THREADED(hPredictedYErrors_[thePlaneMapping_->getPlaneName(p)]);
 
-            hPredictedXErrors_[p-8]->GetXaxis()->SetTitle("x error (um)");
-            hPredictedYErrors_[p-8]->GetXaxis()->SetTitle("y error (um)");
+            hPredictedXErrors_[thePlaneMapping_->getPlaneName(p)]->GetXaxis()->SetTitle("x error (um)");
+            hPredictedYErrors_[thePlaneMapping_->getPlaneName(p)]->GetXaxis()->SetTitle("y error (um)");
         }
 
         if(p == 9)
@@ -666,11 +666,11 @@ void Resolution::book(void)
 
             hName  = "hPredictedXErrors_"                     + planeName;
             hTitle = "predicted X errors "                    + planeName;
-            hPredictedXErrors_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 10000, 0, 10)));
+            hPredictedXErrors_[planeName] = NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 10000, 0, 10));
 
             hName  = "hPredictedYErrors_"                     + planeName;
             hTitle = "predicted Y errors "                    + planeName;
-            hPredictedYErrors_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 10000, 0, 10)));
+            hPredictedYErrors_[planeName] = NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 10000, 0, 10));
         }
     }
 }

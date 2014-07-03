@@ -44,22 +44,22 @@ private:
     std::map< std::string,std::vector<TTreeFormula*> > cutsFormulas_       ;
     const WindowsManager*                              theWindowsManager_  ;
 
-    std::vector<TH1F*>    hXresiduals_                ;
-    std::vector<TH1F*>    hXresidualCalculated_       ;
-    std::vector<TH1F*>    hXresidualsClusterSize1_    ;
-    std::vector<TH1F*>    hXresidualsClusterSize2_    ;
-    std::vector<TH1F*>    hXresidualsDigital_         ;
-    std::vector<TH1F*>    hYresiduals_                ;
-    std::vector<TH1F*>    hYresidualCalculated_       ;
-    std::vector<TH1F*>    hYresidualsClusterSize1_    ;
-    std::vector<TH1F*>    hYresidualsClusterSize2_    ;
-    std::vector<TH1F*>    hYresidualsDigital_         ;
-    std::vector<TH1F*>    hPredictedXErrors_          ;
-    std::vector<TH1F*>    hPredictedYErrors_          ;
-    std::vector<TH1F*>    hSigmaXIntercept_           ;
-    std::vector<TH1F*>    hSigmaYIntercept_           ;
-    std::vector<TH1F*>    hSigmaXSlope_               ;
-    std::vector<TH1F*>    hSigmaYSlope_               ;
+    std::vector<TH1F*>          hXresiduals_                ;
+    std::vector<TH1F*>          hXresidualCalculated_       ;
+    std::vector<TH1F*>          hXresidualsClusterSize1_    ;
+    std::vector<TH1F*>          hXresidualsClusterSize2_    ;
+    std::vector<TH1F*>          hXresidualsDigital_         ;
+    std::vector<TH1F*>          hYresiduals_                ;
+    std::vector<TH1F*>          hYresidualCalculated_       ;
+    std::vector<TH1F*>          hYresidualsClusterSize1_    ;
+    std::vector<TH1F*>          hYresidualsClusterSize2_    ;
+    std::vector<TH1F*>          hYresidualsDigital_         ;
+    std::map<std::string,TH1F*> hPredictedXErrors_          ;
+    std::map<std::string,TH1F*> hPredictedYErrors_          ;
+    std::vector<TH1F*>          hSigmaXIntercept_           ;
+    std::vector<TH1F*>          hSigmaYIntercept_           ;
+    std::vector<TH1F*>          hSigmaXSlope_               ;
+    std::vector<TH1F*>          hSigmaYSlope_               ;
 };
 
 #endif // RESOLUTION_H
