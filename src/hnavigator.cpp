@@ -66,7 +66,7 @@ HNavigator::HNavigator(QWidget * parent) :
             this,
             SLOT  (checkNewObjectsInMemory()));
 
-   for(int i=0; i<10; ++i)
+    for(int i=0; i<10; ++i)
     {
         ss_.str(""); ss_ << i ;
         ui_->hCanvasCB->addItem(QString(ss_.str().c_str()));
@@ -190,7 +190,6 @@ void HNavigator::collectExistingWidgets()
         this->show() ;
         this->setCurrentIndex(0);
         QWidget * input  = this->widget(0) ;
-
         theHTreeBrowser_ = new hTreeBrowser(input, theMainWindow_) ;
         theHTreeBrowser_->setGeometry(ui_->hNavigatorTreeFrame->geometry()) ;
         theHTreeBrowser_->show() ;
@@ -260,7 +259,6 @@ void HNavigator::addFile(std::string fileName, TFile* file)
     {
         openFiles_.erase(fileName);
         this->delItem(fileName);
-
     }
 
 }
@@ -2099,9 +2097,3 @@ void HNavigator::on_saveImagePB_clicked()
     c1->Print(fileName.toStdString().c_str(), fileName.toStdString().substr(fileName.toStdString().find_last_of("."), fileName.toStdString().size()).c_str());
     delete c1;
 }
-/*
-void HNavigator::on_hNavigatorTreeFrame_customContextMenuRequested(const QPoint &pos)
-{
-
-}
-*/

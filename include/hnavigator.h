@@ -124,6 +124,9 @@ private slots:
     void on_fitFuncLE_editingFinished   ();
     void on_customFunctionCB_clicked    ();
     void on_saveImagePB_clicked();
+/*    void on_statCB_clicked();
+    void on_statCB_clicked(bool checked);
+    void on_statCB_customContextMenuRequested(const QPoint &pos); */
 };
 
 #endif // HNAVIGATOR_H

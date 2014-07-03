@@ -418,7 +418,7 @@ HanSoloTreeBrowser::dirPathDef HanSoloTreeBrowser::getFullPath(QTreeWidgetItem *
 void HanSoloTreeBrowser::showContextMenu(const QPoint &)
 {
     //STDLINE("Must plot now!",ACRed);
-    //theHNavigator_ = theMainWindow_->getHNavigator() ;
+    theHanSoloFitter_ = theMainWindow_->getHanSoloFitter() ;
 
     // Create suitable canvas (a singleton)
     if( serviceCanvas_.find(currentCanvas_) == serviceCanvas_.end() )
@@ -454,6 +454,7 @@ void HanSoloTreeBrowser::showContextMenu(const QPoint &)
         //canvasPosX_   += 5;
         //canvasPosY_   += 5;
     }
+    STDLINE(theHanSoloFitter_->plotFitBox(), ACPurple);
 
     // Determine name -> full-path association for the selected items
     selectedObjectsDef selectedObjects = this->getSelectedItems() ;
@@ -481,12 +482,14 @@ void HanSoloTreeBrowser::showContextMenu(const QPoint &)
     }else
         gStyle->SetOptStat(0) ;
 
-    if( theHNavigator_->plotFitBox() )
+    STDLINE(theHanSoloFitter_->plotFitBox(), ACPurple);
+
+    /*if( theHanSoloFitter_->plotFitBox() )
     {
         gStyle->SetOptFit(111111) ;
         STDLINE("OptFit",ACRed);
     }
-    else
+    else*/
         gStyle->SetOptFit(0) ;
 
     int nx = 1;
@@ -524,7 +527,6 @@ void HanSoloTreeBrowser::showContextMenu(const QPoint &)
 
     std::cout << "divide(" << nx << ", " << ny << ")" << std::endl;
     serviceCanvas_[currentCanvas_]->divide(nx, ny) ;
-
     serviceCanvas_[currentCanvas_]->setLogX(theMainWindow_->theHanSoloFitter_->logX());
     serviceCanvas_[currentCanvas_]->setLogY(theMainWindow_->theHanSoloFitter_->logY());
     serviceCanvas_[currentCanvas_]->setLogZ(theMainWindow_->theHanSoloFitter_->logZ());
@@ -549,21 +551,21 @@ void HanSoloTreeBrowser::showContextMenu(const QPoint &)
             if(this->getObjectType(*jt).find("TH1") != std::string::npos)
             {
                 (*jt)->Draw() ;
-                if (currentObject_) delete currentObject_;
+ //               if (currentObject_) delete currentObject_;
                 currentObject_ = (*jt);
             }
             else if(this->getObjectType(*jt).find("TH2") != std::string::npos)
             {
                 options += theMainWindow_->theHanSoloFitter_->twoDOption() ;
                 (*jt)->Draw(options.c_str()) ;
-                if (currentObject_) delete currentObject_;
+//                if (currentObject_) delete currentObject_;
                 currentObject_ = (*jt);
             }
             else if(this->getObjectType(*jt).find("TGraph") != std::string::npos)
             {
                 options += "ACL" ;
                 (*jt)->Draw(options.c_str()) ;
-                if (currentObject_) delete currentObject_;
+//                if (currentObject_) delete currentObject_;
                 currentObject_ = (*jt);
             }
             else
