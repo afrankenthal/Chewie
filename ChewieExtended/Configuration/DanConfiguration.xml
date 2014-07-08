@@ -1,49 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<DanConfiguration>
-  <Dut_0>
-    <Charge>
-      <checkbox>true</checkbox>
-      <checkbox>false</checkbox>
-      <checkbox>true</checkbox>
-    </Charge>
-    <Efficiency>
-    </Efficiency>
-    <Resolution>
-    </Resolution>
-  </Dut_0>
-  <Dut_1>
-    <Charge>
-      <checkbox>false</checkbox>
-      <checkbox>true</checkbox>
-      <checkbox>false</checkbox>
-    </Charge>
-    <Efficiency>
-    </Efficiency>
-    <Resolution>
-    </Resolution>
-  </Dut_1>
-  <Dut_2>
-    <Charge>
-      <checkbox>false</checkbox>
-      <checkbox>true</checkbox>
-      <checkbox>false</checkbox> 
-    </Charge>
-    <Efficiency>
-    </Efficiency>
-    <Resolution>
-    </Resolution>
-  </Dut_2>
-  <Dut_3>
-    <Charge>
-      <checkbox>false</checkbox>
-      <checkbox>true</checkbox>
-      <checkbox>false</checkbox> 
-    </Charge>
-    <Efficiency>
-    </Efficiency>
-    <Resolution>
-    </Resolution>
-  </Dut_3>
-  
-  
-</DanConfiguration>
+<Configuration>
+ <Dut id="0">
+  <charge>
+   <checkbox checked="1" fitterID="DanChargeFitter"/>
+   <checkbox checked="0" fitterID="DefaultChargeFitter"/>
+   <checkbox checked="1" fitterID="3DChargeFitter"/>
+  </charge>
+  <efficiency/>
+  <resolution/>
+ </Dut>
+ <Dut id="1">
+  <charge>
+   <checkbox checked="1" fitterID="DanChargeFitter"/>
+   <checkbox checked="1" fitterID="DefaultChargeFitter"/>
+   <checkbox checked="1" fitterID="3DChargeFitter"/>
+  </charge>
+  <efficiency/>
+  <resolution/>
+ </Dut>
+ <Dut id="2">
+  <charge>
+   <checkbox checked="1" fitterID="DanChargeFitter"/>
+   <checkbox checked="0" fitterID="DefaultChargeFitter"/>
+   <checkbox checked="0" fitterID="3DChargeFitter"/>
+  </charge>
+  <efficiency/>
+  <resolution/>
+ </Dut>
+</Configuration>

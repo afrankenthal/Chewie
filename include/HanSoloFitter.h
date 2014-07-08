@@ -102,14 +102,23 @@ private:
     QAction *                actionRun_Advanced_Fitter_;
     int                      counter_            ;    
     int                      shiftHSValue_       ;
+    int                      currentIndex_       ;
     std::vector<std::string> chargeVector_       ;
     std::vector<std::string> efficiencyVector_   ;
     std::vector<std::string> resolutionVector_   ;
 
-    std::vector<QCheckBox *> chargeCheckBoxes_   ;
-    std::vector<QCheckBox *>efficiencyCheckBoxes_;
-    std::vector<QCheckBox *>resolutionCheckBoxes_;
-    std::vector<std::string> checkedBoxes_       ;
+    std::vector<std::vector<QCheckBox *> > chargeCheckBoxes_   ;
+    std::vector<std::vector<QCheckBox *> >efficiencyCheckBoxes_;
+    std::vector<std::vector<QCheckBox *> >resolutionCheckBoxes_;
+    std::vector<std::vector<std::string> > checkedBoxes_       ;
+    std::vector<std::vector<QFrame*> >     qFrames_;
+
+    std::vector<QWidget*>   pointerToDutTabs_;
+
+    std::vector<QCheckBox *> generalChargeCheckBoxes_   ;
+    std::vector<QCheckBox *>generalEfficiencyCheckBoxes_;
+    std::vector<QCheckBox *>generalResolutionCheckBoxes_;
+    std::vector<std::string> generalCheckedBoxes_;
 
     std::vector<QCheckBox *> Dut_0_chargeCheckBoxes_   ;
     std::vector<QCheckBox *>Dut_0_efficiencyCheckBoxes_;
@@ -159,12 +168,14 @@ private slots:
     void        checkAllCharge         (                         ) ;
     void        checkAllEfficiency     (                         ) ;
     void        checkAllResolution     (                         ) ;
-
     void        unCheckGeneral         (bool check               ) ;
-
-    void on_reset_clicked();
-
-    void on_openConfigurationFilePB_clicked();
+    void        on_reset_clicked       (                         ) ;
+    void        on_openConfigurationFilePB_clicked(              ) ;
+    void        on_fitterOptions_selected(const QString &arg1    ) ;
+    void        on_saveConfigurationFile_clicked(                ) ;
+    void        on_resetDut_clicked    (                         ) ;
+    void        on_fitterOptions_currentChanged(int index        ) ;
+    void        check_for_checkall     (void                     ) ;
 
 signals:
     
@@ -173,6 +184,13 @@ signals:
 };
 
 #endif // HANSOLOFITTER_H
+
+
+
+
+
+
+
 
 
 
