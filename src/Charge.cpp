@@ -48,6 +48,10 @@ Charge::Charge(AnalysisManager* analysisManager, int nOfThreads) :
         isMaxToLimit_[p] = 0;
     }
     totEventsControl_ = 0;
+
+    langaus_ = new TF1("langaus",Utilities::langaus,0,60000,4);
+    langaus_->SetParNames("Width","MPV","Area","GSigma");
+    langaus_->SetLineColor(kBlue);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,11 +71,16 @@ Charge::~Charge(void)
 
     destroy();
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Charge::setInvincible(bool cannotBeKilled)
+{
+    cannotBeDestroyed = cannotBeKilled;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Charge::destroy(void)
+void Charge::destroy()
 {
-    if(Analysis::fDoNotDelete_) return;
+    if(Analysis::fDoNotDelete_ || cannotBeDestroyed) return;
 
     /*--------------------------------------------------------------------------------------------Cluster size--------------------------------------------------------------------------------------------------*/
     for(std::vector<TH1F*>::iterator it=hClusterSize_                           .begin(); it!=hClusterSize_                           .end(); it++) delete *it; hClusterSize_                           .clear();
@@ -274,7 +283,6 @@ void Charge::fitCharge(int planeID)
     STDLINE(ss.str(),ACGreen);
 
     STDLINE("",ACWhite);
-
     /*--------------------------------------------------------*/
     STDLINE("Single hits in the cell fiducial window:",ACWhite);
     STDLINE("",ACWhite);
@@ -2500,10 +2508,6 @@ void Charge::beginJob(void)
     theWindowsManager_      = theAnalysisManager_->getWindowsManager();
     theCalibrationsManager_ = theAnalysisManager_->getCalibrationsManager();
 
-    langaus_ = new TF1("langaus",Utilities::langaus,0,60000,4);
-    langaus_->SetParNames("Width","MPV","Area","GSigma");
-    langaus_->SetLineColor(kBlue);
-
     book();
 
     setParsLimits();
@@ -3056,6 +3060,494 @@ void Charge::endJob(void)
     }
 
     calculateMeanCharge();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Charge::load(TFile* file)
+{
+    //destroy();
+
+    std::string hName;
+    std::string dirName;
+    std::string planeName;
+
+    file->cd("/");
+    for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
+    {
+        planeName = thePlaneMapping_->getPlaneName(p);
+
+        /*--------------------------------------------------------------------------landau-----------------------------------------------------------------------------------------------------------------*/
+        dirName = "Charge/" + planeName + "/Landau/";
+
+        hName  = "hLandauClusterSize1_" + planeName;
+        hLandauClusterSize1_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hLandauClusterSize1_[p] << std::endl;
+
+        hName  = "hCellLandau_"+ planeName;
+        hCellLandau_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hCellLandau_[p] << std::endl;
+
+        hName  = "hCellLandau3D_" + planeName;
+        hCellLandau3D_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hCellLandau3D_[p] << std::endl;
+
+        hName  = "hCellLandau3DElectrodes_" + planeName;
+        hCellLandau3DElectrodes_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hCellLandau3DElectrodes_[p] << std::endl;
+
+        hName  = "hCellLandauSinglePixel_" + planeName;
+        hCellLandauSinglePixel_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hCellLandauSinglePixel_[p] << std::endl;
+
+        hName  = "hLandauClusterSize2_" + planeName;
+        hLandauClusterSize2_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hLandauClusterSize2_[p] << std::endl;
+
+        hName  = "hLandauClusterSize2sameCol_"                                + planeName;
+        hLandauClusterSize2sameCol_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hLandauClusterSize2sameCol_[p] << std::endl;
+
+        hName  = "hLandauClusterSize2sameRow_"                                + planeName;
+        hLandauClusterSize2sameRow_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hLandauClusterSize2sameRow_[p] << std::endl;
+
+        hName  = "hLandauClusterSize3_"                                       + planeName;
+        hLandauClusterSize3_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hLandauClusterSize3_[p] << std::endl;
+
+        hName  = "hLandauClusterSize3sameCol_"                                + planeName;
+        hLandauClusterSize3sameCol_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hLandauClusterSize3sameCol_[p] << std::endl;
+
+        hName  = "hLandauClusterSize3sameRow_"                                + planeName;
+        hLandauClusterSize3sameRow_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hLandauClusterSize3sameRow_[p] << std::endl;
+       
+        /*--------------------------------------------------------------------------cluster size-----------------------------------------------------------------------------------------------------------------*/
+        dirName = "Charge/" + planeName + "/ClusterSize/";
+                
+        hName  = "hClusterSize_"                   + planeName;
+        hClusterSize_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hClusterSize_[p] << std::endl;
+
+        hName  = "hClusterSizeCuts_"               + planeName;
+        hClusterSizeCuts_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hClusterSizeCuts_[p] << std::endl;
+
+        hName  = "hClusterSizeCutsPlus_"               + planeName;
+        hClusterSizeCutsPlus_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hClusterSizeCutsPlus_[p] << std::endl;
+
+        hName  = "hNumberOfCols_"                  + planeName;
+        hNumberOfCols_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hNumberOfCols_[p] << std::endl;
+
+        hName  = "hNumberOfRows_"                  + planeName;
+        hNumberOfRows_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hNumberOfRows_[p] << std::endl;
+
+        hName  = "hClusterSizeDistribution1s_"           + planeName;
+        hClusterSizeDistribution1s_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hClusterSizeDistribution1s_[p] << std::endl;
+
+        hName  = "hClusterSizeDistribution2s_"           + planeName;
+        hClusterSizeDistribution2s_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hClusterSizeDistribution2s_[p] << std::endl;
+
+        hName  = "hClusterSizeNormalization_"           + planeName;
+        hClusterSizeNormalization_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hClusterSizeNormalization_[p] << std::endl;
+
+        /*------------------------------------------------------------------------2D cell charge--------------------------------------------------------------------------------------------------------------*/
+        dirName = "Charge/" + planeName + "/2DCellCharge/";
+        
+        hName  = "h2DallTracks_"+ planeName;
+        h2DallTracks_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DallTracks_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNorm_"+ planeName;
+        h2DCellChargeNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNorm_[p] << std::endl;        
+  
+        hName  = "h2DCellCharge_"+ planeName;
+        h2DCellCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellCharge_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeSecondHit_"+ planeName;
+        h2DCellChargeSecondHit_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNum_"+ planeName;
+        h2DCellChargeNum_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNum_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNormSize2_"+ planeName;
+        h2DCellChargeNormSize2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize2_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNormSize1_"+ planeName;
+        h2DCellChargeNormSize1_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize1_[p] << std::endl;        
+        
+        hName  = "h4CellsAllTracks_"+ planeName;
+        h4CellsAllTracks_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h4CellsAllTracks_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNormSize2Up_"+ planeName;
+        h2DCellChargeNormSize2Up_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize2Up_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNormSize1Up_"+ planeName;
+        h2DCellChargeNormSize1Up_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize1Up_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNormSize2Down_"+ planeName;
+        h2DCellChargeNormSize2Down_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize2Down_[p] << std::endl;        
+        
+        hName  = "h2DCellChargeNormSize1Down_"+ planeName;
+        h2DCellChargeNormSize1Down_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize1Down_[p] << std::endl;        
+        
+        hName  = "hCellChargeCoarse_"+ planeName;
+        hCellChargeCoarse_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hCellChargeCoarse_[p] << std::endl;       
+        
+        hName  = "hCellChargeCoarseNorm_"+ planeName;
+        hCellChargeCoarseNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hCellChargeCoarseNorm_[p] << std::endl;        
+        
+        hName  = "h4CellsChargeNorm_"+ planeName;
+        h4CellsChargeNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h4CellsChargeNorm_[p] << std::endl;        
+        
+        hName  = "h4CellsCharge_"+ planeName;
+        h4CellsCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h4CellsCharge_[p] << std::endl;        
+        
+        hName  = "h4HitsCharge_"+ planeName;
+        h4HitsCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h4HitsCharge_[p] << std::endl;        
+        
+        hName  = "h4Hits_"+ planeName;
+        h4Hits_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h4Hits_[p] << std::endl;        
+        
+        hName  = "hCutsControl_"+ planeName;
+        hCutsControl_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hCutsControl_[p] << std::endl;        
+        
+        hName  = "hHitsNotOnRowCol_" + planeName;
+        hHitsNotOnRowCol_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hHitsNotOnRowCol_[p] << std::endl;  
+        
+        hName  = "hChargeNotOnRowCol_" + planeName;
+        hChargeNotOnRowCol_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hChargeNotOnRowCol_[p] << std::endl;        
+
+        /*--------------------------------------------------------------------------2D cell charge - X coordinate---------------------------------------------------------------------------------------------*/ 
+        dirName = "Charge/" + planeName + "/XcellCharge2D/";
+        
+        hName  = "h2DXcellCharge_"                                      + planeName;
+        h2DXcellCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellCharge_[p] << std::endl;    
+        
+        hName  = "h2DXcellChargeSumLE2_"                                + planeName;
+        h2DXcellChargeSumLE2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellChargeSumLE2_[p] << std::endl;    
+
+        hName  = "h2DXcellChargeSumLE3_"                                + planeName;
+        h2DXcellChargeSumLE3_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellChargeSumLE3_[p] << std::endl;    
+
+        hName  = "h2DXcellDoubleHits_"                                  + planeName;
+        h2DXcellDoubleHits_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellDoubleHits_[p] << std::endl;    
+
+        hName  = "h2DXcellSingleHits_"                                  + planeName;
+        h2DXcellSingleHits_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellSingleHits_[p] << std::endl;    
+
+        hName  = "hHitsNotONRowColVsXSlope_" + planeName;
+        hHitsNotONRowColVsXSlope_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hHitsNotONRowColVsXSlope_[p] << std::endl;    
+
+        hName  = "hHitsNotOnRowColProjX_" + planeName;
+        hHitsNotOnRowColProjX_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hHitsNotOnRowColProjX_[p] << std::endl;    
+
+        /*------------------------------------------------------------------------2D cell charge - Y coordinate----------------------------------------------------------------------------------------------*/
+        dirName = "Charge/" + planeName + "/YcellCharge2D/";
+        
+        hName  = "h2DYcellCharge_"+ planeName;
+        h2DYcellCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellCharge_[p] << std::endl;    
+
+        hName  = "h2DYcellChargeSumLE2_"+ planeName;
+        h2DYcellChargeSumLE2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellChargeSumLE2_[p] << std::endl;    
+
+        hName  = "h2DYcellChargeSumLE3_"+ planeName;
+        h2DYcellChargeSumLE3_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellChargeSumLE3_[p] << std::endl;    
+
+        hName  = "h2DYcellDoubleHits_"+ planeName;
+        h2DYcellDoubleHits_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellDoubleHits_[p] << std::endl;    
+
+        hName  = "h2DYcellSingleHits_"+ planeName;
+        h2DYcellSingleHits_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellSingleHits_[p] << std::endl;    
+
+        hName  = "hHitsNotONRowColVsYSlope_" + planeName;
+        hHitsNotONRowColVsYSlope_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hHitsNotONRowColVsYSlope_[p] << std::endl;    
+
+        hName  = "hHitsNotONRowColProjY_" + planeName;
+        hHitsNotOnRowColProjY_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hHitsNotOnRowColProjY_[p] << std::endl;    
+ 
+        /*---------------------------------------------------------------------------1D cell charge - X coordinate--------------------------------------------------------------------- -----------------------*/
+        dirName = "Charge/" + planeName + "/XcellCharge1D/";
+        
+        hName  = "h1DXcellCharge_"+ planeName;
+        h1DXcellCharge_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellCharge_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeNormToAll_"+ planeName;
+        h1DXcellChargeNormToAll_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeNormToAll_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSumLE2_"+ planeName;
+        h1DXcellChargeSumLE2_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSumLE2_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSumLE2NormToAll_"+ planeName;
+        h1DXcellChargeSumLE2NormToAll_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSumLE2NormToAll_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSumLE3_" + planeName;
+        h1DXcellChargeSumLE3_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSumLE3_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSumLE3NormToAll_"+ planeName;
+        h1DXcellChargeSumLE3NormToAll_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSumLE3NormToAll_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSecondHit_"+ planeName;
+        h1DXcellChargeSecondHit_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSecondHit_[p] << std::endl;    
+
+        hName  = "h1DXallTracks_"+ planeName;
+        h1DXallTracks_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXallTracks_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeNorm_"+ planeName;
+        h1DXcellChargeNorm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeNorm_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSumLE2Norm_"+ planeName;
+        h1DXcellChargeSumLE2Norm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSumLE2Norm_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSumLE3Norm_"+ planeName;
+        h1DXcellChargeSumLE3Norm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSumLE3Norm_[p] << std::endl;    
+
+        hName  = "h1DXcellSingleHits_"+ planeName;
+        h1DXcellSingleHits_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellSingleHits_[p] << std::endl;    
+
+        hName  = "h1DXcellDoubleHits_"+ planeName;
+        h1DXcellDoubleHits_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellDoubleHits_[p] << std::endl;    
+
+        hName  = "h1DXcell3Hits_"+ planeName;
+        h1DXcell3Hits_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcell3Hits_[p] << std::endl;    
+
+        hName  = "h1DXcellChargeSecondHitNorm_"+ planeName;
+        h1DXcellChargeSecondHitNorm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXcellChargeSecondHitNorm_[p] << std::endl;   
+        
+        /*---------------------------------------------------------------------------1D cell charge - Y coordinate-------------------------------------------------------------------------------------------*/
+        dirName = "Charge/" + planeName + "/YcellCharge1D/";
+ 
+        hName  = "h1DYcellCharge_"+ planeName;
+        h1DYcellCharge_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellCharge_[p] << std::endl;
+
+        hName  = "h1DYcellChargeNormToAll_"+ planeName;
+        h1DYcellChargeNormToAll_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeNormToAll_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSumLE2_"+ planeName;
+        h1DYcellChargeSumLE2_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSumLE2_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSumLE2NormToAll_" + planeName;
+        h1DYcellChargeSumLE2NormToAll_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSumLE2NormToAll_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSumLE3_"+ planeName;
+        h1DYcellChargeSumLE3_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSumLE3_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSumLE3NormToAll_" + planeName;
+        h1DYcellChargeSumLE3NormToAll_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSumLE3NormToAll_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSecondHit_"+ planeName;
+        h1DYcellChargeSecondHit_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSecondHit_[p] << std::endl;
+
+        hName  = "h1DYallTracks_"+ planeName;
+        h1DYallTracks_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYallTracks_[p] << std::endl;
+
+        hName  = "h1DYallTracksNoElectrodes_"+ planeName;
+        h1DYallTracksNoElectrodes_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYallTracksNoElectrodes_[p] << std::endl;
+
+        hName  = "h1DYcellChargeNorm_"  + planeName;
+        h1DYcellChargeNorm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeNorm_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSumLE2Norm_"+ planeName;
+        h1DYcellChargeSumLE2Norm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSumLE2Norm_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSumLE3Norm_"+ planeName;
+        h1DYcellChargeSumLE3Norm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSumLE3Norm_[p] << std::endl;
+
+        hName  = "h1DYcellSingleHits_" + planeName;
+        h1DYcellSingleHits_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellSingleHits_[p] << std::endl;
+
+        hName  = "h1DYcellDoubleHits_" + planeName;
+        h1DYcellDoubleHits_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellDoubleHits_[p] << std::endl;
+
+        hName  = "h1DYcell3Hits_"+ planeName;
+        h1DYcell3Hits_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcell3Hits_[p] << std::endl;
+
+        hName  = "h1DYcellChargeSecondHitNorm_"+ planeName;
+        h1DYcellChargeSecondHitNorm_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYcellChargeSecondHitNorm_[p] << std::endl;
+
+        /*----------------------------------------------------------------------------X Asimmetry-----------------------------------------------------------------------------------------------------------*/
+        dirName = "Charge/" + planeName + "/Xasimmetry/";
+
+        hName  = "hXasimmetry_"+ planeName;
+        hXasimmetry_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hXasimmetry_[p] << std::endl;
+
+        hName  = "hXasimmetry0_"+ planeName;
+        hXasimmetry0_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hXasimmetry0_[p] << std::endl;
+
+        hName  = "h2DXAsimmetryLandau_"+ planeName;
+        h2DXAsimmetryLandau_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXAsimmetryLandau_[p] << std::endl;
+
+        hName  = "h2DXcellChargeAsimmetry_"+ planeName;
+        h2DXcellChargeAsimmetry_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellChargeAsimmetry_[p] << std::endl;
+
+        hName  = "h2DXcellChargeAsimmetryInv_"+ planeName;
+        h2DXcellChargeAsimmetryInv_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellChargeAsimmetryInv_[p] << std::endl;
+
+        hName  = "h2DXcellChargeAsimmetryUnconstrained_"+ planeName;
+        h2DXcellChargeAsimmetryUnconstrained_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellChargeAsimmetryUnconstrained_[p] << std::endl;
+
+        hName  = "h2DXcellChargeAsimmetryUnconstrainedInv_"+ planeName;
+        h2DXcellChargeAsimmetryUnconstrainedInv_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellChargeAsimmetryUnconstrainedInv_[p] << std::endl;
+
+        hName  = "h2DXcellChargeAsimmetrySizeLE2_"+ planeName;
+        h2DXCellChargeAsimmetrySizeLE2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXCellChargeAsimmetrySizeLE2_[p] << std::endl;
+
+        hName  = "h2DXCellChargeAsimmetryCell_"+ planeName;
+        h2DXCellChargeAsimmetryCell_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXCellChargeAsimmetryCell_[p] << std::endl;
+
+        hName  = "h2DXCellChargeAsimmetryCellNorm_"+ planeName;
+        h2DXCellChargeAsimmetryCellNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXCellChargeAsimmetryCellNorm_[p] << std::endl;
+
+        hName  = "h2DXCellChargeAsimmetryY_"+ planeName;
+        h2DXCellChargeAsimmetryY_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXCellChargeAsimmetryY_[p] << std::endl;
+
+        hName = "h1DXEtaDerivativeDistribution_" + planeName;
+        h1DXEtaDerivativeDistribution_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DXEtaDerivativeDistribution_[p] << std::endl;
+
+        /*---------------------------------------------------------------------------Y Asimmetry-------------------------------------------------------------------------------------------------------------*/
+        dirName = "Charge/" + planeName + "/Yasimmetry/";
+
+        hName  = "hYasimmetry_"                                                     + planeName;
+        hYasimmetry_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hYasimmetry_[p] << std::endl;
+
+        hName  = "hYasimmetry0_"                                                     + planeName;
+        hYasimmetry0_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << hYasimmetry0_[p] << std::endl;
+
+        hName  = "h2DYAsimmetryLandau_"                                             + planeName;
+        h2DYAsimmetryLandau_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYAsimmetryLandau_[p] << std::endl;
+
+        hName  = "h2DYcellChargeAsimmetry_"                                         + planeName;
+        h2DYcellChargeAsimmetry_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellChargeAsimmetry_[p] << std::endl;
+
+        hName  = "h2DYcellChargeAsimmetryInv_"                                      + planeName;
+        h2DYcellChargeAsimmetryInv_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellChargeAsimmetryInv_[p] << std::endl;
+
+        hName  = "h2DYcellChargeAsimmetryUnconstrained_"                            + planeName;
+        h2DYcellChargeAsimmetryUnconstrained_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellChargeAsimmetryUnconstrained_[p] << std::endl;
+
+        hName  = "h2DYcellChargeAsimmetryUnconstrainedInv_"                         + planeName;
+        h2DYcellChargeAsimmetryUnconstrainedInv_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellChargeAsimmetryUnconstrainedInv_[p] << std::endl;
+
+        hName  = "h2DYcellChargeAsimmetrySizeLE2_"                                  + planeName;
+        h2DYCellChargeAsimmetrySizeLE2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYCellChargeAsimmetrySizeLE2_[p] << std::endl;
+
+        hName  = "h2DYCellChargeAsimmetryCell_"                                      + planeName;
+        h2DYCellChargeAsimmetryCell_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYCellChargeAsimmetryCell_[p] << std::endl;
+
+        hName  = "h2DYCellChargeAsimmetryCellNorm_"                                      + planeName;
+        h2DYCellChargeAsimmetryCellNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYCellChargeAsimmetryCellNorm_[p] << std::endl;
+
+        hName  = "h2DYCellChargeAsimmetryX_"                                         + planeName;
+        h2DYCellChargeAsimmetryX_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYCellChargeAsimmetryX_[p] << std::endl;
+
+        hName = "h1DYEtaDerivativeDistribution_" + planeName;
+        h1DYEtaDerivativeDistribution_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h1DYEtaDerivativeDistribution_[p] << std::endl;
+
+
+
+
+
+
+
+    }
+    
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

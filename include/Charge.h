@@ -17,6 +17,7 @@ class TH2F               ;
 class TH1                ;
 class TF1                ;
 class TTreeFormula       ;
+class TFile              ;
 class AnalysisManager    ;
 class WindowsManager     ;
 class CalibrationsManager;
@@ -35,7 +36,11 @@ public:
     bool passStandardCuts    (int planeID                               , const Data& data        );
     bool passBadPlanesCut    (int  planeID, const Data& data                            );
 
-    void getInFile           (TFile *                                                             ){}
+    void getInFile           (TFile *                                                   ){}
+
+    void load                (TFile* file                                               );
+    void fitCharge           (int  planeID                                              );
+    void setInvincible       (bool cannotBeKilled                                       );
 
 private:
     void book                (void                                                      );
@@ -64,7 +69,6 @@ private:
     void setParsLimits       (void                                                      );
     bool passCalibrationsCut (int  planeID, const Data& data                            );
     void setErrorsBar        (int  planeID                                              );
-    void fitCharge           (int  planeID                                              );
     int  langausFit          (TH1* histo  , double* fitParameters                       );
 
     PlanesMapping*                                     thePlaneMapping_       ;
@@ -82,6 +86,7 @@ private:
     int    minTotCharge_   ;
     int    maxTotCharge_   ;
     TH2F*  h2DparsPlots_[4];
+    bool  cannotBeDestroyed;
 
     /*--------------------------------cluster size----------------*/
     std::vector<TH1F*>    hClusterSize_                            ;

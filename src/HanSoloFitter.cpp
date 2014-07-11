@@ -1720,9 +1720,10 @@ void HanSoloFitter::on_runButton_clicked()
     }
     */
 
-
+/*
     fstream file("ChewieExtended/ScriptToFit.cpp", std::ios::out);
     file.close();
+
     fstream scriptFile("ChewieExtended/ScriptToFit.cpp");
     std::string filePath = "ChewieExtended/ScriptToFit.cpp";
     //scriptFile.open("/../../ChewieExtended/ScriptToFit.cpp");
@@ -1741,14 +1742,15 @@ void HanSoloFitter::on_runButton_clicked()
     scriptFile << "inFile->Close(); \n \n }";
 
     scriptFile.close();
-    
+*/
     std::string cp = "cp " + rootFile_ + " " + fittedFileName ;
     system(cp.c_str());
     system("pwd");
-    system("cd ChewieExtended; root.exe -l -b -q -x ScriptToFit.cpp");
-    
-    }else
-        std::cout << "Error: Couldn't open " << filePath << std::endl;
+    //system("cd ChewieExtended; root.exe -l -b -q -x ScriptToFit.cpp");
+    system("cd ChewieExtended; ./compile.py && ./ScriptToFit");
+//    system("cd ChewieExtended; ./ScriptToFit");
+//    }else
+//        std::cout << "Error: Couldn't open " << filePath << std::endl;
 
 
 
