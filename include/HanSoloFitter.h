@@ -110,6 +110,11 @@ private:
     std::vector<std::vector<QCheckBox *> > chargeCheckBoxes_   ;
     std::vector<std::vector<QCheckBox *> >efficiencyCheckBoxes_;
     std::vector<std::vector<QCheckBox *> >resolutionCheckBoxes_;
+
+    std::vector<std::vector<std::string> > checkedChargeCheckBoxes_   ;
+    std::vector<std::vector<std::string> >checkedEfficiencyCheckBoxes_;
+    std::vector<std::vector<std::string> >checkedResolutionCheckBoxes_;
+
     std::vector<std::vector<std::string> > checkedBoxes_       ;
     std::vector<std::vector<QFrame*> >     qFrames_;
 
@@ -120,7 +125,7 @@ private:
     std::vector<QCheckBox *>generalResolutionCheckBoxes_;
     std::vector<std::string> generalCheckedBoxes_;
 
-    std::vector<QCheckBox *> Dut_0_chargeCheckBoxes_   ;
+ /*   std::vector<QCheckBox *> Dut_0_chargeCheckBoxes_   ;
     std::vector<QCheckBox *>Dut_0_efficiencyCheckBoxes_;
     std::vector<QCheckBox *>Dut_0_resolutionCheckBoxes_;
     std::vector<std::string> Dut_0_checkedBoxes_       ;
@@ -139,7 +144,7 @@ private:
     std::vector<QCheckBox *>Dut_3_efficiencyCheckBoxes_;
     std::vector<QCheckBox *>Dut_3_resolutionCheckBoxes_;
     std::vector<std::string> Dut_3_checkedBoxes_       ;
-
+*/
     std::string                rootFile_         ;
     XmlParser*                   theXmlParser_   ;
 

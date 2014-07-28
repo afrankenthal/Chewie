@@ -74,28 +74,6 @@ HanSoloFitter::HanSoloFitter(QWidget *parent ) :
     on_centraltabWidget_currentChanged(0);
 
 
-    //hanSoloTreeBrowser_ = new hTreeBrowser(this, theMainWindow_);
-    //hanSoloTreeBrowser_->setGeometry(250, 250, 250, 250);
-    //this->addItem(emptyFileLabel_.toStdString()) ;
-
-    //QTabWidget * widget_ = new
-
-    //this->collectExistingWidgets();
-
-    /*connect(ui_->HanSoloFitterInputFile,
-            SIGNAL(currentIndexChanged(QString)),
-            this,
-            SLOT(  updateTree(         QString))) ;
-    */
-    /*connect(timer_,
-            SIGNAL(timeout                () ),
-            this,
-            SLOT  (checkNewObjectsInMemory()));
-    */
-
-
-
-
     ui_->canvasSizeCB->setCurrentIndex(2);
 
     canvas_ = new CanvasWidget();
@@ -282,12 +260,13 @@ void HanSoloFitter::getFitters(void)
 
     std::cout << "getFitters()" << std::endl;
 
-    std::string charge = "harge";
-    std::string resolution = "esolution";
-    std::string efficiency = "fficiency";
+    std::string charge = "Charge::fit";
+    std::string resolution = "::fit";
+    std::string efficiency = "::fit";
     std::ifstream inFile;
     std::ofstream outFile;
-    std::string dir = "ChewieExtended/Fitters";
+    std::string dir = "src";
+    std::string line;
     std::vector<std::string> fileList;
 
     chargeVector_.clear();
@@ -297,7 +276,7 @@ void HanSoloFitter::getFitters(void)
     DIR *pdir;
     struct dirent *pent;
 
-      pdir=opendir("ChewieExtended/Fitters/");
+      /*pdir=opendir("src/");
                    //./../ChewieExtended/Fitters/");
       if (!pdir)
       {
@@ -334,7 +313,69 @@ void HanSoloFitter::getFitters(void)
              resolutionVector_.push_back(fileList.at(a));
          }
      }
+     */
 
+
+    //Charge
+    size_t pos;
+    ifstream file("src/Charge.cpp", std::ios::out);
+    if(file.is_open())
+    {
+        while(file.good())
+        {
+            getline(file,line);
+            pos=line.find(charge);
+            if(pos != std::string::npos)
+            {
+                int len = line.find_first_of('(') - 1 - line.find_last_of(':');
+                std::string methodName = line.substr(line.find_last_of(':') +1, len);
+                chargeVector_.push_back(methodName);
+                std::cout << "Found charge fit method: " << methodName << std::endl;
+                break;
+            }
+        }
+    }
+    file.close();
+
+    //Efficiency
+    file.open("src/Efficiency.cpp", std::ios::out);
+    if(file.is_open())
+    {
+        while(file.good())
+        {
+            getline(file,line);
+            pos=line.find(efficiency);
+            if(pos != std::string::npos)
+            {
+                int len = line.find_first_of('(') - 1 - line.find_last_of(':');
+                std::string methodName = line.substr(line.find_last_of(':') +1, len);
+                efficiencyVector_.push_back(methodName);
+                std::cout << "Found efficiency fit method: " << methodName << std::endl;
+                break;
+            }
+        }
+    }
+    file.close();
+
+    //Resolution
+    file.open("src/Resolution.cpp", std::ios::out);
+    if(file.is_open())
+    {
+        while(file.good())
+        {
+            getline(file,line);
+            pos=line.find(resolution);
+            if(pos != std::string::npos)
+            {
+                int len = line.find_first_of('(') - 1 - line.find_last_of(':');
+                std::string methodName = line.substr(line.find_last_of(':') +1, len);
+                resolutionVector_.push_back(methodName);
+                std::cout << "Found resolution fit method: " << methodName << std::endl;
+                break;
+            }
+        }
+    }
+    file.close();
       std::cout << "Size: | " << chargeVector_.size() << " | "<< efficiencyVector_.size() << " | "<< resolutionVector_.size() << " | "<< std::endl;
 
 }
@@ -975,33 +1016,170 @@ void HanSoloFitter::unCheckGeneral(bool check)
 //===========================================================================
 void HanSoloFitter::on_saveConfigurationFile_clicked()
 {
-    QFile file("ChewieExtended/Configuration/DanConfiguration.xml");
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-            return;
+    std::string filePath = "/home/parilla/Programming/Chewie/ChewieExtended/Configuration/test.xml";
+
+    std::cout << ui_->configurationFileFrame->text().toStdString() << std::endl;
+
+    QFile file(ui_->configurationFileFrame->text());
+               //"ChewieExtended/Configuration/DanConfiguration.xml");
+
 
     QDomDocument doc;
 
+    doc.setContent(&file);
 
 
-    QDomElement root = doc.createElement("Configuration");
 
+    QDomElement documentElement = doc.documentElement();
+
+    QDomNode root;
+
+    if(documentElement.hasChildNodes())
+    {
+        root = documentElement.elementsByTagName("HanSoloFitter").at(0);
+//                elementById("configuration");
+
+    }else
+    {
+        root = doc.createElement("HanSoloFitter");
+        root.toElement().setAttribute("id", "configuration");
+        doc.appendChild(root);
+    }
+    QDomNode dut;
 
 
     for(unsigned int posx = 0; posx < chargeCheckBoxes_.size(); posx++)
     {
-        QDomElement dut = doc.createElement("Dut");
-        root.appendChild(dut);
-        dut.setAttribute("id", posx);
 
-        QDomElement charge = doc.createElement("charge");
-        dut.appendChild(charge);
 
-        for(unsigned int posy = 0; posy < chargeCheckBoxes_[posx].size(); posy++)
+        if(root.hasChildNodes())
         {
-            QDomElement checkbox = doc.createElement("checkbox");
-            charge.appendChild(checkbox);
-            checkbox.setAttribute("fitterID", chargeCheckBoxes_[posx][posy]->text());
+            if(posx == 0){dut = root.firstChild();}
+            else
+            {
+               if(!dut.nextSibling().isNull())
+               {
+                   dut = dut.nextSibling();
+               }else
+               {
+                   dut = doc.createElement("Dut");
+                   root.appendChild(dut);
+               }
 
+
+            }
+        }else
+        {
+            dut = doc.createElement("Dut");
+            root.appendChild(dut);
+        }
+
+
+        //createElement("Dut");
+        //root.appendChild(dut);
+
+        for(unsigned int pos = 0; pos < root.childNodes().size(); pos++)
+        {
+            if(pos >= chargeCheckBoxes_.size()){
+
+                std::cout << "Delete: " << pos << std::endl;
+                std::cout << root.childNodes().at(pos).toElement().tagName().toUtf8().constData() << std::endl;
+                root.removeChild(root.childNodes().at(pos));
+                pos--;
+            }
+
+        }
+
+
+        dut.toElement().setAttribute("id", posx);
+        QDomNode charge;
+        QDomNode efficiency;
+        QDomNode resolution;
+
+        if(dut.hasChildNodes())
+        {
+            charge = dut.firstChild();
+            efficiency = charge.nextSibling();
+            resolution = efficiency.nextSibling();
+        }else
+        {
+            charge = doc.createElement("charge");
+            dut.appendChild(charge);
+            efficiency = doc.createElement("efficiency");
+            dut.appendChild(efficiency);
+            resolution = doc.createElement("resolution");
+            dut.appendChild(resolution);
+        }
+
+
+
+            do{
+                charge.removeChild(charge.lastChild());
+
+            }while(charge.childNodes().length() > 0);
+
+
+            for(unsigned int posy = 0; posy < chargeCheckBoxes_[posx].size(); posy++)
+            {
+                QDomNode checkbox = doc.createElement("checkbox");
+                charge.appendChild(checkbox);
+                checkbox.toElement().setAttribute("fitterID", chargeCheckBoxes_[posx][posy]->text());
+
+                if(chargeCheckBoxes_[posx][posy]->isChecked())
+                    checkbox.toElement().setAttribute("checked", true);
+                else
+                  checkbox.toElement().setAttribute("checked", false);
+            }
+
+
+
+
+
+            do{
+                efficiency.removeChild(efficiency.lastChild());
+
+            }while(efficiency.childNodes().length() > 0);
+
+
+            for(unsigned int posy = 0; posy < efficiencyCheckBoxes_[posx].size(); posy++)
+            {
+                QDomNode checkbox = doc.createElement("checkbox");
+                efficiency.appendChild(checkbox);
+                checkbox.toElement().setAttribute("fitterID", efficiencyCheckBoxes_[posx][posy]->text());
+
+                if(efficiencyCheckBoxes_[posx][posy]->isChecked())
+                    checkbox.toElement().setAttribute("checked", true);
+                else
+                  checkbox.toElement().setAttribute("checked", false);
+            }
+
+            do{
+                resolution.removeChild(resolution.lastChild());
+
+            }while(resolution.childNodes().length() > 0);
+
+
+            for(unsigned int posy = 0; posy < resolutionCheckBoxes_[posx].size(); posy++)
+            {
+                QDomNode checkbox = doc.createElement("checkbox");
+                resolution.appendChild(checkbox);
+                checkbox.toElement().setAttribute("fitterID", resolutionCheckBoxes_[posx][posy]->text());
+
+                if(resolutionCheckBoxes_[posx][posy]->isChecked())
+                    checkbox.toElement().setAttribute("checked", true);
+                else
+                  checkbox.toElement().setAttribute("checked", false);
+            }
+
+        }
+
+
+    file.close();
+        //dut.appendChild(charge);
+
+/*        for(unsigned int posy = 0; posy < chargeCheckBoxes_[posx].size(); posy++)
+        {
+            QDomNode checkbox = charge.
             if(chargeCheckBoxes_[posx][posy]->isChecked())
                 checkbox.setAttribute("checked", true);
             else
@@ -1039,12 +1217,130 @@ void HanSoloFitter::on_saveConfigurationFile_clicked()
             else
                 checkbox.setAttribute("checked", false);
         }
-    }
-    doc.appendChild(root);
 
-    QTextStream out(&file);
-    out << doc.toString();
+
+
+
+    }
+
+    do{
+        dut = dut.nextSibling();
+        root.removeChild(dut);
+
+    }while(!dut.isNull());
+
     file.close();
+*/
+
+
+    std::string beginning;
+    std::string ending;
+    std::string beforeSoloConfiguration;
+    std::string afterSoloConfiguration;
+    std::string newConfiguration;
+
+    beginning = "<HanSoloFitter id=\"configuration\">";
+    ending = "</HanSoloFitter>";
+
+    std::ifstream myFile(filePath.c_str());
+    std::string fileString((std::istreambuf_iterator<char>(myFile)), std::istreambuf_iterator<char>());
+
+    //std::cout <<"fileString: " << fileString << std::endl;
+
+    beginning = "<HanSoloFitter id=\"configuration\">";
+    ending = "</HanSoloFitter>";
+
+    std::size_t firstIndex = fileString.find(beginning);
+    std::size_t secondIndex = fileString.find(ending);
+
+
+
+    if(firstIndex!=std::string::npos && firstIndex!=std::string::npos){
+
+        std::cout << "Found: HanSolo Configuration file. \nUpdating now..." << std::endl;
+
+        //std::cout << "First Index: " << firstIndex;
+
+        beforeSoloConfiguration = fileString.substr(0, firstIndex);
+        afterSoloConfiguration = fileString.substr(secondIndex+ending.size(), (fileString.size() - (secondIndex+ending.size())));
+
+        //std::cout << "beforeSoloConfiguration" << beforeSoloConfiguration << "newConfiguration:" << newConfiguration << "afterSoloConfiguration" << afterSoloConfiguration << std::endl;
+
+        newConfiguration = doc.toString().toUtf8().constData();
+
+
+        std::cout << "newConfiguration:" << newConfiguration << std::endl;
+
+
+        //std::string completeFile = beforeSoloConfiguration + newConfiguration + afterSoloConfiguration;
+
+
+
+        //std::cout << completeFile << std::endl;
+        myFile.close();
+
+        ofstream overWrite;
+        overWrite.open(filePath.c_str());
+        overWrite << newConfiguration;
+        overWrite.close();
+
+
+
+
+
+    }else{
+
+
+        beginning = "</ChewieConfiguration>";
+        ending = "</ChewieConfiguration>";
+
+        std::size_t firstIndex = fileString.find(beginning);
+        std::size_t secondIndex = fileString.find(ending);
+
+        beforeSoloConfiguration = fileString.substr(0, firstIndex);
+        afterSoloConfiguration = fileString.substr(secondIndex+ending.size());
+
+
+        std::cout << "afterSoloConfiguration:" << afterSoloConfiguration << std::endl;
+        newConfiguration = doc.toString().toUtf8().constData();
+        //std::cout << "newConfiguration:" << newConfiguration << std::endl;
+        std::string completeFile = beforeSoloConfiguration + newConfiguration + afterSoloConfiguration;
+        ofstream overWrite;
+        overWrite.open(filePath.c_str());
+        overWrite << completeFile;
+        overWrite.close();
+
+        myFile.close();
+        std::cout << "Could not find HanSoloFiter Configuration.Generating HanSolo Configuration file..." << std::endl;
+        return;
+
+    }
+
+
+
+
+     myFile.close();
+
+
+
+        //}
+
+    /*std::cout << "Size = " << fileArray.size() << std::endl;
+
+    for(unsigned int pos = 0; pos < fileArray.size(); pos++)
+    {
+        std::cout << "fileArray: " << std::endl;
+        std::cout << fileArray.at(pos) << std::endl;
+    }
+*/
+
+    //std::cout << doc.toString(1).toUtf8().constData() << std::endl;
+
+
+
+    /*QTextStream out(&file);
+    out << doc.toString(1);
+    //file.close();*/
     std::cout << "Saved!" << std::endl;
 }
 
@@ -1085,7 +1381,25 @@ void HanSoloFitter::on_openConfigurationFilePB_clicked()
 
     QDomElement root = xmlDoc.documentElement();
 
-    QDomNodeList dut = root.elementsByTagName("Dut");
+
+
+    std::cout << root.tagName().toUtf8().constData() << std::endl;
+
+    QDomNodeList HanSoloFitterNode = root.childNodes();
+    QDomElement HanSoloXML;
+
+    for(int pos = 0; pos < HanSoloFitterNode.size(); pos++){
+
+        if(HanSoloFitterNode.at(pos).toElement().attribute("id") == "configuration")
+        {
+            std::cout << "Found" << std::endl;
+            std::cout << HanSoloFitterNode.at(pos).toElement().tagName().toUtf8().constData() << std::endl;
+            HanSoloXML = HanSoloFitterNode.at(pos).toElement();
+           break;
+        }
+    }
+
+    QDomNodeList dut = HanSoloXML.elementsByTagName("Dut");
 
     for(int posx = 0; posx < dut.size(); posx++)
     {
@@ -1093,6 +1407,8 @@ void HanSoloFitter::on_openConfigurationFilePB_clicked()
 
 
         QDomNode typeOfFit = dut.at(posx);
+
+        std::cout << typeOfFit.toElement().tagName().toUtf8().constData() << std::endl;
 
         QDomElement charge = typeOfFit.firstChildElement();
 
@@ -1103,13 +1419,14 @@ void HanSoloFitter::on_openConfigurationFilePB_clicked()
 
                 for(int counter = 0; counter < checkbox.size(); counter++){
 
-                    std::cout << "counter = " << counter << std::endl;
+                    //std::cout << "counter = " << counter << std::endl;
+                    std::cout << checkbox.at(counter).toElement().tagName().toUtf8().constData() << std::endl;
 
                     QString name = chargeCheckBoxes_[posx][posy]->text();
                     QString checked = checkbox.at(counter).toElement().attribute("checked");
                     QString fitter = checkbox.at(counter).toElement().attribute("fitterID");
 
-                    std::cout << "[" << posx << "."  << posy << "."  << counter << "]" << std::endl;
+                    //std::cout << "[" << posx << "."  << posy << "."  << counter << "]" << std::endl;
                     std::cout << "Name: " << name.toUtf8().constData() << "\nfitterID: " << fitter.toUtf8().constData() << std::endl;
                     if(name.compare(fitter) == 0)
                     {
@@ -1129,6 +1446,81 @@ void HanSoloFitter::on_openConfigurationFilePB_clicked()
                         break;
                     }
             }
+
+                QDomElement efficiency = charge.nextSiblingElement();
+
+                checkbox = efficiency.elementsByTagName("checkbox");
+
+                    for(unsigned int posy = 0; posy < efficiencyCheckBoxes_[posx].size(); posy++){
+
+                        for(int counter = 0; counter < checkbox.size(); counter++){
+
+                            //std::cout << "counter = " << counter << std::endl;
+                            std::cout << checkbox.at(counter).toElement().tagName().toUtf8().constData() << std::endl;
+
+                            QString name = efficiencyCheckBoxes_[posx][posy]->text();
+                            QString checked = checkbox.at(counter).toElement().attribute("checked");
+                            QString fitter = checkbox.at(counter).toElement().attribute("fitterID");
+
+                            //std::cout << "[" << posx << "."  << posy << "."  << counter << "]" << std::endl;
+                            std::cout << "Name: " << name.toUtf8().constData() << "\nfitterID: " << fitter.toUtf8().constData() << std::endl;
+                            if(name.compare(fitter) == 0)
+                            {
+                                bool check;
+
+                                int yes = checkbox.at(counter).toElement().attribute("checked").toInt();
+
+                                if(yes == 1)
+                                {
+                                    check = true;
+                                }else
+                                    check = false;
+
+                                //std::cout << "Match!" << std::endl;
+
+                                efficiencyCheckBoxes_[posx][posy]->setChecked(check);
+                                break;
+                            }
+                    }
+               }
+
+
+                        QDomElement resolution = efficiency.nextSiblingElement();
+
+                        checkbox = resolution.elementsByTagName("checkbox");
+
+                            for(unsigned int posy = 0; posy < resolutionCheckBoxes_[posx].size(); posy++){
+
+                                for(int counter = 0; counter < checkbox.size(); counter++){
+
+                                    //std::cout << "counter = " << counter << std::endl;
+                                    std::cout << checkbox.at(counter).toElement().tagName().toUtf8().constData() << std::endl;
+
+                                    QString name = resolutionCheckBoxes_[posx][posy]->text();
+                                    QString checked = checkbox.at(counter).toElement().attribute("checked");
+                                    QString fitter = checkbox.at(counter).toElement().attribute("fitterID");
+
+                                    //std::cout << "[" << posx << "."  << posy << "."  << counter << "]" << std::endl;
+                                    std::cout << "Name: " << name.toUtf8().constData() << "\nfitterID: " << fitter.toUtf8().constData() << std::endl;
+                                    if(name.compare(fitter) == 0)
+                                    {
+                                        bool check;
+
+                                        int yes = checkbox.at(counter).toElement().attribute("checked").toInt();
+
+                                        if(yes == 1)
+                                        {
+                                            check = true;
+                                        }else
+                                            check = false;
+
+                                        //std::cout << "Match!" << std::endl;
+
+                                        resolutionCheckBoxes_[posx][posy]->setChecked(check);
+                                        break;
+                                    }
+                            }
+                            }
 
       }
 
@@ -1462,43 +1854,91 @@ void HanSoloFitter::on_runButton_clicked()
     //GENERAL
     for(unsigned int pos = 0; pos< checkedBoxes_.size(); pos++)
         checkedBoxes_[pos].clear();
+    for(unsigned int pos = 0; pos< checkedChargeCheckBoxes_.size(); pos++)
+        checkedChargeCheckBoxes_[pos].clear();
+    for(unsigned int pos = 0; pos< checkedEfficiencyCheckBoxes_.size(); pos++)
+        checkedEfficiencyCheckBoxes_[pos].clear();
+    for(unsigned int pos = 0; pos< checkedResolutionCheckBoxes_.size(); pos++)
+        checkedResolutionCheckBoxes_[pos].clear();
 
     generalCheckedBoxes_.clear();
+    std::cout << "checked boxes.. =(" << checkedChargeCheckBoxes_.size() << std::endl;
 
-    checkedBoxes_.resize(chargeCheckBoxes_.size());
+    checkedChargeCheckBoxes_.resize(chargeCheckBoxes_.size());
+    std::cout << "checked boxes.. =|" << checkedChargeCheckBoxes_.size() << std::endl;
 
     for(unsigned int posx = 0; posx < chargeCheckBoxes_.size(); posx++)
     {
+        //checkedChargeCheckBoxes_.resize(checkedChargeCheckBoxes_.size()+1);
         for(unsigned int posy = 0; posy < chargeCheckBoxes_[posx].size(); posy++)
         {
            if(chargeCheckBoxes_[posx].at(posy)->isChecked())
             {
-                checkedBoxes_[posx].push_back(chargeCheckBoxes_[posx][posy]->text().toUtf8().constData());
-                std::cout << "Checked! : " << chargeCheckBoxes_[posx][posy]->text().toUtf8().constData() << " for Dut_" << posx << std::endl;
+
+               checkedChargeCheckBoxes_[posx].push_back(chargeCheckBoxes_[posx][posy]->text().toUtf8().constData());
+               std::cout << "Checked! : " << chargeCheckBoxes_[posx][posy]->text().toUtf8().constData() << " for Dut_" << posx << std::endl;
             }
         }
     }
+    checkedEfficiencyCheckBoxes_.resize(efficiencyCheckBoxes_.size());
+
     for(unsigned int posx = 0; posx < efficiencyCheckBoxes_.size(); posx++)
     {
+
         for(unsigned int posy = 0; posy < efficiencyCheckBoxes_[posx].size(); posy++)
         {
            if(efficiencyCheckBoxes_[posx].at(posy)->isChecked())
             {
-               checkedBoxes_[posx].push_back(efficiencyCheckBoxes_[posx][posy]->text().toUtf8().constData());
+               checkedEfficiencyCheckBoxes_.resize(posx);
+               checkedEfficiencyCheckBoxes_[posx].push_back(efficiencyCheckBoxes_[posx][posy]->text().toUtf8().constData());
                 std::cout << "Checked! : " << efficiencyCheckBoxes_[posx][posy]->text().toUtf8().constData() << " for Dut_" << posx << std::endl;
             }
         }
     }
+    checkedResolutionCheckBoxes_.resize(resolutionCheckBoxes_.size());
+
     for(unsigned int posx = 0; posx < resolutionCheckBoxes_.size(); posx++)
     {
+        //checkedResolutionCheckBoxes_.resize(checkedResolutionCheckBoxes_.size()+1);
         for(unsigned int posy = 0; posy < resolutionCheckBoxes_[posx].size(); posy++)
         {
            if(resolutionCheckBoxes_[posx].at(posy)->isChecked())
             {
-               checkedBoxes_[posx].push_back(resolutionCheckBoxes_[posx][posy]->text().toUtf8().constData());
+               checkedResolutionCheckBoxes_.resize(posx);
+               checkedResolutionCheckBoxes_[posx].push_back(resolutionCheckBoxes_[posx][posy]->text().toUtf8().constData());
                 std::cout << "Checked! : " << resolutionCheckBoxes_[posx][posy]->text().toUtf8().constData() << " for Dut_" << posx << std::endl;
             }
         }
+    }
+    std::cout << "checked boxes.. =)" << checkedChargeCheckBoxes_.size() << std::endl;
+   for(int pos = checkedChargeCheckBoxes_.size()-1; pos >= 0; pos--)
+    {
+        if(checkedChargeCheckBoxes_[pos].size() == 0)
+        {
+            checkedChargeCheckBoxes_.erase(checkedChargeCheckBoxes_.end()-1, checkedChargeCheckBoxes_.end());
+                    //reserve(checkedEfficiencyCheckBoxes_.size()-1);
+        }else
+            break;
+    }
+    for(int pos = checkedEfficiencyCheckBoxes_.size()-1; pos >= 0; pos--)
+    {
+        std::cout << "checkedEfficiencyCheckBoxes_" << checkedEfficiencyCheckBoxes_[pos].size() << std::endl;
+        if(checkedEfficiencyCheckBoxes_[0].size() == 0)
+        {
+            checkedEfficiencyCheckBoxes_.erase(checkedEfficiencyCheckBoxes_.end()-1, checkedEfficiencyCheckBoxes_.end());
+                    //resize(checkedEfficiencyCheckBoxes_.size()-1);
+        }else
+            break;
+    }
+    for(int pos = checkedResolutionCheckBoxes_.size()-1; pos >= 0; pos--)
+    {
+        std::cout << "checkedResolutionBoxes_" << checkedResolutionCheckBoxes_[pos].size() << "\nResolution Size: " << checkedResolutionCheckBoxes_.size() << std::endl;
+        if(checkedResolutionCheckBoxes_[0].size() == 0)
+        {
+            checkedResolutionCheckBoxes_.erase(checkedResolutionCheckBoxes_.end()-1, checkedResolutionCheckBoxes_.end());
+                    //resize(checkedEfficiencyCheckBoxes_.size()-1);
+        }else
+            break;
     }
 /*
     //DUT_0
@@ -1619,14 +2059,17 @@ void HanSoloFitter::on_runButton_clicked()
         }
     }
 */
-
+    std::stringstream ss;
     std::cout << "Root File: " << rootFile_ << std::endl;
     std::string fits = "";
     std::string include = "";
     std::string fittedFileName = rootFile_.substr(0, rootFile_.find('.')) + "_fitted.root";
+    std::string objects = "\nCharge charge; \nEfficiency efficiency; \n Resolution resolution";
     std::cout << "copyFileName: " << fittedFileName << std::endl;
 
-    for(unsigned int pos = 0; pos < chargeVector_.size(); pos++)
+    include = "#include \"../include/Charge.h\"  \n#include \"../include/Efficiency.h\" \n#include \"../include/Resolution.h\" \n";
+
+    /*for(unsigned int pos = 0; pos < chargeVector_.size(); pos++)
     {
        include = include + "#include \"Fitters/" + chargeVector_.at(pos) + "\" \n";
     }
@@ -1638,6 +2081,7 @@ void HanSoloFitter::on_runButton_clicked()
     {
        include = include + "#include \"Fitters/" + resolutionVector_.at(pos) + "\" \n";
     }
+    */
 /*
     for(unsigned int pos = 0; pos < Dut_0_checkedBoxes_.size(); pos++)
     {
@@ -1659,33 +2103,77 @@ void HanSoloFitter::on_runButton_clicked()
 
     //std::cout << "include: \n" << include << "\nboxes: \n" << boxes << std::endl;
 */
-
-    for(unsigned int posx = 0; posx < checkedBoxes_.size(); posx ++)
+    //fits = fits + "\nCharge charge; \n charge.load(inFile); \nResolution resolution; \n resolution.load(inFile); \nEfficiency efficiency; \n efficiency.load(inFile); \n";
+    if(checkedChargeCheckBoxes_.size() != 0)
     {
-
-        std::stringstream ss;
-        std::cout << "Dut_" << posx << std::endl;
-        ss.str("");
-        ss << posx;
-        fits = fits + "\n//Dut_" + ss.str() + "\n";
-
-        for(unsigned int posy = 0; posy < checkedBoxes_[posx].size(); posy++)
+        fits = fits + "\n//Charge \nCharge charge; \n charge.load(inFile);\n";
+        for(unsigned int posx = 0; posx < checkedChargeCheckBoxes_.size(); posx ++)
         {
-            fits = fits + "\ninFile->cd();\n" +  checkedBoxes_[posx][posy] + "(inFile, \"Dut" + ss.str()  + "\"); \n";
+            std::stringstream ss;
+            std::cout << "Dut_" << posx << std::endl;
+            ss.str("");
+            ss << posx;
+            fits = fits + "\n//Dut_" + ss.str() + "\n";
+
+            for(unsigned int posy = 0; posy < checkedChargeCheckBoxes_[posx].size(); posy++)
+            {
+                fits = fits + "\ninFile->cd();\ncharge." +  checkedChargeCheckBoxes_[posx][posy] + "(" + ss.str()  + "); \n";
+            }
         }
     }
-/*
-    fits = "\n//Charge \n";
+    if(checkedEfficiencyCheckBoxes_.size() > 0)
+    {
+        fits = fits + "\n//Efficiency \nEfficiency efficiency; \n efficiency.load(inFile);\n";
+        for(unsigned int posx = 0; posx < checkedEfficiencyCheckBoxes_.size(); posx ++)
+        {
+
+
+            std::stringstream ss;
+            std::cout << "Dut_" << posx << std::endl;
+            ss.str("");
+            ss << posx;
+            fits = fits + "\n//Dut_" + ss.str() + "\n";
+
+            for(unsigned int posy = 0; posy < checkedEfficiencyCheckBoxes_[posx].size(); posy++)
+            {
+                fits = fits + "\ninFile->cd();\nefficiency." +  checkedEfficiencyCheckBoxes_[posx][posy] + "(" + ss.str()  + "); \n";
+            }
+        }
+    }
+    std::cout << "Resolution:" << checkedResolutionCheckBoxes_.size() << std::endl;
+    if(checkedResolutionCheckBoxes_.size() > 0)
+    {
+
+        fits = fits + "\n//Resolution \nResolution resolution; \n resolution.load(inFile);\n";
+
+        for(unsigned int posx = 0; posx < checkedResolutionCheckBoxes_.size(); posx ++)
+        {
+            std::stringstream ss;
+            std::cout << "Dut_" << posx << std::endl;
+            ss.str("");
+            ss << posx;
+            fits = fits + "\n//Dut_" + ss.str() + "\n";
+
+            for(unsigned int posy = 0; posy < checkedResolutionCheckBoxes_[posx].size(); posy++)
+            {
+                fits = fits + "\ninFile->cd();\nresolution." +  checkedResolutionCheckBoxes_[posx][posy] + "(" + ss.str()  + "); \n";
+            }
+        }
+    }
+
+   /* fits = "\n//Charge";
     //posx = Dut Tab #
     //posy = Index of specific fit as presented in the GUI
     for(unsigned int posx = 0; posx < checkedBoxes_.size(); posx++){
 
         for(unsigned int posy = 0; posy < chargeCheckBoxes_[posx].size(); posy++)
         {
+            if(posx == 1)
+                fits = fits + "\ncharge.load(inFile);\n";
             ss << posx;
             std::string DUT;
             ss >> DUT;
-            fits = fits + checkedBoxes_[posx][posy] + "(inFile, \"Dut" + DUT  + "\"); \n";
+            fits = fits +  "charge." + checkedBoxes_[posx][posy] + "(" + DUT  + "); \n";
         }
 
     }
@@ -1696,10 +2184,12 @@ void HanSoloFitter::on_runButton_clicked()
 
         for(unsigned int posy = 0; posy < efficiencyCheckBoxes_[posx].size(); posy++)
         {
+            if(posx == 1)
+                fits = fits + "\nefficiency.load(inFile);\n";
             ss << posx;
             std::string DUT;
             ss >> DUT;
-            fits = fits + efficiencyCheckBoxes_[posx][posy]->objectName().toUtf8().constData() + "(inFile, \"Dut" + DUT  + "\"); \n";
+            fits = fits + "efficiency." + efficiencyCheckBoxes_[posx][posy]->objectName().toUtf8().constData() + "(" + DUT  + "); \n";
             std::cout << fits << std::endl;
         }
 
@@ -1711,16 +2201,18 @@ void HanSoloFitter::on_runButton_clicked()
 
         for(unsigned int posy = 0; posy < resolutionCheckBoxes_[posx].size(); posy++)
         {
+            if(posx == 1)
+                fits = fits + "\nresolution.load(inFile);\n";
             ss << posx;
             std::string DUT;
             ss >> DUT;
-            fits = fits + resolutionCheckBoxes_[posx][posy]->objectName().toUtf8().constData() + "(inFile, \"Dut" + DUT  + "\"); \n";
+            fits = fits + "resolution." + resolutionCheckBoxes_[posx][posy]->objectName().toUtf8().constData() + "(" + DUT  + "); \n";
         }
 
-    }
-    */
+    }*/
 
-/*
+
+
     fstream file("ChewieExtended/ScriptToFit.cpp", std::ios::out);
     file.close();
 
@@ -1733,24 +2225,25 @@ void HanSoloFitter::on_runButton_clicked()
     scriptFile << "#include <TFile.h>";
     scriptFile << "\n#include <TObject.h>\n";
     scriptFile << include;
-    scriptFile << "void ScriptToFit()";
+    scriptFile << "int main()";
     scriptFile << "\n { \n    TFile* inFile = TFile::Open(\"";
     scriptFile << fittedFileName;
     scriptFile << "\",\"UPDATE\"); \n \n \n//Place all the fitters here \n  inFile->cd(); \n    ";
+    //scriptFile << objects;
     scriptFile << fits;
     scriptFile << " \n \ninFile->Write(\"\",TObject::kOverwrite); \n ";
-    scriptFile << "inFile->Close(); \n \n }";
+    scriptFile << "inFile->Close(); \n \n return 0; \n}";
 
     scriptFile.close();
-*/
+
     std::string cp = "cp " + rootFile_ + " " + fittedFileName ;
     system(cp.c_str());
     system("pwd");
     //system("cd ChewieExtended; root.exe -l -b -q -x ScriptToFit.cpp");
     system("cd ChewieExtended; ./compile.py && ./ScriptToFit");
-//    system("cd ChewieExtended; ./ScriptToFit");
-//    }else
-//        std::cout << "Error: Couldn't open " << filePath << std::endl;
+    system("cd ChewieExtended; ./ScriptToFit");
+    }else
+        std::cout << "Error: Couldn't open " << filePath << std::endl;
 
 
 

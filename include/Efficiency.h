@@ -29,6 +29,7 @@ public:
     bool passBadPlanesCut    (int  planeID, const Data& data                            );
 
     void getInFile        (TFile *                                                             ){}
+    void fitEfficiency    (int planeID                                                         );
 
 private:
     void book             (void                                                        );

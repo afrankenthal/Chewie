@@ -13,6 +13,7 @@
 #include <map>
 #include <string>
 #include <QDomNode>
+#include <QString>
 
 class QDomElement ;
 class QFile       ;

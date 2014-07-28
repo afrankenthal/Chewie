@@ -65,6 +65,11 @@ void Resolution::predictedErrors(bool pass, int planeID, const Data& data, int t
     THREADED(hPredictedXErrors_[planeName])->Fill(data.getXErrorPredictedGlobal(planeID));
     THREADED(hPredictedYErrors_[planeName])->Fill(data.getYErrorPredictedGlobal(planeID));
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Resolution::fitResolution(int planeID)
+{
+
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, int threadNumber)
