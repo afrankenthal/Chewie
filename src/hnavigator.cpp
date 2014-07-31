@@ -1994,6 +1994,8 @@ void HNavigator::on_fitPB_clicked()
     ++numberOfFitting_;
 
     ui_->fitPB->setEnabled(true);
+
+    return;
 }
 
 std::string HNavigator::getObjectType (TObject * obj)
@@ -2097,3 +2099,4 @@ void HNavigator::on_saveImagePB_clicked()
     c1->Print(fileName.toStdString().c_str(), fileName.toStdString().substr(fileName.toStdString().find_last_of("."), fileName.toStdString().size()).c_str());
     delete c1;
 }
+

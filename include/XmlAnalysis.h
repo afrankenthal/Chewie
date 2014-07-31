@@ -31,6 +31,7 @@ public:
     int                                getPriority      (void                );
     int                                getBadPlanesCut  (void                );
     bool                               isToRun          (void                );
+    bool                               doFits           (void                );
     bool                               applyStandardCuts(void                );
     bool                               excludeBadPlanes (void                );
 

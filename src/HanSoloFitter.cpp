@@ -74,7 +74,6 @@ HanSoloFitter::HanSoloFitter(QWidget *parent ) :
     on_centraltabWidget_currentChanged(0);
 
 
-    ui_->canvasSizeCB->setCurrentIndex(2);
 
     canvas_ = new CanvasWidget();
     canvas_->setParent(ui_->theCanvas);
@@ -89,12 +88,6 @@ HanSoloFitter::HanSoloFitter(QWidget *parent ) :
        ui_->HanSoloCanvasCB->addItem(QString(ss_.str().c_str()));
    }
 
-    //ui_->theCanvas = test;
-   ui_->canvasSizeCB->addItem(QString("Small" ));
-   ui_->canvasSizeCB->addItem(QString("Medium"));
-   ui_->canvasSizeCB->addItem(QString("Large" ));
-   ui_->canvasSizeCB->addItem(QString("Huge"  ));
-   ui_->canvasSizeCB->setCurrentIndex(2);
 
    gStyle->SetPalette(1,0) ;
 
@@ -102,7 +95,46 @@ HanSoloFitter::HanSoloFitter(QWidget *parent ) :
 
 
    timer_->start(1000) ;
+   hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+   hanSoloParamManager_[0]->setParName("Choose a function");
 
+   ui_->parametersTW->insertTab(0, hanSoloParamManager_[0], "Par 0");
+   ui_->fitMethodLE->setText("L");
+   ui_->fitLimitCB->setChecked(false);
+   emit (on_fitLimitCB_clicked(false));
+   numberOfFitting_ = 0;
+   numberofCanvas_  = 0;
+
+   ui_->fitFuncLW->insertItem(0, "Eta");
+   hanSoloFitFunctions_["Eta"] =  6;
+   ui_->fitFuncLW->insertItem(1, "Eta (No Depletion)");
+   hanSoloFitFunctions_["Eta (No Depletion)"] =  4;
+   ui_->fitFuncLW->insertItem(2, "Eta Derivative");
+   hanSoloFitFunctions_["Eta Derivative"] = 5;//integrandEtaFitFunc2Angle
+   ui_->fitFuncLW->insertItem(3, "Eta with Cut");
+   hanSoloFitFunctions_["Eta with Cut"] = 7;
+   ui_->fitFuncLW->insertItem(4, "Eta (No Depletion) with Cut");
+   hanSoloFitFunctions_["Eta (No Depletion) with Cut"] = 5;
+   ui_->fitFuncLW->insertItem(5, "Eta Inverse");
+   hanSoloFitFunctions_["Eta Inverse"] = 5;
+   ui_->fitFuncLW->insertItem(6, "Langaus");
+   hanSoloFitFunctions_["Langaus"] = 4;
+   ui_->fitFuncLW->insertItem(7, "Gauss");
+//  Directly declared as a string
+   ui_->fitFuncLW->insertItem(8, "Gauss Convoluted with Constant");
+   hanSoloFitFunctions_["Gauss Convoluted with Constant"] = 4;
+   ui_->fitFuncLW->insertItem(9, "Eta Convoluted with Gauss");
+   hanSoloFitFunctions_["Eta Convoluted with Gauss"] = 9;
+   ui_->fitFuncLW->insertItem(10,"Gauss-constant plus Constant");
+   hanSoloFitFunctions_["Gauss-constant plus Constant"] = 5;
+   ui_->fitFuncLW->insertItem(11,"Single constant Gauss-conv.");
+   hanSoloFitFunctions_["Single constant Gauss-conv."] = 6;
+   ui_->fitFuncLW->insertItem(12,"Double constant Gauss-conv.");
+   hanSoloFitFunctions_["Double constant Gauss-conv."] = 7;
+   ui_->fitFuncLW->insertItem(13,"Eta Reproduction");
+   hanSoloFitFunctions_["Eta Reproduction"] = 11;
+   ui_->fitFuncLW->insertItem(14,"Eta Distribution");
+   hanSoloFitFunctions_["Eta Distribution"] = 6;
    initialize();
 
 
@@ -229,6 +261,11 @@ void HanSoloFitter::createConnections(){
 //===========================================================================
 
     connect(ui_->hanSoloStatCB,
+            SIGNAL(stateChanged         (int)),
+            this,
+            SLOT(checkBoxesHandler      (int)));
+
+    connect(ui_->fitCB,
             SIGNAL(stateChanged         (int)),
             this,
             SLOT(checkBoxesHandler      (int)));
@@ -1078,7 +1115,7 @@ void HanSoloFitter::on_saveConfigurationFile_clicked()
         //createElement("Dut");
         //root.appendChild(dut);
 
-        for(unsigned int pos = 0; pos < root.childNodes().size(); pos++)
+        for(signed int pos = 0; pos < root.childNodes().size(); pos++)
         {
             if(pos >= chargeCheckBoxes_.size()){
 
@@ -2550,6 +2587,7 @@ void HanSoloFitter::checkBoxesHandler(int)
     //STDLINE("Int",ACGreen);
     hanSoloTreeBrowser_->showContextMenu(QPoint());
 }
+//===========================================================================
 std::string HanSoloFitter::twoDOption(void)
 {
     
@@ -2566,9 +2604,8 @@ std::string HanSoloFitter::twoDOption(void)
 //===========================================================================
 bool HanSoloFitter::plotFitBox(void)
 {
-    return false;
-    std::cout << "plotFitBox: " << ui_->fitCB->isChecked() << std::endl;
-    //return ui_->fitCB->isChecked();
+
+    return ui_->fitCB->isChecked();
 }
 
 //===========================================================================
@@ -2696,6 +2733,1346 @@ bool HanSoloFitter::plotStatBox(void)
 {
     //return false;
     return ui_->hanSoloStatCB->isChecked();
+}
+//===========================================================================
+//=========== Fit Manager ===================================================
+//===========================================================================
+//===========================================================================
+void HanSoloFitter::on_fitPB_clicked()
+{
+
+    STDLINE("Starting Fit!", ACRed);
+    std::cout << ui_->fitFuncLW->currentItem()->text().toUtf8().constData() << std::endl;
+
+    ui_->fitPB->setEnabled(false);
+
+    std::string fitMethod = ui_->fitMethodLE->text().toStdString();
+
+    if (!hanSoloTreeBrowser_->getCurrentObject())
+    {
+        STDLINE("Select a histogram to fit", ACYellow);
+        ui_->fitPB->setEnabled(true);
+        return;
+    }
+
+    TObject * toFit = hanSoloTreeBrowser_->getCurrentObject();
+    TH1F * toFit1D = 0;
+    TH2F * toFit2D = 0;
+    int hDimension = 0;
+    if (this->getObjectType(toFit).find("TH1") != std::string::npos){
+        toFit1D = (TH1F*)toFit;
+        hDimension = 1;
+    }
+    if (this->getObjectType(toFit).find("TH2") != std::string::npos){
+        toFit2D = (TH2F*)toFit;
+        hDimension = 2;
+    }
+
+    std::stringstream ss;
+
+    ss.str("");
+    ss << toFit->GetName() << "_fitter_" << numberOfFitting_;
+    std::string hName = ss.str();
+    if (hDimension == 1) {
+        double xMin = toFit1D->GetXaxis()->GetXmin();
+        double xMax = toFit1D->GetXaxis()->GetXmax();  //check eventually for resize event
+        ss.str("");
+        ss << toFit1D->GetName();
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+        std::string function = ui_->fitFuncLW->currentItem()->text().toUtf8().constData();
+
+        std::cout << function << std::endl;
+
+        if (!ui_->customFunctionCB->isChecked())
+        {
+
+            TF1 * fitter = 0;
+            if (ui_->fitFuncLW->currentItem()->text() == "Gauss")
+                fitter = new TF1(hName.c_str(), "gaus + [3]", xMin, xMax);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta")
+                fitter = new TF1(hName.c_str(), Utilities::etaDistribution, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta (No Depletion)")
+                fitter = new TF1(hName.c_str(), Utilities::etaFitFunc2, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta with Cut")
+                fitter = new TF1(hName.c_str(), Utilities::etaFitFunc_cut, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta (No Depletion) with Cut")
+                fitter = new TF1(hName.c_str(), Utilities::etaFitFunc_cut2, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta Inverse")
+                fitter = new TF1(hName.c_str(), Utilities::etaInverseFitFunc2Angle, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Langaus")
+                fitter = new TF1(hName.c_str(), Utilities::langaus, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Gauss Convoluted with Constant")
+                fitter = new TF1(hName.c_str(), Utilities::uniformSideSmeared, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta Convoluted with Gauss")
+                fitter = new TF1(hName.c_str(), Utilities::etaSmeared, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Gauss-constant plus Constant")
+                fitter = new TF1(hName.c_str(), Utilities::uniformCenterSmearedPlusConstant, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Single constant Gauss-conv.")
+                fitter = new TF1(hName.c_str(), Utilities::singleUniformSmeared, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Double constant Gauss-conv.")
+                fitter = new TF1(hName.c_str(), Utilities::doubleUniformSmeared, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta Reproduction")
+                fitter = new TF1(hName.c_str(), Utilities::etaReproduction, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Eta Distribution")
+                fitter = new TF1(hName.c_str(), Utilities::etaDistributionAngle, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else
+                STDLINE("Select a function!", ACYellow);
+
+            //hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()].first TOFIX
+            fitter->SetLineColor(kBlue);
+            for (int i = 0; i < hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]; ++i)
+            {
+                fitter->SetParName(i, hanSoloParamManager_[i]->getParName().c_str());
+                if (hanSoloParamManager_[i]->isParFixed()) fitter->FixParameter(i, hanSoloParamManager_[i]->getParValue());
+                else {
+                    fitter->SetParameter(i, hanSoloParamManager_[i]->getParValue());
+                    fitter->SetParLimits(i, hanSoloParamManager_[i]->getParLimInf(), hanSoloParamManager_[i]->getParLimSup());
+                }
+            }
+            STDLINE("Fitting " + ss.str() + " with " << ui_->fitFuncLW->currentItem()->text().toStdString() << " function", ACGreen);
+            if (!ui_->fitLimitCB->isChecked()) toFit1D->Fit(fitter, fitMethod.c_str());
+            else toFit1D->Fit(fitter, fitMethod.c_str(), "", ui_->fitRangeMinSB->value(), ui_->fitRangeMaxSB->value());
+        }
+        else
+        {
+            TF1 * fitter = new TF1(hName.c_str(), ui_->fitFuncLE->text().toStdString().c_str());
+            fitter->SetLineColor(kGreen);
+            for (unsigned int i = 0; i < hanSoloParamManager_.size(); ++i)
+            {
+                fitter->SetParName(i, hanSoloParamManager_[i]->getParName().c_str());
+                if (hanSoloParamManager_[i]->isParFixed()) fitter->FixParameter(i, hanSoloParamManager_[i]->getParValue());
+                else {
+                    fitter->SetParameter(i, hanSoloParamManager_[i]->getParValue());
+                    fitter->SetParLimits(i, hanSoloParamManager_[i]->getParLimInf(), hanSoloParamManager_[i]->getParLimSup());
+                }
+            }
+            STDLINE("Fitting " + ss.str() + " with cut Custom function", ACGreen);
+            if (!ui_->fitLimitCB->isChecked()) toFit1D->Fit(fitter, fitMethod.c_str());
+            else toFit1D->Fit(fitter, fitMethod.c_str(), "", ui_->fitRangeMinSB->value(), ui_->fitRangeMaxSB->value());
+        }
+    }
+    else STDLINE("Method for 2D fitting not implemented!", ACRed);
+    ++numberOfFitting_;
+
+    ui_->fitPB->setEnabled(true);
+    if(ui_->fitCB->isChecked()) {checkBoxesHandler(true);}
+    STDLINE("Finished!", ACGreen);
+    return;
+}
+void HanSoloFitter::on_fitFuncLW_itemClicked(QListWidgetItem *item)
+{
+    if (ui_->customFunctionCB->isChecked()) return;
+
+    std::stringstream ss;
+
+    for (unsigned int j = 0; j < hanSoloParamManager_.size(); ++j)
+    {
+        delete hanSoloParamManager_[j];
+        ui_->parametersTW->removeTab(j);
+    }
+    hanSoloParamManager_.clear();
+
+    if (item->text() == "Eta")
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                        ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("2*mu*DepletionVoltage            ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(9.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("DepletionVoltage                 ");
+                hanSoloParamManager_[i]->setParValue (25.);
+                hanSoloParamManager_[i]->setParLimInf(10.);
+                hanSoloParamManager_[i]->setParLimSup(100.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1.);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("AppliedVoltage + DepletionVoltage");
+                hanSoloParamManager_[i]->setParValue (525.);
+                hanSoloParamManager_[i]->setParLimInf(510.);
+                hanSoloParamManager_[i]->setParLimSup(600.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1.);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant              ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 5)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor                      ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Eta (No Depletion)")
+    {
+        for (int i = 0; i < 4; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                     ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness/(mu*AppliedVoltage)");
+                hanSoloParamManager_[i]->setParValue (6.5);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(30.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor                   ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+        }
+    }
+
+    else if (item->text() == "Eta Derivative")
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                     ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness/(mu*AppliedVoltage)");
+                hanSoloParamManager_[i]->setParValue (6.5);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(30.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor                   ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("Tan(angle)                    ");
+                hanSoloParamManager_[i]->setParValue (0.);
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParLimInf(-1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(4);
+                hanSoloParamManager_[i]->setParStep(0.0001);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Eta with Cut")
+    {
+        for (int i = 0; i < 7; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                        ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("2*mu*DepletionVoltage            ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(9.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("DepletionVoltage                 ");
+                hanSoloParamManager_[i]->setParValue (25.);
+                hanSoloParamManager_[i]->setParLimInf(10.);
+                hanSoloParamManager_[i]->setParLimSup(100.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1.);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("AppliedVoltage + DepletionVoltage");
+                hanSoloParamManager_[i]->setParValue (525.);
+                hanSoloParamManager_[i]->setParLimInf(510.);
+                hanSoloParamManager_[i]->setParLimSup(600.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1.);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant              ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 5)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor                      ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 6)
+            {
+                hanSoloParamManager_[i]->setParName  ("CutThreashold                    ");
+                hanSoloParamManager_[i]->setParValue (0.0005);
+                hanSoloParamManager_[i]->setParLimInf(0.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(4);
+                hanSoloParamManager_[i]->setParStep(0.0001);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Eta (No Depletion) with Cut")
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                     ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness/(mu*AppliedVoltage)");
+                hanSoloParamManager_[i]->setParValue (6.5);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(30.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor                   ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("CutThreashold                 ");
+                hanSoloParamManager_[i]->setParValue (0.0005);
+                hanSoloParamManager_[i]->setParLimInf(0.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(4);
+                hanSoloParamManager_[i]->setParStep(0.0001);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+        }
+    }
+
+    else if (item->text() == "Eta Inverse")
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                     ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness/(mu*AppliedVoltage)");
+                hanSoloParamManager_[i]->setParValue (6.5);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(30.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor                   ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("Tan(theta)                    ");
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(-1);
+                hanSoloParamManager_[i]->setParLimSup(1);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(4);
+                hanSoloParamManager_[i]->setParStep(0.0001);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Langaus")
+    {
+        for (int i = 0; i < 4; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Width");
+                hanSoloParamManager_[i]->setParLimits(10, 10000);
+                hanSoloParamManager_[i]->setParValue (3000);
+                hanSoloParamManager_[i]->setParLimInf(1000);
+                hanSoloParamManager_[i]->setParLimSup(10000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(10);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("MPV");
+                hanSoloParamManager_[i]->setParLimits(10, 100000);
+                hanSoloParamManager_[i]->setParValue (20000);
+                hanSoloParamManager_[i]->setParLimInf(1000);
+                hanSoloParamManager_[i]->setParLimSup(30000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(10);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("Area");
+                hanSoloParamManager_[i]->setParLimits(10000, 1000000000);
+                hanSoloParamManager_[i]->setParValue (10000000);
+                hanSoloParamManager_[i]->setParLimInf(100000);
+                hanSoloParamManager_[i]->setParLimSup(1000000000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1000);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("GSigma");
+                hanSoloParamManager_[i]->setParLimits(10, 100000);
+                hanSoloParamManager_[i]->setParValue (3000);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(10000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(10);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Gauss")
+    {
+        for (int i = 0; i < 4; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Constant");
+                hanSoloParamManager_[i]->setParLimits(0, 100000);
+                hanSoloParamManager_[i]->setParValue (1);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(1000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(1);
+                hanSoloParamManager_[i]->setParStep(0.1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Mean");
+                hanSoloParamManager_[i]->setParLimits(-100000, 100000);
+                hanSoloParamManager_[i]->setParValue (1);
+                hanSoloParamManager_[i]->setParLimInf(-100);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(1);
+                hanSoloParamManager_[i]->setParStep(0.1);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("Sigma");
+                hanSoloParamManager_[i]->setParValue (1);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(100.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("Vertical Translation");
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(1000.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Gauss Convoluted with Constant")
+    {
+        for (int i = 0; i < 4; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Pixel Limit");
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParValue (50);
+                hanSoloParamManager_[i]->setParLimInf(50);
+                hanSoloParamManager_[i]->setParLimSup(75);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Cluster 1 extension");
+                hanSoloParamManager_[i]->setParValue (40);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(50);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("Sigma Gauss");
+                hanSoloParamManager_[i]->setParValue (5);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(75);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("Scale Factor");
+                hanSoloParamManager_[i]->setParLimits(0, 100000);
+                hanSoloParamManager_[i]->setParValue (100);
+                hanSoloParamManager_[i]->setParLimInf(10);
+                hanSoloParamManager_[i]->setParLimSup(10000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+        }
+    }
+
+        else if (item->text() == "Eta Convoluted with Gauss")
+        {
+            for (int i = 0; i < 9; ++i)
+            {
+                hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+        //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+                if (i == 0)
+                {
+                    hanSoloParamManager_[i]->setParName  ("Thickness                     ");
+                    hanSoloParamManager_[i]->setParValue (500);
+                    hanSoloParamManager_[i]->setParLimInf(500);
+                    hanSoloParamManager_[i]->setParLimSup(500);
+                    hanSoloParamManager_[i]->setParFixed (true);
+                    hanSoloParamManager_[i]->setParPrecision(0);
+                    hanSoloParamManager_[i]->setParStep(1);
+                }
+                else if (i == 1)
+                {
+                    hanSoloParamManager_[i]->setParName  ("Thickness/(mu*AppliedVoltage) ");
+                    hanSoloParamManager_[i]->setParValue (6.5);
+                    hanSoloParamManager_[i]->setParLimInf(0.1);
+                    hanSoloParamManager_[i]->setParLimSup(30.);
+                    hanSoloParamManager_[i]->setParFixed (false);
+                    hanSoloParamManager_[i]->setParPrecision(2);
+                    hanSoloParamManager_[i]->setParStep(0.01);
+                }
+                else if (i == 2)
+                {
+                    hanSoloParamManager_[i]->setParPrecision(5);
+                    hanSoloParamManager_[i]->setParStep(0.00001);
+                    hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                    hanSoloParamManager_[i]->setParValue (0.0700);
+                    hanSoloParamManager_[i]->setParLimInf(0.00001);
+                    hanSoloParamManager_[i]->setParLimSup(0.3);
+                    hanSoloParamManager_[i]->setParFixed (false);
+                }
+                else if (i == 3)
+                {
+                    hanSoloParamManager_[i]->setParName  ("ScaleFactor                   ");
+                    hanSoloParamManager_[i]->setParValue (1.);
+                    hanSoloParamManager_[i]->setParLimInf(1.);
+                    hanSoloParamManager_[i]->setParLimSup(1.);
+                    hanSoloParamManager_[i]->setParFixed (true);
+                    hanSoloParamManager_[i]->setParPrecision(2);
+                    hanSoloParamManager_[i]->setParStep(0.01);
+                }
+                else if (i == 4)
+                {
+                    hanSoloParamManager_[i]->setParName  ("Extension of constant function");
+                    hanSoloParamManager_[i]->setParLimits(0, 1000);
+                    hanSoloParamManager_[i]->setParValue (4.);
+                    hanSoloParamManager_[i]->setParLimInf(0.);
+                    hanSoloParamManager_[i]->setParLimSup(50);
+                    hanSoloParamManager_[i]->setParFixed (false);
+                    hanSoloParamManager_[i]->setParPrecision(3);
+                    hanSoloParamManager_[i]->setParStep(0.001);
+                }
+                else if (i == 5)
+                {
+                    hanSoloParamManager_[i]->setParName  ("Sigma                         ");
+                    hanSoloParamManager_[i]->setParLimits(0,100);
+                    hanSoloParamManager_[i]->setParValue (10);
+                    hanSoloParamManager_[i]->setParLimInf(1);
+                    hanSoloParamManager_[i]->setParLimSup(100);
+                    hanSoloParamManager_[i]->setParFixed (false);
+                    hanSoloParamManager_[i]->setParPrecision(1);
+                    hanSoloParamManager_[i]->setParStep(0.1);
+                }
+                else if (i == 6)
+                {
+                    hanSoloParamManager_[i]->setParName  ("Scale Factor                  ");
+                    hanSoloParamManager_[i]->setParLimits(0, 10000);
+                    hanSoloParamManager_[i]->setParValue (400);
+                    hanSoloParamManager_[i]->setParLimInf(100);
+                    hanSoloParamManager_[i]->setParLimSup(10000);
+                    hanSoloParamManager_[i]->setParFixed (false);
+                    hanSoloParamManager_[i]->setParPrecision(0);
+                    hanSoloParamManager_[i]->setParStep(1);
+                }
+                else if (i == 7)
+                {
+                    hanSoloParamManager_[i]->setParName  ("Center of distribution        ");
+                    hanSoloParamManager_[i]->setParLimits(-100, 100);
+                    hanSoloParamManager_[i]->setParValue (0);
+                    hanSoloParamManager_[i]->setParLimInf(-100);
+                    hanSoloParamManager_[i]->setParLimSup(100);
+                    hanSoloParamManager_[i]->setParFixed (false);
+                    hanSoloParamManager_[i]->setParPrecision(1);
+                    hanSoloParamManager_[i]->setParStep(0.1);
+                }
+                else if (i == 8)
+                {
+                    hanSoloParamManager_[i]->setParName  ("Vertical translation Constant ");
+                    hanSoloParamManager_[i]->setParValue (100);
+                    hanSoloParamManager_[i]->setParLimInf(0);
+                    hanSoloParamManager_[i]->setParLimSup(1000);
+                    hanSoloParamManager_[i]->setParFixed (false);
+                    hanSoloParamManager_[i]->setParPrecision(0);
+                    hanSoloParamManager_[i]->setParStep(1);
+                }
+
+                connect(hanSoloParamManager_[i]->getParFixed(),
+                        SIGNAL(clicked() ),
+                        hanSoloParamManager_[i],
+                        SLOT(on_fixPar_clicked())
+                        );
+
+        }
+    }
+
+    else if (item->text() == "Single constant Gauss-conv.")
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Pixel Extension");
+                hanSoloParamManager_[i]->setParValue (75);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Center");
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(-10);
+                hanSoloParamManager_[i]->setParLimSup(10);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("Well Width");
+                hanSoloParamManager_[i]->setParValue (14);
+                hanSoloParamManager_[i]->setParLimInf(1);
+                hanSoloParamManager_[i]->setParLimSup(30);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("Max Value");
+                hanSoloParamManager_[i]->setParValue (1);
+                hanSoloParamManager_[i]->setParLimInf(0.);
+                hanSoloParamManager_[i]->setParLimSup(10);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(3);
+                hanSoloParamManager_[i]->setParStep(0.001);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("Min Value");
+                hanSoloParamManager_[i]->setParValue (0.6);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(10);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(3);
+                hanSoloParamManager_[i]->setParStep(0.001);
+            }
+            else if (i == 5)
+            {
+                hanSoloParamManager_[i]->setParName  ("Gauss Sigma");
+                hanSoloParamManager_[i]->setParValue (10);
+                hanSoloParamManager_[i]->setParLimInf(1);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Double constant Gauss-conv.")
+    {
+        for (int i = 0; i < 7; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Pixel Extension");
+                hanSoloParamManager_[i]->setParValue (75);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Center");
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(-10);
+                hanSoloParamManager_[i]->setParLimSup(10);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("Well Center");
+                hanSoloParamManager_[i]->setParValue (40);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(75);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("Well Width");
+                hanSoloParamManager_[i]->setParValue (14);
+                hanSoloParamManager_[i]->setParLimInf(1);
+                hanSoloParamManager_[i]->setParLimSup(30);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("Max Value");
+                hanSoloParamManager_[i]->setParValue (1);
+                hanSoloParamManager_[i]->setParLimInf(0.);
+                hanSoloParamManager_[i]->setParLimSup(10);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(3);
+                hanSoloParamManager_[i]->setParStep(0.001);
+            }
+            else if (i == 5)
+            {
+                hanSoloParamManager_[i]->setParName  ("Min Value");
+                hanSoloParamManager_[i]->setParValue (0.6);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(10);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(3);
+                hanSoloParamManager_[i]->setParStep(0.001);
+            }
+            else if (i == 6)
+            {
+                hanSoloParamManager_[i]->setParName  ("Gauss Sigma");
+                hanSoloParamManager_[i]->setParValue (10);
+                hanSoloParamManager_[i]->setParLimInf(1);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Gauss-constant plus Constant")
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Extension of constant function");
+                hanSoloParamManager_[i]->setParLimits(0, 100000);
+                hanSoloParamManager_[i]->setParValue (4.);
+                hanSoloParamManager_[i]->setParLimInf(0.);
+                hanSoloParamManager_[i]->setParLimSup(50);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(3);
+                hanSoloParamManager_[i]->setParStep(0.001);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Sigma                         ");
+                hanSoloParamManager_[i]->setParLimits(0,100);
+                hanSoloParamManager_[i]->setParValue (10);
+                hanSoloParamManager_[i]->setParLimInf(1);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(1);
+                hanSoloParamManager_[i]->setParStep(0.1);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParName  ("Scale Factor                  ");
+                hanSoloParamManager_[i]->setParLimits(0, 1000000);
+                hanSoloParamManager_[i]->setParValue (400);
+                hanSoloParamManager_[i]->setParLimInf(100);
+                hanSoloParamManager_[i]->setParLimSup(10000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("Center of distribution        ");
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(-100);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(1);
+                hanSoloParamManager_[i]->setParStep(0.1);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("Vertical translation Constant ");
+                hanSoloParamManager_[i]->setParLimits(0, 1000000);
+                hanSoloParamManager_[i]->setParValue (100);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(1000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+    else if (item->text() == "Eta Reproduction")
+    {
+        for (int i = 0; i < 11; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                     ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness/(mu*AppliedVoltage)");
+                hanSoloParamManager_[i]->setParValue (6.5);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(30.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor                   ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("Cluster 1 extension           ");
+                hanSoloParamManager_[i]->setParValue (40);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(50);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            if (i == 5)
+            {
+                hanSoloParamManager_[i]->setParName  ("Sigma Gauss (side)            ");
+                hanSoloParamManager_[i]->setParLimits(-1000, 1000);
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(-10);
+                hanSoloParamManager_[i]->setParLimSup(10);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            if (i == 6)
+            {
+                hanSoloParamManager_[i]->setParName  ("Constant factor (side)        ");
+                hanSoloParamManager_[i]->setParLimits(0, 10000);
+                hanSoloParamManager_[i]->setParValue (1000);
+                hanSoloParamManager_[i]->setParLimInf(100);
+                hanSoloParamManager_[i]->setParLimSup(10000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(10);
+            }
+            if (i == 7)
+            {
+                hanSoloParamManager_[i]->setParName  ("Sigma Gauss (center)          ");
+                hanSoloParamManager_[i]->setParValue (10);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(75);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            if (i == 8)
+            {
+                hanSoloParamManager_[i]->setParName  ("Scale planeID (center)          ");
+                hanSoloParamManager_[i]->setParLimits(0, 10000);
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(100);
+                hanSoloParamManager_[i]->setParLimSup(1000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            if (i == 9)
+            {
+                hanSoloParamManager_[i]->setParName  ("Horizontal Translation        ");
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(-100);
+                hanSoloParamManager_[i]->setParLimSup(100);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(1);
+                hanSoloParamManager_[i]->setParStep(0.1);
+            }
+            if (i == 10)
+            {
+                hanSoloParamManager_[i]->setParName  ("Vertical Translation          ");
+                hanSoloParamManager_[i]->setParValue (100);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+        }
+    }
+    else if (item->text() == "Eta Distribution")
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+    //        if (i > 0) hanSoloParamManager_[i]->stackUnder(hanSoloParamManager_[i-1]);
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness                     ");
+                hanSoloParamManager_[i]->setParValue (500);
+                hanSoloParamManager_[i]->setParLimInf(500);
+                hanSoloParamManager_[i]->setParLimSup(500);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(1);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Thickness/(mu*AppliedVoltage)");
+                hanSoloParamManager_[i]->setParValue (6.5);
+                hanSoloParamManager_[i]->setParLimInf(0.1);
+                hanSoloParamManager_[i]->setParLimSup(30.);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 2)
+            {
+                hanSoloParamManager_[i]->setParPrecision(5);
+                hanSoloParamManager_[i]->setParStep(0.00001);
+                hanSoloParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                hanSoloParamManager_[i]->setParValue (0.0007);
+                hanSoloParamManager_[i]->setParLimInf(0.00001);
+                hanSoloParamManager_[i]->setParLimSup(0.3);
+                hanSoloParamManager_[i]->setParFixed (false);
+            }
+            else if (i == 3)
+            {
+                hanSoloParamManager_[i]->setParName  ("ScaleFactor for Charge profile");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+            else if (i == 4)
+            {
+                hanSoloParamManager_[i]->setParName  ("Tan(theta)                    ");
+                hanSoloParamManager_[i]->setParLimits(-100, 100);
+                hanSoloParamManager_[i]->setParValue (0);
+                hanSoloParamManager_[i]->setParLimInf(-1);
+                hanSoloParamManager_[i]->setParLimSup(1);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(4);
+                hanSoloParamManager_[i]->setParStep(0.0001);
+            }
+            else if (i == 5)
+            {
+                hanSoloParamManager_[i]->setParName  ("Global ScaleFactor            ");
+                hanSoloParamManager_[i]->setParValue (1.);
+                hanSoloParamManager_[i]->setParLimInf(1.);
+                hanSoloParamManager_[i]->setParLimSup(1.);
+                hanSoloParamManager_[i]->setParFixed (true);
+                hanSoloParamManager_[i]->setParPrecision(2);
+                hanSoloParamManager_[i]->setParStep(0.01);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
+
+
+    for (unsigned int j = 0; j < hanSoloParamManager_.size(); ++j)
+    {
+        ss.str("");
+        ss << "Par " << j;
+        ui_->parametersTW->insertTab(j, hanSoloParamManager_[j], (QString)ss.str().c_str());
+    }
+}
+//=================================================================================
+std::string HanSoloFitter::getObjectType (TObject * obj)
+{
+    std::string objectType = "Unknown" ;
+    TKey* keyH = 0 ;
+
+    TIter bases(obj->IsA()->GetListOfBases());
+    int count = 0 ;
+    while((keyH = (TKey*)bases()))
+    {
+        if( count++ == 0 )
+            objectType = keyH->GetName() ;
+    }
+    return objectType ;
+}
+
+//=================================================================================
+void HanSoloFitter::on_fitLimitCB_clicked(bool checked)
+{
+    if (checked == false)
+    {
+        ui_->fitRangeMinSB->setEnabled(false);
+        ui_->fitRangeMaxSB->setEnabled(false);
+    }
+    else
+    {
+        ui_->fitRangeMinSB->setEnabled(true);
+        ui_->fitRangeMaxSB->setEnabled(true);
+        if(hanSoloTreeBrowser_->getCurrentObject())
+        {
+            ui_->fitRangeMinSB->setRange(((TH1F*)(hanSoloTreeBrowser_->getCurrentObject()))->GetXaxis()->GetXmin(), ((TH1F*)(hanSoloTreeBrowser_->getCurrentObject()))->GetXaxis()->GetXmax());
+            ui_->fitRangeMinSB->setValue(((TH1F*)(hanSoloTreeBrowser_->getCurrentObject()))->GetXaxis()->GetXmin());
+            ui_->fitRangeMaxSB->setRange(((TH1F*)(hanSoloTreeBrowser_->getCurrentObject()))->GetXaxis()->GetXmin(), ((TH1F*)(hanSoloTreeBrowser_->getCurrentObject()))->GetXaxis()->GetXmax());
+            ui_->fitRangeMaxSB->setValue(((TH1F*)(hanSoloTreeBrowser_->getCurrentObject()))->GetXaxis()->GetXmax());
+        }
+    }
 }
 
 //=================================================================================

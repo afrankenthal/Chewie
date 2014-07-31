@@ -19,6 +19,18 @@ bool XmlAnalysis::isToRun(void)
     else
         return false;
 }
+///////////////////////////////////////////////////////////////////////////////////////////
+bool XmlAnalysis::doFits(void)
+{
+    std::string doFits = thisNode_.toElement().attribute("DoFits").toStdString();
+
+    if(doFits=="yes")
+        return true;
+    else if(doFits=="no")
+        return false;
+    else
+        return false;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool XmlAnalysis::applyStandardCuts(void)

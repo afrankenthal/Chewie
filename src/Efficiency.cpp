@@ -300,7 +300,15 @@ void Efficiency::endJob(void)
             STDLINE("",ACWhite);
             STDLINE("",ACWhite);
         }
+
+        if(theAnalysisManager_->getXmlParser()->getAnalysesFromString("Efficiency")->doFits())
+        {
+            fitEfficiency(p);
+        }
     }
+
+
+
     outfile.close();
 }
 

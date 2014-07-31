@@ -2128,6 +2128,7 @@ void Charge::setParsLimits(void)
         {
             for(int p=0; p<4; p++)
             {
+
                 parMin_      [p] = theParser->getAnalysesFromString("Charge")->getParLimits(p,true).first;
                 parMax_      [p] = theParser->getAnalysesFromString("Charge")->getParLimits(p,true).second;
                 isMinToLimit_[p] = theParser->getAnalysesFromString("Charge")->isParToLimit(p).first;
@@ -2757,11 +2758,16 @@ void Charge::endJob(void)
         h2DYCellChargeAsimmetryCell_[p]->Divide(h2DYCellChargeAsimmetryCellNorm_[p]);
 
 
-        ss.str(""); ss << "Fitting Landau distributions for plane " << planeName << " ... ";
-        STDLINE(ss.str(),ACRed);
-        STDLINE("",ACWhite);
 
-        fitCharge(p);
+
+
+        if(theAnalysisManager_->getXmlParser()->getAnalysesFromString("Charge")->doFits())
+        {
+            ss.str(""); ss << "Fitting Landau distributions for plane " << planeName << " ... ";
+            STDLINE(ss.str(),ACRed);
+            STDLINE("",ACWhite);
+            fitCharge(p);
+        }
 
         STDLINE("",ACWhite);
 

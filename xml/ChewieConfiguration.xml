@@ -2,7 +2,7 @@
 <!DOCTYPE ChewieConfiguration SYSTEM './ChewieConfiguration.dtd'>
 <ChewieConfiguration>
   <Converter Threads="4" MaxEvents="9999" IsToLimit="no"/>
-  <General PreAnalysisMaxEvents="400000" Threads="4" MaxEvents="5" AnalysesMaxEvents="10000" IsToLimit="no">
+  <General PreAnalysisMaxEvents="400000" Threads="4" MaxEvents="5" AnalysesMaxEvents="1000" IsToLimit="yes">
     <Plane Calibration="upstream_cal_1_0" Id="Strip_Telescope_Upstream0" Name="Station: 5 - Plaq: 0" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
@@ -213,20 +213,20 @@
       </Calibrations>
     </Plane>
     <Analysis Priority="0" IsToRun="yes" Type="Windows"/>
-    <Analysis StandardCut="yes" Priority="1" IsToRun="yes" Type="Tracks">
+    <Analysis StandardCut="yes" Priority="2" IsToRun="no" Type="Tracks" DoFits="no">
       <MinHits>8</MinHits>
     </Analysis>
     <Analysis StandardCut="yes" Priority="4" IsToRun="no" Type="TracksAfter">
       <MinHits>8</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="2" IsToRun="yes" Type="Efficiency">
+    <Analysis StandardCut="yes" Priority="3" IsToRun="no" Type="Efficiency" DoFits="no">
       <Cut CutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 5" CutType="main cut"/>
       <Cut CutString="" CutType="cell efficiency"/>
       <Cut CutString="yPixelResidualLocal[9] &lt;= 30 &amp;&amp; yPixelResidualLocal[9] >= -30 &amp;&amp; ySigmaIntercept &lt;= 8" CutType="cell efficiency X"/>
       <Cut CutString="xPixelResidualLocal[9] &lt;= 55 &amp;&amp; xPixelResidualLocal[9] >= -55 &amp;&amp; xSigmaIntercept &lt;= 8" CutType="cell efficiency Y"/>
       <MinHits>20</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="3" IsToRun="yes" Type="Charge">
+    <Analysis StandardCut="yes" Priority="1" IsToRun="yes" Type="Charge" DoFits="yes">
       <!--Priority>4</Priority-->
       <CellCharge>
         <Threashold>500</Threashold>

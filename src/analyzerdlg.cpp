@@ -750,30 +750,42 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     ui->maxWindowEventsLE->setText                ("PreAnalysisMaxEvents",theXmlParser_->getGeneral()->getPreAnalysisMaxEvents()        );
     ui->maxWindowEventsLE->assignXmlElement       (theXmlParser_->getGeneral()->getNode()                                               );
 
+    ui->tracksFitCB->setChecked                      ("DoFits",(theXmlParser_->getAnalysesFromString("Tracks"))->doFits()                        );
+    ui->tracksFitCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                                  );
     ui->tracksCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Tracks"))->isToRun()                        );
     ui->tracksCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                                  );
 
+    ui->tracksafterFitCB->setChecked                 ("DoFits",(theXmlParser_->getAnalysesFromString("TracksAfter"))->doFits()                   );
+    ui->tracksafterFitCB->assignXmlElement           ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                             );
     ui->tracksafterCB->setChecked                 ("IsToRun",(theXmlParser_->getAnalysesFromString("TracksAfter"))->isToRun()                   );
     ui->tracksafterCB->assignXmlElement           ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                             );
 
+    ui->efficiencyFitCB->setChecked                  ("DoFits",(theXmlParser_->getAnalysesFromString("Efficiency"))->doFits()                    );
+    ui->efficiencyFitCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                              );
     ui->efficiencyCB->setChecked                  ("IsToRun",(theXmlParser_->getAnalysesFromString("Efficiency"))->isToRun()                    );
     ui->efficiencyCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                              );
 
     ui->efficiencyStandardCutsCB->setChecked      ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
     ui->efficiencyStandardCutsCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
 
+    ui->chargeFitCB->setChecked                      ("DoFits",(theXmlParser_->getAnalysesFromString("Charge"))->doFits()                        );
+    ui->chargeFitCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
     ui->chargeCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Charge"))->isToRun()                        );
     ui->chargeCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
 
     ui->chargeStandardCutsCB->setChecked          ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
     ui->chargeStandardCutsCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
 
+    ui->resolutionFitCB->setChecked                  ("DoFits",(theXmlParser_->getAnalysesFromString("Resolution"))->doFits()                    );
+    ui->resolutionFitCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
     ui->resolutionCB->setChecked                  ("IsToRun",(theXmlParser_->getAnalysesFromString("Resolution"))->isToRun()                    );
     ui->resolutionCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
 
     ui->resolutionStandardCutsCB->setChecked      ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
     ui->resolutionStandardCutsCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
 
+    ui->windowsFitCB->setChecked                     ("DoFits",(theXmlParser_->getAnalysesFromString("Windows"))->doFits()                       );
+    ui->windowsFitCB->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()                                 );
     ui->windowsCB->setChecked                     ("IsToRun",(theXmlParser_->getAnalysesFromString("Windows"))->isToRun()                       );
     ui->windowsCB->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()                                 );
 
@@ -2037,3 +2049,4 @@ void AnalyzerDlg::on_cutVarLW_itemDoubleClicked(QListWidgetItem *)
 {
     setPixelMatrixReferenceHistogram();
 }
+

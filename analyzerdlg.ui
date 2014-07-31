@@ -459,7 +459,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>7</number>
    </property>
    <widget class="QWidget" name="converterT">
     <attribute name="title">
@@ -10805,6 +10805,106 @@ p, li { white-space: pre-wrap; }
        <number>10</number>
       </property>
      </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>10</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Do Fits:</string>
+      </property>
+     </widget>
+     <widget class="customCheckBox" name="resolutionFitCB">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>150</y>
+        <width>93</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Resolution</string>
+      </property>
+     </widget>
+     <widget class="customCheckBox" name="chargeFitCB">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>120</y>
+        <width>83</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Charge</string>
+      </property>
+     </widget>
+     <widget class="customCheckBox" name="tracksafterFitCB">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>180</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TracksAfter</string>
+      </property>
+     </widget>
+     <widget class="customCheckBox" name="efficiencyFitCB">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>90</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Efficiency</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="customCheckBox" name="windowsFitCB">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>30</y>
+        <width>83</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Windows</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="customCheckBox" name="tracksFitCB">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>60</y>
+        <width>83</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Tracks</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QCheckBox" name="useCalibrationsCB">
      <property name="geometry">
@@ -15874,6 +15974,9 @@ p, li { white-space: pre-wrap; }
    <class>customCheckBox</class>
    <extends>QCheckBox</extends>
    <header location="global">customCheckBox.h</header>
+   <slots>
+    <slot>changeState()</slot>
+   </slots>
   </customwidget>
   <customwidget>
    <class>customSpinBox</class>
@@ -16249,6 +16352,214 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>192</x>
      <y>489</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>windowsCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>windowsFitCB</receiver>
+   <slot>setOn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>411</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>271</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tracksCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>tracksFitCB</receiver>
+   <slot>setOn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>438</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>280</x>
+     <y>447</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>efficiencyCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>efficiencyFitCB</receiver>
+   <slot>setOn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>98</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>472</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chargeCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>chargeFitCB</receiver>
+   <slot>setOn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>97</x>
+     <y>504</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>300</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resolutionCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>resolutionFitCB</receiver>
+   <slot>setOn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>532</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>301</x>
+     <y>528</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tracksafterCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>tracksafterFitCB</receiver>
+   <slot>setOn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>121</x>
+     <y>560</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>269</x>
+     <y>556</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>windowsCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>windowsCB</receiver>
+   <slot>setOn(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>98</x>
+     <y>413</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>98</x>
+     <y>414</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>windowsCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>windowsFitCB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>412</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>412</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tracksCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>tracksFitCB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>442</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>442</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>efficiencyCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>efficiencyFitCB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>297</x>
+     <y>472</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chargeCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>chargeFitCB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>502</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>502</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resolutionCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>resolutionFitCB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>532</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>298</x>
+     <y>532</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tracksafterCB</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>tracksafterFitCB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>82</x>
+     <y>562</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>307</x>
+     <y>562</y>
     </hint>
    </hints>
   </connection>

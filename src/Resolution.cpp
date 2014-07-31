@@ -596,7 +596,14 @@ void Resolution::endJob(void)
             STDLINE(ss.str(),ACGreen);
             STDLINE("",ACWhite);
         }
-    }       
+        if(theAnalysisManager_->getXmlParser()->getAnalysesFromString("Resolution")->doFits())
+        {
+            fitResolution(p);
+        }
+
+    }
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

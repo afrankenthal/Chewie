@@ -26,7 +26,7 @@
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fitter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="fitterWindow">
     <attribute name="title">
@@ -128,9 +128,9 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
+           <red>0</red>
            <green>255</green>
-           <blue>255</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -265,9 +265,9 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
+           <red>0</red>
            <green>255</green>
-           <blue>255</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -473,6 +473,9 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;hits, but these could be complemented &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;by resolved clusters or even reconstructed &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;tracks.&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 255, 0);</string>
      </property>
      <property name="text">
       <string>SELECT
@@ -1275,9 +1278,9 @@ background-color: rgb(255, 170, 0);</string>
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
+           <red>0</red>
            <green>255</green>
-           <blue>255</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -1412,9 +1415,9 @@ background-color: rgb(255, 170, 0);</string>
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
+           <red>0</red>
            <green>255</green>
-           <blue>255</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -1605,6 +1608,9 @@ background-color: rgb(255, 170, 0);</string>
      </property>
      <property name="toolTip">
       <string/>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 255, 0);</string>
      </property>
      <property name="text">
       <string>Load config file</string>
@@ -3231,29 +3237,6 @@ p, li { white-space: pre-wrap; }
        <string>Canvas:</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="canvasSizeCB">
-      <property name="geometry">
-       <rect>
-        <x>125</x>
-        <y>205</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="canvasSizeLB">
-      <property name="geometry">
-       <rect>
-        <x>95</x>
-        <y>205</y>
-        <width>31</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Size:</string>
-      </property>
-     </widget>
      <widget class="QTabWidget" name="displayControlsTB">
       <property name="geometry">
        <rect>
@@ -3813,7 +3796,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_2">
         <property name="geometry">
          <rect>
-          <x>480</x>
+          <x>780</x>
           <y>0</y>
           <width>81</width>
           <height>16</height>
@@ -3826,10 +3809,10 @@ p, li { white-space: pre-wrap; }
        <widget class="QTabWidget" name="parametersTW">
         <property name="geometry">
          <rect>
-          <x>480</x>
-          <y>15</y>
-          <width>341</width>
-          <height>111</height>
+          <x>660</x>
+          <y>20</y>
+          <width>321</width>
+          <height>141</height>
          </rect>
         </property>
         <property name="currentIndex">
@@ -3839,11 +3822,16 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="fitPB">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>46</width>
-          <height>25</height>
+          <x>1020</x>
+          <y>20</y>
+          <width>151</width>
+          <height>141</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(85, 85, 255);
+font: 75 24pt &quot;Sans Serif&quot;;
+color: rgb(0, 0, 0);</string>
         </property>
         <property name="text">
          <string>Fit!</string>
@@ -3853,7 +3841,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>390</x>
-          <y>140</y>
+          <y>100</y>
           <width>46</width>
           <height>16</height>
          </rect>
@@ -3866,8 +3854,8 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>440</x>
-          <y>140</y>
-          <width>141</width>
+          <y>100</y>
+          <width>191</width>
           <height>21</height>
          </rect>
         </property>
@@ -3875,8 +3863,8 @@ p, li { white-space: pre-wrap; }
        <widget class="QDoubleSpinBox" name="fitRangeMinSB">
         <property name="geometry">
          <rect>
-          <x>170</x>
-          <y>140</y>
+          <x>470</x>
+          <y>70</y>
           <width>71</width>
           <height>20</height>
          </rect>
@@ -3885,8 +3873,8 @@ p, li { white-space: pre-wrap; }
        <widget class="QDoubleSpinBox" name="fitRangeMaxSB">
         <property name="geometry">
          <rect>
-          <x>270</x>
-          <y>140</y>
+          <x>550</x>
+          <y>70</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -3895,8 +3883,8 @@ p, li { white-space: pre-wrap; }
        <widget class="QCheckBox" name="fitLimitCB">
         <property name="geometry">
          <rect>
-          <x>80</x>
-          <y>135</y>
+          <x>390</x>
+          <y>70</y>
           <width>66</width>
           <height>20</height>
          </rect>
@@ -3910,8 +3898,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>461</width>
-          <height>66</height>
+          <width>371</width>
+          <height>141</height>
          </rect>
         </property>
         <property name="font">
@@ -3924,19 +3912,19 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="fitFuncLE">
         <property name="geometry">
          <rect>
-          <x>7</x>
-          <y>105</y>
-          <width>461</width>
-          <height>24</height>
+          <x>390</x>
+          <y>40</y>
+          <width>241</width>
+          <height>21</height>
          </rect>
         </property>
        </widget>
        <widget class="QCheckBox" name="customFunctionCB">
         <property name="geometry">
          <rect>
-          <x>0</x>
-          <y>85</y>
-          <width>136</width>
+          <x>390</x>
+          <y>20</y>
+          <width>151</width>
           <height>20</height>
          </rect>
         </property>
@@ -3949,7 +3937,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QGroupBox" name="splitGB">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>130</x>
         <y>205</y>
         <width>141</width>
         <height>16</height>
@@ -4027,6 +4015,12 @@ p, li { white-space: pre-wrap; }
        <string>Save Image</string>
       </property>
      </widget>
+     <zorder>HanSoloCanvasCB</zorder>
+     <zorder>currentCanvasLB</zorder>
+     <zorder>displayControlsTB</zorder>
+     <zorder>splitGB</zorder>
+     <zorder>saveImagePB</zorder>
+     <zorder>splitCanvasYRB</zorder>
     </widget>
     <widget class="QPushButton" name="openFilePB">
      <property name="geometry">
