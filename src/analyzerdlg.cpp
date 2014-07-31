@@ -1035,6 +1035,7 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
 
     ui->detectorsInfoTW->assignXmlElement(theXmlParser_->getPlanesNode());
 
+    checkBoxHandler();
 }
 
 //============================================================================================================================================
@@ -2050,3 +2051,15 @@ void AnalyzerDlg::on_cutVarLW_itemDoubleClicked(QListWidgetItem *)
     setPixelMatrixReferenceHistogram();
 }
 
+//============================================================================================================================================
+void AnalyzerDlg::checkBoxHandler()
+{
+    STDLINE("checkboxHandler()", ACRed);
+    ui->windowsFitCB->setEnabled(ui->windowsCB->isChecked());
+    ui->tracksFitCB->setEnabled(ui->tracksCB->isChecked());
+    ui->efficiencyFitCB->setEnabled(ui->efficiencyCB->isChecked());
+    ui->chargeFitCB->setEnabled(ui->chargeCB->isChecked());
+    ui->resolutionFitCB->setEnabled(ui->resolutionCB->isChecked());
+    ui->tracksafterFitCB->setEnabled(ui->tracksafterCB->isChecked());
+
+}

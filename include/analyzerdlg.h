@@ -42,7 +42,7 @@ private:
     static void* threaderMethod  (void* myClass,
                                   void* whatToRun,
                                   int   arg0=0           );
-
+    void checkBoxHandler         (void                   );
 
     void         setPrioritiesFromUi ();
 
@@ -114,6 +114,12 @@ private slots:
     void on_badPlanesHitsSB_valueChanged(const QString &arg1);
     void on_excludeBadPlanesCB_clicked(bool checked);
     void on_cutFilePB_clicked();
+    void on_windowsCB_isToggled() {checkBoxHandler();}
+    void on_tracksCB_isToggled() {checkBoxHandler();}
+    void on_efficiencyCB_isToggled() {checkBoxHandler();}
+    void on_chargeCB_isToggled() {checkBoxHandler();}
+    void on_resolutionCB_isToggled() {checkBoxHandler();}
+    void on_tracksafterCB_isToggled() {checkBoxHandler();}
 
     void setPixelMatrixReferenceHistogram();
     void on_cutVarLW_itemDoubleClicked(QListWidgetItem *item);
