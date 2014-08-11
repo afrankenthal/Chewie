@@ -1,114 +1,11 @@
 <?xml version='1.0' encoding='iso-8859-1'?>
 <!DOCTYPE ChewieExpressConfiguration SYSTEM "./dtd/ExpressConfiguration.dtd">
 <ChewieExpressConfiguration>
-  <Defaults FilesPath="/home/vigani/data/2013_11_November/MonicelliOutput/"
-           Convert="no"
+  <Defaults FilesPath="/data/TestBeam/2014_08_August/MonicelliOutput/"
+           Convert="yes"
 	   RunAnalysis="yes"
 	   NumberOfEvents="-1"/>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2890_2894.root">   
-   <File Name="Run2890_Merged.root"/>
-   <File Name="Run2891_Merged.root"/>
-   <File Name="Run2892_Merged.root"/>
-   <File Name="Run2893_Merged.root"/>
-   <File Name="Run2894_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2895.root">   
-   <File Name="Run2895_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2896.root">   
-   <File Name="Run2896_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2897.root">   
-   <File Name="Run2897_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2898.root">   
-   <File Name="Run2898_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2899.root">   
-   <File Name="Run2899_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2900.root">   
-   <File Name="Run2900_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2901.root">   
-   <File Name="Run2901_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2902.root">   
-   <File Name="Run2902_Merged.root"/>
- </Files> 
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2903.root">   
-   <File Name="Run2903_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2906.root">   
-   <File Name="Run2906_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2908.root">   
-   <File Name="Run2908_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2909.root">   
-   <File Name="Run2909_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2910.root">   
-   <File Name="Run2910_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2912.root">   
-   <File Name="Run2912_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2944_2945.root">   
-   <File Name="Run2944_Merged.root"/>
-   <File Name="Run2945_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2946_2947.root">   
-   <File Name="Run2946_Merged.root"/>
-   <File Name="Run2947_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2948_2950.root">   
-   <File Name="Run2948_Merged.root"/>
-   <File Name="Run2949_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2952_2953.root">   
-   <File Name="Run2952_Merged.root"/>
-   <File Name="Run2953_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2951_2955.root">   
-   <File Name="Run2951_Merged.root"/>
-   <File Name="Run2954_Merged.root"/>
-   <File Name="Run2955_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2956.root">   
-   <File Name="Run2956_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2957.root">   
-   <File Name="Run2957_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2958_2960.root">   
-   <File Name="Run2958_Merged.root"/>
-   <File Name="Run2959_Merged.root"/>
-   <File Name="Run2960_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2961_2964.root">   
-   <File Name="Run2961_Merged.root"/>
-   <File Name="Run2962_Merged.root"/>
-   <File Name="Run2964_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2965_2966.root">   
-   <File Name="Run2965_Merged.root"/>
-   <File Name="Run2966_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2967_2968.root">   
-   <File Name="Run2967_Merged.root"/>
-   <File Name="Run2968_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2969_2970.root">   
-   <File Name="Run2969_Merged.root"/>
-   <File Name="Run2970_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2971_2972.root">   
-   <File Name="Run2971_Merged.root"/>
-   <File Name="Run2972_Merged.root"/>
- </Files>
- <Files Configuration="BasicConfig3D.xml" OutFileName="Run2973_2974.root">   
-   <File Name="Run2973_Merged.root"/>
-   <File Name="Run2974_Merged.root"/>
+ <Files Configuration="ChewieConfiguration.xml" OutFileName="Run680_Chewie.root">   
+   <File Name="Run680_Merged.root"/>
  </Files>
 </ChewieExpressConfiguration>

@@ -12,6 +12,7 @@
 #include <sstream>
 #include <vector>
 #include <list>
+#include <math.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 EventConverter::EventConverter(EventManager* eventManager, int nOfThreads) :
@@ -147,7 +148,7 @@ void EventConverter::convert(Event& event,int e)
             {
                 dataVector[t].setNdofUnconstrained(trackCandidates[t].size()-5,p);
 
-                clusterID = (int)trackCandidates[t][planeName]["num"];
+                clusterID = (int)trackCandidates[t][planeName]["cluster ID"];
 
                 if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                 {

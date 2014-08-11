@@ -7,17 +7,18 @@
 # a modified copy of the original setupQt.csh if you have by mistake accidentally edited it.
 #
 # Before running Monicelli, source YOUR own, PRIVATE **copy** of this file:
-setenv BASEDATADIR /home/data/TestBeam/2014_04_April
+setenv BASEDATADIR /home/data/TestBeam/2014_08_August
 
-if(${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
+if(${HOSTNAME} == "ftbftracker01.fnal.gov") then
 
   setenv MonicelliDir              ../Monicelli
+  setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
 
   #===== Local directories
   setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   $CHEWIEDIR/../MonicelliStripOutput
-  setenv CHEWIEINPUTDIR            $CHEWIEDIR/../ChewieInput
-  setenv CHEWIEOUTPUTDIR           $CHEWIEDIR/../ChewieOutput
+  setenv CHEWIEDATADIR		   ${BASEDATADIR}/MonicelliOutput
+  setenv CHEWIEINPUTDIR            ${BASEDATADIR}/ChewieInput
+  setenv CHEWIEOUTPUTDIR           ${BASEDATADIR}/ChewieOutput
   setenv CHEWIEXMLDIR              $CHEWIEDIR/xml
   
   #===== Location of the ROOT components
