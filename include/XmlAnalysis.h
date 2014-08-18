@@ -18,6 +18,7 @@ public:
 
     QDomNode&                          getNode          (void                ){return thisNode_;}
     QDomNode&                          getCutNode       (std::string cutType );
+    std::string                        getType          (void                );
     std::string                        getCut           (std::string cutType );
     std::map<std::string,std::string>  getCutsList      (void                ){return cutsList_;}
     std::string                        getMinHits       (void                );

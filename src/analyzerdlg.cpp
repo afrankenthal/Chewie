@@ -67,7 +67,7 @@ AnalyzerDlg::AnalyzerDlg(QWidget *parent) :
     ui->cutVarLW->addItem((QString)"Window");
     ui->cutVarLW->addItem((QString)"Efficiency");
     cutFile_ = "no";
-    connect(ui->cutVarLW, SIGNAL(cazzo()), this, SLOT(on_cutFilePB_clicked()));
+    //connect(ui->cutVarLW, SIGNAL(test()), this, SLOT(on_cutFilePB_clicked()));
 }
 
 //============================================================================================================================================
@@ -1938,8 +1938,7 @@ void AnalyzerDlg::on_convertResetListPB_clicked()
         model->clear();
 }
 
-////////////////////////////////////////////
-
+//============================================================================================================================================
 void AnalyzerDlg::setPrioritiesFromUi ()
 {
     std::string switches;
@@ -2054,7 +2053,7 @@ void AnalyzerDlg::on_cutVarLW_itemDoubleClicked(QListWidgetItem *)
 //============================================================================================================================================
 void AnalyzerDlg::checkBoxHandler()
 {
-    STDLINE("checkboxHandler()", ACRed);
+    //STDLINE("checkboxHandler()", ACRed);
     ui->windowsFitCB->setEnabled(ui->windowsCB->isChecked());
     ui->tracksFitCB->setEnabled(ui->tracksCB->isChecked());
     ui->efficiencyFitCB->setEnabled(ui->efficiencyCB->isChecked());

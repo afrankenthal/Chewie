@@ -49,18 +49,25 @@ void WindowsManager::beginJob(void)
     theXmlParser_      = theAnalysisManager_->getXmlParser();
     destroy();
     theAnalysisManager_->mkdir("Windows");
+    int lowerCol, higherCol, lowerRow, higherRow;
     for(unsigned int w=0; w<thePlanesMapping_->getNumberOfPlanes(); w++)
     {
         //std::cout << __PRETTY_FUNCTION__ << thePlanesMapping_->getPlaneName(w) << std::endl;
-        int xChipsNumber = atoi((((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getChipsNumber()).first).c_str());
-        int yChipsNumber = atoi((((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getChipsNumber()).second).c_str());
-        int nBinsX = xChipsNumber*52;
-        int nBinsY = yChipsNumber*80;
-        if(thePlanesMapping_->getStation(w) >= 5)
-        {
-            nBinsX = 640;
-            nBinsY = 640;
-        }
+        //int xChipsNumber = atoi((((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getChipsNumber()).first).c_str());
+        //int yChipsNumber = atoi((((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getChipsNumber()).second).c_str());
+        //int nBinsX = xChipsNumber*52;
+        //int nBinsY = yChipsNumber*80;
+        //if(thePlanesMapping_->getStation(w) >= 5)
+        //{
+        //    nBinsX = 640;
+        //    nBinsY = 640;
+        //}
+        lowerCol  = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getLowerCol()).c_str());
+        higherCol = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getHigherCol()).c_str());
+        lowerRow  = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getLowerRow()).c_str());
+        higherRow = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getHigherRow()).c_str());
+        int nBinsX = higherCol-lowerCol+1;
+        int nBinsY = higherRow-lowerRow+1;
         windows_.push_back(new HistogramWindow(thePlanesMapping_->getPlaneName(w),nBinsX,nBinsY));
     }
 }

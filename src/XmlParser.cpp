@@ -73,6 +73,7 @@ void XmlParser::destroy(void)
         theScan_ = 0;
     }
 }
+
 //================================================================================
 bool XmlParser::parseDocument(QString fileName)
 {
@@ -114,7 +115,7 @@ bool XmlParser::parseDocument(QString fileName)
 
     planes_ = document_->elementsByTagName("Plane");
 
-    for(int p=0; p<planes_.size(); ++p)
+    for(int p=0; p<planes_.size(); p++)
     {
         QDomNode planeNode    = planes_.at(p);
         std::string planeName = planeNode.toElement().attribute("Id").toStdString();
@@ -123,12 +124,20 @@ bool XmlParser::parseDocument(QString fileName)
 
     QDomNodeList analyses = document_->elementsByTagName("Analysis");
 
-    for(int a=0; a<analyses.size(); ++a)
+    for(int a=0; a<analyses.size(); a++)
     {
         QDomNode analysisNode = analyses.at(a);
         std::string type      = analysisNode.toElement().attribute("Type").toStdString();
         XmlAnalysis * newAnalysis = new XmlAnalysis(analysisNode);
         int priority              = newAnalysis->getPriority();
+        if(theAnalyses_.find(priority) != theAnalyses_.end())
+        {
+            ss_ << "Error: Analyses " << theAnalyses_[priority].first << " and " << type
+                << " have same priority " << priority << ". You must change any of the two priorities!";
+            STDLINE(ss_.str(),ACRed);
+            file.close();
+            return false;
+        }
         theAnalyses_[priority]    = std::make_pair<std::string, XmlAnalysis*>(type, newAnalysis);
     }
 
@@ -138,6 +147,7 @@ bool XmlParser::parseDocument(QString fileName)
     return true;
 }
 
+//================================================================================
 XmlAnalysis * XmlParser::getAnalysesFromString (std::string analysisName)
 {
     int pos = -1;

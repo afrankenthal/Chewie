@@ -156,7 +156,7 @@ void PixelMatrixCut::setReferenceHistogram(TH2F *histo)
             }
         }
     }
-//    emit cazzo();
+//    emit test();
 }
 
 void PixelMatrixCut::keyPressEvent(QKeyEvent *e)

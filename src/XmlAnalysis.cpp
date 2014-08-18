@@ -8,6 +8,12 @@ XmlAnalysis::XmlAnalysis(QDomNode& node)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+std::string XmlAnalysis::getType(void)
+{
+    return thisNode_.toElement().attribute("Type").toStdString();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
 bool XmlAnalysis::isToRun(void)
 {
     std::string isToRun = thisNode_.toElement().attribute("IsToRun").toStdString();
@@ -160,11 +166,13 @@ int XmlAnalysis::getMaxTotCharge(void)
 {
     return thisNode_.toElement().elementsByTagName("TotalCharge").at(0).toElement().elementsByTagName("MaxTotCharge").at(0).toElement().text().toInt();
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////
 int XmlAnalysis::getPriority(void)
 {
     return thisNode_.toElement().attribute("Priority").toInt();
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////
 bool XmlAnalysis::excludeBadPlanes(void)
 {

@@ -34,7 +34,7 @@ public slots:
     void selectWholeCol();
 
 signals:
-//    void cazzo();
+//    void test();
 
 private:
 

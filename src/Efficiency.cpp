@@ -20,6 +20,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +145,7 @@ void Efficiency::analyze(const Data& data, int threadNumber)//WARNING: You can't
     }
     else
     {
-        std::string inFileName = "Line493OfEfficiencycpp";//theAnalysisManager_->getInFileName();
+        std::string inFileName = "Line148fEfficiencycpp";//theAnalysisManager_->getInFileName();
         std::map<std::string,int> scanValues = theXmlParser_->getScan()->getScanValues();
 
         for(std::map<std::string,int>::iterator it=scanValues.begin(); it!=scanValues.end(); it++)
@@ -166,7 +167,6 @@ void Efficiency::endJob(void)
 {
     std::stringstream ss;
     std::stringstream hName;
-    std::ofstream outfile ("log.txt");
     double efficiency;
     double Ntrack;
     double error;
@@ -276,14 +276,22 @@ void Efficiency::endJob(void)
             error = sqrt(efficiency*(1-efficiency)/Ntrack);
 
             ss.str("");
-            ss << "Detector: " << thePlaneMapping_->getPlaneName(p) << " efficiency: " << efficiency << " +- " << error;
+            ss << "Detector: "    << std::setw(27) << thePlaneMapping_->getPlaneName(p)
+               << " efficiency: " << std::setw(4) << std::setprecision(3) << efficiency*100
+               << " +- "          << std::setw(4) << std::setprecision(3) << error*100;
             STDLINE(ss.str(),ACLightPurple);
         }
         else if(thePlaneMapping_->getPlaneName(p).find("Dut")!=std::string::npos)
         {
+            std::ofstream outfile ("log.txt");
             int pointNumber = 0;
             for(std::map< int,std::vector<TH1F*> >::iterator it=scanEfficiencyHistos_.begin(); it!=scanEfficiencyHistos_.end(); ++it)
             {
+
+                ss.str("");
+                ss << "ERROR: This part must be fixed since it assumes only 8 telescope planes!!!!!!";
+                STDLINE(ss.str(),ACRed);
+
                 ADD_THREADED((it->second)[p-8]);
                 ADD_THREADED((scanEfficiencyNorm_[it->first])[p-8]);
                 (it->second)[p-8]->Divide((scanEfficiencyNorm_[it->first])[p-8]);
@@ -295,6 +303,7 @@ void Efficiency::endJob(void)
                 STDLINE(ss.str(),ACYellow);
                 outfile << ss.str() << std::endl;
             }
+            outfile.close();
             theAnalysisManager_->cd("Efficiency/"+thePlaneMapping_->getPlaneName(p));
             scanGraph_[p-8]->Write();
             STDLINE("",ACWhite);
@@ -309,7 +318,6 @@ void Efficiency::endJob(void)
 
 
 
-    outfile.close();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

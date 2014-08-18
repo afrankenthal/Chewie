@@ -60,11 +60,11 @@ void EventConverter::beginJob()
 ///////////////////////////////////////////////////////////////////////////////////////////
 void EventConverter::convert(Event& event,int e)
 {
-    Event::plaqMapDef  	                          & theRawData	                       = event.getRawData                            ();
-    Event::clustersMapDef	                      & clusters  	                       = event.getClusters                           ();
-    Event::clustersHitsMapDef                     & clustersHits	                       = event.getClustersHits                       ();
+    Event::plaqMapDef  	                          & theRawData	                        = event.getRawData                            ();
+    Event::clustersMapDef	                      & clusters  	                        = event.getClusters                           ();
+    Event::clustersHitsMapDef                     & clustersHits	                    = event.getClustersHits                       ();
     Event::residualsMapDef	                      & fittedTrackResiduals                = event.getFittedTrackResiduals               ();
-    Event::trackCandidatesDef                     & trackCandidates	                   = event.getTrackCandidates                    ();
+    Event::trackCandidatesDef                     & trackCandidates	                    = event.getTrackCandidates                    ();
     Event::fittedTracksDef                        & fittedTracks                        = event.getFittedTracks                       ();
     Event::fittedTracksCovarianceDef              & fittedTracksCovariance              = event.getFittedTracksCovariance             ();
     Event::chi2VectorDef	                      & fittedTracksChi2                    = event.getFittedTracksChi2                   ();
@@ -186,6 +186,7 @@ void EventConverter::convert(Event& event,int e)
 
                 for(unsigned int h=0; h<size; h++)
                 {
+
                     clusterRow = clustersHits[planeName][clusterID][h]["row"];
                     clusterCol = clustersHits[planeName][clusterID][h]["col"];
                     row += (float)clusterRow;
@@ -225,7 +226,10 @@ void EventConverter::convert(Event& event,int e)
                 nRow.unique();
                 nCol.unique();
                 dataVector[t].setMeanCol        (col/size,p);
-                dataVector[t].setMeanRow        (row/size,p);
+                if((int)clusters[planeName][clusterID]["dataType"] == 1)//Strip case
+                    dataVector[t].setMeanRow(0,p);
+                 else
+                    dataVector[t].setMeanRow(row/size,p);
                 dataVector[t].setNumberOfCols   (nCol.size(),p);
                 dataVector[t].setNumberOfRows   (nRow.size(),p);
                 dataVector[t].setXMeasuredLocal (clusters[planeName][clusterID]["x"]*10,p);
@@ -455,7 +459,11 @@ void EventConverter::convert(Event& event,int e)
                             nCol.unique();
 
                             dataVector[t].setMeanCol (col/size,p);
-                            dataVector[t].setMeanRow (row/size,p);
+                            if((int)clusters[planeName][clusterID]["dataType"] == 1)//Strip case
+                                dataVector[t].setMeanRow(0,p);
+                            else
+                                dataVector[t].setMeanRow(row/size,p);
+                            //dataVector[t].setMeanRow (row/size,p);
                             dataVector[t].setNumberOfCols(nCol.size(),p);
                             dataVector[t].setNumberOfRows(nRow.size(),p);
                             break;

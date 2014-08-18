@@ -2712,7 +2712,7 @@ void Charge::endJob(void)
         ADD_THREADED(hYasimmetry0_                            [p]);
         ADD_THREADED(h2DYAsimmetryLandau_                     [p]);
         ADD_THREADED(h2DYcellChargeAsimmetry_                 [p]);
-        ADD_THREADED(h2DYCellChargeAsimmetryX_                 [p]);
+        ADD_THREADED(h2DYCellChargeAsimmetryX_                [p]);
         ADD_THREADED(h2DYcellChargeAsimmetryInv_              [p]);
         ADD_THREADED(h2DYcellChargeAsimmetryUnconstrained_    [p]);
         ADD_THREADED(h2DYcellChargeAsimmetryUnconstrainedInv_ [p]);
@@ -2758,19 +2758,14 @@ void Charge::endJob(void)
         h2DYCellChargeAsimmetryCell_[p]->Divide(h2DYCellChargeAsimmetryCellNorm_[p]);
 
 
-
-
-
         if(theAnalysisManager_->getXmlParser()->getAnalysesFromString("Charge")->doFits())
         {
             ss.str(""); ss << "Fitting Landau distributions for plane " << planeName << " ... ";
             STDLINE(ss.str(),ACRed);
             STDLINE("",ACWhite);
             fitCharge(p);
+            STDLINE("",ACWhite);
         }
-
-        STDLINE("",ACWhite);
-
         NormalizeEtaDistributionSize2 (p);
 //        NormalizeEtaDistribution      (p);
         NormalizeEtaInverse(p);
