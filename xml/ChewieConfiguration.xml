@@ -224,7 +224,7 @@
       <Cut CutString="" CutType="cell efficiency"/>
       <Cut CutString="yPixelResidualLocal[9] &lt;= 30 &amp;&amp; yPixelResidualLocal[9] >= -30 &amp;&amp; ySigmaIntercept &lt;= 8" CutType="cell efficiency X"/>
       <Cut CutString="xPixelResidualLocal[9] &lt;= 55 &amp;&amp; xPixelResidualLocal[9] >= -55 &amp;&amp; xSigmaIntercept &lt;= 8" CutType="cell efficiency Y"/>
-      <MinHits>20</MinHits>
+      <MinHits>8</MinHits>
     </Analysis>
     <Analysis StandardCut="yes" Priority="2" IsToRun="yes" Type="Charge" DoFits="no">
       <!--Priority>4</Priority-->

@@ -617,8 +617,8 @@ void Efficiency::planeEfficiency(bool pass, int planeID, const Data& data, int t
     float         row       = data.getMeanRow(planeID);
     float         col       = data.getMeanCol(planeID);
 
-    //if(theWindow->checkWindowAbout(col,row))
-    if(theWindow->checkWindow(col,row))
+    if(theWindow->checkWindowAbout(col,row))
+    //if(theWindow->checkWindow(col,row))
     {
         THREADED(hEfficiencyNorm_  [planeID])->Fill(1);
         THREADED(h2DEfficiencyNorm_[planeID])->Fill(col,row);

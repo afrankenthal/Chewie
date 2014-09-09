@@ -12,16 +12,27 @@
 #include <sstream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-HistogramWindow::HistogramWindow(std::string name, int nBinsX, int nBinsY) :
+HistogramWindow::HistogramWindow(std::string name, int nBinsX, int nBinsY, int totalEvents) :
     Window(name,nBinsX,nBinsY)
   ,theHWindow_(0)
+  ,the2HTimeWindow_(0)
+  ,the2HTimeWindow_norm_(0)
+  ,the1HTimeWindow_(0)
+  ,totalEvents_(totalEvents)
 {
-    name_ += "_Window";
-
     nBinsX_ = nBinsX;
     nBinsY_ = nBinsY;
 
-    theHWindow_ = new TH2F (name_.c_str(),name_.c_str(),nBinsX_,0,nBinsX_,nBinsY_,0,nBinsY_);
+    int EventBinSize = 1000;
+
+    totalEvents_/=EventBinSize;
+    totalEvents_*=EventBinSize;//for having a number multiple of EventBinSize
+
+    theHWindow_ = new TH2F ((name_+"_Window").c_str(),name_.c_str(),nBinsX_,0,nBinsX_,nBinsY_,0,nBinsY_);
+
+    the2HTimeWindow_ = new TH2F ((name_+"_TimeWindow_H2").c_str(),(name_+"_TimeWindow_H2").c_str(),nBinsX_,0,nBinsX_,totalEvents_/EventBinSize,0,totalEvents_);
+    the2HTimeWindow_norm_ = new TH2F ((name_+"_TimeWindow_norm_H2").c_str(),(name_+"_TimeWindow_norm_H2").c_str(),nBinsX_,0,nBinsX_,totalEvents_/EventBinSize,0,totalEvents_);
+    the1HTimeWindow_ = new TH1F ((name_ +"_TimeWindow_").c_str(),(name_ +"_TimeWindow_").c_str(),nBinsX_,0,nBinsX_);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -30,6 +41,13 @@ HistogramWindow::~HistogramWindow(void)
     if(!Window::fDoNotDelete_ && theHWindow_)
         delete theHWindow_;
     theHWindow_ = 0;
+
+    if(!Window::fDoNotDelete_ && the1HTimeWindow_ )
+        delete the1HTimeWindow_;
+    the1HTimeWindow_ = 0;
+
+    delete the2HTimeWindow_;
+    delete the2HTimeWindow_norm_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -71,8 +89,21 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
     int   nRow = data.getNumberOfRows(planeID);
     int   nCol = data.getNumberOfCols(planeID);
 
+    if( data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol ){
+
+        the2HTimeWindow_norm_->Fill(col,data.getEventNumber());
+
+        if( data.getHasHit(planeID) )
+
+            the2HTimeWindow_->Fill(col,data.getEventNumber());
+
+    }
+
     if( data.getHasHit(planeID) && data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol )
     {
+
+
+
         if(nRow==1 && nCol==1)
             theHWindow_->Fill(col,row);
         else if(nRow>1 && nCol==1)
@@ -135,6 +166,8 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
                 }
             }
         }
+
+
     }
 }
 
@@ -151,4 +184,10 @@ void HistogramWindow::removePixel(int col, int row)
 int HistogramWindow::getNumberOfEvents (void)
 {
     return (const int)theHWindow_->GetEntries();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+void HistogramWindow::calculateTimeEfficiency(void)
+{
+    the2HTimeWindow_->Divide(the2HTimeWindow_norm_);
 }

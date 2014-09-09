@@ -14,15 +14,16 @@ public:
     Window          (std::string name, int nBinsX, int nBinsY);
     virtual ~Window (void                                    );
 
-    virtual bool               checkWindow     (float col     , float row         ) const = 0;
-    virtual bool               checkWindowAbout(float col     , float row         ) const = 0;
-    virtual void               calculateWindow (int   planeID , const Data& aData,
-                                                int   lowerCol, int   higherCol  ,
-                                                int   lowerRow, int   higherRow   ) = 0;
-    virtual void               removePixel     (int   col     , int   row         ) = 0;
-    virtual void               sumThreaded     (void                              ){;}
-    virtual std::pair<int,int> getNbins        (void                              ) const = 0;
-    void                       setDoNotDelete  (bool  flag                        ){fDoNotDelete_ = flag;}
+    virtual bool               checkWindow            (float col     , float row         ) const = 0;
+    virtual bool               checkWindowAbout       (float col     , float row         ) const = 0;
+    virtual void               calculateWindow        (int   planeID , const Data& aData,
+                                                       int   lowerCol, int   higherCol  ,
+                                                       int   lowerRow, int   higherRow   ) = 0;
+    virtual void               calculateTimeEfficiency(void                              ){;}
+    virtual void               removePixel            (int   col     , int   row         ) = 0;
+    virtual void               sumThreaded            (void                              ){;}
+    virtual std::pair<int,int> getNbins               (void                              ) const = 0;
+    void                       setDoNotDelete         (bool  flag                        ){fDoNotDelete_ = flag;}
 
 //    virtual int                getNumberOfEvents(void                              ){return 0;}
 
@@ -36,3 +37,4 @@ protected:
 }; 
 
 #endif
+

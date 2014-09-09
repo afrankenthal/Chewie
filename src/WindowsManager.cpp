@@ -68,7 +68,7 @@ void WindowsManager::beginJob(void)
         higherRow = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getHigherRow()).c_str());
         int nBinsX = higherCol-lowerCol+1;
         int nBinsY = higherRow-lowerRow+1;
-        windows_.push_back(new HistogramWindow(thePlanesMapping_->getPlaneName(w),nBinsX,nBinsY));
+        windows_.push_back(new HistogramWindow(thePlanesMapping_->getPlaneName(w),nBinsX,nBinsY,theAnalysisManager_->getTotalEvents()));
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,6 +97,7 @@ void WindowsManager::endJob(void)
         {
             windows_[w]->removePixel(removedPixels[p]["col"],removedPixels[p]["row"]);
         }
+        windows_[w]->calculateTimeEfficiency();
         windows_[w]->sumThreaded();
     }
 }
