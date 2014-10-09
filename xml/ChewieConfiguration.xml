@@ -226,7 +226,7 @@
       <Cut CutString="xPixelResidualLocal[9] &lt;= 55 &amp;&amp; xPixelResidualLocal[9] >= -55 &amp;&amp; xSigmaIntercept &lt;= 8" CutType="cell efficiency Y"/>
       <MinHits>8</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="2" IsToRun="yes" Type="Charge" DoFits="no">
+    <Analysis StandardCut="yes" Priority="2" IsToRun="no" Type="Charge" DoFits="no">
       <!--Priority>4</Priority-->
       <CellCharge>
         <Threashold>500</Threashold>

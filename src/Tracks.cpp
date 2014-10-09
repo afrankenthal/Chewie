@@ -452,9 +452,9 @@ void Tracks::endJob(void)
     ADD_THREADED(hEventNumber_        );
     ADD_THREADED(hTracksVsEvNumber_   );
 
-    for (std::vector<int>::iterator it = fRunNumbers_.begin(); it != fRunNumbers_.end(); ++it)
+    for(std::map<int,int>::iterator runIt = runNumberEntries_.begin(); runIt != runNumberEntries_.end(); runIt++)
     {
-        ADD_THREADED(mEvNumberRun_[*it]);
+        ADD_THREADED(mEvNumberRun_[runIt->first]);
     }
 
     hChi2_               ->GetXaxis()->SetTitle("chi2/DOF"              );
@@ -477,9 +477,9 @@ void Tracks::endJob(void)
 
     hTracksVsEvNumber_->Divide(hEventNumber_);
 
-    for (std::vector<int>::iterator it = fRunNumbers_.begin(); it != fRunNumbers_.end(); ++it)
+    for(std::map<int,int>::iterator runIt = runNumberEntries_.begin(); runIt != runNumberEntries_.end(); runIt++)
     {
-        mEvNumberRun_[*it]->GetXaxis()->SetTitle("Event Number");
+        mEvNumberRun_[runIt->first]->GetXaxis()->SetTitle("Event Number");
     }
 
     TH1D * hTracksProjXYPixPX_;
@@ -697,7 +697,10 @@ void Tracks::book(void)
 
     hName = "RunNumber_" + planeName;
     hTitle = "Number of events for each run number";
-    hRunNumber_ = NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), (int)(*fRunNumbers_.begin() - *(fRunNumbers_.end()-1) + 1), *fRunNumbers_.begin(), *(fRunNumbers_.end()-1)+1));
+    hRunNumber_ = NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(),
+                                    runNumberEntries_.begin() ->first - runNumberEntries_.rbegin()->first + 1,
+                                    runNumberEntries_.begin() ->first,
+                                    runNumberEntries_.rbegin()->first+1));
 
     hName = "EventNumber_" + planeName;
     hTitle = "Event number";
@@ -708,13 +711,13 @@ void Tracks::book(void)
     hTracksVsEvNumber_ = NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 40000, 0, 400000));
 
     std::stringstream sss;
-    for (std::vector<int>::iterator it = fRunNumbers_.begin(); it != fRunNumbers_.end(); ++it)
+    for(std::map<int,int>::iterator runIt = runNumberEntries_.begin(); runIt != runNumberEntries_.end(); runIt++)
     {
         sss.str("");
-        sss << *it;
+        sss << runIt->first;
         hName = "EventNumberRun_" + sss.str();
         hTitle = "Event number distribution for run number # " + sss.str();
-        mEvNumberRun_[*it] = NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 40000, 0, 400000));
+        mEvNumberRun_[runIt->first] = NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 40000, 0, 400000));
     }
 
     XmlParser* theParser = theAnalysisManager_->getXmlParser();

@@ -1,7 +1,7 @@
 #include "Window.h"
 
 /*-----------------------------------------------------------------------------------*/
-Window::Window(std::string name, int, int) :
+Window::Window(std::string name) :
     name_(name)
   , fDoNotDelete_(false)
 {

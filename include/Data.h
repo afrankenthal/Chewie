@@ -16,6 +16,7 @@ public:
     void         setBranchAddress                   (TTree*        tree    );
 
     void         setEventNumber	                    (int           v       ){eventNumber_                         = v;}
+    void         setEventChewieNumber               (int           v       ){eventChewieNumber_                   = v;}
     void         setRunNumber	                    (int           v       ){runNumber_                           = v;}
     void         setNumberOfTracks	                (int           v       ){numberOfTracks_                      = v;}
     void         setTrackNumber	                    (int           v       ){trackNumber_	                      = v;}
@@ -95,6 +96,7 @@ public:
     void         setIsPixelCalibrated               (bool  v,  int h, int p){isPixelCalibrated_            [h][p] = v;}
 
     int          getEventNumber   	                (void            )const {return eventNumber_                        ;}
+    int          getEventChewieNumber               (void            )const {return eventChewieNumber_                  ;}
     int          getRunNumber   	                (void            )const {return runNumber_                          ;}
     int          getNumberOfTracks  	            (void            )const {return numberOfTracks_                     ;}
     int          getTrackNumber  	                (void            )const {return trackNumber_                        ;}
@@ -176,6 +178,7 @@ public:
 private:
     enum {size = 25, maxHits = 4};
     int          eventNumber_                             ;//Event number
+    int          eventChewieNumber_                       ;//Event Number in Chewie
     int          runNumber_                               ;//Run number
     int          numberOfTracks_                          ;//Number of tracks in the event
     int          trackNumber_                             ;//Track number in the event

@@ -45,11 +45,14 @@ public:
     TFile*                getOutputFile          (void                             ){return outFile_                    ;}
     const std::string&    getOutputFileName      (void                             ){return outFileName_                ;}
     int                   getTotalEvents         (void                             ){return totalEvents_                ;}
+    std::vector<int>      getEventsForRun        (void                             );
     int                   calculateTotalEvents   (void                             );
     int                   getMaxEvents           (void                             ){return maxEvents_                  ;}
     XmlParser*            getXmlParser           (void                             ){return theXmlParser_               ;}
     CalibrationsManager*  getCalibrationsManager (void                             ){return theCalibrationsManager_     ;}
     bool                  isFinished             (void                             ){return isFinished_                 ;}
+    TFile*                getOutFile_            (void                             ){return outFile_                    ;}
+
 
     int                   initializeTree         (std::string     fileName                  );
     int                   initializeTrees        (void                                      );
@@ -87,16 +90,17 @@ public:
 //    void                  preventFalseOrder      ();
 
 
-private:
-    std::map<std::string,TFile*>                inFilesList_        ;
-    std::map<std::string,TTree*>                treeFilesList_      ;
-    std::map<std::string, std::pair<int, int> > fileNameToTreePos_  ;
 
-    std::vector<unsigned int>                   currentTree_           ;
-    std::map<int, std::map<int,TTree*> >        threadedTrees_         ;
-    std::map<int, std::map<int, Data> >         threadedData_          ;
-    std::map<int, std::map<int, int> >          threadedCurrentEntries_;
-    std::map<int, std::map<int, int> >          threadedMaxEntries_    ;
+private:
+    std::map<std::string,TFile*>                      inFilesList_        ;
+    std::map<std::string,TTree*>                      treeFilesList_      ;
+    std::map<std::string, std::pair<int, int> >       fileNameToTreePos_  ;
+
+    std::vector<unsigned int>                         currentTree_           ;
+    std::map<int, std::map<int,TTree*> >              threadedTrees_         ;
+    std::map<int, std::map<int, Data> >               threadedData_          ;
+    std::map<int, std::map<int, int> >                threadedCurrentEntries_;
+    std::map<int, std::map<int, int> >                threadedMaxEntries_    ;
 
     unsigned int                                      nOfThreads_            ;
     unsigned int                                      maxNOfThreads_         ;
@@ -117,6 +121,7 @@ private:
     int                                               completionStatusBegin_ ;
     int                                               completionStatusEnd_   ;
     std::string                                       currentOperation_      ;
+
 
 };
 

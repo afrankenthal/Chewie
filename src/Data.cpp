@@ -20,6 +20,7 @@ Data::~Data()
 void Data::setBranchAddress(TTree* tree)
 {
   tree->SetBranchAddress("eventNumber"                     , &eventNumber_  	               );
+  tree->SetBranchAddress("eventChewieNumber"               , &eventChewieNumber_  	           );
   tree->SetBranchAddress("runNumber"                       , &runNumber_    	               );
   tree->SetBranchAddress("numberOfTracks"                  , &numberOfTracks_	               );
   tree->SetBranchAddress("trackNumber"                     , &trackNumber_  	               );
@@ -103,6 +104,7 @@ void Data::setBranchAddress(TTree* tree)
 void Data::branch(TTree* tree)
 {
   tree->Branch("eventNumber"                     , &eventNumber_		             , "eventNumber/I" 		                   );
+  tree->Branch("eventChewieNumber"               , &eventChewieNumber_		         , "eventChewieNumber/I" 		           );
   tree->Branch("runNumber"                       , &runNumber_   		             , "eventNumber/I" 		                   );
   tree->Branch("numberOfTracks"                  , &numberOfTracks_ 	             , "numberOfTracks/I"		               );
   tree->Branch("trackNumber"                     , &trackNumber_		             , "trackNumber/I"                         );

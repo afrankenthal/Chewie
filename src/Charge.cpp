@@ -173,7 +173,8 @@ void Charge::destroy()
     for(std::vector<TH2F*>::iterator it=h2DXAsimmetryLandau_                    .begin(); it!=h2DXAsimmetryLandau_                    .end(); it++) delete *it; h2DXAsimmetryLandau_                    .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetry_                .begin(); it!=h2DXcellChargeAsimmetry_                .end(); it++) delete *it; h2DXcellChargeAsimmetry_                .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryInv_             .begin(); it!=h2DXcellChargeAsimmetryInv_             .end(); it++) delete *it; h2DXcellChargeAsimmetryInv_             .clear();
-    for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryInv_             .begin(); it!=h2DXcellChargeAsimmetryInv_             .end(); it++) delete *it; h2DXcellChargeAsimmetryInv_             .clear();
+    for(std::vector<TH1F*>::iterator it=h1DXcellChargeAsimmetryInv_             .begin(); it!=h1DXcellChargeAsimmetryInv_             .end(); it++) delete *it; h1DXcellChargeAsimmetryInv_             .clear();
+    //for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryInv_             .begin(); it!=h2DXcellChargeAsimmetryInv_             .end(); it++) delete *it; h2DXcellChargeAsimmetryInv_             .clear();
     for(std::vector<TH1F*>::iterator it=h1DXcellChargeAsimmetry_                .begin(); it!=h1DXcellChargeAsimmetry_                .end(); it++) delete *it; h1DXcellChargeAsimmetry_                .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryUnconstrained_   .begin(); it!=h2DXcellChargeAsimmetryUnconstrained_   .end(); it++) delete *it; h2DXcellChargeAsimmetryUnconstrained_   .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryUnconstrainedInv_.begin(); it!=h2DXcellChargeAsimmetryUnconstrainedInv_.end(); it++) delete *it; h2DXcellChargeAsimmetryUnconstrainedInv_.clear();
@@ -698,8 +699,9 @@ void Charge::clusterSize(bool, int planeID, const Data& data, int threadNumber)
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindowAbout(col,row) )
+    if( !theWindow->checkWindowAbout(col,row,run) )
         return;
 
     float maxPitchX = 150;
@@ -819,9 +821,9 @@ void Charge::clusterLandau(bool pass, int planeID, const Data& data, int threadN
 
     for(int h=0; h<size; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) //hits must fall in the window
-               || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels must be calibrated
-               ||  data.getClusterPixelCharge(h,planeID) < threashold_   )                                       //charge must be over threashold  ---> Doesn't work with old data
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber()) //hits must fall in the window
+               || !data.getIsPixelCalibrated(h,planeID)                                                                           //pixels must be calibrated
+               ||  data.getClusterPixelCharge(h,planeID) < threashold_   )                                                        //charge must be over threashold  ---> Doesn't work with old data
             return;
     }
 
@@ -857,14 +859,14 @@ void Charge::cellLandau(bool pass, int planeID, const Data& data, int threadNumb
 
     for(int h=0; h<size; ++h)
     {
-        if(!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) || !data.getIsPixelCalibrated (h,planeID)) return;
+        if(!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber()) || !data.getIsPixelCalibrated (h,planeID)) return;
         THREADED(hCellLandauSinglePixel_[planeID])->Fill(data.getClusterPixelCharge(h, planeID));
     }
 
     if( size != 1 )
         return;
 
-    if(    theWindow->checkWindow(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID))
+    if(    theWindow->checkWindow(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber())
            && data.getIsPixelCalibrated(0,planeID)
            && data.getClusterCharge(planeID) > threashold_  )
         THREADED(hCellLandau_[planeID])->Fill(data.getClusterCharge(planeID));
@@ -898,15 +900,16 @@ void Charge::Xlandau(bool pass, int planeID, const Data &data, int threadNumber)
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     int size = data.getClusterSize(planeID);
     if (size > 4) return;
     for(int h=0; h<size; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) //hits must fall in the window
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits must fall in the window
                ||  data.getClusterPixelRow   (h,planeID) != row                                               //hits must be on the same row (sharing is along the row - x direction)
                || !data.getIsPixelCalibrated (h,planeID)                                                      //pixels must be calibrated
                ||  data.getClusterPixelCharge(h,planeID) < threashold_  )                                     //charge must be over threashold
@@ -928,18 +931,19 @@ void Charge::Ylandau(bool pass, int planeID, const Data &data, int threadNumber)
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     int size = data.getClusterSize(planeID);
     if (size > 4) return;
     for(int h=0; h<size; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) //hits must fall in the window
-               ||  data.getClusterPixelCol   (h,planeID) !=  col                                              //hits must be on the same column (sharing is along the column - y direction)
-               || !data.getIsPixelCalibrated (h,planeID)                                                      //pixels must be calibrated
-               ||  data.getClusterPixelCharge(h,planeID) < threashold_ )                                      //charge must be over threashold
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits must fall in the window
+               ||  data.getClusterPixelCol   (h,planeID) !=  col                                                  //hits must be on the same column (sharing is along the column - y direction)
+               || !data.getIsPixelCalibrated (h,planeID)                                                          //pixels must be calibrated
+               ||  data.getClusterPixelCharge(h,planeID) < threashold_ )                                          //charge must be over threashold
             return;
     }
 
@@ -977,8 +981,9 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     THREADED(h2DallTracks_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
@@ -1136,14 +1141,14 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
 
     if( size == 4 )
     {
+
         for(int h=0; h<size; ++h)
         {
-            if( !theWindow->checkWindow( data.getClusterPixelCol(h,planeID) , data.getClusterPixelRow(h,planeID) ) ||
+            if( !theWindow->checkWindow( data.getClusterPixelCol(h,planeID) , data.getClusterPixelRow(h,planeID),run ) ||
                     !data.getIsPixelCalibrated(h,planeID) ||
                     data.getClusterPixelCharge(h,planeID) < threashold_ ||
                     data.getClusterPixelCharge(h,planeID) > maxCharge_ ) return;
         }
-
         bool isPredictedIn = false;
         int  firstHit;
         for(int h=0; h<size; ++h)
@@ -1294,8 +1299,9 @@ void Charge::XchargeDivision(bool pass, int planeID, const Data& data, int threa
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindowAbout(col,row) )
+    if( !theWindow->checkWindowAbout(col,row,run) )
         return;
 
     THREADED(h1DXallTracks_[planeID])->Fill(xRes);
@@ -1305,7 +1311,7 @@ void Charge::XchargeDivision(bool pass, int planeID, const Data& data, int threa
     {
         for(int h=0; h<size; ++h)
         {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID))  //hits are in the window
+            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run)  //hits are in the window
                    || !data.getIsPixelCalibrated(h,planeID)                                                           //pixels are calibrated
                    ||  data.getClusterPixelRow    (h,planeID) != row                                                  //hits are on the same row (sharing is along the row - x direction)
                    ||  data.getClusterPixelCharge (h,planeID) < threashold_                                           //charge is over threshold
@@ -1431,8 +1437,9 @@ void Charge::Xasimmetry(bool pass, int planeID, const Data& data, int threadNumb
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     int size = data.getClusterSize(planeID);
@@ -1473,11 +1480,11 @@ void Charge::Xasimmetry(bool pass, int planeID, const Data& data, int threadNumb
 
     for(int h=0; h<size; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID))  //hits are in the window
-               || !data.getIsPixelCalibrated(h,planeID)                                                        //pixels are calibrated
-               ||  data.getClusterPixelRow    (h,planeID) != row                                               //hits are on the same row (sharing is along the row - x direction)
-               ||  data.getClusterPixelCharge (h,planeID) <  threashold_                                       //charge is over threshold
-               ||  data.getClusterPixelCharge (h,planeID) >  maxCharge_                                        //maximum allowed charge for this physics
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run)  //hits are in the window
+               || !data.getIsPixelCalibrated(h,planeID)                                                            //pixels are calibrated
+               ||  data.getClusterPixelRow    (h,planeID) != row                                                   //hits are on the same row (sharing is along the row - x direction)
+               ||  data.getClusterPixelCharge (h,planeID) <  threashold_                                           //charge is over threshold
+               ||  data.getClusterPixelCharge (h,planeID) >  maxCharge_                                            //maximum allowed charge for this physics
                )
             return;
     }
@@ -1597,8 +1604,9 @@ void Charge::XasimmetryUnconstr(bool pass, int planeID, const Data& data, int th
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     int size = data.getClusterSize(planeID);
@@ -1606,7 +1614,7 @@ void Charge::XasimmetryUnconstr(bool pass, int planeID, const Data& data, int th
     {
         for(int h=0; h<size; ++h)
         {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID))  //hits are in the window
+            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run)  //hits are in the window
                    || !data.getIsPixelCalibrated(h,planeID)                                                           //pixels are calibrated
                    ||  data.getClusterPixelRow    (h,planeID) != row                                                  //hits are on the same row (sharing is along the row - x direction)
                    ||  data.getClusterPixelCharge (h,planeID) < threashold_                                           //charge is over threshold
@@ -1706,8 +1714,9 @@ void Charge::YchargeDivision(bool pass, int planeID, const Data& data, int threa
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     THREADED(h1DYallTracks_[planeID])->Fill(yRes);
@@ -1721,7 +1730,7 @@ void Charge::YchargeDivision(bool pass, int planeID, const Data& data, int threa
     {
         for(int h=0; h<size; ++h)
         {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) // hits are in the window
+            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // hits are in the window
                    || !data.getIsPixelCalibrated(h,planeID)                                                       //pixels are calibrated
                    ||  data.getClusterPixelCol    (h,planeID) !=  col                                             //hits are on the same column (sharing is along the column - y direction)
                    ||  data.getClusterPixelCharge (h,planeID) <  threashold_                                      //charge is over threshold
@@ -1852,8 +1861,9 @@ void Charge::Yasimmetry(bool pass, int planeID, const Data& data, int threadNumb
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     int size = data.getClusterSize(planeID);
@@ -1893,7 +1903,7 @@ void Charge::Yasimmetry(bool pass, int planeID, const Data& data, int threadNumb
 */
     for(int h=0; h<size; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID))  // hits are in the window
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run)  // hits are in the window
                || !data.getIsPixelCalibrated(h,planeID)                                                        //pixels are calibrated
                ||  data.getClusterPixelCol    (h,planeID) != col                                               //hits are on the same column (sharing is along the column - y direction)
                ||  data.getClusterPixelCharge (h,planeID) <  threashold_                                       //charge is over threshold
@@ -2012,8 +2022,9 @@ void Charge::YasimmetryUnconstr(bool pass, int planeID, const Data& data, int th
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     int size = data.getClusterSize(planeID);
@@ -2021,7 +2032,7 @@ void Charge::YasimmetryUnconstr(bool pass, int planeID, const Data& data, int th
     {
         for(int h=0; h<size; ++h)
         {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID))  // hits are in the window
+            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run)  // hits are in the window
                    || !data.getIsPixelCalibrated(h,planeID)                                                        //pixels are calibrated
                    ||  data.getClusterPixelCol    (h,planeID) != col                                               //hits are on the same column (sharing is along the column - y direction)
                    ||  data.getClusterPixelCharge (h,planeID) <  threashold_                                       //charge is over threshold
@@ -2260,8 +2271,9 @@ void Charge::MeanChargePositionRN (bool pass, int planeID, const Data &data, int
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
     int           col       = data.getColPredicted(planeID)         ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     int size = data.getClusterSize(planeID);
@@ -2387,16 +2399,33 @@ void Charge::NormalizeEtaInverse (int p)
 {
     int ip;
     double xp;
-
+/*
     for (int j = 1; j < h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetNbins()+1; ++j)
     {
         for (int i = 1; i < h2DXcellChargeAsimmetryInv_[p]->GetXaxis()->GetNbins()+1; ++i)
         {
+                if((double)projX_[p]->GetBinContent(j)<=0.) continue;
                 h2DXcellChargeAsimmetryInv_[p]->SetBinContent(i, j, (double)h2DXcellChargeAsimmetryInv_[p]->GetBinContent(i, j)/(double)projX_[p]->GetBinContent(j));
         }
     }
 
     h2DXcellChargeAsimmetryInv_[p]->Scale((double)projX_[p]->GetEntries()/(double)projX_[p]->GetXaxis()->GetNbins());
+*/
+
+    for (int j = 1; j < h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetNbins()+1; ++j)
+    {
+        for (int i = 1; i < h2DXcellChargeAsimmetryInv_[p]->GetXaxis()->GetNbins()+1; ++i)
+        {
+                xp = h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetBinCenter(j);
+                ip = h1DXallTracks_[p]->GetXaxis()->FindBin(xp);
+                if((double)h1DXallTracks_[p]->GetBinContent(ip)<=0.) continue;
+                h2DXcellChargeAsimmetryInv_[p]->SetBinContent(i, j, (double)h2DXcellChargeAsimmetryInv_[p]->GetBinContent(i, j)/(double)h1DXallTracks_[p]->GetBinContent(ip));
+        }
+    }
+
+    h2DXcellChargeAsimmetryInv_[p]->Scale((double)h1DXallTracks_[p]->GetEntries()/(double)h1DXallTracks_[p]->GetXaxis()->GetNbins());
+
+    //-----------------------------------------------------------------------------------------------------------------------------//
 
     for (int j = 1; j < h2DYcellChargeAsimmetryInv_[p]->GetYaxis()->GetNbins()+1; ++j)
     {
@@ -2404,26 +2433,35 @@ void Charge::NormalizeEtaInverse (int p)
         {
                 xp = h2DYcellChargeAsimmetryInv_[p]->GetYaxis()->GetBinCenter(j);
                 ip = h1DYallTracks_[p]->GetXaxis()->FindBin(xp);
+                if((double)h1DYallTracks_[p]->GetBinContent(ip)<=0.) continue;
                 h2DYcellChargeAsimmetryInv_[p]->SetBinContent(i, j, (double)h2DYcellChargeAsimmetryInv_[p]->GetBinContent(i, j)/(double)h1DYallTracks_[p]->GetBinContent(ip));
         }
     }
 
     h2DYcellChargeAsimmetryInv_[p]->Scale((double)h1DYallTracks_[p]->GetEntries()/(double)h1DYallTracks_[p]->GetXaxis()->GetNbins());
 
+    //-----------------------------------------------------------------------------------------------------------------------------//
+
     for (int j = 1; j < h2DXcellChargeAsimmetry_[p]->GetYaxis()->GetNbins()+1; ++j)
     {
         for (int i = 1; i < h2DXcellChargeAsimmetry_[p]->GetXaxis()->GetNbins()+1; ++i)
         {
+                if((double)projX_[p]->GetBinContent(i)<=0.) continue;
+                //if(i==1 && p==22) std::cout<<"X "<<(double)h2DXcellChargeAsimmetry_[p]->GetBinContent(1,j);
                 h2DXcellChargeAsimmetry_[p]->SetBinContent(i, j, (double)h2DXcellChargeAsimmetry_[p]->GetBinContent(i, j)/(double)projX_[p]->GetBinContent(i));
+                //if(i==1 && p==22) std::cout<<" -> "<<(double)h2DXcellChargeAsimmetry_[p]->GetBinContent(1,j)<<std::endl;
         }
     }
 
     h2DXcellChargeAsimmetry_[p]->Scale((double)projX_[p]->GetEntries()/(double)projX_[p]->GetXaxis()->GetNbins());
 
+    //-----------------------------------------------------------------------------------------------------------------------------//
+
     for (int j = 1; j < h2DYcellChargeAsimmetry_[p]->GetYaxis()->GetNbins()+1; ++j)
     {
         for (int i = 1; i < h2DYcellChargeAsimmetry_[p]->GetXaxis()->GetNbins()+1; ++i)
         {
+                if((double)projY_[p]->GetBinContent(i)==0) continue;
                 h2DYcellChargeAsimmetry_[p]->SetBinContent(i, j, (double)h2DYcellChargeAsimmetry_[p]->GetBinContent(i, j)/(double)projY_[p]->GetBinContent(i));
         }
     }
@@ -2723,10 +2761,10 @@ void Charge::endJob(void)
 //        ADD_THREADED(mXMeanCharge_                            [p]);
 //        ADD_THREADED(mYMeanCharge_                            [p]);
 
-        for (std::vector<int>::iterator it = fRunNumbers_.begin(); it != fRunNumbers_.end(); ++it)
+        for(std::map<int,int>::iterator runIt = runNumberEntries_.begin(); runIt != runNumberEntries_.end(); runIt++)
         {
-            ADD_THREADED(mXYMeanCharge_[p][*it]);
-            ADD_THREADED(mXYNorm_[p][*it]);
+            ADD_THREADED(mXYMeanCharge_[p][runIt->first]);
+            ADD_THREADED(mXYNorm_      [p][runIt->first]);
         }
 
 //        h2DCellCharge_                [p]->Divide(h2DCellChargeNorm_       [p]); //to normalize with respect to the events that produced a hit
@@ -2995,6 +3033,11 @@ void Charge::endJob(void)
         hHitsNotONRowColVsYSlope_                [p]->GetYaxis()->SetTitle("y slope (1/um)"    );
         hHitsNotOnRowColProjY_                   [p]->GetXaxis()->SetTitle("short pitch (um)"  );
 
+        TF1 *lin_X = new TF1("lineX","pol1",-0.7,0.7);
+
+        h1DXcellChargeAsimmetryInv_[p]->Fit(lin_X,"QR");
+
+
         hXasimmetry_                             [p]->GetXaxis()->SetTitle("Asimmetry"         );
         hXasimmetry0_                            [p]->GetXaxis()->SetTitle("Asimmetry on one side");
         h2DXAsimmetryLandau_                     [p]->GetXaxis()->SetTitle("charge (electrons)");
@@ -3058,6 +3101,12 @@ void Charge::endJob(void)
         h1DYEtaDerivativeDistribution_           [p]->GetYaxis()->SetTitle("dEta/dy"           );
         h2DYCellChargeAsimmetryCell_             [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DYCellChargeAsimmetryCell_             [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+
+        TF1 *lin_Y = new TF1("lineY","pol1",-0.7,0.7);
+
+        h1DYcellChargeAsimmetryInv_[p]->Fit(lin_Y,"QR");
+
+
     }
 
     calculateMeanCharge();
@@ -4111,19 +4160,19 @@ void Charge::book(void)
         std::stringstream sss;
         int minRunNumber = 1000000000;
         int maxRunNumber = -1;
-        for (std::vector<int>::iterator it = fRunNumbers_.begin(); it != fRunNumbers_.end(); ++it)
+        for(std::map<int,int>::iterator runIt = runNumberEntries_.begin(); runIt != runNumberEntries_.end(); runIt++)
         {
             sss.str("");
-            sss << *it;
+            sss << runIt->first;
             hName = "xyChargeDistribution_run" + sss.str() + "_" + planeName;
             hTitle = "Charge distribution, run number #" + sss.str() + ", " + planeName;
-            aMap[*it] = NEW_THREADED(TH2F (hName.c_str(), hTitle.c_str(), (int)resXRange/5 - 1, -(resXRange/2) + 2.5, resXRange/2 - 2.5, (int)resYRange/5 - 1, -(resYRange/2) + 2.5, resYRange/2 - 2.5));
+            aMap[runIt->first] = NEW_THREADED(TH2F (hName.c_str(), hTitle.c_str(), (int)resXRange/5 - 1, -(resXRange/2) + 2.5, resXRange/2 - 2.5, (int)resYRange/5 - 1, -(resYRange/2) + 2.5, resYRange/2 - 2.5));
             hName = "ChargeNormalization_run" + sss.str() + "_" + planeName;
             hTitle = "Normalization histogram, run number #" + sss.str() + ", " + planeName;
-            aMapNorm[*it] = NEW_THREADED(TH2F (hName.c_str(), hTitle.c_str(), (int)resXRange/5 - 1, -(resXRange/2) + 2.5, resXRange/2 - 2.5, (int)resYRange/5 - 1, -(resYRange/2) + 2.5, resYRange/2 - 2.5));
+            aMapNorm[runIt->first] = NEW_THREADED(TH2F (hName.c_str(), hTitle.c_str(), (int)resXRange/5 - 1, -(resXRange/2) + 2.5, resXRange/2 - 2.5, (int)resYRange/5 - 1, -(resYRange/2) + 2.5, resYRange/2 - 2.5));
 
-            if (*it > maxRunNumber) maxRunNumber = *it;
-            if (*it < minRunNumber) minRunNumber = *it;
+            if (runIt->first > maxRunNumber) maxRunNumber = runIt->first;
+            if (runIt->first < minRunNumber) minRunNumber = runIt->first;
         }
         mXYMeanCharge_.push_back(aMap);
         mXYNorm_      .push_back(aMapNorm);

@@ -589,16 +589,18 @@ void Efficiency::setErrorsBar(int planeID)
 void Efficiency::scanEfficiency(int planeID, int value, const Data& data, int threadNumber)
 {
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
-    float row  = data.getMeanRow(planeID);
-    float col  = data.getMeanCol(planeID);
-    int   hits = 0;
+    float row   = data.getMeanRow(planeID);
+    float col   = data.getMeanCol(planeID);
+    int   event = data.getEventChewieNumber();
+    int   run   = data.getRunNumber();
+    int   hits  = 0;
 
     for(unsigned int pp=0; pp<thePlaneMapping_->getNumberOfPlanes(); pp++)
     {
         if(data.getHasHit(pp) && thePlaneMapping_->getPlaneName(pp).find("Telescope") != std::string::npos) hits++;
     }
 
-    if(theWindow->checkWindowAbout(col,row) && hits>=8)
+    if(theWindow->checkWindowAbout(col,row,run) && theWindow->checkTimeWindowAbout(col,event,run) && hits>=8)
     //if(theWindow->checkWindow(col,row) && hits>=8)
     {
         THREADED((scanEfficiencyNorm_[value])[planeID-8])->Fill(1);
@@ -616,8 +618,10 @@ void Efficiency::planeEfficiency(bool pass, int planeID, const Data& data, int t
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     float         row       = data.getMeanRow(planeID);
     float         col       = data.getMeanCol(planeID);
+    int           event     = data.getEventChewieNumber();
+    int           run       = data.getRunNumber();
 
-    if(theWindow->checkWindowAbout(col,row))
+    if(theWindow->checkWindowAbout(col,row,run) && theWindow->checkTimeWindowAbout(col,event,run))
     //if(theWindow->checkWindow(col,row))
     {
         THREADED(hEfficiencyNorm_  [planeID])->Fill(1);
@@ -643,6 +647,8 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
     float          yRes      = data.getYPixelResidualLocal(planeID)  ;
     float          row       = data.getRowPredicted(planeID)         ;
     float          col       = data.getColPredicted(planeID)         ;
+    int            event     = data.getEventChewieNumber()                 ;
+    int            run       = data.getRunNumber()                   ;
     double         maxPitchX = 150                                   ;
     double         maxPitchY = 100                                   ;
 
@@ -684,7 +690,7 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
     else if( data.getYPixelResidualLocal(planeID) <= 0 )
         yRes2 = -(data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
 
-    if(theWindow->checkWindowAbout(col,row) && data.getXPitchLocal(planeID)<=maxPitchX && data.getYPitchLocal(planeID)<=maxPitchY)
+    if(theWindow->checkWindowAbout(col,row,run) && theWindow->checkTimeWindowAbout(col,event,run) && data.getXPitchLocal(planeID)<=maxPitchX && data.getYPitchLocal(planeID)<=maxPitchY)
     //if(theWindow->checkWindow(col,row) && data.getXPitchLocal(planeID)<=maxPitchX && data.getYPitchLocal(planeID)<=maxPitchY)
     {
         THREADED(hCellEfficiencyNorm_[planeID])->Fill(xRes,yRes);
@@ -741,8 +747,10 @@ void Efficiency::XcellEfficiency(bool pass, int planeID, const Data& data, int t
     const Window* theWindow = theWindowsManager_->getWindow(planeID) ;
     int           row       = data.getRowPredicted(planeID)          ;
     int           col       = data.getColPredicted(planeID)          ;
+    int           event     = data.getEventChewieNumber()                  ;
+    int           run       = data.getRunNumber()                    ;
 
-    if(theWindow->checkWindowAbout(col,row))
+    if(theWindow->checkWindowAbout(col,row,run) && theWindow->checkTimeWindowAbout(col,event,run))
     //if(theWindow->checkWindow(col,row))
     {
         THREADED(h1DXcellEfficiencyNorm_[planeID])->Fill(xRes);
@@ -820,8 +828,10 @@ void Efficiency::YcellEfficiency(bool pass, int planeID, const Data& data, int t
     const Window* theWindow = theWindowsManager_->getWindow(planeID) ;
     int           row       = data.getRowPredicted(planeID)          ;
     int           col       = data.getColPredicted(planeID)          ;
+    int           event     = data.getEventChewieNumber()                  ;
+    int           run       = data.getRunNumber()                    ;
 
-    if(theWindow->checkWindowAbout(col,row))
+    if(theWindow->checkWindowAbout(col,row,run) && theWindow->checkTimeWindowAbout(col,event,run))
     //if(theWindow->checkWindow(col,row))
     {
         THREADED(h1DYcellEfficiencyNorm_[planeID])->Fill(yRes);

@@ -102,6 +102,19 @@ int AnalysisManager::initializeTrees(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+std::vector<int> AnalysisManager::getEventsForRun(void)
+{
+
+    std::vector<int> eventsForRun;
+
+    for(std::map<std::string,TFile*>::iterator fileIt=inFilesList_.begin(); fileIt!=inFilesList_.end(); fileIt++)
+        eventsForRun.push_back(initializeTree(fileIt->first));
+
+    return eventsForRun;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
 int AnalysisManager::calculateTotalEvents()
 {
     totalEvents_ = initializeTrees();
@@ -325,16 +338,16 @@ Analysis* AnalysisManager::addAnalysis(int analysisPriority, std::string analysi
             analyses_[analysisPriority].second = new TracksAfter (this,nOfThreads_);
         else if(analysisName == "Windows")
             analyses_[analysisPriority].second = new WindowsManager(this,nOfThreads_);
-//            analysesOrder_.insert(analysesOrder_.begin(),analysisName);
+        //            analysesOrder_.insert(analysesOrder_.begin(),analysisName);
         else
         {
             FATAL(std::string("Analysis name ") + analysisName + " not recognized",ACRed);
             exit(EXIT_FAILURE);
         }
-//        if(analysisName != "Windows") {
-//            if (analysisName )
-            analysesOrder_.push_back(analysisName);
-//        }
+        //        if(analysisName != "Windows") {
+        //            if (analysisName )
+        analysesOrder_.push_back(analysisName);
+        //        }
     }
     return analyses_[analysisPriority].second;
 }
@@ -373,12 +386,12 @@ void AnalysisManager::setListOfRun (Analysis * analysis)
     QRegExp regN ("Run(\\d+)\\w+");
     for (std::map<std::string, TFile*>::iterator it = inFilesList_.begin(); it != inFilesList_.end(); ++it)
     {
-//        runNumberString = (it->first).substr(it->first.find_last_of('/')+4,it->first.size()-it->first.find_last_of('/')-26);
-//        runNumber = atoi(runNumberString.c_str());
+        //        runNumberString = (it->first).substr(it->first.find_last_of('/')+4,it->first.size()-it->first.find_last_of('/')-26);
+        //        runNumber = atoi(runNumberString.c_str());
         runNumberString = (QString)(it->first.c_str());
         if (regN.indexIn(runNumberString) >= 0) runNumber = regN.cap(1).toInt();
-//        std::cout << "RUN NUMBER: " << runNumber << std::endl;
-        analysis->pushBackrunNumber(runNumber);
+        //        std::cout << "RUN NUMBER: " << runNumber << std::endl;
+        analysis->insertRunNumberEntries(runNumber,treeFilesList_[it->first]->GetEntries());
     }
 }
 
@@ -464,11 +477,11 @@ void AnalysisManager::startSequence(void)
 
         setListOfRun(analyses_[it].second);
 
-        if (analyses[it].first.find("After") != std::string::npos)
-        {
-            writeOutFile();
+        //if (analyses[it].first.find("After") != std::string::npos)
+        //{
+        //    writeOutFile();
             analyses_[it].second->getInFile(outFile_);
-        }
+        //}
 
         currentOperation_ = "Begin " + analyses_[it].first + "jobs";
         STDLINE(currentOperation_, ACRed);
@@ -551,8 +564,8 @@ void AnalysisManager::stopSequence(void)
             analyses_[it].second->endJob();
         }
 
-//    writeOutFile();
-//    closeOutFile();
+    //    writeOutFile();
+    //    closeOutFile();
     resetAnalyses();
 }
 
@@ -565,7 +578,7 @@ Data& AnalysisManager::getCurrentData(int* entry, unsigned int threadNumber)
             ++currentTree_[threadNumber];
         else
         {
-           *entry = -1;
+            *entry = -1;
             return threadedData_[threadNumber][currentTree_[threadNumber]];//It is not a valid data!
         }
     }
@@ -639,7 +652,7 @@ int AnalysisManager::getCompletionStatus(void)
     if(getCurrentEntry() > 0)
     {
         completionStatus_ = completionStatusBegin_ + (completionStatusEnd_-completionStatusBegin_) * (float)currentEntry_/totalEventsToProcess_;
-/*
+        /*
         std::stringstream ss;
         ss << "S: " << completionStatus_
            << " B: " << completionStatusBegin_

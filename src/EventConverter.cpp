@@ -105,20 +105,20 @@ void EventConverter::convert(Event& event,int e)
     
     for(unsigned int t=0; t<trackCandidates.size(); t++)
     {
-        dataVector[t].setEventNumber    (e);
-        dataVector[t].setRunNumber      (runNumber_); //it is a private variable because it's not taken from Monicelli output, but it is passed before beginJob in method startConverter of EventManager.cpp
-        dataVector[t].setNumberOfTracks (trackCandidates.size());
-        dataVector[t].setTrackNumber    (t);
-        dataVector[t].setNdof           (trackCandidates[t].size()-4);
-        dataVector[t].setChi2           (fittedTracksChi2[t]);
-        dataVector[t].setXIntercept     (fittedTracks[t][1]*10);
-        dataVector[t].setXSigmaIntercept(sqrt(fittedTracksCovariance[t](1,1))*10);
-        dataVector[t].setYIntercept     (fittedTracks[t][3]*10);
-        dataVector[t].setYSigmaIntercept(sqrt(fittedTracksCovariance[t](3,3))*10);
-        dataVector[t].setXSlope         (fittedTracks[t][0]);
-        dataVector[t].setXSigmaSlope    (sqrt(fittedTracksCovariance[t](0,0)));
-        dataVector[t].setYSlope         (fittedTracks[t][2]);
-        dataVector[t].setYSigmaSlope    (sqrt(fittedTracksCovariance[t](2,2)));
+        dataVector[t].setEventNumber      (e);
+        dataVector[t].setRunNumber        (runNumber_); //it is a private variable because it's not taken from Monicelli output, but it is passed before beginJob in method startConverter of EventManager.cpp
+        dataVector[t].setNumberOfTracks   (trackCandidates.size());
+        dataVector[t].setTrackNumber      (t);
+        dataVector[t].setNdof             (trackCandidates[t].size()-4);
+        dataVector[t].setChi2             (fittedTracksChi2[t]);
+        dataVector[t].setXIntercept       (fittedTracks[t][1]*10);
+        dataVector[t].setXSigmaIntercept  (sqrt(fittedTracksCovariance[t](1,1))*10);
+        dataVector[t].setYIntercept       (fittedTracks[t][3]*10);
+        dataVector[t].setYSigmaIntercept  (sqrt(fittedTracksCovariance[t](3,3))*10);
+        dataVector[t].setXSlope           (fittedTracks[t][0]);
+        dataVector[t].setXSigmaSlope      (sqrt(fittedTracksCovariance[t](0,0)));
+        dataVector[t].setYSlope           (fittedTracks[t][2]);
+        dataVector[t].setYSigmaSlope      (sqrt(fittedTracksCovariance[t](2,2)));
 
         int nTelescopeHits  = 0;
         int clustersSizeLE2 = 0 ;
@@ -503,6 +503,7 @@ void EventConverter::convert(Event& event,int e)
     for(unsigned int t=0; t<trackCandidates.size(); t++)
     {
         TThread::Lock();
+        dataVector[t].setEventChewieNumber(outTree_->GetEntries());
         theData_= dataVector[t];
         outTree_->Fill();
         TThread::UnLock();

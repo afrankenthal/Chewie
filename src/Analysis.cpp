@@ -41,3 +41,9 @@ int Analysis::runAnalysis()
     stopThreads();
     return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////
+void Analysis::insertRunNumberEntries(int runNumber, int entries)
+{
+    runNumberEntries_[runNumber] = entries;
+}

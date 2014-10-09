@@ -10,6 +10,7 @@
 #include "HistogramWindow.h"
 
 #include <TH1F.h>
+#include <TF1.h>
 #include <TThread.h>
 #include <TFile.h>
 #include <TTreeFormula.h>
@@ -90,26 +91,37 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
         Xp = -(data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
 
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
-    int           row       = data.getRowPredicted   ( planeID) ;
-    int           col       = data.getColPredicted   ( planeID );
+    int           row       = data.getRowPredicted   ( planeID)     ;
+    int           col       = data.getColPredicted   ( planeID )    ;
+    int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindow(col,row) ) {
+    if( !theWindow->checkWindow(col,row,run) ) {
         return;
     }
 
     for(int h=0; h<2; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) //hits are in the window
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
             || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
             ||  data.getClusterPixelRow  (h,planeID) != row )                                                 //hits are on the same row (sharing is along the row - x direction)
             return;
     }
+
+    std::string planeName;
+    std::string toGet;
+
+    planeName = thePlaneMapping_->getPlaneName(planeID);
 
     int   hitID       =     -1 ;
     int   totalCharge =      0 ;
     int   chargeLeft  =      0 ;
     int   chargeRight =      0 ;
     float Asimmetry   =      0 ;
+
+    toGet = "Charge/" + planeName +  "/Xasimmetry/h1DXcellChargeAsimmetryInv_" + planeName;
+    //float slope     = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("lineX"))->GetParameter(1);
+    //float intercept = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("lineX"))->GetParameter(0);
+
     float slope       = -13.65 ;
     float intercept   =  1.385 ;
     //float slope       = -5.181 ;
@@ -162,7 +174,7 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
     totalCharge = chargeLeft + chargeRight;
     Asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
 
-    if(Asimmetry >= -0.7 && Asimmetry <= 0.7 && totalCharge <= 30000)
+    if(Asimmetry >= -1. && Asimmetry <= 1. && totalCharge <= 30000)
     {
         Xm = slope*Asimmetry + intercept;
         THREADED(hXresidualCalculated_ [planeID])->Fill( Xm - Xp );
@@ -190,25 +202,39 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted   ( planeID );
     int           col       = data.getColPredicted   ( planeID );
+    int           run       = data.getRunNumber()               ;
 
-    if( !theWindow->checkWindow(col,row) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
 
     for(int h=0; h<2; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) // hits are in the window
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // hits are in the window
             || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
             ||  data.getClusterPixelCol    (h,planeID) !=  col )                                              //hits are on the same column (sharing is along the column - y direction)
             return;
     }
+
+    std::string planeName;
+    std::string toGet;
+
+    planeName = thePlaneMapping_->getPlaneName(planeID);
 
     int   hitID       =      -1 ;
     int   totalCharge =       0 ;
     int   chargeLeft  =       0 ;
     int   chargeRight =       0 ;
     float Asimmetry   =       0 ;
-    float slope       =  -12.13 ;
-    float intercept   = -0.5596 ;
+
+
+
+    toGet = "Charge/" + planeName +  "/Yasimmetry/h1DYcellChargeAsimmetryInv_" + planeName;
+
+    float slope     = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("lineY"))->GetParameter(1);
+    float intercept = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("lineY"))->GetParameter(0);
+
+    //float slope       =  -12.13 ;
+    //float intercept   = -0.5596 ;
     //float slope       =  -5.14  ;
     //float intercept   = -0.8479 ;
     float Ym                    ;
@@ -259,7 +285,7 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
     totalCharge = chargeLeft + chargeRight;
     Asimmetry  = (float)(chargeLeft - chargeRight)/totalCharge;
 
-    if(Asimmetry >= -0.7 && Asimmetry <= 0.7 && totalCharge <= 30000)
+    if(Asimmetry >= -1. && Asimmetry <= 1. && totalCharge <= 30000)
     {
         Ym = slope*Asimmetry + intercept;
         THREADED(hYresidualCalculated_ [planeID])->Fill( Ym - Yp );
@@ -282,7 +308,7 @@ void Resolution::xResolution(bool pass, int planeID, const Data& data, int threa
 
     for(int h=0; h<size; h++)
     {
-        if( !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) ) //i due hit devono stare nella finestra
+        if( !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber()) ) //i due hit devono stare nella finestra
             return;
     }
 
@@ -337,7 +363,7 @@ void Resolution::yResolution(bool pass, int planeID, const Data& data, int threa
 
     for(int h=0; h<size; h++)
     {
-        if( !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) ) //i due hit devono stare nella finestra
+        if( !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber()) ) //i due hit devono stare nella finestra
             return;
     }
 

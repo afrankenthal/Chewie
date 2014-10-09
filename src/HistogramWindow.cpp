@@ -12,113 +12,154 @@
 #include <sstream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-HistogramWindow::HistogramWindow(std::string name, int nBinsX, int nBinsY, int totalEvents) :
-    Window(name,nBinsX,nBinsY)
-  ,theHWindow_(0)
-  ,the2HTimeWindow_(0)
-  ,the2HTimeWindow_norm_(0)
-  ,the1HTimeWindow_(0)
-  ,totalEvents_(totalEvents)
+HistogramWindow::HistogramWindow(std::string name, int binXMin, int binXMax, int binYMin, int binYMax, std::map<int,int> runNumberEntries) :
+    Window(name)
 {
-    nBinsX_ = nBinsX;
-    nBinsY_ = nBinsY;
+    nBinsX_ = binXMax - binXMin +1;
+    nBinsY_ = binYMax - binYMin +1;
 
-    int EventBinSize = 1000;
+    for(std::map<int,int>::iterator runIt = runNumberEntries.begin(); runIt != runNumberEntries.end(); runIt++)
+    {
 
-    totalEvents_/=EventBinSize;
-    totalEvents_*=EventBinSize;//for having a number multiple of EventBinSize
 
-    theHWindow_ = new TH2F ((name_+"_Window").c_str(),name_.c_str(),nBinsX_,0,nBinsX_,nBinsY_,0,nBinsY_);
+        int EventBinSize = 1000;
+        int totalEvents  = runIt->second;
 
-    the2HTimeWindow_ = new TH2F ((name_+"_TimeWindow_H2").c_str(),(name_+"_TimeWindow_H2").c_str(),nBinsX_,0,nBinsX_,totalEvents_/EventBinSize,0,totalEvents_);
-    the2HTimeWindow_norm_ = new TH2F ((name_+"_TimeWindow_norm_H2").c_str(),(name_+"_TimeWindow_norm_H2").c_str(),nBinsX_,0,nBinsX_,totalEvents_/EventBinSize,0,totalEvents_);
-    the1HTimeWindow_ = new TH1F ((name_ +"_TimeWindow_").c_str(),(name_ +"_TimeWindow_").c_str(),nBinsX_,0,nBinsX_);
+        totalEvents/=EventBinSize;
+        totalEvents*=EventBinSize;
+        totalEvents+=EventBinSize;//to have a number multiple of EventBinSize
+
+        std::stringstream ss;
+        ss.str("");
+        ss << runIt->first;
+
+        theHWindow_          .insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_Window_Run"+ss.str()).c_str()            ,(name_+"_Window_Run"+ss.str()).c_str()            ,nBinsX_, binXMin, binXMax+1,nBinsY_                 , binYMin,binYMax+1  )));
+        theH2TimeWindow_     .insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_TimeWindow_H2_Run"+ss.str()).c_str()     ,(name_+"_TimeWindow_H2_Run"+ss.str()).c_str()     ,nBinsX_, binXMin, binXMax+1,totalEvents/EventBinSize,0       ,totalEvents)));
+        theH2TimeWindow_norm_.insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_TimeWindow_norm_H2_Run"+ss.str()).c_str(),(name_+"_TimeWindow_norm_H2_Run"+ss.str()).c_str(),nBinsX_, binXMin, binXMax+1,totalEvents/EventBinSize,0       ,totalEvents)));
+        theH1TimeWindow_     .insert(std::pair<int,TH1F*> (runIt->first ,new TH1F ((name_ +"_TimeWindow_Run"+ss.str()).c_str()       ,(name_ +"_TimeWindow_Run"+ss.str()).c_str()       ,nBinsX_, binXMin, binXMax+1                                              )));
+
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 HistogramWindow::~HistogramWindow(void)
 {
-    if(!Window::fDoNotDelete_ && theHWindow_)
-        delete theHWindow_;
-    theHWindow_ = 0;
+    for(std::map<int,TH2F*>::iterator it=theHWindow_.begin(); it != theHWindow_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
 
-    if(!Window::fDoNotDelete_ && the1HTimeWindow_ )
-        delete the1HTimeWindow_;
-    the1HTimeWindow_ = 0;
+    for(std::map<int,TH1F*>::iterator it=theH1TimeWindow_.begin(); it != theH1TimeWindow_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
 
-    delete the2HTimeWindow_;
-    delete the2HTimeWindow_norm_;
+    for(std::map<int,TH2F*>::iterator it=theH2TimeWindow_.begin(); it != theH2TimeWindow_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
+
+    for(std::map<int,TH2F*>::iterator it=theH2TimeWindow_norm_.begin(); it != theH2TimeWindow_norm_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool HistogramWindow::checkWindow(float col, float row) const
+bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
 {
-    TAxis* xAxis = theHWindow_->GetXaxis() ;
-    TAxis* yAxis = theHWindow_->GetYaxis() ;
+    TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
+    TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
 
-    if(theHWindow_->GetCellContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0)
+    if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0){
+        //std::cout<<__PRETTY_FUNCTION__<<"theHWindow_.find(runNumber)\n";
         return true;
+    }
     else
         return false;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool HistogramWindow::checkWindowAbout(float col, float row) const
+bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber) const
 {
-    TAxis* xAxis = theHWindow_->GetXaxis() ;
-    TAxis* yAxis = theHWindow_->GetYaxis() ;
+    TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
+    TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
 
-    if(theHWindow_->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 &&
-       theHWindow_->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
+    if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 &&
+            theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
         return true;
     else
         return false;
 }////////////////////////////////////////////////////////////////////////////////////
+
+bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber) const
+{
+
+    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col) >=  eventNumber)
+        return true;
+    else
+        return false;
+
+}
+///////////////////////////////////////////////////////////////////////////////////////
+bool HistogramWindow::checkTimeWindowAbout(float col, int eventNumber, int runNumber) const
+{
+
+    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col-1) >=  eventNumber &&
+            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+1) >=  eventNumber &&
+            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col  ) >=  eventNumber )
+        return true;
+    else
+        return false;
+
+}
+///////////////////////////////////////////////////////////////////////////////////////
+
 void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCol, int higherCol, int lowerRow, int higherRow)
 {
-    //std::stringstream ss;
 
-    float col  = data.getMeanCol(planeID);
-    float row  = data.getMeanRow(planeID);
-    int   nRow = data.getNumberOfRows(planeID);
-    int   nCol = data.getNumberOfCols(planeID);
+    float col   = data.getMeanCol(planeID);
+    float row   = data.getMeanRow(planeID);
+    int   nRow  = data.getNumberOfRows(planeID);
+    int   nCol  = data.getNumberOfCols(planeID);
+    int   run   = data.getRunNumber();
+    int   entry = data.getEventChewieNumber();
 
     if( data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol ){
 
-        the2HTimeWindow_norm_->Fill(col,data.getEventNumber());
+        theH2TimeWindow_norm_.find(run)->second->Fill(col,entry);
 
         if( data.getHasHit(planeID) )
 
-            the2HTimeWindow_->Fill(col,data.getEventNumber());
+            theH2TimeWindow_.find(run)->second->Fill(col,entry);
 
     }
-
     if( data.getHasHit(planeID) && data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol )
     {
 
 
 
         if(nRow==1 && nCol==1)
-            theHWindow_->Fill(col,row);
+            theHWindow_.find(run)->second->Fill(col,row);
         else if(nRow>1 && nCol==1)
         {
             if( ceil(nRow/2.) != nRow/2. ) //nRow odd
             {
-                theHWindow_->Fill(col,row);
+                theHWindow_.find(run)->second->Fill(col,row);
                 for(int r=1; r<nRow; r++)
                 {
                     if( ceil(r/2.) == r/2. )
                     {
                         if( (row+r/2.) <= higherRow )
-                            theHWindow_->Fill(col,row+r/2.);
+                            theHWindow_.find(run)->second->Fill(col,row+r/2.);
                         if( (row-r/2.) >= lowerRow )
-                            theHWindow_->Fill(col,row-r/2.);
+                            theHWindow_.find(run)->second->Fill(col,row-r/2.);
                     }
                 }
             }
@@ -129,9 +170,9 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
                     if( ceil(r/2.) != r/2. )
                     {
                         if( (row+r/2.) <= higherRow )
-                            theHWindow_->Fill(col,row+r/2.);
+                            theHWindow_.find(run)->second->Fill(col,row+r/2.);
                         if( (row-r/2.) >= lowerRow )
-                            theHWindow_->Fill(col,row-r/2.);
+                            theHWindow_.find(run)->second->Fill(col,row-r/2.);
                     }
                 }
             }
@@ -140,15 +181,15 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
         {
             if( ceil(nCol/2.) != nCol/2. )//nCol odd
             {
-                theHWindow_->Fill(col,row);
+                theHWindow_.find(run)->second->Fill(col,row);
                 for(int c=1; c<nCol; c++)
                 {
                     if( ceil(c/2.) == c/2. )
                     {
                         if( (col+c/2.) <= higherCol )
-                            theHWindow_->Fill(col+c/2.,row);
+                            theHWindow_.find(run)->second->Fill(col+c/2.,row);
                         else if( (col-c/2.) >= lowerCol )
-                            theHWindow_->Fill(col-c/2.,row);
+                            theHWindow_.find(run)->second->Fill(col-c/2.,row);
                     }
                 }
             }
@@ -159,9 +200,9 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
                     if( ceil(c/2.) != c/2. )
                     {
                         if( (col+c/2.) <= higherCol )
-                            theHWindow_->Fill(col+c/2.,row);
+                            theHWindow_.find(run)->second->Fill(col+c/2.,row);
                         if( (col-c/2.) >= lowerCol )
-                            theHWindow_->Fill(col-c/2.,row);
+                            theHWindow_.find(run)->second->Fill(col-c/2.,row);
                     }
                 }
             }
@@ -174,20 +215,65 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
 ////////////////////////////////////////////////////////////////////////////////////
 void HistogramWindow::removePixel(int col, int row)
 {
-    TAxis* xAxis = theHWindow_->GetXaxis() ;
-    TAxis* yAxis = theHWindow_->GetYaxis() ;
 
-    theHWindow_->SetBinContent(xAxis->FindBin(col),yAxis->FindBin(row),0);
+    for(std::map<int,TH2F*>::iterator it=theHWindow_.begin(); it != theHWindow_.end(); ++it){
+
+        TAxis* xAxis = it->second->GetXaxis() ;
+        TAxis* yAxis = it->second->GetYaxis() ;
+
+
+        it->second->SetBinContent(xAxis->FindBin(col),yAxis->FindBin(row),0);
+
+    }
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 int HistogramWindow::getNumberOfEvents (void)
 {
-    return (const int)theHWindow_->GetEntries();
+
+    int numberOfEvents=0;
+
+    for(std::map<int,TH2F*>::iterator it=theHWindow_.begin(); it != theHWindow_.end(); ++it)
+        numberOfEvents+=it->second->GetEntries();
+
+    return numberOfEvents;
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
 void HistogramWindow::calculateTimeEfficiency(void)
 {
-    the2HTimeWindow_->Divide(the2HTimeWindow_norm_);
+    for(std::map<int,TH2F*>::iterator it=theH2TimeWindow_.begin(); it!=theH2TimeWindow_.end(); ++it){
+
+        it->second->Divide(theH2TimeWindow_norm_.find(it->first)->second);
+
+        for(int c=1; c<=it->second->GetXaxis()->GetNbins(); ++c){
+
+            int eventDCFreezing=0;
+
+            int maxEventBin = it->second->GetYaxis()->GetNbins();
+
+            if(it->second->GetBinContent(c,maxEventBin)!=0) eventDCFreezing=it->second->GetYaxis()->GetBinUpEdge(maxEventBin);
+
+            else{
+
+                for(int t=it->second->GetYaxis()->GetNbins(); t>0; --t){
+
+                    if(it->second->GetBinContent(c,t)!=0){
+
+                        eventDCFreezing=it->second->GetYaxis()->GetBinLowEdge(t);
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            theH1TimeWindow_.find(it->first)->second->Fill(it->second->GetXaxis()->GetBinCenter(c),eventDCFreezing);
+
+        }
+
+    }
 }

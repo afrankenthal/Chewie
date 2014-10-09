@@ -487,7 +487,7 @@ void TracksAfter::testPredictedFunc (void)
     }
     std::stringstream ss;
     ss << "The area of the normalized function is " << sum;
-//    STDLINE(ss.str(), ACYellow);
+    STDLINE(ss.str(), ACYellow);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -709,6 +709,7 @@ void TracksAfter::calculateXResiduals (const Data &data, int planeID, int thread
     const Window* theWindow = theAnalysisManager_->getWindowsManager()->getWindow (planeID);
     int           row       = data.getRowPredicted                                (planeID);
     int           col       = data.getColPredicted                                (planeID);
+    int           run       = data.getRunNumber                                   ()       ;
 
     int   hitID             = -1;
     int   totalCharge       = 0 ;
@@ -716,7 +717,7 @@ void TracksAfter::calculateXResiduals (const Data &data, int planeID, int thread
     int   chargeRight       = 0 ;
     float Asimmetry         = 0 ;
 
-    if( !theWindow->checkWindow(col,row) ) {
+    if( !theWindow->checkWindow(col,row,run) ) {
         return;
     }
 
@@ -724,7 +725,7 @@ void TracksAfter::calculateXResiduals (const Data &data, int planeID, int thread
     {
         for(int h=0; h<2; ++h)
         {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) //hits are in the window
+            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
                 || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
                 ||  data.getClusterPixelRow  (h,planeID) != row )                                                 //hits are on the same row (sharing is along the row - x direction)
                 return;
@@ -819,14 +820,16 @@ void TracksAfter::calculateYResiduals (const Data &data, int planeID, int thread
     const Window* theWindow = theAnalysisManager_->getWindowsManager()->getWindow(planeID);
     int           row       = data.getRowPredicted                               (planeID);
     int           col       = data.getColPredicted                               (planeID);
+    int           run       = data.getRunNumber                                  ()       ;
 
-    if( !theWindow->checkWindow(col,row) ) {
+
+    if( !theWindow->checkWindow(col,row,run) ) {
         return;
     }
 
     for(int h=0; h<2; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID)) //hits are in the window
+        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
             || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
             ||  data.getClusterPixelCol  (h,planeID) != col )                                                 //hits are on the same col (sharing is along the row - x direction)
             return;
@@ -1098,6 +1101,8 @@ void TracksAfter::endJob(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::preBook (void)
 {
+
+    std::cout << __PRETTY_FUNCTION__ << "Begin!"<< std::endl;
     std::string hName;
     std::string hTitle;
     std::string planeName;
@@ -1112,6 +1117,7 @@ void TracksAfter::preBook (void)
     theAnalysisManager_->cd("/");
     theAnalysisManager_->mkdir("TracksAfter");
     theAnalysisManager_->mkdir("Tests");
+    std::cout << __PRETTY_FUNCTION__ << "done making dirs!"<< std::endl;
 
     funcPredicted_ = new TH1F("funcPredicted_", "test function for eta", 100, -50, 50);
     funcPredicted2_ = new TH1F("funcPredicted2_", "test function for eta integrand", 100, -50, 50);
@@ -1124,6 +1130,7 @@ void TracksAfter::preBook (void)
     for(unsigned int i=0; i<thePlaneMapping_->getNumberOfPlanes(); i++) {
         planeName = thePlaneMapping_->getPlaneName(i);
 
+        std::cout << __PRETTY_FUNCTION__ << "Plane: " << planeName << std::endl;
         theAnalysisManager_->cd("TracksAfter");
         theAnalysisManager_->mkdir(planeName);
         theAnalysisManager_->mkdir("Probability");

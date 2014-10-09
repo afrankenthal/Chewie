@@ -25,12 +25,12 @@ public:
                      int nOfThreads);
     ~EventConverter (void          ){;}
 
-    void        convert        (Event& event, int e );
-    void        beginJob       (void                );
-    void        endJob         (void                );
-    int         runConverter   (void                );
+    void        convert        (Event& event, int e);
+    void        beginJob       (void               );
+    void        endJob         (void               );
+    int         runConverter   (void               );
 
-    void        setRunNumber   (int r               ) {runNumber_ = r;}
+    void        setRunNumber   (int r              ) {runNumber_ = r;}
 
 private:
     int          execute       (int threadNumber);
