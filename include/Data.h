@@ -32,6 +32,7 @@ public:
     void         setXSigmaSlope                     (double        v       ){xSigmaSlope_                         = v;}
     void         setYSlope	                        (double        v       ){ySlope_                              = v;}
     void         setYSigmaSlope                     (double        v       ){ySigmaSlope_                         = v;}
+    void         setDataType                        (int           v, int p){dataType_                        [p] = v;}
     void         setHasHit	                        (bool          v, int p){hasHit_  	                      [p] = v;}
     void         setBelongsToTrack                  (bool          v, int p){belongsToTrack_                  [p] = v;}
     void         setIsInDetector                    (bool          v, int p){isInDetector_                    [p] = v;}
@@ -113,6 +114,7 @@ public:
     double       getYSlope  	                    (void            )const {return ySlope_                             ;}
     double       getYSigmaSlope                     (void            )const {return ySigmaSlope_                        ;}
     bool         getHasHit  	                    (int  p          )const {return hasHit_                          [p];}
+    int          getDataType  	                    (int  p          )const {return dataType_                        [p];}
     bool         getBelongsToTrack                  (int  p          )const {return belongsToTrack_                  [p];}
     bool         getIsInDetector                    (int  p          )const {return isInDetector_                    [p];}
     bool         getIsInDetectorUnconstrained       (int  p          )const {return isInDetectorUnconstrained_       [p];}
@@ -176,86 +178,87 @@ public:
     bool         getIsPixelCalibrated               (int  h, int p   )const {if (h < maxHits) return isPixelCalibrated_        [h][p]; else {STDLINE("There's a problem with the cluster size: max = 4, required = " + h, ACRed); assert(0);}}
 
 private:
-    enum {size = 25, maxHits = 4};
-    int          eventNumber_                             ;//Event number
-    int          eventChewieNumber_                       ;//Event Number in Chewie
-    int          runNumber_                               ;//Run number
-    int          numberOfTracks_                          ;//Number of tracks in the event
-    int          trackNumber_                             ;//Track number in the event
-    int          numberOfTelescopeHits_                   ;//Number of hits on the telescope
-    int          numberOfTelescopeClustersSizeLE2_        ;//Number of clusters on the telescope with size less or equal 2
-    int          ndof_                                    ;//Track degrees of fredom
-    float        chi2_                                    ;//Track chisqr
-    double       xIntercept_                              ;//Track projection x at z=0
-    double       xSigmaIntercept_                         ;//Error on x Intercept
-    double       yIntercept_                              ;//Track projection y at z=0
-    double       ySigmaIntercept_                         ;//Error on y Intercept
-    double       xSlope_                                  ;//Track x Slope
-    double       xSigmaSlope_                             ;//Error on x Slope
-    double       ySlope_                                  ;//Track y Slope
-    double       ySigmaSlope_                             ;//Error on y Slope
-    bool         hasHit_                            [size];//Detector has a hit (cluster)
-    bool         belongsToTrack_                    [size];//Hit belongs to track
-    bool         isInDetector_                      [size];//Predicted impact point is inside detector area
-    bool         isInDetectorUnconstrained_         [size];//Predicted impact point of unconstrained track is inside detector area
-    int          ndofUnconstrained_                 [size];//Track degrees of fredom without plane hit
-    float        chi2Unconstrained_                 [size];//Track chisqr without plane hit
-    double       xInterceptUnconstrained_           [size];//Track projection x at z=0 without plane hit
-    double       xSigmaInterceptUnconstrained_      [size];//Error on x Intercept without plane hit
-    double       yInterceptUnconstrained_           [size];//Track projection y at z=0 without plane hit
-    double       ySigmaInterceptUnconstrained_      [size];//Error on y Intercept without plane hit
-    double       xSlopeUnconstrained_               [size];//Track x Slope without plane hit
-    double       xSigmaSlopeUnconstrained_          [size];//Error on x Slope without plane hit
-    double       ySlopeUnconstrained_               [size];//Track y Slope without plane hit
-    double       ySigmaSlopeUnconstrained_          [size];//Error on y Slope without plane hit
-    int          clusterSize_                       [size];//Number of pixels in cluster
-    unsigned int numberOfCols_                      [size];//Number of columns of the cluster
-    unsigned int numberOfRows_                      [size];//Number of rows of the cluster
-    int          clusterCharge_                     [size];//Cluster charge
-    float        meanCol_	                        [size];//Mean value of cluster columns
-    float        meanRow_	                        [size];//Mean value of cluster rows
-    int          colPredicted_                      [size];//Predicted impact column of the track
-    int          rowPredicted_                      [size];//Predicted impact row of the track
-    float        xPitchLocal_                       [size];//X pitch in local reference frame (150um)
-    float        yPitchLocal_                       [size];//Y pitch in local reference frame (100um)
-    float        xPitchGlobal_                      [size];//X pitch in global reference frame (depends by the z rotation)
-    float        yPitchGlobal_                      [size];//Y pitch in global reference frame (depends by the z rotation)
-    float        xMeasuredLocal_	                [size];//X measured point in local reference frame
-    float        yMeasuredLocal_	                [size];//Y measured point in local reference frame
-    float        xMeasuredGlobal_	                [size];//X measured point in global reference frame
-    float        yMeasuredGlobal_	                [size];//Y measured point in global reference frame
-    float        xPredictedLocal_                   [size];//X predicted impact point in local reference frame
-    float        yPredictedLocal_                   [size];//Y predicted impact point in local reference frame
-    float        xPredictedGlobal_                  [size];//X predicted impact point in global reference frame
-    float        yPredictedGlobal_                  [size];//Y predicted impact point in global reference frame
-    float        xErrorMeasuredLocal_               [size];//X error on measured point in local reference frame
-    float        yErrorMeasuredLocal_               [size];//Y error on measured point in local reference frame
-    float        xErrorMeasuredGlobal_              [size];//X error on measured point in global reference frame
-    float        yErrorMeasuredGlobal_              [size];//Y error on measured point in global reference frame
-    float        xErrorPredictedLocal_              [size];//X error on predicted impact point in local reference frame
-    float        yErrorPredictedLocal_              [size];//Y error on predicted impact point in local reference frame
-    float        xErrorPredictedGlobal_             [size];//X error on predicted impact point in global reference frame
-    float        yErrorPredictedGlobal_             [size];//Y error on predicted impact point in global reference frame
-    float        xTrackResidualLocal_               [size];//X residual in local reference frame
-    float        yTrackResidualLocal_               [size];//Y residual in local reference frame
-    float        xTrackResidualGlobal_              [size];//X residual in global reference frame
-    float        yTrackResidualGlobal_              [size];//Y residual in global reference frame
-    float        xPixelResidualLocal_               [size];//X residual in the predicted pixel in local reference frame
-    float        yPixelResidualLocal_               [size];//Y residual in the predicted pixel in local reference frame
-    float        xPixelResidualGlobal_              [size];//X residual in the predicted pixel in global reference frame
-    float        yPixelResidualGlobal_              [size];//Y residual in the predicted pixel in global reference frame
-    float        xPixelResidualLocalUnconstrained_  [size];//X unconstrained residual in the predicted pixel in local reference frame
-    float        yPixelResidualLocalUnconstrained_  [size];//Y unconstrained residual in the predicted pixel in local reference frame
-    float        xPixelPitchLocalUnconstrained_     [size];//X pitch of the predicted pixel in local reference frame
-    float        yPixelPitchLocalUnconstrained_     [size];//Y pitch of the predicted pixel in local reference frame
-    int          clusterPixelRow_          [maxHits][size];//Rows of the pixels in the cluster
-    int          clusterPixelCol_          [maxHits][size];//Cols of the pixels in the cluster
-    int          clusterPixelCharge_       [maxHits][size];//Charge of the pixels in the cluster
-    float        xClusterPixelCenterLocal_ [maxHits][size];//X center of the pixels in the cluster in local reference frame
-    float        yClusterPixelCenterLocal_ [maxHits][size];//Y center of the pixels in the cluster in local reference frame
-    float        xClusterPixelCenterGlobal_[maxHits][size];//X center of the pixels in the cluster in global reference frame
-    float        yClusterPixelCenterGlobal_[maxHits][size];//Y center of the pixels in the cluster in global reference frame
-    bool         isPixelCalibrated_        [maxHits][size];//Pixel is calibrated
+    enum {nOfPlanes = 25, maxHits = 4};
+    int          eventNumber_                                  ;//Event number
+    int          eventChewieNumber_                            ;//Event Number in Chewie
+    int          runNumber_                                    ;//Run number
+    int          numberOfTracks_                               ;//Number of tracks in the event
+    int          trackNumber_                                  ;//Track number in the event
+    int          numberOfTelescopeHits_                        ;//Number of hits on the telescope
+    int          numberOfTelescopeClustersSizeLE2_             ;//Number of clusters on the telescope with size less or equal 2
+    int          ndof_                                         ;//Track degrees of fredom
+    float        chi2_                                         ;//Track chisqr
+    double       xIntercept_                                   ;//Track projection x at z=0
+    double       xSigmaIntercept_                              ;//Error on x Intercept
+    double       yIntercept_                                   ;//Track projection y at z=0
+    double       ySigmaIntercept_                              ;//Error on y Intercept
+    double       xSlope_                                       ;//Track x Slope
+    double       xSigmaSlope_                                  ;//Error on x Slope
+    double       ySlope_                                       ;//Track y Slope
+    double       ySigmaSlope_                                  ;//Error on y Slope
+    int          dataType_                          [nOfPlanes];//Data type 0 pixel 1 strip
+    bool         hasHit_                            [nOfPlanes];//Detector has a hit (cluster)
+    bool         belongsToTrack_                    [nOfPlanes];//Hit belongs to track
+    bool         isInDetector_                      [nOfPlanes];//Predicted impact point is inside detector area
+    bool         isInDetectorUnconstrained_         [nOfPlanes];//Predicted impact point of unconstrained track is inside detector area
+    int          ndofUnconstrained_                 [nOfPlanes];//Track degrees of fredom without plane hit
+    float        chi2Unconstrained_                 [nOfPlanes];//Track chisqr without plane hit
+    double       xInterceptUnconstrained_           [nOfPlanes];//Track projection x at z=0 without plane hit
+    double       xSigmaInterceptUnconstrained_      [nOfPlanes];//Error on x Intercept without plane hit
+    double       yInterceptUnconstrained_           [nOfPlanes];//Track projection y at z=0 without plane hit
+    double       ySigmaInterceptUnconstrained_      [nOfPlanes];//Error on y Intercept without plane hit
+    double       xSlopeUnconstrained_               [nOfPlanes];//Track x Slope without plane hit
+    double       xSigmaSlopeUnconstrained_          [nOfPlanes];//Error on x Slope without plane hit
+    double       ySlopeUnconstrained_               [nOfPlanes];//Track y Slope without plane hit
+    double       ySigmaSlopeUnconstrained_          [nOfPlanes];//Error on y Slope without plane hit
+    int          clusterSize_                       [nOfPlanes];//Number of pixels in cluster
+    unsigned int numberOfCols_                      [nOfPlanes];//Number of columns of the cluster
+    unsigned int numberOfRows_                      [nOfPlanes];//Number of rows of the cluster
+    int          clusterCharge_                     [nOfPlanes];//Cluster charge
+    float        meanCol_	                        [nOfPlanes];//Mean value of cluster columns
+    float        meanRow_	                        [nOfPlanes];//Mean value of cluster rows
+    int          colPredicted_                      [nOfPlanes];//Predicted impact column of the track
+    int          rowPredicted_                      [nOfPlanes];//Predicted impact row of the track
+    float        xPitchLocal_                       [nOfPlanes];//X pitch in local reference frame (150um)
+    float        yPitchLocal_                       [nOfPlanes];//Y pitch in local reference frame (100um)
+    float        xPitchGlobal_                      [nOfPlanes];//X pitch in global reference frame (depends by the z rotation)
+    float        yPitchGlobal_                      [nOfPlanes];//Y pitch in global reference frame (depends by the z rotation)
+    float        xMeasuredLocal_	                [nOfPlanes];//X measured point in local reference frame
+    float        yMeasuredLocal_	                [nOfPlanes];//Y measured point in local reference frame
+    float        xMeasuredGlobal_	                [nOfPlanes];//X measured point in global reference frame
+    float        yMeasuredGlobal_	                [nOfPlanes];//Y measured point in global reference frame
+    float        xPredictedLocal_                   [nOfPlanes];//X predicted impact point in local reference frame
+    float        yPredictedLocal_                   [nOfPlanes];//Y predicted impact point in local reference frame
+    float        xPredictedGlobal_                  [nOfPlanes];//X predicted impact point in global reference frame
+    float        yPredictedGlobal_                  [nOfPlanes];//Y predicted impact point in global reference frame
+    float        xErrorMeasuredLocal_               [nOfPlanes];//X error on measured point in local reference frame
+    float        yErrorMeasuredLocal_               [nOfPlanes];//Y error on measured point in local reference frame
+    float        xErrorMeasuredGlobal_              [nOfPlanes];//X error on measured point in global reference frame
+    float        yErrorMeasuredGlobal_              [nOfPlanes];//Y error on measured point in global reference frame
+    float        xErrorPredictedLocal_              [nOfPlanes];//X error on predicted impact point in local reference frame
+    float        yErrorPredictedLocal_              [nOfPlanes];//Y error on predicted impact point in local reference frame
+    float        xErrorPredictedGlobal_             [nOfPlanes];//X error on predicted impact point in global reference frame
+    float        yErrorPredictedGlobal_             [nOfPlanes];//Y error on predicted impact point in global reference frame
+    float        xTrackResidualLocal_               [nOfPlanes];//X residual in local reference frame
+    float        yTrackResidualLocal_               [nOfPlanes];//Y residual in local reference frame
+    float        xTrackResidualGlobal_              [nOfPlanes];//X residual in global reference frame
+    float        yTrackResidualGlobal_              [nOfPlanes];//Y residual in global reference frame
+    float        xPixelResidualLocal_               [nOfPlanes];//X residual in the predicted pixel in local reference frame
+    float        yPixelResidualLocal_               [nOfPlanes];//Y residual in the predicted pixel in local reference frame
+    float        xPixelResidualGlobal_              [nOfPlanes];//X residual in the predicted pixel in global reference frame
+    float        yPixelResidualGlobal_              [nOfPlanes];//Y residual in the predicted pixel in global reference frame
+    float        xPixelResidualLocalUnconstrained_  [nOfPlanes];//X unconstrained residual in the predicted pixel in local reference frame
+    float        yPixelResidualLocalUnconstrained_  [nOfPlanes];//Y unconstrained residual in the predicted pixel in local reference frame
+    float        xPixelPitchLocalUnconstrained_     [nOfPlanes];//X pitch of the predicted pixel in local reference frame
+    float        yPixelPitchLocalUnconstrained_     [nOfPlanes];//Y pitch of the predicted pixel in local reference frame
+    int          clusterPixelRow_          [maxHits][nOfPlanes];//Rows of the pixels in the cluster
+    int          clusterPixelCol_          [maxHits][nOfPlanes];//Cols of the pixels in the cluster
+    int          clusterPixelCharge_       [maxHits][nOfPlanes];//Charge of the pixels in the cluster
+    float        xClusterPixelCenterLocal_ [maxHits][nOfPlanes];//X center of the pixels in the cluster in local reference frame
+    float        yClusterPixelCenterLocal_ [maxHits][nOfPlanes];//Y center of the pixels in the cluster in local reference frame
+    float        xClusterPixelCenterGlobal_[maxHits][nOfPlanes];//X center of the pixels in the cluster in global reference frame
+    float        yClusterPixelCenterGlobal_[maxHits][nOfPlanes];//Y center of the pixels in the cluster in global reference frame
+    bool         isPixelCalibrated_        [maxHits][nOfPlanes];//Pixel is calibrated
 };
 
 #endif

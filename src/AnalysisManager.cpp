@@ -678,6 +678,7 @@ const WindowsManager* AnalysisManager::getWindowsManager(void)
     return 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
 bool AnalysisManager::sorting (std::string a, std::string b)
 {
     if (a == "Windows" && b != "Windows") return true;
@@ -690,6 +691,7 @@ bool AnalysisManager::sorting (std::string a, std::string b)
     else return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
 int AnalysisManager::findAnalysis (std::string analysisName)
 {
     int pos = -1;
@@ -701,6 +703,7 @@ int AnalysisManager::findAnalysis (std::string analysisName)
     return pos;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
 std::string AnalysisManager::getPriorityFromUi (std::string analysisName, int newPriority)
 {
     int tmp = findAnalysis(analysisName);

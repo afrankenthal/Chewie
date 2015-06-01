@@ -109,7 +109,7 @@ void EventConverter::convert(Event& event,int e)
         dataVector[t].setRunNumber        (runNumber_); //it is a private variable because it's not taken from Monicelli output, but it is passed before beginJob in method startConverter of EventManager.cpp
         dataVector[t].setNumberOfTracks   (trackCandidates.size());
         dataVector[t].setTrackNumber      (t);
-        dataVector[t].setNdof             (trackCandidates[t].size()-4);
+        dataVector[t].setNdof             (2*(trackCandidates[t].size()-2));
         dataVector[t].setChi2             (fittedTracksChi2[t]);
         dataVector[t].setXIntercept       (fittedTracks[t][1]*10);
         dataVector[t].setXSigmaIntercept  (sqrt(fittedTracksCovariance[t](1,1))*10);
@@ -146,12 +146,12 @@ void EventConverter::convert(Event& event,int e)
             dataVector[t].setYSigmaSlopeUnconstrained    (sqrt(unconstrainedFittedTracksCovariance[t][planeName](2,2)),p);
             if(trackCandidates[t].find(planeName) != trackCandidates[t].end())
             {
-                dataVector[t].setNdofUnconstrained(trackCandidates[t].size()-5,p);
 
                 clusterID = (int)trackCandidates[t][planeName]["cluster ID"];
 
                 if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                 {
+                    dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-2),p);
                     xyErr = detector->getTrackErrorsOnPlane(fittedTracks[t],fittedTracksCovariance[t]);
                     dataVector[t].setXErrorPredictedGlobal(sqrt(xyErr.first )*10,p);
                     dataVector[t].setYErrorPredictedGlobal(sqrt(xyErr.second)*10,p);
@@ -161,6 +161,7 @@ void EventConverter::convert(Event& event,int e)
                 }
                 else
                 {
+                    dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-1-2),p);
                     dataVector[t].setXErrorPredictedGlobal(-1,p);
                     dataVector[t].setYErrorPredictedGlobal(-1,p);
                     dataVector[t].setXErrorPredictedLocal (-1,p);
@@ -178,6 +179,8 @@ void EventConverter::convert(Event& event,int e)
 
 
                 dataVector[t].setHasHit        (true,p);
+                //std::cout<<"datatype 1 "<<      clusters[planeName][clusterID]["dataType"] <<" plane "<<p<<" name "<<planeName<<std::endl;
+                dataVector[t].setDataType((int)clusters[planeName][clusterID]["dataType"],p);
                 dataVector[t].setBelongsToTrack(true,p);
                 dataVector[t].setClusterSize   ((int)trackCandidates[t][planeName]["size"], p);
                 dataVector[t].setClusterCharge ((int)clusters[planeName][clusterID]["charge"], p);
@@ -324,7 +327,7 @@ void EventConverter::convert(Event& event,int e)
             }
             else
             {
-                dataVector[t].setNdofUnconstrained(trackCandidates[t].size()-4,p);
+                dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-2),p);
                 if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                 {
                     xyErr = detector->getTrackErrorsOnPlane(fittedTracks[t],fittedTracksCovariance[t]);
@@ -343,6 +346,8 @@ void EventConverter::convert(Event& event,int e)
                 }
 
                 dataVector[t].setHasHit        (false,p);
+                //std::cout<<"datatype 2 "<<      clusters[planeName][clusterID]["dataType"] <<" plane "<<p<<" name "<<planeName<<std::endl;
+                dataVector[t].setDataType((int)-1,p);
                 dataVector[t].setBelongsToTrack(false,p);
 
                 detector->getPredictedGlobal(fittedTracks[t],xp,yp,zp);
@@ -411,6 +416,7 @@ void EventConverter::convert(Event& event,int e)
                                     {
                                         clusterID = itC->first;
                                         dataVector[t].setHasHit(true,p);
+                                        //dataVector[t].setDataType((int)clusters[planeName][clusterID]["dataType"],p);
                                         isGood = true;
                                         break;
                                     }

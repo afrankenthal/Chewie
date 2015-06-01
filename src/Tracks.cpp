@@ -20,7 +20,9 @@ Tracks::Tracks(AnalysisManager* analysisManager, int nOfThreads) :
         , thePlaneMapping_ (0                          )
 {
     thePlaneMapping_ = new PlanesMapping();
-
+    hNumberofHit_       =0;
+    hTracksPlane_ =0;
+    hTracksPlaneTelescopeHit_ =0;
     hChi2_                = 0;
     hXSlope_              = 0;
     hXSlopeInsideWindow_  = 0;
@@ -306,7 +308,7 @@ void Tracks::analyze(const Data &data, int threadNumber)
     //Manual inputs for DUT0 beam center
     int beamCenterX = 30;
     int beamCenterY = 30;
-
+    //THREADED(hNumberofHit_)->Fill(data.getNumberOfTelescopeHits());
     THREADED(hChi2_      )->Fill(data.getChi2());
     THREADED(hXSlope_    )->Fill(data.getXSlope());
     if (data.getColPredicted(8) > 30 && data.getIsInDetector(8))
@@ -326,6 +328,8 @@ void Tracks::analyze(const Data &data, int threadNumber)
         if (data.getIsInDetector(p))
 //        if (data.getHasHit(p))
         {
+            THREADED(hTracksPlaneTelescopeHit_)->Fill(data.getNumberOfTelescopeHits());
+            THREADED(hTracksPlane_)->Fill(p);
             THREADED(hTracksProjRC_[p])->Fill(data.getColPredicted(p),data.getRowPredicted(p));
             THREADED(hXSlopeDistribution_[p])->Fill(data.getColPredicted(p),data.getRowPredicted(p), data.getXSlope());
             THREADED(hYSlopeDistribution_[p])->Fill(data.getColPredicted(p),data.getRowPredicted(p), data.getYSlope());
@@ -408,6 +412,7 @@ void Tracks::analyze(const Data &data, int threadNumber)
 
             if(data.getHasHit(p))
             {
+                THREADED(hNumberofHit_)->Fill(p);
                 THREADED(ClusterSizeHits_[p])->Fill(data.getColPredicted(p), data.getRowPredicted(p), data.getClusterSize(p));
                 THREADED(hClusterHitsNorm_[p])->Fill(data.getColPredicted(p), data.getRowPredicted(p));
 
@@ -435,6 +440,9 @@ void Tracks::analyze(const Data &data, int threadNumber)
 void Tracks::endJob(void)
 {
     ADD_THREADED(hChi2_               );
+    ADD_THREADED(hNumberofHit_               );
+    ADD_THREADED(hTracksPlane_               );
+    ADD_THREADED(hTracksPlaneTelescopeHit_);
     ADD_THREADED(hXSlope_             );
     ADD_THREADED(hXSlopeInsideWindow_ );
     ADD_THREADED(hXSlopeOutsideWindow_);
@@ -458,7 +466,10 @@ void Tracks::endJob(void)
     }
 
     hChi2_               ->GetXaxis()->SetTitle("chi2/DOF"              );
-    hXSlope_             ->GetXaxis()->SetTitle("X Slope (rad)"         );
+     hNumberofHit_               ->GetXaxis()->SetTitle("#hit"              );
+ hTracksPlane_               ->GetXaxis()->SetTitle("#plane"              );
+ hTracksPlaneTelescopeHit_->GetXaxis()->SetTitle("# telescope hit");
+     hXSlope_             ->GetXaxis()->SetTitle("X Slope (rad)"         );
     hXSlopeInsideWindow_ ->GetXaxis()->SetTitle("X Slope (rad)"         );
     hXSlopeOutsideWindow_->GetXaxis()->SetTitle("X Slope (rad)"         );
     hYSlope_             ->GetXaxis()->SetTitle("Y Slope (rad)"         );
@@ -634,6 +645,18 @@ void Tracks::book(void)
     hName  = "hChi2_"               ;
     hTitle = "Chi2/DOF distribution";
     hChi2_ = NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1000,0,50));
+
+    hName  = "hTracksPlane_"               ;
+        hTitle = "PlaneID distribution";
+        hTracksPlane_ = NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),25,0,25));
+
+        hName  = "hNumberofHit_"               ;
+                hTitle = "#hit per track distribution";
+                hNumberofHit_ = NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),40,0,40));
+
+                hName="hTracksPlaneTelescopeHit_";
+                hTitle = "# telescope hit per track";
+                hTracksPlaneTelescopeHit_ = NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),25,0,25));
 
     theAnalysisManager_->mkdir("X");
 

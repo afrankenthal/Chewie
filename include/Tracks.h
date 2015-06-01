@@ -45,6 +45,9 @@ private:
     PlanesMapping*         thePlaneMapping_    ;
 
     TH1F*                  hChi2_              ;
+    TH1F*                   hNumberofHit_ ;
+    TH1F*                   hTracksPlane_;
+    TH1F* hTracksPlaneTelescopeHit_;
     TH1F*                  hXSlope_            ;
     TH1F*                  hSigmaXSlope_       ;
     TH1F*                  hYSlope_            ;

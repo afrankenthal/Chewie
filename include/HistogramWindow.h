@@ -17,7 +17,7 @@ public:
     ~HistogramWindow(void                                                   );
 
     bool checkWindow            (float col, float row      , int runNumber  ) const;
-    bool checkWindowAbout       (float col, float row      , int runNumber  ) const;
+    bool checkWindowAbout       (float col, float row      , int runNumber , int type ) const;
     bool checkTimeWindow        (float col, int eventNumber, int runNumber  ) const;
     bool checkTimeWindowAbout   (float col, int eventNumber, int runNumber  ) const;
     void calculateWindow        (int   planeID , const Data& aData,
