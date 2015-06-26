@@ -746,28 +746,28 @@ void TracksAfter::calculateXResiduals (const Data &data, int planeID, int thread
         {
             if( h == hitID )
                 continue;
-            if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)//il secondo hit e' a SN della predetta
+            if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)//il secondo hit e' a DX della predetta
             {
-                chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
+                chargeRight  = data.getClusterPixelCharge(h    ,planeID);
+                chargeLeft = data.getClusterPixelCharge(hitID,planeID);
+                break;
+            }
+            else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(h,planeID)) == +1)//il secondo hit e' a SX della predetta
+            {
                 chargeRight = data.getClusterPixelCharge(hitID,planeID);
-                break;
-            }
-            else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)//il secondo hit e' a DX della predetta
-            {
-                chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
-                chargeRight = data.getClusterPixelCharge(h    ,planeID);
-                break;
-            }
-            else if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)
-            {
-                chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
-                chargeRight = data.getClusterPixelCharge(h    ,planeID);
-                break;
-            }
-            else if(data.getXPixelResidualLocal(planeID) < 0 && (col - data.getClusterPixelCol(h,planeID)) ==  1)
-            {
                 chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
+                break;
+            }
+            else if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == +1)
+            {
                 chargeRight = data.getClusterPixelCharge(hitID,planeID);
+                chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
+                break;
+            }
+            else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(h,planeID)) ==  -1)
+            {
+                chargeRight  = data.getClusterPixelCharge(h    ,planeID);
+                chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
                 break;
             }
             else
@@ -777,9 +777,9 @@ void TracksAfter::calculateXResiduals (const Data &data, int planeID, int thread
         float Xp = 0;
 
         if(data.getXPixelResidualLocal( planeID ) > 0)
-            Xp = data.getXPitchLocal( planeID )/2 - data.getXPixelResidualLocal( planeID );
+            Xp = -data.getXPitchLocal( planeID )/2 + data.getXPixelResidualLocal( planeID );
         else if(data.getXPixelResidualLocal( planeID ) <= 0)
-            Xp = -(data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
+            Xp = (data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
 
         totalCharge = chargeLeft + chargeRight;
         Asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
@@ -800,9 +800,9 @@ void TracksAfter::calculateXResiduals (const Data &data, int planeID, int thread
 //        float Xp = data.getXPixelResidualLocal(planeID);
         float Xp = 0;
         if(data.getXPixelResidualLocal( planeID ) > 0)
-            Xp = data.getXPitchLocal( planeID )/2 - data.getXPixelResidualLocal( planeID );
+            Xp = -data.getXPitchLocal( planeID )/2 + data.getXPixelResidualLocal( planeID );
         else if(data.getXPixelResidualLocal( planeID ) <= 0)
-            Xp = -(data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
+            Xp = (data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
 
         THREADED(hXResidualsAsimmetryLE2_[planeID])->Fill(Xm - Xp);
     }
@@ -858,28 +858,28 @@ void TracksAfter::calculateYResiduals (const Data &data, int planeID, int thread
         {
             if( h == hitID )
                 continue;
-            if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)//il secondo hit e' a SN della predetta
+            if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)//il secondo hit e' a DX della predetta
             {
-                chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
-                chargeRight = data.getClusterPixelCharge(hitID,planeID);
-                break;
-            }
-            else if(data.getYPixelResidualLocal(planeID) <= 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)//il secondo hit e' a DX della predetta
-            {
-                chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
                 chargeRight = data.getClusterPixelCharge(h    ,planeID);
+                chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
                 break;
             }
-            else if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)
+            else if(data.getYPixelResidualLocal(planeID) <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)//il secondo hit e' a SX della predetta
             {
-                chargeLeft        = data.getClusterPixelCharge(hitID,planeID);
-                chargeRight       = data.getClusterPixelCharge(h    ,planeID);
+                chargeRight = data.getClusterPixelCharge(hitID,planeID);
+                chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                 break;
             }
-            else if(data.getYPixelResidualLocal(planeID) < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  1)
+            else if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
             {
-                chargeLeft        = data.getClusterPixelCharge(h    ,planeID);
                 chargeRight       = data.getClusterPixelCharge(hitID,planeID);
+                chargeLeft        = data.getClusterPixelCharge(h    ,planeID);
+                break;
+            }
+            else if(data.getYPixelResidualLocal(planeID) < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
+            {
+                chargeRight       = data.getClusterPixelCharge(h    ,planeID);
+                chargeLeft        = data.getClusterPixelCharge(hitID,planeID);
                 break;
             }
             else
@@ -889,9 +889,9 @@ void TracksAfter::calculateYResiduals (const Data &data, int planeID, int thread
         float Xp = 0;
 
         if(data.getYPixelResidualLocal( planeID ) > 0)
-            Xp = data.getYPitchLocal( planeID )/2 - data.getYPixelResidualLocal( planeID );
+            Xp = -data.getYPitchLocal( planeID )/2 + data.getYPixelResidualLocal( planeID );
         else if(data.getYPixelResidualLocal( planeID ) <= 0)
-            Xp = -(data.getYPixelResidualLocal( planeID ) + data.getYPitchLocal( planeID )/2);
+            Xp = (data.getYPixelResidualLocal( planeID ) + data.getYPitchLocal( planeID )/2);
 
         totalCharge = chargeLeft + chargeRight;
         Asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
@@ -912,9 +912,9 @@ void TracksAfter::calculateYResiduals (const Data &data, int planeID, int thread
 //        float Xp = data.getXPixelResidualLocal(planeID);
         float Xp = 0;
         if(data.getYPixelResidualLocal( planeID ) > 0)
-            Xp = data.getYPitchLocal( planeID )/2 - data.getYPixelResidualLocal( planeID );
+            Xp = -data.getYPitchLocal( planeID )/2 + data.getYPixelResidualLocal( planeID );
         else if(data.getYPixelResidualLocal( planeID ) <= 0)
-            Xp = -(data.getYPixelResidualLocal( planeID ) + data.getYPitchLocal( planeID )/2);
+            Xp = (data.getYPixelResidualLocal( planeID ) + data.getYPitchLocal( planeID )/2);
 
         THREADED(hYResidualsAsimmetryLE2_[planeID])->Fill(Xm - Xp);
     }

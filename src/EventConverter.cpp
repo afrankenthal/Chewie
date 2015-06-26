@@ -290,8 +290,8 @@ void EventConverter::convert(Event& event,int e)
                     yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
 
                     detector->getPredictedLocal(fittedTracks[t],xp,yp);
-                    xRes = (xPixelCenter - xp)*10;
-                    yRes = (yPixelCenter - yp)*10;
+                    xRes = (xp - xPixelCenter)*10;
+                    yRes = (yp - yPixelCenter)*10;
                     dataVector[t].setXPixelResidualLocal(xRes,p);
                     dataVector[t].setYPixelResidualLocal(yRes,p);
 
@@ -318,8 +318,8 @@ void EventConverter::convert(Event& event,int e)
                     dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
                     xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
                     yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
-                    xRes = (xPixelCenter - xp)*10;
-                    yRes = (yPixelCenter - yp)*10;
+                    xRes = (xp - xPixelCenter)*10;
+                    yRes = (yp - yPixelCenter)*10;
                     dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
                     dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
                 }
@@ -389,8 +389,8 @@ void EventConverter::convert(Event& event,int e)
                     yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
 
                     detector->getPredictedLocal(fittedTracks[t],xp,yp);
-                    xRes = (xPixelCenter - xp)*10;
-                    yRes = (yPixelCenter - yp)*10;
+                    xRes = (xp - xPixelCenter)*10;
+                    yRes = (yp - yPixelCenter)*10;
                     dataVector[t].setXPixelResidualLocal(xRes,p);
                     dataVector[t].setYPixelResidualLocal(yRes,p);
 
@@ -495,8 +495,8 @@ void EventConverter::convert(Event& event,int e)
                     dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
                     xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
                     yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
-                    xRes = (xPixelCenter - xp)*10;
-                    yRes = (yPixelCenter - yp)*10;
+                    xRes = (xp - xPixelCenter)*10;
+                    yRes = (yp - yPixelCenter)*10;
                     dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
                     dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
                 }

@@ -337,19 +337,19 @@ void Tracks::analyze(const Data &data, int threadNumber)
 
             if (data.getXPixelResidualLocal(p)<=0)
             {
-                xPredicted = (data.getXPitchLocal(p)/2) + abs(data.getXPixelResidualLocal(p));
+                xPredicted = (data.getXPitchLocal(p)/2) + data.getXPixelResidualLocal(p);
             }
             else if (data.getXPixelResidualLocal(p)>0)
             {
-                xPredicted = (data.getXPitchLocal(p)/2) - data.getXPixelResidualLocal(p);
+                xPredicted = -(data.getXPitchLocal(p)/2) + data.getXPixelResidualLocal(p);
             }
             if (data.getYPixelResidualLocal(p)<=0)
             {
-                yPredicted = (data.getYPitchLocal(p)/2) + abs(data.getYPixelResidualLocal(p));
+                yPredicted = (data.getYPitchLocal(p)/2) + data.getYPixelResidualLocal(p);
             }
             else if (data.getYPixelResidualLocal(p)>0)
             {
-                yPredicted = (data.getYPitchLocal(p)/2) - data.getYPixelResidualLocal(p);
+                yPredicted = -(data.getYPitchLocal(p)/2) + data.getYPixelResidualLocal(p);
             }
 
             THREADED(hTracksProjXYPix_[p])->Fill(xPredicted,yPredicted);

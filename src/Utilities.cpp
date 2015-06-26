@@ -4,6 +4,7 @@
 
 #include "TMath.h"
 #include "TH1F.h"
+#include "TH2F.h"
 
 ////////////////////////////////////////////////////////////////////////////////////
 double Utilities::langaus(double *x, double *par)
@@ -811,4 +812,80 @@ double Utilities::singleUniformSmeared (double *x, double *par)
     }
 
     return g;
+}
+//=======================================================================================================================================================
+double Utilities::smearedSquare(double *xx, double *par){
+    //smearedSquare: square function convoluted with a gaussian
+    //par[0] = normalization
+    //par[1] = center of the function, look for misalignment
+    //par[2] = sigma of the gaussian, contains telescope and DUT resolutions
+    //par[3] = width of the square function, shuold be the width within no charge sharing occurs
+
+    double step=0.03125;//1/2^5
+    double func=0;
+
+    for(double y=par[1]-par[3]/2.; y<=par[1]+par[3]/2.; y+=step){
+      func += par[0] * TMath::Gaus(xx[0],y,par[2],kTRUE) * step;
+              //par[0]*1/TMath::Sqrt(2*TMath::Pi()*par[2])*TMath::Exp(-0.5*(xx[0]-y)*(xx[0]-y)/(par[2]*par[2]))*step;
+    }
+
+    return func;
+
+}
+
+//=======================================================================================================================================================
+//void Utilities::customProfileX(TH2F *h2DHist, vector<TH1F *>&prof, const char* outputName, const char* outputTitle, int yBinMin, int yBinMax, int minNumberOfEntries){
+void Utilities::customProfileX(TH2F *h2DHist, TH1F *profile, const char* outputName, const char* outputTitle, int yBinMin, int yBinMax, int minNumberOfEntries){
+
+    if(yBinMax<=0) yBinMax = h2DHist->GetNbinsY();
+    if(yBinMin<=0) yBinMin = 1;
+
+    int nXBin = h2DHist->GetNbinsX();
+
+    //profile->SetNameTitle(outputName,outputTitle);
+    //profile->SetBins(nXBin,h2DHist->GetBinLowEdge(1),h2DHist->GetBinWidth(1)*nXBin+h2DHist->GetBinLowEdge(1));
+    //prof.push_back(new TH1F(outputName,outputTitle,nXBin,h2DHist->GetBinLowEdge(1),h2DHist->GetBinWidth(1)*nXBin+h2DHist->GetBinLowEdge(1)));
+    //TH1F * &profile = prof.back();
+
+
+    for(int i=1; i<=nXBin; i++){
+
+        float mean=0.;
+        float mean_std;
+        float error=0.;
+        float sigma=0.;
+        float weight=0.;
+        int   entries=0.;
+
+        for(int j=yBinMin; j<=yBinMax ; j++){
+
+            float z      = h2DHist->GetBinContent(i,j);
+            float center = h2DHist->GetYaxis()->GetBinCenter(j);
+            if(z==0) continue;
+            weight = 1./z;
+            mean+=center*weight;
+            mean_std += center*z;
+            error+=weight;
+            sigma+=center*center*z;
+
+            entries+= z;
+
+        }
+
+        if(entries<=minNumberOfEntries) continue;
+
+        mean=mean/error;
+        mean_std=mean_std/entries;
+        error=TMath::Sqrt(1./error);
+        sigma = TMath::Sqrt(sigma - mean_std*mean_std)/entries;
+
+        profile->SetBinContent(i,mean_std);
+        profile->SetBinError(i,sigma);
+
+    }
+
+    //profile->Fit("pol1","Q");
+
+    return;
+
 }

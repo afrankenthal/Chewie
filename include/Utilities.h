@@ -1,8 +1,10 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
-
+#include <vector>
+using std::vector;
 class TF1;
 class TH1F;
+class TH2F;
 
 namespace Utilities
 {
@@ -44,6 +46,9 @@ namespace Utilities
    double etaDistributionAngle                 (double *x, double *par);
    double doubleUniformSmeared                 (double *x, double *par);
    double singleUniformSmeared                 (double *x, double *par);
+   double smearedSquare                        (double *x, double *par);
+   //void   customProfileX                       (TH2F *h2DHist, vector<TH1F*>&profile, const char* outputName, const char* outputTitle, int yBinMin=1, int yBinMax=-1, int minNumberOfEntries=1);
+   void   customProfileX                       (TH2F *h2DHist, TH1F *profile, const char* outputName, const char* outputTitle, int yBinMin=1, int yBinMax=-1, int minNumberOfEntries=1);
 
    double chi2Eta                              (double *par, TH1F *data);
 }

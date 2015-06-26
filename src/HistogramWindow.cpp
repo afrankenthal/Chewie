@@ -86,8 +86,8 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
 {
     TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
     TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
-    if(type==0)
-    {
+    //if(type==0)
+    //{
         if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
                 theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
                 theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
@@ -100,7 +100,7 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
             return true;
         else
             return false;
-    }
+    /*}
     else if(type==1)
     {
         if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
@@ -119,13 +119,13 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
         std::cout << __PRETTY_FUNCTION__ << "I only knows 2 types (0, 1) while this is type: " << type << ". IMPOSSIBLE!" << std::endl;
         assert(0);
         return false;
-    }
+    }*/
 }////////////////////////////////////////////////////////////////////////////////////
 
 bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber) const
 {
 
-    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col) >=  eventNumber)
+    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+1) >=  eventNumber)
         return true;
     else
         return false;
@@ -135,9 +135,9 @@ bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber)
 bool HistogramWindow::checkTimeWindowAbout(float col, int eventNumber, int runNumber) const
 {
 
-    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col-1) >=  eventNumber &&
-            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+1) >=  eventNumber &&
-            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col  ) >=  eventNumber )
+    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col) >=  eventNumber &&
+            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+2) >=  eventNumber &&
+            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col +1) >=  eventNumber )
         return true;
     else
         return false;

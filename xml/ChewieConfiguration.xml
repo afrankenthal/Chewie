@@ -213,10 +213,10 @@
       </Calibrations>
     </Plane>
     <Analysis Priority="0" IsToRun="yes" Type="Windows"/>
-    <Analysis StandardCut="yes" Priority="3" IsToRun="no" Type="Tracks" DoFits="no">
+    <Analysis StandardCut="yes" Priority="4" IsToRun="no" Type="Tracks" DoFits="no">
       <MinHits>8</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="4" IsToRun="no" Type="TracksAfter" DoFits="no">
+    <Analysis StandardCut="yes" Priority="5" IsToRun="no" Type="TracksAfter" DoFits="no">
       <MinHits>8</MinHits>
     </Analysis>
     <Analysis StandardCut="yes" Priority="1" IsToRun="yes" Type="Efficiency" DoFits="no">
@@ -226,7 +226,7 @@
       <Cut CutString="xPixelResidualLocal[9] &lt;= 55 &amp;&amp; xPixelResidualLocal[9] >= -55 &amp;&amp; xSigmaIntercept &lt;= 8" CutType="cell efficiency Y"/>
       <MinHits>8</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="2" IsToRun="no" Type="Charge" DoFits="no">
+    <Analysis StandardCut="yes" Priority="2" IsToRun="yes" Type="Charge" DoFits="no">
       <!--Priority>4</Priority-->
       <CellCharge>
         <Threashold>500</Threashold>
@@ -262,7 +262,7 @@
       </CalibCut>
       <MinHits>8</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="5" IsToRun="no" Type="Resolution" DoFits="no">
+    <Analysis StandardCut="yes" Priority="3" IsToRun="yes" Type="Resolution" DoFits="no">
       <Cut CutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 5" CutType="main cut"/>
       <Cut CutString="" CutType="X resolution"/>
       <Cut CutString="" CutType="Y resolution"/>
