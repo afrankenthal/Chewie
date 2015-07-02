@@ -73,21 +73,21 @@ bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
     TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
 
     //std::cout << __PRETTY_FUNCTION__ << "Col: " << col << " ColBin: " << xAxis->FindBin(col) << std::endl;
+    //WARNING THIS METHOD IS WRONG BECAUSE IT NEEDS TO CHECK THE DATA TYPE!
     if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0)
     {
         //std::cout << __PRETTY_FUNCTION__ << "theHWindow_.find(runNumber)" << std::endl;
         return true;
     }
-    else
-        return false;
+    return false;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int type) const
 {
     TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
     TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
-    //if(type==0)
-    //{
+    if(type==0)
+    {
         if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
                 theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
                 theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
@@ -100,32 +100,29 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
             return true;
         else
             return false;
-    /*}
+    }
     else if(type==1)
     {
-        if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 )
+        if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(0.)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(0.)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(0.)) != 0 )
 
             return true;
         else
             return false;
 
-
-
     }
     else
     {
-        std::cout << __PRETTY_FUNCTION__ << "I only knows 2 types (0, 1) while this is type: " << type << ". IMPOSSIBLE!" << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << "I only know 2 types (0, 1) while this is type: " << type << ". IMPOSSIBLE!" << " row: " << row << " col: " << col << std::endl;
         assert(0);
-        return false;
-    }*/
+    }
 }////////////////////////////////////////////////////////////////////////////////////
 
 bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber) const
 {
 
-    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+1) >=  eventNumber)
+    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col) >=  eventNumber)
         return true;
     else
         return false;
@@ -135,9 +132,9 @@ bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber)
 bool HistogramWindow::checkTimeWindowAbout(float col, int eventNumber, int runNumber) const
 {
 
-    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col) >=  eventNumber &&
-            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+2) >=  eventNumber &&
-            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col +1) >=  eventNumber )
+    if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col-1) >=  eventNumber &&
+            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+1) >=  eventNumber &&
+            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col  ) >=  eventNumber )
         return true;
     else
         return false;
@@ -164,11 +161,10 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
             theH2TimeWindow_.find(run)->second->Fill(col,entry);
 
     }
+    //std::cout << __PRETTY_FUNCTION__ << "Before Plane: " << planeID << " row: " << row << " col: " << col << std::endl;
     if( data.getHasHit(planeID) && data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol )
     {
-
-
-
+        //std::cout << __PRETTY_FUNCTION__ << "After  Plane: " << planeID << " row: " << row << " col: " << col << std::endl;
         if(nRow==1 && nCol==1)
             theHWindow_.find(run)->second->Fill(col,row);
         else if(nRow>1 && nCol==1)
@@ -294,9 +290,7 @@ void HistogramWindow::calculateTimeEfficiency(void)
                 }
 
             }
-
             theH1TimeWindow_.find(it->first)->second->Fill(it->second->GetXaxis()->GetBinCenter(c),eventDCFreezing);
-
         }
 
     }

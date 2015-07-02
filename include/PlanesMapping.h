@@ -14,6 +14,7 @@ public:
     std::string   getMonicelliPlaneName (int         position);
     int           getStation            (int         position);
     int           getPlaquette          (int         position);
+    int           getPlaneType          (int         position);
     int           getPlanePosition      (std::string plane   );
     unsigned int  getNumberOfPlanes     (void                ) {return planeToPosition_.size();}
 
@@ -21,6 +22,9 @@ private:
     std::map<std::string, int> planeToPosition_         ;
     std::map<int, std::string> positionToPlane_         ;
     std::map<int, std::string> positionToMonicelliPlane_;
+    std::map<int, int>         positionToStation_;
+    std::map<int, int>         positionToPlaquette_;
+    std::map<int, int>         positionToType_;
 };
 
 #endif // PLANESMAPPING_H

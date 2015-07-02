@@ -85,6 +85,88 @@ PlanesMapping::PlanesMapping()
     positionToMonicelliPlane_[23]  = "Station: 4 - Plaq: 1";
     positionToMonicelliPlane_[24]  = "Station: 4 - Plaq: 2";
     //positionToMonicelliPlane_[25] = "Station: 4 - Plaq: 3";
+
+    positionToStation_[0 ]  = 5;
+    positionToStation_[1 ]  = 5;
+    positionToStation_[2 ]  = 5;
+    positionToStation_[3 ]  = 5;
+    positionToStation_[4 ]  = 6;
+    positionToStation_[5 ]  = 6;
+    positionToStation_[6 ]  = 6;
+    positionToStation_[7 ]  = 6;
+    positionToStation_[8 ]  = 2;
+    positionToStation_[9 ]  = 2;
+    positionToStation_[10]  = 2;
+    positionToStation_[11]  = 2;
+    positionToStation_[12]  = 0;
+    positionToStation_[13]  = 0;
+    positionToStation_[14]  = 0;
+    positionToStation_[15]  = 0;
+    positionToStation_[16]  = 7;
+    positionToStation_[17]  = 7;
+    positionToStation_[18]  = 7;
+    positionToStation_[19]  = 7;
+    positionToStation_[20]  = 7;
+    positionToStation_[21]  = 7;
+    positionToStation_[22]  = 4;
+    positionToStation_[23]  = 4;
+    positionToStation_[24]  = 4;
+    //positionToMonicelliPlane_[25] = 4;
+
+    positionToPlaquette_[0 ]  = 0;
+    positionToPlaquette_[1 ]  = 1;
+    positionToPlaquette_[2 ]  = 2;
+    positionToPlaquette_[3 ]  = 3;
+    positionToPlaquette_[4 ]  = 0;
+    positionToPlaquette_[5 ]  = 1;
+    positionToPlaquette_[6 ]  = 2;
+    positionToPlaquette_[7 ]  = 3;
+    positionToPlaquette_[8 ]  = 0;
+    positionToPlaquette_[9 ]  = 1;
+    positionToPlaquette_[10]  = 2;
+    positionToPlaquette_[11]  = 3;
+    positionToPlaquette_[12]  = 0;
+    positionToPlaquette_[13]  = 1;
+    positionToPlaquette_[14]  = 2;
+    positionToPlaquette_[15]  = 3;
+    positionToPlaquette_[16]  = 0;
+    positionToPlaquette_[17]  = 1;
+    positionToPlaquette_[18]  = 2;
+    positionToPlaquette_[19]  = 3;
+    positionToPlaquette_[20]  = 4;
+    positionToPlaquette_[21]  = 5;
+    positionToPlaquette_[22]  = 0;
+    positionToPlaquette_[23]  = 1;
+    positionToPlaquette_[24]  = 2;
+    //positionToPlaquette_[25] = 3;
+
+    positionToType_[0 ]  = 1;
+    positionToType_[1 ]  = 1;
+    positionToType_[2 ]  = 1;
+    positionToType_[3 ]  = 1;
+    positionToType_[4 ]  = 1;
+    positionToType_[5 ]  = 1;
+    positionToType_[6 ]  = 1;
+    positionToType_[7 ]  = 1;
+    positionToType_[8 ]  = 0;
+    positionToType_[9 ]  = 0;
+    positionToType_[10]  = 0;
+    positionToType_[11]  = 0;
+    positionToType_[12]  = 0;
+    positionToType_[13]  = 0;
+    positionToType_[14]  = 0;
+    positionToType_[15]  = 0;
+    positionToType_[16]  = 1;
+    positionToType_[17]  = 1;
+    positionToType_[18]  = 1;
+    positionToType_[19]  = 1;
+    positionToType_[20]  = 1;
+    positionToType_[21]  = 1;
+    positionToType_[22]  = 0;
+    positionToType_[23]  = 0;
+    positionToType_[24]  = 0;
+    //positionToType_[25] = 3;
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -123,18 +205,8 @@ std::string PlanesMapping::getPlaneName(int position)
 //////////////////////////////////////////////////////////////////////////
 int PlanesMapping::getStation(int position)
 {
-    if(position>=0 && position<=3)
-        return 5;
-    else if(position>=4 && position<=7)
-        return 6;
-    else if(position>=8 && position<=11)
-        return 2;
-    else if(position>=12 && position<=15)
-        return 0;
-    else if(position>=16 && position<=21)
-        return 7;
-    else if(position>=22 && position<=24)
-        return 4;
+    if(positionToStation_.find(position) != positionToStation_.end())
+        return positionToStation_[position];
     else
     {
         std::stringstream ss;
@@ -147,21 +219,22 @@ int PlanesMapping::getStation(int position)
 //////////////////////////////////////////////////////////////////////////
 int PlanesMapping::getPlaquette(int position)
 {
-    //    if(position<12)
-    if(position<=19)
-        return position%4;
-    else if(position == 20)
-        return 4;
-    else if(position == 21)
-        return 5;
-    else if(position == 22)
-        return 0;
-    else if(position == 23)
-        return 1;
-    else if(position == 24)
-        return 2;
-    else if(position == 25)
-        return 3;
+    if(positionToPlaquette_.find(position) != positionToPlaquette_.end())
+        return positionToPlaquette_[position];
+    else
+    {
+        std::stringstream ss;
+        ss << "ERROR: Plane number " << position << " doesn't exist!";
+        STDLINE(ss.str(), ACRed);
+        return -1;
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////
+int PlanesMapping::getPlaneType(int position)
+{
+    if(positionToType_.find(position) != positionToType_.end())
+        return positionToType_[position];
     else
     {
         std::stringstream ss;

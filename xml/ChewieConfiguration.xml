@@ -184,7 +184,7 @@
         <LowerCol>1</LowerCol>
         <HigherCol>50</HigherCol>
         <LowerRow>1</LowerRow>
-        <HigherRow>78</HigherRow>
+        <HigherRow>19</HigherRow>
       </Window>
       <Calibrations Use="no">
         <File>/home/ngadiuba/MonicelliOutput/calibrationsPlots.root</File>
@@ -206,7 +206,7 @@
         <LowerCol>1</LowerCol>
         <HigherCol>50</HigherCol>
         <LowerRow>1</LowerRow>
-        <HigherRow>78</HigherRow>
+        <HigherRow>19</HigherRow>
       </Window>
       <Calibrations Use="no">
         <File>/home/ngadiuba/MonicelliOutput/calibrationsPlots.root</File>
