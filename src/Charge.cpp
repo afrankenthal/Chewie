@@ -701,7 +701,7 @@ void Charge::clusterSize(bool, int planeID, const Data& data, int threadNumber)
     int           col       = data.getColPredicted(planeID)         ;
     int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindowAbout(col,row,run, data.getDataType(planeID)) )
+    if( !theWindow->checkWindowAbout(col,row,run, thePlaneMapping_->getPlaneType(planeID)) )
         return;
 
     float maxPitchX = 150;
@@ -1301,7 +1301,7 @@ void Charge::XchargeDivision(bool pass, int planeID, const Data& data, int threa
     int           col       = data.getColPredicted(planeID)         ;
     int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindowAbout(col,row,run,data.getDataType(planeID)) )
+    if( !theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) )
         return;
 
     THREADED(h1DXallTracks_[planeID])->Fill(xRes);
