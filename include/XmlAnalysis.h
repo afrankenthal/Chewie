@@ -25,7 +25,7 @@ public:
     std::pair<bool,bool>               isParToLimit     (int         parID   );
     std::pair<std::string,std::string> getParLimits     (int         parID   );
     std::pair<double,double>           getParLimits     (int parID, bool flag);
-    int                                getThreashold    (void                );
+    int                                getThreshold     (void                );
     int                                getMaxCharge     (void                );
     int                                getMinTotCharge  (void                );
     int                                getMaxTotCharge  (void                );

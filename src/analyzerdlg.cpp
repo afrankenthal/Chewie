@@ -85,56 +85,56 @@ AnalyzerDlg::~AnalyzerDlg(void)
 //============================================================================================================================================
 void AnalyzerDlg::setInnerGeometry(void)
 {
-    ui->detectorsInfoTW     ->init();
-    ui->efficiencyMainCutsLE->setInnerGeometry(ui->efficiencyMainCutsLE->geometry());
-    ui->efficiencyCuts2LE   ->setInnerGeometry(ui->efficiencyCuts2LE   ->geometry());
-    ui->efficiencyCuts3LE   ->setInnerGeometry(ui->efficiencyCuts3LE   ->geometry());
-    ui->efficiencyCuts4LE   ->setInnerGeometry(ui->efficiencyCuts4LE   ->geometry());
-    ui->chargeMainCutsLE    ->setInnerGeometry(ui->chargeMainCutsLE    ->geometry());
-    ui->chargeCuts2LE       ->setInnerGeometry(ui->chargeCuts2LE       ->geometry());
-    ui->chargeCuts3LE       ->setInnerGeometry(ui->chargeCuts3LE       ->geometry());
-    ui->chargeCuts4LE       ->setInnerGeometry(ui->chargeCuts4LE       ->geometry());
-    ui->chargeCuts5LE       ->setInnerGeometry(ui->chargeCuts5LE       ->geometry());
-    ui->chargeCuts6LE       ->setInnerGeometry(ui->chargeCuts6LE       ->geometry());
-    ui->par0minLE           ->setInnerGeometry(ui->par0minLE           ->geometry());
-    ui->par0maxLE           ->setInnerGeometry(ui->par0maxLE           ->geometry());
-    ui->par1minLE           ->setInnerGeometry(ui->par1minLE           ->geometry());
-    ui->par1maxLE           ->setInnerGeometry(ui->par1maxLE           ->geometry());
-    ui->par2minLE           ->setInnerGeometry(ui->par2minLE           ->geometry());
-    ui->par2maxLE           ->setInnerGeometry(ui->par2maxLE           ->geometry());
-    ui->par3minLE           ->setInnerGeometry(ui->par3minLE           ->geometry());
-    ui->par3maxLE           ->setInnerGeometry(ui->par3maxLE           ->geometry());
-    ui->resolutionMainCutsLE->setInnerGeometry(ui->resolutionMainCutsLE->geometry());
-    ui->resolutionCuts2LE   ->setInnerGeometry(ui->resolutionCuts2LE   ->geometry());
-    ui->resolutionCuts3LE   ->setInnerGeometry(ui->resolutionCuts3LE   ->geometry());
-    ui->resolutionCuts4LE   ->setInnerGeometry(ui->resolutionCuts4LE   ->geometry());
-    ui->convertMaxEventsSB  ->init();
-    ui->convertMaxThreadsSB ->init();
-    ui->runMaxEventsSB      ->init();
-    ui->runMaxThreadsSB     ->init();
-    ui->priorityWindowsSB   ->init();
-    ui->priorityChargeSB    ->init();
-    ui->priorityEfficiencySB->init();
-    ui->priorityResolutionSB->init();
-    ui->priorityTracksSB    ->init();
+    ui->detectorsInfoTW      ->init();
+    ui->efficiencyMainCutsLE ->setInnerGeometry(ui->efficiencyMainCutsLE->geometry());
+    ui->efficiencyCuts2LE    ->setInnerGeometry(ui->efficiencyCuts2LE   ->geometry());
+    ui->efficiencyCuts3LE    ->setInnerGeometry(ui->efficiencyCuts3LE   ->geometry());
+    ui->efficiencyCuts4LE    ->setInnerGeometry(ui->efficiencyCuts4LE   ->geometry());
+    ui->chargeMainCutsLE     ->setInnerGeometry(ui->chargeMainCutsLE    ->geometry());
+    ui->chargeCuts2LE        ->setInnerGeometry(ui->chargeCuts2LE       ->geometry());
+    ui->chargeCuts3LE        ->setInnerGeometry(ui->chargeCuts3LE       ->geometry());
+    ui->chargeCuts4LE        ->setInnerGeometry(ui->chargeCuts4LE       ->geometry());
+    ui->chargeCuts5LE        ->setInnerGeometry(ui->chargeCuts5LE       ->geometry());
+    ui->chargeCuts6LE        ->setInnerGeometry(ui->chargeCuts6LE       ->geometry());
+    ui->par0minLE            ->setInnerGeometry(ui->par0minLE           ->geometry());
+    ui->par0maxLE            ->setInnerGeometry(ui->par0maxLE           ->geometry());
+    ui->par1minLE            ->setInnerGeometry(ui->par1minLE           ->geometry());
+    ui->par1maxLE            ->setInnerGeometry(ui->par1maxLE           ->geometry());
+    ui->par2minLE            ->setInnerGeometry(ui->par2minLE           ->geometry());
+    ui->par2maxLE            ->setInnerGeometry(ui->par2maxLE           ->geometry());
+    ui->par3minLE            ->setInnerGeometry(ui->par3minLE           ->geometry());
+    ui->par3maxLE            ->setInnerGeometry(ui->par3maxLE           ->geometry());
+    ui->resolutionMainCutsLE ->setInnerGeometry(ui->resolutionMainCutsLE->geometry());
+    ui->resolutionCuts2LE    ->setInnerGeometry(ui->resolutionCuts2LE   ->geometry());
+    ui->resolutionCuts3LE    ->setInnerGeometry(ui->resolutionCuts3LE   ->geometry());
+    ui->resolutionCuts4LE    ->setInnerGeometry(ui->resolutionCuts4LE   ->geometry());
+    ui->convertMaxEventsSB   ->init();
+    ui->convertMaxThreadsSB  ->init();
+    ui->runMaxEventsSB       ->init();
+    ui->runMaxThreadsSB      ->init();
+    ui->priorityWindowsSB    ->init();
+    ui->priorityChargeSB     ->init();
+    ui->priorityEfficiencySB ->init();
+    ui->priorityResolutionSB ->init();
+    ui->priorityTracksSB     ->init();
     ui->priorityTracksAfterSB->init();
-    ui->badPlanesHitsSB     ->init();
-    ui->lowerRowDUT0LE      ->setInnerGeometry(ui->lowerRowDUT0LE      ->geometry());
-    ui->lowerColDUT0LE      ->setInnerGeometry(ui->lowerColDUT0LE      ->geometry());
-    ui->higherRowDUT0LE     ->setInnerGeometry(ui->higherRowDUT0LE     ->geometry());
-    ui->higherColDUT0LE     ->setInnerGeometry(ui->higherColDUT0LE     ->geometry());
-    ui->lowerRowDUT1LE      ->setInnerGeometry(ui->lowerRowDUT1LE      ->geometry());
-    ui->lowerColDUT1LE      ->setInnerGeometry(ui->lowerColDUT1LE      ->geometry());
-    ui->higherRowDUT1LE     ->setInnerGeometry(ui->higherRowDUT1LE     ->geometry());
-    ui->higherColDUT1LE     ->setInnerGeometry(ui->higherColDUT1LE     ->geometry());
-    ui->xROCdut0LE          ->setInnerGeometry(ui->xROCdut0LE          ->geometry());
-    ui->yROCdut0LE          ->setInnerGeometry(ui->yROCdut0LE          ->geometry());
-    ui->xROCdut1LE          ->setInnerGeometry(ui->xROCdut1LE          ->geometry());
-    ui->yROCdut1LE          ->setInnerGeometry(ui->yROCdut1LE          ->geometry());
-    ui->ZposDUT0LE          ->setInnerGeometry(ui->ZposDUT0LE          ->geometry());
-    ui->ZrotDUT0LE          ->setInnerGeometry(ui->ZrotDUT0LE          ->geometry());
-    ui->ZposDUT1LE          ->setInnerGeometry(ui->ZposDUT1LE          ->geometry());
-    ui->ZrotDUT1LE          ->setInnerGeometry(ui->ZrotDUT1LE          ->geometry());
+    ui->badPlanesHitsSB      ->init();
+    ui->lowerRowDUT0LE       ->setInnerGeometry(ui->lowerRowDUT0LE      ->geometry());
+    ui->lowerColDUT0LE       ->setInnerGeometry(ui->lowerColDUT0LE      ->geometry());
+    ui->higherRowDUT0LE      ->setInnerGeometry(ui->higherRowDUT0LE     ->geometry());
+    ui->higherColDUT0LE      ->setInnerGeometry(ui->higherColDUT0LE     ->geometry());
+    ui->lowerRowDUT1LE       ->setInnerGeometry(ui->lowerRowDUT1LE      ->geometry());
+    ui->lowerColDUT1LE       ->setInnerGeometry(ui->lowerColDUT1LE      ->geometry());
+    ui->higherRowDUT1LE      ->setInnerGeometry(ui->higherRowDUT1LE     ->geometry());
+    ui->higherColDUT1LE      ->setInnerGeometry(ui->higherColDUT1LE     ->geometry());
+    ui->lowerRowDUT2LE       ->setInnerGeometry(ui->lowerRowDUT2LE      ->geometry());
+    ui->lowerColDUT2LE       ->setInnerGeometry(ui->lowerColDUT2LE      ->geometry());
+    ui->higherRowDUT2LE      ->setInnerGeometry(ui->higherRowDUT2LE     ->geometry());
+    ui->higherColDUT2LE      ->setInnerGeometry(ui->higherColDUT2LE     ->geometry());
+    ui->lowerRowDUT3LE       ->setInnerGeometry(ui->lowerRowDUT3LE      ->geometry());
+    ui->lowerColDUT3LE       ->setInnerGeometry(ui->lowerColDUT3LE      ->geometry());
+    ui->higherRowDUT3LE      ->setInnerGeometry(ui->higherRowDUT3LE     ->geometry());
+    ui->higherColDUT3LE      ->setInnerGeometry(ui->higherColDUT3LE     ->geometry());
 }
 
 //============================================================================================================================================
@@ -919,37 +919,38 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     ui->higherRowDUT1LE->setText                  ("HigherRow",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getHigherRow()                );
     ui->higherRowDUT1LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()                                 );
 
-    ui->xROCdut0LE->textIsAttribute               (true                                                                                         );
-    ui->xROCdut0LE->setText                       ("XRocs",((theXmlParser_->getPlanes())["Dut0"]->getChipsNumber()).first                       );
-    ui->xROCdut0LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut0"]->getNode()                                              );
+    ui->lowerColDUT2LE->textIsAttribute           (false                                                                                        );
+    ui->lowerColDUT2LE->setText                   ("LowerCol",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getLowerCol()                  );
+    ui->lowerColDUT2LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
 
-    ui->yROCdut0LE->textIsAttribute               (true                                                                                         );
-    ui->yROCdut0LE->setText                       ("YRocs",((theXmlParser_->getPlanes())["Dut0"]->getChipsNumber()).second                      );
-    ui->yROCdut0LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut0"]->getNode()                                              );
+    ui->higherColDUT2LE->textIsAttribute          (false                                                                                        );
+    ui->higherColDUT2LE->setText                  ("HigherCol",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getHigherCol()                );
+    ui->higherColDUT2LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
 
-    ui->xROCdut1LE->textIsAttribute               (true                                                                                         );
-    ui->xROCdut1LE->setText                       ("XRocs",((theXmlParser_->getPlanes())["Dut1"]->getChipsNumber()).first                       );
-    ui->xROCdut1LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut1"]->getNode()                                              );
+    ui->lowerRowDUT2LE->textIsAttribute           (false                                                                                        );
+    ui->lowerRowDUT2LE->setText                   ("LowerRow",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getLowerRow()                  );
+    ui->lowerRowDUT2LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
 
-    ui->yROCdut1LE->textIsAttribute               (true                                                                                         );
-    ui->yROCdut1LE->setText                       ("YRocs",((theXmlParser_->getPlanes())["Dut1"]->getChipsNumber()).second                      );
-    ui->yROCdut1LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut1"]->getNode()                                              );
+    ui->higherRowDUT2LE->textIsAttribute          (false                                                                                        );
+    ui->higherRowDUT2LE->setText                  ("HigherRow",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getHigherRow()                );
+    ui->higherRowDUT2LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
 
-    ui->ZposDUT0LE->textIsAttribute               (true                                                                                         );
-    ui->ZposDUT0LE->setText                       ("ZPosition",(theXmlParser_->getPlanes())["Dut0"]->getZPosition()                             );
-    ui->ZposDUT0LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut0"]->getNode()                                              );
+    ui->lowerColDUT3LE->textIsAttribute           (false                                                                                        );
+    ui->lowerColDUT3LE->setText                   ("LowerCol",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getLowerCol()                  );
+    ui->lowerColDUT3LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
 
-    ui->ZrotDUT0LE->textIsAttribute               (true                                                                                         );
-    ui->ZrotDUT0LE->setText                       ("ZRotation",(theXmlParser_->getPlanes())["Dut0"]->getZRotation()                             );
-    ui->ZrotDUT0LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut0"]->getNode()                                              );
+    ui->higherColDUT3LE->textIsAttribute          (false                                                                                        );
+    ui->higherColDUT3LE->setText                  ("HigherCol",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getHigherCol()                );
+    ui->higherColDUT3LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
 
-    ui->ZposDUT1LE->textIsAttribute               (true                                                                                         );
-    ui->ZposDUT1LE->setText                       ("ZPosition",(theXmlParser_->getPlanes())["Dut1"]->getZPosition()                             );
-    ui->ZposDUT1LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut1"]->getNode()                                              );
+    ui->lowerRowDUT3LE->textIsAttribute           (false                                                                                        );
+    ui->lowerRowDUT3LE->setText                   ("LowerRow",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getLowerRow()                  );
+    ui->lowerRowDUT3LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
 
-    ui->ZrotDUT1LE->textIsAttribute               (true                                                                                         );
-    ui->ZrotDUT1LE->setText                       ("ZRotation",(theXmlParser_->getPlanes())["Dut1"]->getZRotation()                             );
-    ui->ZrotDUT1LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut1"]->getNode()                                              );
+    ui->higherRowDUT3LE->textIsAttribute          (false                                                                                        );
+    ui->higherRowDUT3LE->setText                  ("HigherRow",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getHigherRow()                );
+    ui->higherRowDUT3LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
+
 
     std::string whichDut = "";
 
@@ -995,9 +996,9 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
         parMaxLE[p]->assignXmlElement((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
     }
 
-    QDomNode threashold = (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("Threashold").at(0);
-    ui->threasholdSB->setValue("threashold", threashold.toElement().text().toInt());
-    ui->threasholdSB->assignXmlElement(threashold);
+    QDomNode threshold = (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("Threshold").at(0);
+    ui->thresholdSB->setValue("threshold", threshold.toElement().text().toInt());
+    ui->thresholdSB->assignXmlElement(threshold);
     QDomNode maxCharge = (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("MaxCharge").at(0);
     ui->maxChargeSB->setValue("maxCharge", maxCharge.toElement().text().toInt());
     ui->maxChargeSB->assignXmlElement(maxCharge);

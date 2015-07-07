@@ -152,7 +152,7 @@ bool TracksAfter::passStandardCuts(int planeID, const Data &data)
 void TracksAfter::beginJob(void)
 {
 /*    XmlParser* theParser = theAnalysisManager_->getXmlParser();
-    threashold_   = theParser->getAnalyses()["Tracks"]->getThreashold();
+    threshold_    = theParser->getAnalyses()["Tracks"]->getThreshold();
     maxTracks_    = theParser->getAnalyses()["Tracks"]->getMaxTracks();
     minTotTracks_ = theParser->getAnalyses()["Tracks"]->getMinTotTracks();
     maxTotTracks_ = theParser->getAnalyses()["Tracks"]->getMaxTotTracks();   */

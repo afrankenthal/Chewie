@@ -1,52 +1,55 @@
 <?xml encoding="ISO-8859-1"?>
-<!ELEMENT ChewieConfiguration(general*)(converter*)(scan*)>
- <!ELEMENT converter>
-  <!ATTLIST converter maxEvents CDATA #REQUIRED>
-  <!ATTLIST converter threads CDATA #REQUIRED>
- <!ELEMENT general(Analysis* Plane*)>
-  <!ATTLIST general preAnalysisMaxEvents CDATA #REQUIRED>
-  <!ATTLIST general analysesMaxEvents CDATA #REQUIRED>
-  <!ATTLIST general threads CDATA #REQUIRED>
+<!ELEMENT ChewieConfiguration(General*)(Converter*)(Scan*)>
+ <!ELEMENT Converter>
+  <!ATTLIST Converter MaxEvents CDATA #REQUIRED>
+  <!ATTLIST Converter Threads   CDATA #REQUIRED>
+  <!ATTLIST Converter IsToLimit CDATA #REQUIRED>
+ <!ELEMENT General(Analysis* Plane*)>
+  <!ATTLIST General PreAnalysisMaxEvents CDATA #REQUIRED>
+  <!ATTLIST General AnalysesMaxEvents CDATA #REQUIRED>
+  <!ATTLIST General Threads CDATA #REQUIRED>
   <!ELEMENT Plane(Window+)(Calibrations*)>
-   <!ATTLIST Plane name CDATA #REQUIRED>
-   <!ATTLIST Plane xChipsNumber CDATA #REQUIRED>
-   <!ATTLIST Plane yChipsNumber CDATA #REQUIRED>
-   <!ATTLIST Plane zPosition CDATA #REQUIRED> 
-   <!ATTLIST Plane zRotation CDATA #REQUIRED>  
-    <!ELEMENT Window(lowerCol+ higherCol+ lowerRow+ higherRow+ removedPixel*)>
-     <!ELEMENT lowerCol (#PCDATA)+>
-     <!ELEMENT higherCol (#PCDATA)+>
-     <!ELEMENT lowerRow (#PCDATA)+>
-     <!ELEMENT higherRow (#PCDATA)+>
-     <!ELEMENT removedPixel (#PCDATA)*>
-      <!ATTLIST removedPixel row CDATA #REQUIRED>
-      <!ATTLIST removedPixel col CDATA #REQUIRED>
-    <!ELEMENT Calibrations (file+)>
-     <!ATTLIST use CDATA #REQUIRED>
-     <!ELEMENT file (#PCDATA)+>   
- <!ELEMENT Analysis(minHits+)(cellCharge*)(totalCharge*)(cut*)(calibCut*)(BadPlanesHits*)>
-  <!ATTLIST Analysis type CDATA #REQUIRED>
-  <!ATTLIST Analysis issucaToRun CDATA #REQUIRED>
-  <!ATTLIST Analysis standardCut CDATA #REQUIRED>
+   <!ATTLIST Plane Name CDATA #REQUIRED>
+   <!ATTLIST Plane XRocs CDATA #REQUIRED>
+   <!ATTLIST Plane YRocs CDATA #REQUIRED>
+   <!ATTLIST Plane XPitch CDATA #REQUIRED>
+   <!ATTLIST Plane YPitch CDATA #REQUIRED>
+   <!ATTLIST Plane ZPosition CDATA #REQUIRED> 
+   <!ATTLIST Plane ZRotation CDATA #REQUIRED>  
+    <!ELEMENT Window(LowerCol+ HigherCol+ LowerRow+ HigherRow+ RemovedPixel*)>
+     <!ELEMENT LowerCol (#PCDATA)+>
+     <!ELEMENT HigherCol (#PCDATA)+>
+     <!ELEMENT LowerRow (#PCDATA)+>
+     <!ELEMENT HigherRow (#PCDATA)+>
+     <!ELEMENT RemovedPixel (#PCDATA)*>
+      <!ATTLIST RemovedPixel Row CDATA #REQUIRED>
+      <!ATTLIST RemovedPixel Col CDATA #REQUIRED>
+    <!ELEMENT Calibrations (File+)>
+     <!ATTLIST Use CDATA #REQUIRED>
+     <!ELEMENT File (#PCDATA)+>   
+ <!ELEMENT Analysis(MinHits+)(CellCharge*)(TotalCharge*)(cut*)(calibCut*)(BadPlanesHits*)>
+  <!ATTLIST Analysis Type CDATA #REQUIRED>
+  <!ATTLIST Analysis IsToRun CDATA #REQUIRED>
+  <!ATTLIST Analysis StandardCut CDATA #REQUIRED>
   <!ATTLIST Analysis Priority CDATA #REQUIRED>
-  <!ELEMENT minHits(#PCDATA)+>
+  <!ELEMENT MinHits(#PCDATA)+>
   <!ELEMENT BadPlanesHits(#PCDATA)+>
   <!--ELEMENT priority(#PCDATA)+-->
-  <!ELEMENT cellCharge(threashold+ maxCharge+)>
-   <!ELEMENT threashold(#PCDATA)+>
-   <!ELEMENT maxCharge(#PCDATA)+>
-  <!ELEMENT totalCharge(minTotCharge+ maxTotCharge+)>
-   <!ELEMENT minTotCharge(#PCDATA)+>
-   <!ELEMENT maxTotCharge(#PCDATA)+>
-  <!ELEMENT cut (#PCDATA)*>
-   <!ATTLIST cut cutType CDATA #REQUIRED>
-   <!ATTLIST cut cutString CDATA #REQUIRED> 
-  <!ELEMENT calibCut(par+)>
-   <!ELEMENT par(min+ max+)>
-    <!ATTLIST parID CDATA #REQUIRED>
- <!ELEMENT scan (file*)>
-  <!ELEMENT file (#PCDATA)*>
-   <!ATTLIST file value CDATA #REQUIRED>
-   <!ATTLIST file name CDATA #REQUIRED>
+  <!ELEMENT CellCharge(threashold+ maxCharge+)>
+   <!ELEMENT Threashold(#PCDATA)+>
+   <!ELEMENT MaxCharge(#PCDATA)+>
+  <!ELEMENT TotalCharge(minTotCharge+ maxTotCharge+)>
+   <!ELEMENT MinTotCharge(#PCDATA)+>
+   <!ELEMENT MaxTotCharge(#PCDATA)+>
+  <!ELEMENT Cut (#PCDATA)*>
+   <!ATTLIST Cut CutType CDATA #REQUIRED>
+   <!ATTLIST Cut CutString CDATA #REQUIRED> 
+  <!ELEMENT CalibCut(par+)>
+   <!ELEMENT Par(min+ max+)>
+    <!ATTLIST ParID CDATA #REQUIRED>
+ <!ELEMENT Scan (file*)>
+  <!ELEMENT File (#PCDATA)*>
+   <!ATTLIST File value CDATA #REQUIRED>
+   <!ATTLIST File name CDATA #REQUIRED>
    
   

@@ -38,8 +38,8 @@ private:
 
     void planeEfficiency  (bool pass  , int planeID, const Data& data, int threadNumber);
     void cellEfficiency   (bool pass  , int planeID, const Data& data, int threadNumber);
-    void XcellEfficiency  (bool pass  , int planeID, const Data& data, int threadNumber);
-    void YcellEfficiency  (bool pass  , int planeID, const Data& data, int threadNumber);
+    void xCellEfficiency  (bool pass  , int planeID, const Data& data, int threadNumber);
+    void yCellEfficiency  (bool pass  , int planeID, const Data& data, int threadNumber);
     void scanEfficiency   (int planeID, int value  , const Data& data, int threadNumber);
 
     void setErrorsBar     (int  planeID                                                );

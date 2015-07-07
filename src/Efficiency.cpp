@@ -30,7 +30,7 @@ Efficiency::Efficiency(AnalysisManager* analysisManager, int nOfThreads) :
     Analysis          (analysisManager, nOfThreads)
   , thePlaneMapping_  (0               )
   , theWindowsManager_(0               )
-  , theXmlParser_     (0               )
+  , theXmlParser_     (analysisManager->getXmlParser())
 
 {
     thePlaneMapping_ = new PlanesMapping();
@@ -155,7 +155,6 @@ void Efficiency::destroy(void)
 void Efficiency::beginJob(void)
 {
     theWindowsManager_ = theAnalysisManager_->getWindowsManager();
-    theXmlParser_      = theAnalysisManager_->getXmlParser();
 
     if(theXmlParser_->getScan()->getScanValues().size()==0)
         book();
@@ -163,7 +162,7 @@ void Efficiency::beginJob(void)
         scanBook();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Efficiency::fitEfficiency(int planeID)
+void Efficiency::fitEfficiency(int ) //planeID
 {
 
 }
@@ -201,8 +200,8 @@ void Efficiency::analyze(const Data& data, int threadNumber)//WARNING: You can't
             //std::cout << __PRETTY_FUNCTION__ << p << " plane " << thePlaneMapping_->getPlaneType(p) << std::endl;
             planeEfficiency (passMainCut           ,p,data,threadNumber);
             cellEfficiency  (passCellEfficiencyCut ,p,data,threadNumber);
-            XcellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
-            YcellEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
+            xCellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
+            yCellEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
         }
     }
     else
@@ -577,7 +576,7 @@ void Efficiency::endJob(void)
             STDLINE("",ACWhite);
         }
 
-        if(theAnalysisManager_->getXmlParser()->getAnalysesFromString("Efficiency")->doFits())
+        if(theXmlParser_->getAnalysesFromString("Efficiency")->doFits())
         {
             fitEfficiency(p);
         }
@@ -599,8 +598,8 @@ void Efficiency::book(void)
     std::string       planeName ;
     int               nBinsX    ;
     int               nBinsY    ;
-    float             resXRange   =   150;
-    float             resYRange   =   100;
+    float             resXRange ;
+    float             resYRange ;
     float             pixelSizeLeft  = 300;
     float             pixelSizeRight = 300;
     float             pixelSizeUp    = 200;
@@ -626,6 +625,9 @@ void Efficiency::book(void)
     {
         planeName = thePlaneMapping_->getPlaneName(p);
         theWindow = theWindowsManager_->getWindow(p);
+
+        resXRange   = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
+        resYRange   = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
 
         theAnalysisManager_->cd("Efficiency");
         theAnalysisManager_->mkdir(planeName);
@@ -1258,10 +1260,10 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
     float          yRes      = data.getYPixelResidualLocal(planeID)  ;
     float          row       = data.getRowPredicted(planeID)         ;
     float          col       = data.getColPredicted(planeID)         ;
-    int            event     = data.getEventChewieNumber()           ;
+    //int            event     = data.getEventChewieNumber()           ;
     int            run       = data.getRunNumber()                   ;
-    double         maxPitchX = 150                                   ;
-    double         maxPitchY = 100                                   ;
+    float          maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+    float          maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
 
     if (data.getColPredicted(planeID) == 51 && data.getRowPredicted(planeID) != 79 )
     {
@@ -1280,7 +1282,7 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
         }
     }
 
-    if (data.getColPredicted(planeID) == 50&& data.getRowPredicted(planeID) != 79)
+    if (data.getColPredicted(planeID) == 50 && data.getRowPredicted(planeID) != 79)
     {
         THREADED(hCellEfficiencyEdgeRightm1Norm_[planeID])->Fill(xRes,yRes);
         THREADED(hCellEfficiencyEdgeRight1DNorm_[planeID])->Fill(xRes-1*150);
@@ -1299,12 +1301,12 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
         }
     }
 
-    if (data.getColPredicted(planeID) == 48&& data.getRowPredicted(planeID) != 79)
+    if (data.getColPredicted(planeID) == 48 && data.getRowPredicted(planeID) != 79)
     {
         THREADED(hCellEfficiencyEdgeRightm3Norm_[planeID])->Fill(xRes,yRes);
         THREADED(hCellEfficiencyEdgeRight1DNorm_[planeID])->Fill(xRes-3*150);
         //if(data.getClusterSize(planeID)==2) THREADED(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID])->Fill(xRes-3*150.);
-        THREADED(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID])->SetBinContent(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID]->FindBin(xRes-3*150.), data.getClusterSize(planeID));
+        THREADED(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID])->SetBinContent(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID]->FindBin(xRes-3*300.), data.getClusterSize(planeID));
         if(data.getHasHit(planeID)){
             THREADED(hCellEfficiencyEdgeRight1D_cl_[planeID])->Fill(data.getClusterSize(planeID));
             THREADED(hCellEfficiencyEdgeRightm3_[planeID])->Fill(xRes,yRes);
@@ -1316,12 +1318,12 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
         }
     }
 
-    if (data.getColPredicted(planeID) == 46&& data.getRowPredicted(planeID) != 79)
+    if (data.getColPredicted(planeID) == 46 && data.getRowPredicted(planeID) != 79)
     {
         THREADED(hCellEfficiencyEdgeRightm5Norm_[planeID])->Fill(xRes,yRes);
         THREADED(hCellEfficiencyEdgeRight1DNorm_[planeID])->Fill(xRes-5*150);
-        //if(data.getClusterSize(planeID)==2) THREADED(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID])->Fill(xRes-5*150.);
-        THREADED(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID])->SetBinContent(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID]->FindBin(xRes-5*150.), data.getClusterSize(planeID));
+        //if(data.getClusterSize(planeID)==2) THREADED(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID])->Fill(xRes-5*300.);
+        THREADED(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID])->SetBinContent(hCellEfficiencyEdgeRight1DNorm_cl2_[planeID]->FindBin(xRes-5*300.), data.getClusterSize(planeID));
         if(data.getHasHit(planeID)){
             THREADED(hCellEfficiencyEdgeRightm5_[planeID])->Fill(xRes,yRes);
             THREADED(hCellEfficiencyEdgeRight1D_[planeID])->Fill(xRes-5*150);
@@ -1334,7 +1336,7 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
         }
     }
 
-    if (data.getColPredicted(planeID) == 47&& data.getRowPredicted(planeID) != 79)
+    if (data.getColPredicted(planeID) == 47 && data.getRowPredicted(planeID) != 79)
     {
         THREADED(hCellEfficiencyEdgeRightm4Norm_[planeID])->Fill(xRes,yRes);
         THREADED(hCellEfficiencyEdgeRight1DNorm_[planeID])->Fill(xRes-4*150);
@@ -1351,7 +1353,7 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
         }
     }
 
-    if (data.getColPredicted(planeID) == 49&& data.getRowPredicted(planeID) != 79)
+    if (data.getColPredicted(planeID) == 49 && data.getRowPredicted(planeID) != 79)
     {
         THREADED(hCellEfficiencyEdgeRightm2Norm_[planeID])->Fill(xRes,yRes);
         THREADED(hCellEfficiencyEdgeRight1DNorm_[planeID])->Fill(xRes-2*150);
@@ -1642,44 +1644,51 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Efficiency::XcellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
-
     if(!pass)
         return;
 
+    const Window* theWindow       = theWindowsManager_->getWindow(planeID) ;
+    int           row             = data.getRowPredicted(planeID)          ;
+    int           col             = data.getColPredicted(planeID)          ;
+    int           event           = data.getEventChewieNumber()            ;
+    int           run             = data.getRunNumber()                    ;
+    float         maxPitchX       = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+    float         xRes            = 0.  ;
+    float         sizePixelLeft   = 300;
+    float         sizePixelRight  = 300;
+    float         edgeLeft        = 200.;
+    float         edgeRight       = 200.;
+    float         edgeGlobalRight = sizePixelLeft + atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str())*50. + sizePixelRight;
+    float         xPredicted;
 
-    const Window* theWindow = theWindowsManager_->getWindow(planeID) ;
-    int           row       = data.getRowPredicted(planeID)          ;
-    int           col       = data.getColPredicted(planeID)          ;
-    int           event     = data.getEventChewieNumber()            ;
-    int           run       = data.getRunNumber()                    ;
-    float maxPitchX = 150.;
-    float xRes      = 0.  ;
-    float sizePixelLeft  = 300.;
-    float sizePixelRight = 300.;
-    float edgeLeft  = 200.;
-    float edgeRight = 200.;
-    float edgeGlobalRight = 300. + 150.*50. + 300.;
+    //FIXME OR UNDERSTANDME!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //FIXME OR UNDERSTANDME!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //FIXME OR UNDERSTANDME!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if(thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos && row!=-1)
+    {
 
-    if(thePlaneMapping_->getPlaneName(planeID).find("Dut")!=std::string::npos && row!=-1){;
+        xPredicted = data.getXPredictedLocal(planeID);
 
-        float xPredicted = data.getXPredictedLocal(planeID);
-
-        if(xPredicted >= edgeGlobalRight - sizePixelRight && xPredicted <= edgeGlobalRight + edgeRight &&
-                (theWindow->checkWindow(51,row,run) || theWindow->checkWindow(51,row-1,run) || theWindow->checkWindow(51,row+1,run) )&&
-                theWindow->checkTimeWindow(51,event,run)){
+        if((xPredicted >= edgeGlobalRight - sizePixelRight) && (xPredicted <= edgeGlobalRight + edgeRight)
+                && (theWindow->checkWindow(51,row,run) || theWindow->checkWindow(51,row-1,run) || theWindow->checkWindow(51,row+1,run) )
+                && theWindow->checkTimeWindow(51,event,run))
+        {
             float xResEdge =  xPredicted - edgeGlobalRight + sizePixelRight/2.;
             THREADED(h1EfficiencyEdgeRightNorm_[planeID])->Fill(xResEdge);
-            if(data.getHasHit(planeID)) THREADED(h1EfficiencyEdgeRight_[planeID])->Fill(xResEdge);
+            if(data.getHasHit(planeID))
+                THREADED(h1EfficiencyEdgeRight_[planeID])->Fill(xResEdge);
         }
 
-        if( xPredicted >= -edgeLeft && xPredicted <= sizePixelLeft &&
-                (theWindow->checkWindow(0,row,run) || theWindow->checkWindow(0,row-1,run) || theWindow->checkWindow(0,row+1,run))&&
-                theWindow->checkTimeWindow(0,event,run)){
+        if( (xPredicted >= -edgeLeft) && (xPredicted <= sizePixelLeft)
+                && (theWindow->checkWindow(0,row,run) || theWindow->checkWindow(0,row-1,run) || theWindow->checkWindow(0,row+1,run))
+                && theWindow->checkTimeWindow(0,event,run))
+        {
             float xResEdge =  xPredicted - sizePixelLeft/2.;
             THREADED(h1EfficiencyEdgeLeftNorm_[planeID])->Fill(xResEdge);
-            if(data.getHasHit(planeID)) THREADED(h1EfficiencyEdgeLeft_[planeID])->Fill(xResEdge);
+            if(data.getHasHit(planeID))
+                THREADED(h1EfficiencyEdgeLeft_[planeID])->Fill(xResEdge);
         }
 
     }
@@ -1688,19 +1697,22 @@ void Efficiency::XcellEfficiency(bool pass, int planeID, const Data& data, int t
     if(!data.getIsInDetector(planeID))
         return;
 
+    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
+    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
+    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
+    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
     if (data.getYPixelResidualLocal(planeID) > 30 || data.getYPixelResidualLocal(planeID) < -30)
         return;
 
     //    if (fabs(data.getXTrackResidualLocal(planeID)) > 85 && fabs(data.getYTrackResidualLocal(planeID)) > 60)
     //            return;
 
-    if(data.getXPitchLocal(planeID)<=maxPitchX){
-
-        if(data.getXPixelResidualLocal(planeID)>0)
+    if(data.getXPitchLocal(planeID) == maxPitchX)
+    {
+        if(data.getXPixelResidualLocal(planeID) > 0)
             xRes =-data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
-        else if(data.getXPixelResidualLocal(planeID)<=0)
+        else if(data.getXPixelResidualLocal(planeID) <= 0)
             xRes = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
-
     }
     else
         return;
@@ -1722,7 +1734,7 @@ void Efficiency::XcellEfficiency(bool pass, int planeID, const Data& data, int t
             bool isOk = false;
             for(int h=0; h<data.getClusterSize(planeID); h++)
             {
-                if(data.getClusterPixelCol(h,planeID)==col && data.getClusterPixelRow(h,planeID)==row)
+                if((data.getClusterPixelCol(h,planeID) == col) && (data.getClusterPixelRow(h,planeID) == row))
                 {
                     THREADED(h1DXcellEfficiencyFirstHit_ [planeID])->Fill(xRes);
                     THREADED(h1DXcellEfficiencySecondHit_[planeID])->Fill(xRes);
@@ -1738,12 +1750,11 @@ void Efficiency::XcellEfficiency(bool pass, int planeID, const Data& data, int t
                 isOk=false;
                 for(int h=0; h<data.getClusterSize(planeID); h++)
                 {
-                    if(data.getClusterPixelRow(h,planeID)==row)
+                    if(data.getClusterPixelRow(h,planeID) == row)
                     {
                         /*if((data.getXPixelResidualLocal(planeID)>0 && (col-data.getClusterPixelCol(h,planeID))==1) ||
                           (data.getXPixelResidualLocal(planeID)<0 && (col-data.getClusterPixelCol(h,planeID))==-1))*/
-                        if( ( (col-data.getClusterPixelCol(h,planeID)) ==  1 ) ||
-                                ( (col-data.getClusterPixelCol(h,planeID)) == -1 )  )
+                        if( ( (col-data.getClusterPixelCol(h,planeID)) ==  1) || ( (col-data.getClusterPixelCol(h,planeID)) == -1) )
                         {
                             isOk=true;
                             break;
@@ -1760,52 +1771,61 @@ void Efficiency::XcellEfficiency(bool pass, int planeID, const Data& data, int t
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Efficiency::YcellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
 
     if(!pass)
         return;
 
 
-    const Window* theWindow = theWindowsManager_->getWindow(planeID) ;
-    int           row       = data.getRowPredicted(planeID)          ;
-    int           col       = data.getColPredicted(planeID)          ;
-    int           event     = data.getEventChewieNumber()            ;
-    int           run       = data.getRunNumber()                    ;
-    float maxPitchY = 100.;
-    float yRes      = 0.  ;
-    float sizePixelDown  = 100.;
-    float sizePixelUp = 200.;
-    float edgeDown  = 200.;
-    float edgeUp = 200.;
-    float edgeGlobalUp = 100.*79. + 200.;
+    const Window* theWindow     = theWindowsManager_->getWindow(planeID) ;
+    int           row           = data.getRowPredicted(planeID)          ;
+    int           col           = data.getColPredicted(planeID)          ;
+    int           event         = data.getEventChewieNumber()            ;
+    int           run           = data.getRunNumber()                    ;
+    float         maxPitchY     = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+    float         yRes          = 0.  ;
+    float         sizePixelDown = 100.;
+    float         sizePixelUp   = 200.;
+    float         edgeDown      = 200.;
+    float         edgeUp        = 200.;
+    float         edgeGlobalUp  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str())*79. + 200.;
 
-    if(thePlaneMapping_->getPlaneName(planeID).find("Dut")!=std::string::npos && col!=-1){;
-
+    if(thePlaneMapping_->getPlaneName(planeID).find("Dut")!=std::string::npos && col!=-1)
+    {
         float yPredicted = data.getYPredictedLocal(planeID);
 
-        if(yPredicted >= edgeGlobalUp - sizePixelUp && yPredicted <= edgeGlobalUp + edgeUp &&
-                (theWindow->checkWindow(col,79,run) || theWindow->checkWindow(col-1,79,run) || theWindow->checkWindow(col+1,79,run)) &&
-                (theWindow->checkTimeWindow(col,event,run) || theWindow->checkTimeWindow(col-1,event,run) || theWindow->checkTimeWindow(col+1,event,run) )
-                ){
+        if((yPredicted >= edgeGlobalUp - sizePixelUp) && (yPredicted <= edgeGlobalUp + edgeUp)
+                && (theWindow->checkWindow(col,79,run) || theWindow->checkWindow(col-1,79,run) || theWindow->checkWindow(col+1,79,run))
+                && (theWindow->checkTimeWindow(col,event,run) || theWindow->checkTimeWindow(col-1,event,run) || theWindow->checkTimeWindow(col+1,event,run) )
+                )
+        {
             float yResEdge =  yPredicted - edgeGlobalUp + sizePixelUp/2.;
             THREADED(h1EfficiencyEdgeUpNorm_[planeID])->Fill(yResEdge);
-            if(data.getHasHit(planeID)) THREADED(h1EfficiencyEdgeUp_[planeID])->Fill(yResEdge);
+            if(data.getHasHit(planeID))
+                THREADED(h1EfficiencyEdgeUp_[planeID])->Fill(yResEdge);
         }
 
-        if( yPredicted >= -edgeDown && yPredicted <= sizePixelDown &&
-                (theWindow->checkWindow(col,0,run) || theWindow->checkWindow(col-1,0,run) || theWindow->checkWindow(col+1,0,run)) &&
-                (theWindow->checkTimeWindow(col,event,run) || theWindow->checkTimeWindow(col-1,event,run) || theWindow->checkTimeWindow(col+1,event,run) )
-                ){
+        if( yPredicted >= -edgeDown
+                && yPredicted <= sizePixelDown
+                && (theWindow->checkWindow(col,0,run) || theWindow->checkWindow(col-1,0,run) || theWindow->checkWindow(col+1,0,run))
+                && (theWindow->checkTimeWindow(col,event,run) || theWindow->checkTimeWindow(col-1,event,run) || theWindow->checkTimeWindow(col+1,event,run) )
+                )
+        {
             float yResEdge =  yPredicted - sizePixelDown/2.;
             THREADED(h1EfficiencyEdgeDownNorm_[planeID])->Fill(yResEdge);
-            if(data.getHasHit(planeID)) THREADED(h1EfficiencyEdgeDown_[planeID])->Fill(yResEdge);
+            if(data.getHasHit(planeID))
+                THREADED(h1EfficiencyEdgeDown_[planeID])->Fill(yResEdge);
         }
 
     }
 
     if(!data.getIsInDetector(planeID))
         return;
+    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
+    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
+    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
+    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
     if (data.getXPixelResidualLocal(planeID) > 20 || data.getXPixelResidualLocal(planeID) < -20)
         return;
 
@@ -1927,9 +1947,8 @@ bool Efficiency::passStandardCuts(int planeID, const Data &data)//Requires 8 tel
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Efficiency::passBadPlanesCut (int planeID, const Data &data)
 {
-    XmlParser* theParser = theAnalysisManager_->getXmlParser();
-    //    bool badPlanes = theParser->getAnalysesFromString("Charge")->excludeBadPlanes();
-    int badPlanesCut = theParser->getAnalysesFromString("Charge")->getBadPlanesCut();
+    //    bool badPlanes = theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes();
+    int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
 
 
     int maxNumberOfEvents = 0;
@@ -1942,7 +1961,7 @@ bool Efficiency::passBadPlanesCut (int planeID, const Data &data)
         }
     }
 
-    int minHits = atoi(theParser->getAnalysesFromString("Charge")->getMinHits().c_str())-1;//To calculate efficiency on the telescope
+    int minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str())-1;//To calculate efficiency on the telescope
     int excludeMe = 0;
     if(thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) //Dut case
         minHits += 1;

@@ -34,8 +34,8 @@ CalibrationsManager::CalibrationsManager(EventManager* eventManager) :
 
     h1Dresidual_   = 0;
     h2Dresidual_   = 0;
-    hThreashold_   = 0;
-    h2DThreashold_ = 0;
+    hThreshold_    = 0;
+    h2DThreshold_  = 0;
 
     for(int p=0; p<NPARS; ++p)
     {
@@ -72,16 +72,16 @@ void CalibrationsManager:: destroyCalibHistos(void)
         h2Dresidual_ = 0;
     }
 
-    if(hThreashold_)
+    if(hThreshold_)
     {
-        delete hThreashold_;
-        hThreashold_ = 0;
+        delete hThreshold_;
+        hThreshold_ = 0;
     }
 
-    if(h2DThreashold_)
+    if(h2DThreshold_)
     {
-        delete h2DThreashold_;
-        h2DThreashold_ = 0;
+        delete h2DThreshold_;
+        h2DThreshold_ = 0;
     }
 
     for(std::map< int,std::map<int,TH1F*> >::iterator r=hPixelCalibration_.begin(); r!=hPixelCalibration_.end(); ++r)
@@ -282,10 +282,10 @@ void CalibrationsManager::bookCalibHistos(void)
 
     theEventManager_->cd("/");
 
-    hThreashold_   = new TH1F("hThreashold_"  , "Threashold dispersion"   , 5000     ,  0, 10000);
-    h2DThreashold_ = new TH2F("h2DThreashold_", "2D Threashold dispersion", 52, 0, 52, 80, 0, 80);
-    hFirstBin_     = new TH2F("hFirstBin"     , "First bin distribution"  , 52, 0, 52, 80, 0, 80);
-    hLastBin_      = new TH2F("hLastBin"      , "Last bin distribution"   , 52, 0, 52, 80, 0, 80);
+    hThreshold_   = new TH1F("hThreshold_"  , "Threshold dispersion"    , 5000     ,  0, 10000);
+    h2DThreshold_ = new TH2F("h2DThreshold_", "2D Threshold dispersion" , 52, 0, 52, 80, 0, 80);
+    hFirstBin_    = new TH2F("hFirstBin"    , "First bin distribution"  , 52, 0, 52, 80, 0, 80);
+    hLastBin_     = new TH2F("hLastBin"     , "Last bin distribution"   , 52, 0, 52, 80, 0, 80);
 
     theEventManager_->mkdir("Pixel Calibrations");
 
@@ -459,7 +459,7 @@ void CalibrationsManager::makeCalibHistos(void)
             while(bin <= nBins && hTmpCalib[(*r).first][(*c).first]->GetBinContent(bin) == 0)
                 bin++;
             hFirstBin_->Fill((*c).first,(*r).first,bin);
-            //hThreashold_->Fill(hTmpCalib[(*r).first][(*c).first]->GetBinCenter(bin));
+            //hThreshold_->Fill(hTmpCalib[(*r).first][(*c).first]->GetBinCenter(bin));
         }
     }
 
@@ -545,8 +545,8 @@ void CalibrationsManager::drawFitFunction(void)
                 //{
                     //double firstVcal = calFunkInv_->Eval(firstADC);
                     double firstVcal = hPixelCalibration_[(*r).first][(*c).first]->GetBinCenter(firstBin);
-                    hThreashold_->Fill(firstVcal);
-                    h2DThreashold_->Fill((*c).first,(*r).first,firstVcal);
+                    hThreshold_->Fill(firstVcal);
+                    h2DThreshold_->Fill((*c).first,(*r).first,firstVcal);
                 //}
 
                 calFunk_->SetRange(0,60000);

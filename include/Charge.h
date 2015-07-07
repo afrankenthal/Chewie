@@ -22,6 +22,7 @@ class AnalysisManager    ;
 class WindowsManager     ;
 class CalibrationsManager;
 class PlanesMapping      ;
+class XmlParser          ;
 
 class Charge : public Analysis
 {
@@ -46,24 +47,24 @@ private:
     void book                (void                                                      );
     void destroy             (void                                                      );
 
-    void clusterSize         (bool pass, int planeID, const Data& data, int threadNumber);
+    void clusterSize         (int planeID, const Data& data, int threadNumber);
     void clusterLandau       (bool pass, int planeID, const Data& data, int threadNumber);
     void cellLandau          (bool pass, int planeID, const Data& data, int threadNumber);
     void cellCharge          (bool pass, int planeID, const Data& data, int threadNumber);
-    void Xlandau             (bool pass, int planeID, const Data& data, int threadNumber);
-    void XchargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
-    void Xasimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
-    void XasimmetryUnconstr  (bool pass, int planeID, const Data& data, int threadNumber);
-    void Ylandau             (bool pass, int planeID, const Data& data, int threadNumber);
-    void YchargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
-    void Yasimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
-    void YasimmetryUnconstr  (bool pass, int planeID, const Data& data, int threadNumber);
-    void MeanChargePositionRN(bool pass, int planeID, const Data& data, int threadNumber);
+    void xLandau             (bool pass, int planeID, const Data& data, int threadNumber);
+    void xChargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
+    void xAsimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
+    void xAsimmetryUnconstr  (bool pass, int planeID, const Data& data, int threadNumber);
+    void yLandau             (bool pass, int planeID, const Data& data, int threadNumber);
+    void yChargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
+    void yAsimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
+    void yAsimmetryUnconstr  (bool pass, int planeID, const Data& data, int threadNumber);
+    void meanChargePositionRN(bool pass, int planeID, const Data& data, int threadNumber);
 
-    void NormalizeEtaDistributionSize2 (int p);
-    void NormalizeEtaDistribution      (int p);
-    void NormalizeEtaInverse           (int p);
-    void CalculateEtaDerivative        (int p);
+    void normalizeEtaDistributionSize2 (int p);
+    void normalizeEtaDistribution      (int p);
+    void normalizeEtaInverse           (int p);
+    void calculateEtaDerivative        (int p);
     void calculateMeanCharge           (     );
 
     void setParsLimits       (void                                                      );
@@ -76,22 +77,24 @@ private:
     TF1*                                               langaus_               ;
     const WindowsManager*                              theWindowsManager_     ;
     CalibrationsManager*                               theCalibrationsManager_;
+    XmlParser*                                         theXmlParser_          ;
 
-    double parMin_      [4];
-    double parMax_      [4];
-    bool   isMinToLimit_[4];
-    bool   isMaxToLimit_[4];
-    int    threashold_     ;
-    int    maxCharge_      ;
-    int    minTotCharge_   ;
-    int    maxTotCharge_   ;
-    TH2F*  h2DparsPlots_[4];
-    bool  cannotBeDestroyed;
+    double parMin_      [4]  ;
+    double parMax_      [4]  ;
+    bool   isMinToLimit_[4]  ;
+    bool   isMaxToLimit_[4]  ;
+
+    int    standardCutsThreshold_         ;
+    int    standardCutsMaximumCharge_     ;
+    int    standardCutsMinimumTotalCharge_;
+    int    standardCutsMaximumTotalCharge_;
+    TH2F*  h2DparsPlots_[4]  ;
+    bool   cannotBeDestroyed_;
 
     /*--------------------------------cluster size----------------*/
     std::vector<TH1F*>    hClusterSize_                            ;
-    std::vector<TH1F*>    hClusterSizeCuts_                        ;
-    std::vector<TH1F*>    hClusterSizeCutsPlus_                    ;
+    std::vector<TH1F*>    hClusterSizeStandardCutsThreshold_       ;
+    std::vector<TH1F*>    hClusterSizeStandardCutsThresholdAndCellLandau_;
     std::vector<TH1F*>    hNumberOfCols_                           ;
     std::vector<TH1F*>    hNumberOfRows_                           ;
     std::vector<TH2F*>    hClusterSizeDistribution1s_              ;
@@ -209,8 +212,8 @@ private:
     std::vector<TH1F*>    hHitsNotOnRowColProjY_                   ;
 
     /*-------------------------X Asimmetry------------------------*/
-    std::vector<TH1F*>    hXasimmetry_                             ;    
-    std::vector<TH1F*>    hXasimmetry0_                            ;
+    std::vector<TH1F*>    hXAsimmetry_                             ;
+    std::vector<TH1F*>    hXAsimmetry0_                            ;
     std::vector<TH2F*>    h2DXAsimmetryLandau_                     ;
     std::vector<TH2F*>    h2DXcellChargeAsimmetry_                 ;
     std::vector<TH2F*>    h2DXcellChargeAsimmetryInv_              ;
@@ -229,8 +232,8 @@ private:
     std::vector<TH1F*>    h1DXEtaDerivativeDistribution_           ;
 
     /*-------------------------Y Asimmetry------------------------*/
-    std::vector<TH1F*>    hYasimmetry_                             ;
-    std::vector<TH1F*>    hYasimmetry0_                            ;
+    std::vector<TH1F*>    hYAsimmetry_                             ;
+    std::vector<TH1F*>    hYAsimmetry0_                            ;
     std::vector<TH2F*>    h2DYAsimmetryLandau_                     ;
     std::vector<TH2F*>    h2DYcellChargeAsimmetry_                 ;
     std::vector<TH2F*>    h2DYcellChargeAsimmetryInv_              ;

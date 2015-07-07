@@ -459,7 +459,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="converterT">
     <attribute name="title">
@@ -2274,7 +2274,7 @@ p, li { white-space: pre-wrap; }
        <x>5</x>
        <y>5</y>
        <width>991</width>
-       <height>226</height>
+       <height>531</height>
       </rect>
      </property>
      <attribute name="verticalHeaderDefaultSectionSize">
@@ -2303,6 +2303,26 @@ p, li { white-space: pre-wrap; }
      <column>
       <property name="text">
        <string>YRocs</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>XPitch</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>YPitch</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ZPosition</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ZRotation</string>
       </property>
      </column>
     </widget>
@@ -4806,8 +4826,8 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>30</x>
        <y>60</y>
-       <width>641</width>
-       <height>351</height>
+       <width>381</width>
+       <height>311</height>
       </rect>
      </property>
      <property name="palette">
@@ -5239,7 +5259,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>20</y>
+         <y>10</y>
          <width>111</width>
          <height>21</height>
         </rect>
@@ -5260,7 +5280,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>100</y>
+         <y>90</y>
          <width>36</width>
          <height>22</height>
         </rect>
@@ -5280,7 +5300,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>130</y>
+         <y>120</y>
          <width>36</width>
          <height>22</height>
         </rect>
@@ -5300,7 +5320,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>100</y>
+         <y>90</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5310,7 +5330,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>130</y>
+         <y>120</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5320,7 +5340,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>70</y>
+         <y>60</y>
          <width>53</width>
          <height>22</height>
         </rect>
@@ -5339,7 +5359,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>70</y>
+         <y>60</y>
          <width>53</width>
          <height>22</height>
         </rect>
@@ -5358,7 +5378,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>100</y>
+         <y>90</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5368,7 +5388,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>130</y>
+         <y>120</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5377,8 +5397,8 @@ p, li { white-space: pre-wrap; }
       <widget class="QGroupBox" name="removePixelDUT0GB">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>180</y>
+         <x>10</x>
+         <y>150</y>
          <width>241</width>
          <height>126</height>
         </rect>
@@ -5473,207 +5493,6 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QLabel" name="geometryDut0LB">
-       <property name="geometry">
-        <rect>
-         <x>310</x>
-         <y>20</y>
-         <width>111</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Geometry:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ROCdut0LB">
-       <property name="geometry">
-        <rect>
-         <x>320</x>
-         <y>70</y>
-         <width>71</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string># ROCs:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="xROCdut0LB">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>100</y>
-         <width>16</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>X</string>
-       </property>
-      </widget>
-      <widget class="customLineEdit" name="xROCdut0LE">
-       <property name="geometry">
-        <rect>
-         <x>360</x>
-         <y>100</y>
-         <width>26</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="yROCdut0LB">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>130</y>
-         <width>16</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Y</string>
-       </property>
-      </widget>
-      <widget class="customLineEdit" name="yROCdut0LE">
-       <property name="geometry">
-        <rect>
-         <x>360</x>
-         <y>130</y>
-         <width>26</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ZposDUT0LB">
-       <property name="geometry">
-        <rect>
-         <x>435</x>
-         <y>100</y>
-         <width>81</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Z position</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ZrotDUT0LB">
-       <property name="geometry">
-        <rect>
-         <x>435</x>
-         <y>130</y>
-         <width>81</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Z rotation</string>
-       </property>
-      </widget>
-      <widget class="customLineEdit" name="ZposDUT0LE">
-       <property name="geometry">
-        <rect>
-         <x>510</x>
-         <y>100</y>
-         <width>41</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="customLineEdit" name="ZrotDUT0LE">
-       <property name="geometry">
-        <rect>
-         <x>510</x>
-         <y>130</y>
-         <width>41</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ZposDUT0DegLB">
-       <property name="geometry">
-        <rect>
-         <x>560</x>
-         <y>130</y>
-         <width>41</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>deg</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ZposDUT0CMLB">
-       <property name="geometry">
-        <rect>
-         <x>560</x>
-         <y>100</y>
-         <width>31</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>cm</string>
-       </property>
-      </widget>
      </widget>
      <widget class="QWidget" name="tab_7">
       <attribute name="title">
@@ -5683,7 +5502,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>20</y>
+         <y>10</y>
          <width>111</width>
          <height>21</height>
         </rect>
@@ -5700,32 +5519,11 @@ p, li { white-space: pre-wrap; }
         <string>Windows:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="geometryDut1LB">
-       <property name="geometry">
-        <rect>
-         <x>310</x>
-         <y>20</y>
-         <width>111</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Geometry:</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="row1LB">
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>100</y>
+         <y>90</y>
          <width>36</width>
          <height>22</height>
         </rect>
@@ -5745,7 +5543,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>130</y>
+         <y>120</y>
          <width>36</width>
          <height>22</height>
         </rect>
@@ -5765,7 +5563,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>100</y>
+         <y>90</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5775,7 +5573,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>100</y>
+         <y>90</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5785,7 +5583,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>130</y>
+         <y>120</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5795,7 +5593,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>130</y>
+         <y>120</y>
          <width>55</width>
          <height>22</height>
         </rect>
@@ -5805,7 +5603,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>70</y>
+         <y>60</y>
          <width>53</width>
          <height>22</height>
         </rect>
@@ -5824,7 +5622,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>70</y>
+         <y>60</y>
          <width>53</width>
          <height>22</height>
         </rect>
@@ -5842,8 +5640,8 @@ p, li { white-space: pre-wrap; }
       <widget class="QGroupBox" name="removePixelDUT1GB">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>180</y>
+         <x>10</x>
+         <y>150</y>
          <width>241</width>
          <height>126</height>
         </rect>
@@ -5938,12 +5736,57 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QLabel" name="ROCdut1LB">
+     </widget>
+     <widget class="QWidget" name="tab_8">
+      <attribute name="title">
+       <string>DUT2</string>
+      </attribute>
+      <widget class="QLabel" name="lowerEdge2LB">
        <property name="geometry">
         <rect>
-         <x>320</x>
-         <y>70</y>
-         <width>106</width>
+         <x>90</x>
+         <y>60</y>
+         <width>53</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Lower:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="windowsDut2LB">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Windows:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="col2LB">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>36</width>
          <height>22</height>
         </rect>
        </property>
@@ -5955,15 +5798,15 @@ p, li { white-space: pre-wrap; }
         </font>
        </property>
        <property name="text">
-        <string># ROCs:</string>
+        <string>Col:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="xROCdut1LB">
+      <widget class="QLabel" name="row2LB">
        <property name="geometry">
         <rect>
-         <x>340</x>
-         <y>100</y>
-         <width>16</width>
+         <x>20</x>
+         <y>90</y>
+         <width>36</width>
          <height>22</height>
         </rect>
        </property>
@@ -5975,25 +5818,119 @@ p, li { white-space: pre-wrap; }
         </font>
        </property>
        <property name="text">
-        <string>X</string>
+        <string>Row:</string>
        </property>
       </widget>
-      <widget class="customLineEdit" name="xROCdut1LE">
+      <widget class="customLineEdit" name="lowerRowDUT2LE">
        <property name="geometry">
         <rect>
-         <x>360</x>
-         <y>100</y>
-         <width>26</width>
+         <x>90</x>
+         <y>90</y>
+         <width>55</width>
          <height>22</height>
         </rect>
        </property>
       </widget>
-      <widget class="QLabel" name="yROCdut1LB">
+      <widget class="customLineEdit" name="higherRowDUT2LE">
        <property name="geometry">
         <rect>
-         <x>340</x>
-         <y>130</y>
-         <width>16</width>
+         <x>180</x>
+         <y>90</y>
+         <width>55</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="customLineEdit" name="higherColDUT2LE">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>120</y>
+         <width>55</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="customLineEdit" name="lowerColDUT2LE">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>120</y>
+         <width>55</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="higherEdge2LB">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>60</y>
+         <width>53</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Higher:</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_9">
+      <attribute name="title">
+       <string>DUT3</string>
+      </attribute>
+      <widget class="QLabel" name="lowerEdge3LB">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>60</y>
+         <width>53</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Lower:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="windowsDut3LB">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Windows:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="col3LB">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>36</width>
          <height>22</height>
         </rect>
        </property>
@@ -6005,25 +5942,15 @@ p, li { white-space: pre-wrap; }
         </font>
        </property>
        <property name="text">
-        <string>Y</string>
+        <string>Col:</string>
        </property>
       </widget>
-      <widget class="customLineEdit" name="yROCdut1LE">
+      <widget class="QLabel" name="row3LB">
        <property name="geometry">
         <rect>
-         <x>360</x>
-         <y>130</y>
-         <width>26</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ZposDUT1LB">
-       <property name="geometry">
-        <rect>
-         <x>435</x>
-         <y>100</y>
-         <width>81</width>
+         <x>20</x>
+         <y>90</y>
+         <width>36</width>
          <height>22</height>
         </rect>
        </property>
@@ -6035,87 +5962,66 @@ p, li { white-space: pre-wrap; }
         </font>
        </property>
        <property name="text">
-        <string>Z position</string>
+        <string>Row:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="ZrotDUT1LB">
+      <widget class="customLineEdit" name="lowerRowDUT3LE">
        <property name="geometry">
         <rect>
-         <x>435</x>
-         <y>130</y>
-         <width>81</width>
+         <x>90</x>
+         <y>90</y>
+         <width>55</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="customLineEdit" name="higherRowDUT3LE">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>90</y>
+         <width>55</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="customLineEdit" name="higherColDUT3LE">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>120</y>
+         <width>55</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="customLineEdit" name="lowerColDUT3LE">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>120</y>
+         <width>55</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="higherEdge3LB">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>60</y>
+         <width>53</width>
          <height>22</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <family>Sans Serif</family>
          <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
        <property name="text">
-        <string>Z rotation</string>
-       </property>
-      </widget>
-      <widget class="customLineEdit" name="ZposDUT1LE">
-       <property name="geometry">
-        <rect>
-         <x>510</x>
-         <y>100</y>
-         <width>41</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="customLineEdit" name="ZrotDUT1LE">
-       <property name="geometry">
-        <rect>
-         <x>510</x>
-         <y>130</y>
-         <width>41</width>
-         <height>22</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ZposDUT1CMLB">
-       <property name="geometry">
-        <rect>
-         <x>560</x>
-         <y>100</y>
-         <width>31</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>cm</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="ZposDUT1DegLB">
-       <property name="geometry">
-        <rect>
-         <x>560</x>
-         <y>130</y>
-         <width>41</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>deg</string>
+        <string>Higher:</string>
        </property>
       </widget>
      </widget>
@@ -7236,7 +7142,7 @@ p, li { white-space: pre-wrap; }
        <string>Min hits</string>
       </property>
      </widget>
-     <widget class="customSpinBox" name="threasholdSB">
+     <widget class="customSpinBox" name="thresholdSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -7286,7 +7192,7 @@ p, li { white-space: pre-wrap; }
        <number>1</number>
       </property>
      </widget>
-     <widget class="QLabel" name="threasholdLB">
+     <widget class="QLabel" name="thresholdLB">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -7388,7 +7294,7 @@ p, li { white-space: pre-wrap; }
        <string>e-</string>
       </property>
      </widget>
-     <widget class="QLabel" name="threasholdLB_2">
+     <widget class="QLabel" name="thresholdLB_2">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -7398,7 +7304,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Threashold</string>
+       <string>Threshold</string>
       </property>
      </widget>
      <widget class="QLabel" name="maxChargeLB_2">

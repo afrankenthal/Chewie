@@ -27,6 +27,15 @@ std::pair<std::string,std::string> XmlPlane::getChipsNumber(void)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
+std::pair<std::string,std::string> XmlPlane::getCellPitches(void)
+{
+    std::string xCellPitch = thisNode_.toElement().attribute("XPitch").toStdString();
+    std::string yCellPitch = thisNode_.toElement().attribute("YPitch").toStdString();
+    //std::cout << __PRETTY_FUNCTION__ << "X: " << xCellPitch << " Y: " << yCellPitch << std::endl;
+    return std::make_pair<std::string,std::string>(xCellPitch,yCellPitch);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
 std::string XmlPlane::getZRotation(void)
 {
     return thisNode_.toElement().attribute("ZRotation").toStdString();

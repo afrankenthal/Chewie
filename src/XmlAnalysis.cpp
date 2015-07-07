@@ -144,9 +144,9 @@ std::string XmlAnalysis::getMinHits(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-int XmlAnalysis::getThreashold(void)
+int XmlAnalysis::getThreshold(void)
 {
-    return thisNode_.toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("Threashold").at(0).toElement().text().toInt();
+    return thisNode_.toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("Threshold").at(0).toElement().text().toInt();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

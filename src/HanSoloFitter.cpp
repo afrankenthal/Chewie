@@ -2412,7 +2412,7 @@ void HanSoloFitter::on_fitFuncLW_itemClicked(QListWidgetItem *item)
             }
             else if (i == 6)
             {
-                hanSoloParamManager_[i]->setParName  ("CutThreashold                    ");
+                hanSoloParamManager_[i]->setParName  ("CutThreshold                    ");
                 hanSoloParamManager_[i]->setParValue (0.0005);
                 hanSoloParamManager_[i]->setParLimInf(0.);
                 hanSoloParamManager_[i]->setParLimSup(1.);
@@ -2478,7 +2478,7 @@ void HanSoloFitter::on_fitFuncLW_itemClicked(QListWidgetItem *item)
             }
             else if (i == 4)
             {
-                hanSoloParamManager_[i]->setParName  ("CutThreashold                 ");
+                hanSoloParamManager_[i]->setParName  ("CutThreshold                 ");
                 hanSoloParamManager_[i]->setParValue (0.0005);
                 hanSoloParamManager_[i]->setParLimInf(0.);
                 hanSoloParamManager_[i]->setParLimSup(1.);

@@ -940,7 +940,7 @@ void HNavigator::on_fitFuncLW_itemDoubleClicked(QListWidgetItem *item)
             }
             else if (i == 6)
             {
-                theParamManager_[i]->setParName  ("CutThreashold                    ");
+                theParamManager_[i]->setParName  ("CutThreshold                    ");
                 theParamManager_[i]->setParValue (0.0005);
                 theParamManager_[i]->setParLimInf(0.);
                 theParamManager_[i]->setParLimSup(1.);
@@ -967,7 +967,7 @@ void HNavigator::on_fitFuncLW_itemDoubleClicked(QListWidgetItem *item)
 
             if (i == 0)
             {
-                theParamManager_[i]->setParName  ("Thickness                     ");
+                theParamManager_[i]->setParName  ("Thickness");
                 theParamManager_[i]->setParValue (500);
                 theParamManager_[i]->setParLimInf(500);
                 theParamManager_[i]->setParLimSup(500);
@@ -989,7 +989,7 @@ void HNavigator::on_fitFuncLW_itemDoubleClicked(QListWidgetItem *item)
             {
                 theParamManager_[i]->setParPrecision(5);
                 theParamManager_[i]->setParStep(0.00001);
-                theParamManager_[i]->setParName  ("4*DiffusionConstant           ");
+                theParamManager_[i]->setParName  ("4*DiffusionConstant");
                 theParamManager_[i]->setParValue (0.0007);
                 theParamManager_[i]->setParLimInf(0.00001);
                 theParamManager_[i]->setParLimSup(0.3);
@@ -997,7 +997,7 @@ void HNavigator::on_fitFuncLW_itemDoubleClicked(QListWidgetItem *item)
             }
             else if (i == 3)
             {
-                theParamManager_[i]->setParName  ("ScaleFactor                   ");
+                theParamManager_[i]->setParName  ("ScaleFactor");
                 theParamManager_[i]->setParValue (1.);
                 theParamManager_[i]->setParLimInf(1.);
                 theParamManager_[i]->setParLimSup(1.);
@@ -1007,7 +1007,7 @@ void HNavigator::on_fitFuncLW_itemDoubleClicked(QListWidgetItem *item)
             }
             else if (i == 4)
             {
-                theParamManager_[i]->setParName  ("CutThreashold                 ");
+                theParamManager_[i]->setParName  ("CutThreshold");
                 theParamManager_[i]->setParValue (0.0005);
                 theParamManager_[i]->setParLimInf(0.);
                 theParamManager_[i]->setParLimSup(1.);

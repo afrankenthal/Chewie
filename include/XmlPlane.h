@@ -19,6 +19,7 @@ public:
     QDomNode&                          getCalibNode      (void){return calibNode_;}
     XmlWindow*                         getWindow         (void){return theWindow_;}
     std::pair<std::string,std::string> getChipsNumber    (void);
+    std::pair<std::string,std::string> getCellPitches    (void);
     std::string                        getZRotation      (void);
     std::string                        getZPosition      (void);
     std::string                        getCalibPlotsFile (void);

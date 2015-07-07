@@ -61,8 +61,8 @@ private:
     TH1F*                                h1DparsPlots_         [NPARS];
     TH2F*                                h2DparsPlots_         [NPARS];
     std::map< int, std::map<int,TH1F*> > hPixelCalibration_           ;
-    TH1F*                                hThreashold_                 ;
-    TH2F*                                h2DThreashold_               ;
+    TH1F*                                hThreshold_                  ;
+    TH2F*                                h2DThreshold_                ;
     TH1F*                                h1Dresidual_                 ;
     TH2F*                                h2Dresidual_                 ;
     TH2F*                                hCorrelations_ [NPARS][NPARS];
