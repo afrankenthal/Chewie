@@ -118,19 +118,15 @@ private:
     std::vector<TH2F*>    h2DCellCharge_                           ;
     std::vector<TH2F*>    h2DCellChargeSecondHit_                  ;
     std::vector<TH2F*>    h2DCellChargeNum_                        ;
-    std::vector<TH2F*>    h2DallTracks_                            ;
+    std::vector<TH2F*>    h2DAllTracks_                            ;
     std::vector<TH2F*>    h2DCellChargeNorm_                       ;
     std::vector<TH2F*>    h4CellsCharge_                           ;
     std::vector<TH2F*>    h4CellsAllTracks_                        ;
     std::vector<TH2F*>    h4CellsChargeNorm_                       ;
     std::vector<TH2F*>    h4Hits_                                  ;
     std::vector<TH2F*>    h4HitsCharge_                            ;
-    std::vector<TH2F*>    h2DCellChargeNormSize2_                  ;
-    std::vector<TH2F*>    h2DCellChargeNormSize1_                  ;
-    std::vector<TH2F*>    h2DCellChargeNormSize2Up_                ;
-    std::vector<TH2F*>    h2DCellChargeNormSize1Up_                ;
-    std::vector<TH2F*>    h2DCellChargeNormSize2Down_              ;
-    std::vector<TH2F*>    h2DCellChargeNormSize1Down_              ;
+    std::vector<TH2F*>    h2DCellChargeSize1AllTracksNorm_         ;
+    std::vector<TH2F*>    h2DCellChargeSize2AllTracksNorm_         ;
     std::vector<TH2F*>    hCellChargeCoarse_                       ;
     std::vector<TH2F*>    hCellChargeCoarseNorm_                   ;
     std::vector<TH2F*>    hHitsNotOnRowCol_                        ;
@@ -159,7 +155,7 @@ private:
     std::vector<TH2F*>    h2DYcellDoubleHits_                      ;
     std::vector<TH2F*>    h2DYcellSingleHits_                      ;
     std::vector<TH2F*>    hHitsNotONRowColVsYSlope_                ;
-    std::vector<TH1F*>    hHitsNotONRowColVsYSlopeProfileX_        ;
+    std::vector<TH1F*>    hHitsNotONRowColVsYSlopePh1DXCellChargeAsimmetryrofileX_        ;
     std::vector<TH1F*>    hHitsNotONRowColVsYSlopeProfileY_        ;
 
     /*-------------------------1D cell charge - X coordinate------*/
@@ -178,15 +174,42 @@ private:
     std::vector<TH1F*>    h1DXcellSingleHits_                      ;
     std::vector<TH1F*>    h1DXcellDoubleHits_                      ;
     std::vector<TH1F*>    h1DXcell3Hits_                           ;
-    std::vector<TH1F*>    projX_                                   ;
-    std::vector<TH1F*>    projXSize1_                              ;
+    std::vector<TH1F*>    projXCellChargeSize2AllTracksNorm_                                   ;
+    std::vector<TH1F*>    projXCellChargeSize1AllTracksNorm_                              ;
     std::vector<TH1F*>    projXUp_                                 ;
     std::vector<TH1F*>    projXSize1Up_                            ;
     std::vector<TH1F*>    projXDown_                               ;
     std::vector<TH1F*>    projXSize1Down_                          ;
     std::vector<TH1F*>    hHitsNotOnRowColProjX_                   ;
 
-    /*-------------------------1D cell charge - Y coordinate------*/
+    /*------------------------- 4 Rows cell charge  --------------------*/
+    std::vector<TH2F*>    h2DCellPixelCharge4Rows_                                 ;
+    std::vector<TH2F*>    h2DCellClusterCharge4Rows_                               ;
+    std::vector<TH2F*>    h2DAllTracks4Rows_                                       ;
+    std::vector<TH2F*>    h2DCellCharge4RowsOnly50_                                ;
+    std::vector<TH2F*>    h2DCellCharge4RowsClusterSize_                           ;
+    std::vector<TH2F*>    h2DCellCharge4RowsNorm_                                  ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsSameRow_                      ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsSameRowNorm_                  ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsSameCol_                      ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsSameColNorm_                  ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsClusterSize3_                 ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsClusterSize3Norm_             ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsClusterSize3LowCharge_        ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_    ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsClusterSize3HighCharge_       ;
+    std::vector<TH2F*>    h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_   ;
+    std::vector<TH2F*>    h2DCellPixelCharge4RowsClusterSize1_                     ;
+    std::vector<TH2F*>    h2DCellPixelCharge4RowsClusterSize2_                     ;
+    std::vector<TH2F*>    h2DCellPixelCharge4RowsClusterSize3_                     ;
+    std::vector<TH2F*>    h2DCellPixelCharge4RowsClusterSize1Norm_                 ;
+    std::vector<TH2F*>    h2DCellPixelCharge4RowsClusterSize2Norm_                 ;
+    std::vector<TH2F*>    h2DCellPixelCharge4RowsClusterSize3Norm_                 ;
+
+
+
+
+/*-------------------------1D cell charge - Y coordinate------*/
     std::vector<TH1F*>    h1DYcellCharge_                          ;
     std::vector<TH1F*>    h1DYcellChargeNormToAll_                 ;
     std::vector<TH1F*>    h1DYcellChargeSumLE2_                    ;
@@ -203,8 +226,8 @@ private:
     std::vector<TH1F*>    h1DYcellSingleHits_                      ;
     std::vector<TH1F*>    h1DYcellDoubleHits_                      ;
     std::vector<TH1F*>    h1DYcell3Hits_                           ;
-    std::vector<TH1F*>    projY_                                   ;
-    std::vector<TH1F*>    projYSize1_                              ;
+    std::vector<TH1F*>    projYCellChargeSize2AllTracksNorm_                                   ;
+    std::vector<TH1F*>    projYCellChargeSize1AllTracksNorm_                              ;
     std::vector<TH1F*>    projYUp_                                 ;
     std::vector<TH1F*>    projYSize1Up_                            ;
     std::vector<TH1F*>    projYDown_                               ;
@@ -251,7 +274,8 @@ private:
     std::vector<TH1F*>    h1DYEtaDistribution_                     ;
     std::vector<TH1F*>    h1DYEtaDerivativeDistribution_           ;
 
-    /*----------Quantities in function of run number-------------- No time for this unuseful thing right now!*/
+
+/*----------Quantities in function of run number-------------- No time for this unuseful thing right now!*/
 
 //    std::vector<TMap*>    mXMeanCharge_;
 //    std::vector<TH1F*>    hXMeanCharge_;

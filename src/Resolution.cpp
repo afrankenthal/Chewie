@@ -625,7 +625,7 @@ void Resolution::yResolution(bool pass, int planeID, const Data& data, int threa
     THREADED(hYresiduals_[planeID])->Fill(data.getYTrackResidualLocal(planeID));
 
     if( theWindow->checkTimeWindowAbout(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber())
-        && theWindow->checkWindowAbout    (data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber(),data.getDataType(planeID)) ){
+        && theWindow->checkWindowAbout    (data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber(),thePlaneMapping_->getPlaneType(planeID)) ){
         THREADED(h2DCorrelationsResidualYvsX_[planeID])->Fill(data.getXPredictedLocal(planeID),data.getYTrackResidualLocal(planeID));
         THREADED(h2DCorrelationsResidualYvsY_[planeID])->Fill(data.getYPredictedLocal(planeID),data.getYTrackResidualLocal(planeID));
     }

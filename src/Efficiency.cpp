@@ -98,7 +98,7 @@ void Efficiency::destroy(void)
     for(it1=hCellEfficiencyEdgeCentral1D_cl2_    .begin(); it1!=hCellEfficiencyEdgeCentral1D_cl2_    .end(); it1++) delete *it1;hCellEfficiencyEdgeCentral1D_cl2_    .clear();
     for(it1=hCellEfficiencyEdgeCentral1D_cl_     .begin(); it1!=hCellEfficiencyEdgeCentral1D_cl_     .end(); it1++) delete *it1;hCellEfficiencyEdgeCentral1D_cl_     .clear();
     for(it1=hCellEfficiencyEdgeCentralNorm1D_cl2_.begin(); it1!=hCellEfficiencyEdgeCentralNorm1D_cl2_.end(); it1++) delete *it1;hCellEfficiencyEdgeCentralNorm1D_cl2_.clear();
-    for(it1=hCellEfficiencyEdgeLeft1D_cl3_      .begin(); it1!=hCellEfficiencyEdgeLeft1D_cl3_       .end(); it1++) delete *it1;hCellEfficiencyEdgeLeft1D_cl3_       .clear();
+    for(it1=hCellEfficiencyEdgeLeft1D_cl3_       .begin(); it1!=hCellEfficiencyEdgeLeft1D_cl3_       .end(); it1++) delete *it1;hCellEfficiencyEdgeLeft1D_cl3_       .clear();
     for(it1=hCellEfficiencyEdgeLeft1D_cl4_       .begin(); it1!=hCellEfficiencyEdgeLeft1D_cl4_       .end(); it1++) delete *it1;hCellEfficiencyEdgeLeft1D_cl4_       .clear();
     for(it1=hCellEfficiencyEdgeLeft1DNorm_cl4_   .begin(); it1!=hCellEfficiencyEdgeLeft1DNorm_cl4_   .end(); it1++) delete *it1;hCellEfficiencyEdgeLeft1DNorm_cl4_   .clear();
     for(it1=hCellEfficiencyEdgeRight1D_cl3_      .begin(); it1!=hCellEfficiencyEdgeRight1D_cl3_      .end(); it1++) delete *it1;hCellEfficiencyEdgeRight1D_cl3_      .clear();
@@ -600,6 +600,7 @@ void Efficiency::book(void)
     int               nBinsY    ;
     float             resXRange ;
     float             resYRange ;
+    //FIXME HARDCODED -> USE theXmlParser_->getPlanes())[planeName]->getCellPitches().first
     float             pixelSizeLeft  = 300;
     float             pixelSizeRight = 300;
     float             pixelSizeUp    = 200;
@@ -643,7 +644,7 @@ void Efficiency::book(void)
         hEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
 
         hName  = "h1DXcellEfficiencyFirstHit_"                  + planeName;
-        hTitle = "1D cell Efficiency - X coordinate first hit " + planeName;
+        hTitle = "1D Cell efficiency - X coordinate first hit " + planeName;
         h1DXcellEfficiencyFirstHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)resXRange/binSize - removedBins,-(resXRange/2) + removeHalf,resXRange/2 - removeHalf)));
         //h1DXcellEfficiencyFirstHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)resXRange/2,-(resXRange/2),resXRange/2)));
 
@@ -676,9 +677,9 @@ void Efficiency::book(void)
         hTitle = "1D cell Efficiency - X coordinate, restricted to (-30, +30), " + planeName;
         hXCellEfficiencyRestricted_.push_back(new TH1F(hName.c_str(),hTitle.c_str(),(int)resXRange/binSize - removedBins,-(resXRange/2) + removeHalf,resXRange/2 - removeHalf));
 
-        lowerCol  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerCol()).c_str());
+        lowerCol  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerCol ()).c_str());
         higherCol = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherCol()).c_str());
-        lowerRow  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerRow()).c_str());
+        lowerRow  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerRow ()).c_str());
         higherRow = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherRow()).c_str());
 
         nBinsX = abs(lowerCol-higherCol);//theWindow->getNbins().first;

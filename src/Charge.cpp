@@ -107,7 +107,7 @@ void Charge::destroy()
     /*-------------------------------------------------------------------------------------------2D cell charge-------------------------------------------------------------------------------------------------*/
     for(std::vector<TH2F*>::iterator it=h2DCellCharge_                          .begin(); it!=h2DCellCharge_                          .end(); it++) delete *it; h2DCellCharge_                          .clear();
     for(std::vector<TH2F*>::iterator it=h2DCellChargeNum_                       .begin(); it!=h2DCellChargeNum_                       .end(); it++) delete *it; h2DCellChargeNum_                       .clear();
-    for(std::vector<TH2F*>::iterator it=h2DallTracks_                           .begin(); it!=h2DallTracks_                           .end(); it++) delete *it; h2DallTracks_                           .clear();
+    for(std::vector<TH2F*>::iterator it=h2DAllTracks_                           .begin(); it!=h2DAllTracks_                           .end(); it++) delete *it; h2DAllTracks_                           .clear();
     for(std::vector<TH2F*>::iterator it=h2DCellChargeNorm_                      .begin(); it!=h2DCellChargeNorm_                      .end(); it++) delete *it; h2DCellChargeNorm_                      .clear();
     for(std::vector<TH2F*>::iterator it=h4CellsCharge_                          .begin(); it!=h4CellsCharge_                          .end(); it++) delete *it; h4CellsCharge_                          .clear();
     for(std::vector<TH2F*>::iterator it=h4CellsAllTracks_                       .begin(); it!=h4CellsAllTracks_                       .end(); it++) delete *it; h4CellsAllTracks_                       .clear();
@@ -139,7 +139,28 @@ void Charge::destroy()
     for(std::vector<TH2F*>::iterator it=h2DYcellDoubleHits_                     .begin(); it!=h2DYcellDoubleHits_                     .end(); it++) delete *it; h2DYcellDoubleHits_                     .clear();
     for(std::vector<TH2F*>::iterator it=hHitsNotONRowColVsYSlope_               .begin(); it!=hHitsNotONRowColVsYSlope_               .end(); it++) delete *it; hHitsNotONRowColVsYSlope_               .clear();
 
-    /*------------------------------------------------------------------------------------1D cell charge - X coordinate----------------------------------------------------------------------------------------*/
+    /*----------------------------------------------Ï-------------------------------------------4 Rows cell charge ------------------------------------------------------------------------------------------------------*/
+    for(std::vector<TH2F*>::iterator it=h2DCellPixelCharge4Rows_                               .begin(); it!=h2DCellPixelCharge4Rows_                                 .end(); it++) delete *it; h2DCellPixelCharge4Rows_                                .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellClusterCharge4Rows_                             .begin(); it!=h2DCellClusterCharge4Rows_                               .end(); it++) delete *it; h2DCellClusterCharge4Rows_                              .clear();
+    for(std::vector<TH2F*>::iterator it=h2DAllTracks4Rows_                                     .begin(); it!=h2DAllTracks4Rows_                                       .end(); it++) delete *it; h2DAllTracks4Rows_                                      .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellCharge4RowsOnly50_                              .begin(); it!=h2DCellCharge4RowsOnly50_                                .end(); it++) delete *it; h2DCellCharge4RowsOnly50_                               .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellCharge4RowsClusterSize_                         .begin(); it!=h2DCellCharge4RowsClusterSize_                           .end(); it++) delete *it; h2DCellCharge4RowsClusterSize_                          .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellCharge4RowsNorm_                                .begin(); it!=h2DCellCharge4RowsNorm_                                  .end(); it++) delete *it; h2DCellCharge4RowsNorm_                                 .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsSameRow_                    .begin(); it!=h2DCellChargeSecondHit4RowsSameRow_                      .end(); it++) delete *it; h2DCellChargeSecondHit4RowsSameRow_                     .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsSameRowNorm_                .begin(); it!=h2DCellChargeSecondHit4RowsSameRowNorm_                  .end(); it++) delete *it; h2DCellChargeSecondHit4RowsSameRowNorm_                 .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsSameCol_                    .begin(); it!=h2DCellChargeSecondHit4RowsSameCol_                      .end(); it++) delete *it; h2DCellChargeSecondHit4RowsSameCol_                     .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsSameColNorm_                .begin(); it!=h2DCellChargeSecondHit4RowsSameColNorm_                  .end(); it++) delete *it; h2DCellChargeSecondHit4RowsSameColNorm_                 .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsClusterSize3_               .begin(); it!=h2DCellChargeSecondHit4RowsClusterSize3_                 .end(); it++) delete *it; h2DCellChargeSecondHit4RowsClusterSize3_                .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsClusterSize3LowCharge_      .begin(); it!=h2DCellChargeSecondHit4RowsClusterSize3LowCharge_        .end(); it++) delete *it; h2DCellChargeSecondHit4RowsClusterSize3LowCharge_       .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_  .begin(); it!=h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_    .end(); it++) delete *it; h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_   .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsClusterSize3HighCharge_     .begin(); it!=h2DCellChargeSecondHit4RowsClusterSize3HighCharge_       .end(); it++) delete *it; h2DCellChargeSecondHit4RowsClusterSize3HighCharge_      .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_ .begin(); it!=h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_   .end(); it++) delete *it; h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_  .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellPixelCharge4RowsClusterSize1_                   .begin(); it!=h2DCellPixelCharge4RowsClusterSize1_                     .end(); it++) delete *it; h2DCellPixelCharge4RowsClusterSize1_                    .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellPixelCharge4RowsClusterSize2_                   .begin(); it!=h2DCellPixelCharge4RowsClusterSize2_                     .end(); it++) delete *it; h2DCellPixelCharge4RowsClusterSize2_                    .clear();
+    for(std::vector<TH2F*>::iterator it=h2DCellPixelCharge4RowsClusterSize3_                   .begin(); it!=h2DCellPixelCharge4RowsClusterSize3_                     .end(); it++) delete *it; h2DCellPixelCharge4RowsClusterSize3_                    .clear();
+
+
+    /*----------------------------------------------Ï--------------------------------------1D cell charge - X coordinate----------------------------------------------------------------------------------------*/
     for(std::vector<TH1F*>::iterator it=h1DXcellCharge_                         .begin(); it!=h1DXcellCharge_                         .end(); it++) delete *it; h1DXcellCharge_                         .clear();
     for(std::vector<TH1F*>::iterator it=h1DXcellChargeNormToAll_                .begin(); it!=h1DXcellChargeNormToAll_                .end(); it++) delete *it; h1DXcellChargeNormToAll_                .clear();
     for(std::vector<TH1F*>::iterator it=h1DXcellChargeSumLE2_                   .begin(); it!=h1DXcellChargeSumLE2_                   .end(); it++) delete *it; h1DXcellChargeSumLE2_                   .clear();
@@ -538,7 +559,7 @@ void Charge::setErrorsBar(int planeID)
     theAnalysisManager_->cd("/Charge/" + planeName + "/YcellCharge2D");
 
     hName.str(""); hName << "hHitsNotONRowColVsYSlopeProfileX_" << planeName;
-    hHitsNotONRowColVsYSlopeProfileX_.push_back((TH1F*)hHitsNotONRowColVsYSlope_[planeID]->ProfileX(hName.str().c_str(),150,-150));
+    hHitsNotONRowColVsXSlopeProfileX_.push_back((TH1F*)hHitsNotONRowColVsYSlope_[planeID]->ProfileX(hName.str().c_str(),150,-150));
 
     hName.str(""); hName << "hHitsNotONRowColVsYSlopeProfileY_" << planeName;
     hHitsNotONRowColVsYSlopeProfileY_.push_back((TH1F*)hHitsNotONRowColVsYSlope_[planeID]->ProfileY(hName.str().c_str(),0.000015,-0.000015));
@@ -702,7 +723,14 @@ void Charge::clusterSize(int planeID, const Data& data, int threadNumber)
                 if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber()) //hits must fall in the window
                        || !data.getIsPixelCalibrated(h,planeID)                                                                           //pixels must be calibrated
                        ||  data.getClusterPixelCharge(h,planeID) < standardCutsThreshold_   )                                            //charge must be over threshold
+
+                {
                     passStandardCuts = false;
+                    //                 std::cout << __PRETTY_FUNCTION__ << "w: " << !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber())
+                    //                                                                                 << " c: " << !data.getIsPixelCalibrated(h,planeID)
+                    //                                                                                 << " p: " << data.getClusterPixelCharge(h,planeID)
+                    //                                                                                 << " t: " << standardCutsThreshold_ << std::endl;
+                }
             }
             if(passStandardCuts)
             {
@@ -790,7 +818,7 @@ void Charge::clusterSize(int planeID, const Data& data, int threadNumber)
             //&& data.getClusterPixelCharge(h,planeID) < standardCutsMaximumCharge_   )
         {
             THREADED(hClusterSizeDistribution1s_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
-            THREADED(hClusterSizeNormalization_   [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
+            //THREADED(hClusterSizeNormalization_   [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
             hitId = h;
             break;
         }
@@ -846,7 +874,7 @@ void Charge::clusterLandau(bool pass, int planeID, const Data& data, int threadN
     {
         if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber()) //hits must fall in the window
                || !data.getIsPixelCalibrated(h,planeID)                                                                           //pixels must be calibrated
-               ||  data.getClusterPixelCharge(h,planeID) < standardCutsThreshold_   )                                             //charge must be over threshold
+               ||  data.getClusterPixelCharge(h,planeID) < standardCutsThreshold_   )                                             //charge must be over threashold
             return;
     }
 
@@ -968,6 +996,7 @@ void Charge::yLandau(bool pass, int planeID, const Data &data, int threadNumber)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumber)
 {
     if( !pass || !data.getIsInDetector(planeID) )
@@ -979,18 +1008,20 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
     if( data.getXPitchLocal(planeID) > maxPitchX || data.getYPitchLocal(planeID) > maxPitchY )
         return;
 
-    float xRes = 0;
-    float yRes = 0;
+    float xPixelResidual = data.getXPixelResidualLocal(planeID);
+    float yPixelResidual = data.getYPixelResidualLocal(planeID);
+    float xPixelEdgeResidual = 0; //Residual from the edge of the pixel (the divide between 2 pixels)
+    float yPixelEdgeResidual = 0; //Residual from the edge of the pixel (the divide between 2 pixels)
 
-    if( data.getXPixelResidualLocal(planeID) > 0 )
-        xRes = -data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
-    else if( data.getXPixelResidualLocal(planeID) <= 0 )
-        xRes = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
+    if( xPixelResidual > 0 )
+        xPixelEdgeResidual = -data.getXPitchLocal(planeID)/2 + xPixelResidual;
+    else if( xPixelResidual <= 0 )
+        xPixelEdgeResidual = xPixelResidual + data.getXPitchLocal(planeID)/2;
 
-    if( data.getYPixelResidualLocal(planeID) > 0 )
-        yRes = -data.getYPitchLocal(planeID)/2 + data.getYPixelResidualLocal(planeID);
-    else if( data.getYPixelResidualLocal(planeID) <= 0 )
-        yRes = (data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
+    if( yPixelResidual > 0 )
+        yPixelEdgeResidual = -data.getYPitchLocal(planeID)/2 + yPixelResidual;
+    else if( yPixelResidual <= 0 )
+        yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
 
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted(planeID)         ;
@@ -1000,27 +1031,25 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
     if( !theWindow->checkWindow(col,row,run) )
         return;
 
-    THREADED(h2DallTracks_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
-    if (data.getClusterSize(planeID) == 2)
-    {
-        THREADED(h2DCellChargeNormSize2_[planeID])->Fill(xRes, yRes);
-        if      (data.getRowPredicted(planeID) > 60) THREADED(h2DCellChargeNormSize2Up_  [planeID])->Fill(xRes, yRes);
-        else if (data.getRowPredicted(planeID) < 58) THREADED(h2DCellChargeNormSize2Down_[planeID])->Fill(xRes, yRes);
-    }
-    else if (data.getClusterSize(planeID) == 1)
-    {
-        THREADED(h2DCellChargeNormSize1_[planeID])->Fill(xRes, yRes);
-        if      (data.getRowPredicted(planeID) > 60) THREADED(h2DCellChargeNormSize1Up_  [planeID])->Fill(xRes, yRes);
-        else if (data.getRowPredicted(planeID) < 58) THREADED(h2DCellChargeNormSize1Down_[planeID])->Fill(xRes, yRes);
-    }
-    THREADED(h4CellsAllTracks_[planeID])->Fill(xRes,yRes);
+    THREADED(h2DAllTracks_      [planeID])->Fill(xPixelResidual,yPixelResidual);
+    THREADED(h2DAllTracks4Rows_ [planeID])->Fill(xPixelResidual,yPixelResidual+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
 
-    int size = data.getClusterSize(planeID);
+    if (data.getClusterSize(planeID) == 1)
+        THREADED(h2DCellChargeSize1AllTracksNorm_[planeID])->Fill(xPixelResidual, yPixelResidual);
+    else if (data.getClusterSize(planeID) == 2)
+        THREADED(h2DCellChargeSize2AllTracksNorm_[planeID])->Fill(xPixelResidual, yPixelResidual);
 
+    THREADED(h4CellsAllTracks_[planeID])->Fill(xPixelEdgeResidual,yPixelEdgeResidual);
+
+    int size = data.getClusterSize(planeID); //ClusterSize
+
+    ////////////////////////////////////////////////////////////////
+    //FROM NOW ON ONLY TRACKS WITH A HIT ON THE PLANE ARE CONSIDERED
+    ////////////////////////////////////////////////////////////////
     if( !data.getHasHit(planeID) || size > 4 )
         return;
 
-    for(int h=0; h<size; h++)
+    for(int h=0; h<size; h++) //h<4
     {
         THREADED(hCutsControl_[planeID])->Fill(0);
         if (data.getIsPixelCalibrated (h,planeID))
@@ -1041,91 +1070,153 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
                     THREADED(hCutsControl_[planeID])->Fill(5);
                 if (size == 1)
                 {
-                    THREADED(hHitsNotOnRowCol_[planeID])->Fill(xRes, yRes);
-                    //if (data.getClusterPixelCharge(0, planeID) > 0)
-                    //THREADED(h2DCellChargeSecondHit_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(0, planeID));
-                    if (yRes > 20 || yRes < -20)
-                        THREADED(hHitsNotOnRowColProjX_[planeID])->Fill(xRes);
-                    if (xRes > 30 || xRes < -30)
-                        THREADED(hHitsNotOnRowColProjY_[planeID])->Fill(yRes);
+                    THREADED(hHitsNotOnRowCol_[planeID])->Fill(xPixelEdgeResidual, yPixelEdgeResidual);
+                    if (yPixelEdgeResidual > 20 || yPixelEdgeResidual < -20)
+
+                        THREADED(hHitsNotOnRowColProjX_[planeID])->Fill(xPixelEdgeResidual);
+                    if (xPixelEdgeResidual > 30 || xPixelEdgeResidual < -30)
+
+                        THREADED(hHitsNotOnRowColProjY_[planeID])->Fill(yPixelEdgeResidual);
                 }
-                THREADED(hHitsNotONRowColVsXSlope_[planeID])->Fill(xRes, data.getXSlopeUnconstrained(planeID));
-                THREADED(hHitsNotONRowColVsYSlope_[planeID])->Fill(yRes, data.getYSlopeUnconstrained(planeID));
+                THREADED(hHitsNotONRowColVsXSlope_[planeID])->Fill(xPixelEdgeResidual, data.getXSlopeUnconstrained(planeID));
+                THREADED(hHitsNotONRowColVsYSlope_[planeID])->Fill(yPixelEdgeResidual, data.getYSlopeUnconstrained(planeID));
                 THREADED(hChargeNotOnRowCol_[planeID])->Fill(data.getClusterPixelCharge(h, planeID));
             }
         }
     }
 
-    //THREADED(h2DCellChargeNorm_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
 
     int hitID = -1;
+
     for(int h=0; h<size; h++)
     {
         if(    data.getClusterPixelRow      (h,planeID) == row
                && data.getClusterPixelCol   (h,planeID) == col
-               && data.getIsPixelCalibrated (h,planeID)
-               && data.getClusterPixelCharge(h,planeID) > standardCutsThreshold_
-               && data.getClusterPixelCharge(h,planeID) < standardCutsMaximumCharge_
+               //&& data.getIsPixelCalibrated (h,planeID)
+               //&& data.getClusterPixelCharge(h,planeID) > standardCutsThreshold_
+               //&& data.getClusterPixelCharge(h,planeID) < standardCutsMaximumCharge_
                )
         {
-            THREADED(h2DCellChargeNorm_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
-            THREADED(h4CellsChargeNorm_[planeID])->Fill(xRes,yRes);
-            THREADED(h2DCellCharge_            [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(h,planeID));
-            THREADED(h2DCellChargeSecondHit_   [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(h,planeID));
-            if (size > 1)
+            THREADED(h4CellsChargeNorm_       [planeID])->Fill(xPixelEdgeResidual,yPixelEdgeResidual);
+            THREADED(h2DCellCharge_           [planeID])->Fill(xPixelResidual,yPixelResidual,data.getClusterPixelCharge(h,planeID));
+            THREADED(h2DCellChargeNum_        [planeID])->Fill(xPixelResidual,yPixelResidual,data.getClusterPixelCharge(h,planeID));
+            THREADED(h2DCellChargeNorm_       [planeID])->Fill(xPixelResidual,yPixelResidual);
+
+            /*-------------------------------------------------/////     4 ROWS HISTOGRAMS     ////------------------------------------------------------------------------------------------------------------------------------------------*/
+
+            THREADED(h2DCellCharge4RowsNorm_        [planeID])->Fill(xPixelResidual,yPixelResidual+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+            THREADED(h2DCellPixelCharge4Rows_       [planeID])->Fill(xPixelResidual,yPixelResidual+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(h,planeID));
+            THREADED(h2DCellClusterCharge4Rows_     [planeID])->Fill(xPixelResidual,yPixelResidual+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterCharge(planeID));
+            THREADED(h2DCellCharge4RowsClusterSize_ [planeID])->Fill(xPixelResidual,yPixelResidual+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterSize(planeID));
+
+            if(size==1)
             {
-                for (int g = 0; g < size; ++g)
+                THREADED(h2DCellPixelCharge4RowsClusterSize1_     [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(h,planeID));
+                THREADED(h2DCellPixelCharge4RowsClusterSize1Norm_ [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+            }
+
+
+
+            if (size == 2)
+            {
+                THREADED(h2DCellPixelCharge4RowsClusterSize2_     [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(h,planeID));
+                THREADED(h2DCellPixelCharge4RowsClusterSize2Norm_ [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+
+
+                for (int g=0; g<size; g++)
                 {
-                    if (g != hitID && size <= 2 && data.getClusterPixelCharge(g,planeID) > standardCutsThreshold_ && data.getClusterPixelCharge(g,planeID) < standardCutsMaximumCharge_ && data.getIsPixelCalibrated (g,planeID))
+                    if (g != h
+                            //&& data.getIsPixelCalibrated (g,planeID)
+                            //&& data.getClusterPixelCharge(g,planeID) > standardCutsThreshold_
+                            //&& data.getClusterPixelCharge(g,planeID) < standardCutsMaximumCharge_
+                            )
                     {
-                        if (xRes >= 0 && data.getClusterPixelCol(g,planeID) - col == 1 && data.getClusterPixelRow(g,planeID) == row)
+                        //                        if ( (xPixelEdgeResidual >= 0 && data.getClusterPixelCol(g,planeID) - col == 1 && data.getClusterPixelRow(g,planeID) == row)
+                        //                             || (xPixelEdgeResidual <  0 && data.getClusterPixelCol(g,planeID) - col ==  -1 && data.getClusterPixelRow(g,planeID) == row))
+                        //                        {
+                        //                            THREADED(h2DCellChargeSecondHit4RowsSameRow_      [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(g,planeID));
+                        //                            THREADED(h2DCellChargeSecondHit4RowsSameRowNorm_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+                        //                        }
+                        //                        else if  ((yPixelEdgeResidual >  0 && data.getClusterPixelRow(g,planeID) - row == 1 && data.getClusterPixelCol(g,planeID) == col)
+                        //                                  || (yPixelEdgeResidual <= 0 && data.getClusterPixelRow(g,planeID) - row ==  -1 && data.getClusterPixelCol(g,planeID) == col))
+                        if  (data.getClusterPixelCol(g,planeID) == col)
                         {
-                            THREADED(h2DCellChargeSecondHit_   [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(g,planeID));
+                            THREADED(h2DCellChargeSecondHit4RowsSameCol_     [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(g,planeID));
+                            THREADED(h2DCellChargeSecondHit4RowsSameColNorm_ [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
                         }
-                        else if (xRes < 0 && data.getClusterPixelCol(g,planeID) - col == -1 && data.getClusterPixelRow(g,planeID) == row)
-                        {
-                            THREADED(h2DCellChargeSecondHit_   [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(g,planeID));
-                        }
-                        if (yRes > 0 && data.getClusterPixelRow(g,planeID) - row == 1 && data.getClusterPixelCol(g,planeID) == col)
-                        {
-                            THREADED(h2DCellChargeSecondHit_   [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(g,planeID));
-                        }
-                        else if (yRes <= 0 && data.getClusterPixelRow(g,planeID) - row == -1 && data.getClusterPixelCol(g,planeID) == col)
-                        {
-                            THREADED(h2DCellChargeSecondHit_   [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(g,planeID));
-                        }
+
                     }
+
                 }
             }
-            THREADED(h2DCellChargeNum_         [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(h,planeID));
-            if (planeID == 9) ++totEventsControl_;
-            THREADED(h4CellsCharge_          [planeID])->Fill(xRes,yRes,data.getClusterPixelCharge(h,planeID));
+
+
+            else if (size == 3)
+            {
+                THREADED(h2DCellPixelCharge4RowsClusterSize3_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(h,planeID));
+                THREADED(h2DCellPixelCharge4RowsClusterSize3Norm_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+
+                for (int g=0; g<size; g++)
+                {
+
+                    if (g != h) //&& data.getIsPixelCalibrated (g,planeID)//&& data.getClusterPixelCharge(g,planeID) > standardCutsThreshold_//&& data.getClusterPixelCharge(g,planeID) < standardCutsMaximumCharge_
+
+
+                        if ( data.getClusterPixelCol(g,planeID) == col)
+                        {
+                            THREADED(h2DCellChargeSecondHit4RowsClusterSize3_    [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(g,planeID));
+                            THREADED(h2DCellChargeSecondHit4RowsClusterSize3Norm_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+
+
+                            if(data.getClusterPixelCharge(g,planeID)<data.getClusterPixelCharge(h,planeID))
+
+                            {
+
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3LowCharge_    [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(g,planeID));
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3HighCharge_    [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(h,planeID));
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+                            }
+
+
+                            else if (data.getClusterPixelCharge(h,planeID)<data.getClusterPixelCharge(g,planeID))
+                            {
+
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3LowCharge_    [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(h,planeID));
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3HighCharge_    [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(g,planeID));
+                                THREADED(h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+                            }
+                        }
+                }
+            }
+
+
+
+
+
+            //  if(row=50)
+            //    THREADED(h2DCellCharge4RowsOnly50_      [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID),data.getClusterPixelCharge(h,planeID));
+
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+            //if (planeID == 9) ++totEventsControl_;//FIXME THIS IS HARDCODED AND RELATES TO A PLANE ID THAT NOW HAS CHANGED
+            THREADED(h4CellsCharge_          [planeID])->Fill(xPixelEdgeResidual,yPixelEdgeResidual,data.getClusterPixelCharge(h,planeID));
             THREADED(hCellChargeCoarse_      [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(h,planeID));
             THREADED(hCellChargeCoarseNorm_  [planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID));
             TH2F* histo = THREADED(hCellChargeCoarse_[planeID]);
             int histoN = (histo->GetXaxis()->FindBin(data.getXPixelResidualLocal(planeID))-1)*histo->GetNbinsY() + histo->GetYaxis()->FindBin(data.getYPixelResidualLocal(planeID))-1;
-            //if(histoN <= 20)
-            /*
-            std::cout << __PRETTY_FUNCTION__
-                      << " Posx: " << data.getXPixelResidualLocal(planeID)
-                      << " Posy: " << data.getYPixelResidualLocal(planeID)
-                      << " BinX: " << histo->GetXaxis()->FindBin(data.getXPixelResidualLocal(planeID))
-                      << " BinY: " << histo->GetYaxis()->FindBin(data.getYPixelResidualLocal(planeID))
-                      << " Histo: " << histoN
-                      << std::endl;
-*/
-            //
+
             if ((unsigned int)histoN < hCellChargeCoarseLandau_[planeID].size())
                 THREADED(hCellChargeCoarseLandau_[planeID][histoN])->Fill(data.getClusterPixelCharge(h,planeID)); //DOESN'T ALWAYS WORK...
-            //                     *((int)((maxPitchX/2) + 5 + data.getXPixelResidualLocal(planeID)))
-            //                     +(int)((maxPitchY/2) + 5 + data.getYPixelResidualLocal(planeID))])->Fill(data.getClusterPixelCharge(h,planeID));
-            //THREADED(hCellChargeCoarseLandau_[planeID][histo->GetBin(histo->GetXaxis()->FindBin(data.getXPixelResidualLocal(planeID)),histo->GetYaxis()->FindBin(data.getYPixelResidualLocal(planeID)))])->Fill(data.getClusterPixelCharge(h,planeID));
 
             hitID = h;
 
             break;
         }
+
     }
+
 
     if (hitID == -1 && size <= 2)
     {
@@ -1134,19 +1225,19 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
             if (data.getClusterPixelCharge(l,planeID) < standardCutsThreshold_ || data.getClusterPixelCharge(l,planeID) > standardCutsMaximumCharge_ || !data.getIsPixelCalibrated(l,planeID))
                 continue;
 
-            if (xRes <= 0 && data.getClusterPixelCol(l,planeID) - col == 1 && data.getClusterPixelRow(l,planeID) == row )
+            if (xPixelEdgeResidual <= 0 && data.getClusterPixelCol(l,planeID) - col == 1 && data.getClusterPixelRow(l,planeID) == row )
             {
                 THREADED(h2DCellChargeSecondHit_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(l,planeID));
             }
-            else if (xRes > 0 && data.getClusterPixelCol(l,planeID) - col == -1 && data.getClusterPixelRow(l,planeID) == row )
+            else if (xPixelEdgeResidual > 0 && data.getClusterPixelCol(l,planeID) - col == -1 && data.getClusterPixelRow(l,planeID) == row )
             {
                 THREADED(h2DCellChargeSecondHit_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(l,planeID));
             }
-            if (yRes <= 0 && data.getClusterPixelRow(l,planeID) - row == 1 && data.getClusterPixelCol(l,planeID) == col )
+            if (yPixelEdgeResidual <= 0 && data.getClusterPixelRow(l,planeID) - row == 1 && data.getClusterPixelCol(l,planeID) == col )
             {
                 THREADED(h2DCellChargeSecondHit_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(l,planeID));
             }
-            else if (yRes > 0 && data.getClusterPixelRow(l,planeID) - row == -1 && data.getClusterPixelCol(l,planeID) == col )
+            else if (yPixelEdgeResidual > 0 && data.getClusterPixelRow(l,planeID) - row == -1 && data.getClusterPixelCol(l,planeID) == col )
             {
                 THREADED(h2DCellChargeSecondHit_[planeID])->Fill(data.getXPixelResidualLocal(planeID),data.getYPixelResidualLocal(planeID),data.getClusterPixelCharge(l,planeID));
             }
@@ -1240,38 +1331,27 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
             {
                 if(isYmax && isXmin)
                 {
-                    xRes = +data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
-                    yRes = +data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
+                    xPixelEdgeResidual = +data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
+                    yPixelEdgeResidual = +data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
                 }
                 else if(isYmin && isXmin)
                 {
-                    xRes = +data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
-                    yRes = +data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
+                    xPixelEdgeResidual = +data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
+                    yPixelEdgeResidual = +data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
                 }
                 else if(isYmax && isXmax)
                 {
-                    xRes = +data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
-                    yRes = +data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
+                    xPixelEdgeResidual = +data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
+                    yPixelEdgeResidual = +data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
                 }
                 else if(isYmin && isXmax)
                 {
-                    xRes = +data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
-                    yRes = +data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
+                    xPixelEdgeResidual = +data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
+                    yPixelEdgeResidual = +data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
                 }
 
-                /*if(planeID==9)
-                {
-                    std::cout << "event: " << data.getEventNumber() << " - predicted row: " << row << " - predicted col: " << col << std::endl;
-                    std::cout << "hit: " << firstHit << " - row: " << data.getClusterPixelRow(firstHit,planeID) << " - col: " << data.getClusterPixelCol(firstHit,planeID) << std::endl;
-                    std::cout << "hit: " << secondHit << " - row: " << data.getClusterPixelRow(secondHit,planeID) << " - col: " << data.getClusterPixelCol(secondHit,planeID) << std::endl;
-                    std::cout << "hit: " << thirdHit << " - row: " << data.getClusterPixelRow(thirdHit,planeID) << " - col: " << data.getClusterPixelCol(thirdHit,planeID) << std::endl;
-                    std::cout << "hit: " << h << " - row: " << data.getClusterPixelRow(h,planeID) << " - col: " << data.getClusterPixelCol(h,planeID) << std::endl;
-                    std::cout << "isXmax: " << isXmax << " - isXmin: " << isXmin << " - isYmax: " << isYmax << " - isYmin: " << isYmin << std::endl;
-                    std::cout << "cell X: " << data.getXPixelResidualLocal(planeID) << " -----> " << xRes << std::endl;
-                    std::cout << "cell Y: " << data.getYPixelResidualLocal(planeID) << " -----> " << yRes << std::endl;
-                }*/
-                THREADED(h4Hits_      [planeID])->Fill(xRes,yRes);
-                THREADED(h4HitsCharge_[planeID])->Fill(xRes,yRes,data.getClusterPixelCharge(firstHit,planeID));
+                THREADED(h4Hits_      [planeID])->Fill(xPixelEdgeResidual,yPixelEdgeResidual);
+                THREADED(h4HitsCharge_[planeID])->Fill(xPixelEdgeResidual,yPixelEdgeResidual,data.getClusterPixelCharge(firstHit,planeID));
                 break;
             }
         }
@@ -1287,9 +1367,6 @@ void Charge::xChargeDivision(bool pass, int planeID, const Data& data, int threa
 
     if (data.getYPixelResidualLocal(planeID) > 20 || data.getYPixelResidualLocal(planeID) < -20)
         return;
-
-    //    if (data.getXPredictedLocal(planeID) > 7. && data.getYPredictedLocal(planeID) > 7.)
-    //        return;
 
     float maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str())                                   ;
     float maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str())                                   ;
@@ -1325,11 +1402,11 @@ void Charge::xChargeDivision(bool pass, int planeID, const Data& data, int threa
     {
         for(int h=0; h<size; ++h)
         {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run)  //hits are in the window
+            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
                    || !data.getIsPixelCalibrated(h,planeID)                                                           //pixels are calibrated
                    ||  data.getClusterPixelRow    (h,planeID) != row                                                  //hits are on the same row (sharing is along the row - x direction)
-                   ||  data.getClusterPixelCharge (h,planeID) < standardCutsThreshold_                                           //charge is over threshold
-                   ||  data.getClusterPixelCharge (h,planeID) > standardCutsMaximumCharge_   )                                        //maximum allowed charge for this physics
+                   ||  data.getClusterPixelCharge (h,planeID) < standardCutsThreshold_                                //charge is over threshold
+                   ||  data.getClusterPixelCharge (h,planeID) > standardCutsMaximumCharge_   )                        //maximum allowed charge for this physics
                 return;
         }
 
@@ -1471,26 +1548,6 @@ void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
 
     if( hitID == -1 )
         return;
-
-    /*    if (data.getHasHit(planeID) && size == 1)
-    {
-        for(int h=0; h<size; ++h)
-        {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID))  //hits are in the window
-                   || !data.getIsPixelCalibrated(h,planeID)                                                        //pixels are calibrated
-                   ||  data.getClusterPixelRow    (h,planeID) != row                                               //hits are on the same row (sharing is along the row - x direction)
-                   ||  data.getClusterPixelCharge (h,planeID) <  standardCutsThreshold_                            //charge is over threshold
-                   ||  data.getClusterPixelCharge (h,planeID) >  standardCutsMaximumCharge_   )                                    //maximum allowed charge for this physics
-                return;
-        }
-
-        if (fabs(data.getXPixelResidualLocal(planeID)) > fabs(data.getYPixelResidualLocal(planeID)))
-        {
-            if (xRes >  0 && data.getClusterCharge(planeID) >= standardCutsMinimumTotalCharge_ && data.getClusterCharge(planeID) <= standardCutsMaximumTotalCharge_) THREADED(h2DXCellChargeAsimmetrySizeLE2_[planeID])->Fill(xRes, -1);
-            if (xRes <= 0 && data.getClusterCharge(planeID) >= standardCutsMinimumTotalCharge_ && data.getClusterCharge(planeID) <= standardCutsMaximumTotalCharge_) THREADED(h2DXCellChargeAsimmetrySizeLE2_[planeID])->Fill(xRes,  1);
-        }
-
-    } */
 
     for(int h=0; h<size; ++h)
     {
@@ -1757,7 +1814,7 @@ void Charge::yChargeDivision(bool pass, int planeID, const Data& data, int threa
         {
             if(data.getClusterPixelRow(h,planeID) == row && data.getClusterPixelCol(h,planeID) == col)
             {
-                THREADED(h1DYcellCharge_          [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
+                THREADED(h1DYcellCharge_          [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));//yRes=1er cuadro rojo
                 THREADED(h1DYcellChargeNormToAll_ [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
                 THREADED(h2DYcellCharge_          [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
                 if (fabs(data.getXPixelResidualLocal(planeID)) > 35)
@@ -1896,25 +1953,7 @@ void Charge::yAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
     if( hitID == -1 )
         return;
 
-    /*    if (data.getHasHit(planeID) && size == 1)
-    {
-        for(int h=0; h<size; ++h)
-        {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID))  //hits are in the window
-                   || !data.getIsPixelCalibrated(h,planeID)                                                        //pixels are calibrated
-                   ||  data.getClusterPixelRow    (h,planeID) != row                                               //hits are on the same row (sharing is along the row - x direction)
-                   ||  data.getClusterPixelCharge (h,planeID) <  standardCutsThreshold_                            //charge is over threshold
-                   ||  data.getClusterPixelCharge (h,planeID) >  standardCutsMaximumCharge_   )                                    //maximum allowed charge for this physics
-                return;
-        }
 
-        if (fabs(data.getXPixelResidualLocal(planeID)) < fabs(data.getYPixelResidualLocal(planeID)))
-        {
-            if (yRes >  0 && data.getClusterCharge(planeID) >= standardCutsMinimumTotalCharge_ && data.getClusterCharge(planeID) <= standardCutsMaximumTotalCharge_) THREADED(h2DYCellChargeAsimmetrySizeLE2_[planeID])->Fill(yRes, -1);
-            if (yRes <= 0 && data.getClusterCharge(planeID) >= standardCutsMinimumTotalCharge_ && data.getClusterCharge(planeID) <= standardCutsMaximumTotalCharge_) THREADED(h2DYCellChargeAsimmetrySizeLE2_[planeID])->Fill(yRes,  1);
-        }
-    }
-*/
     for(int h=0; h<size; ++h)
     {
         if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run)  // hits are in the window
@@ -2311,67 +2350,46 @@ void Charge::normalizeEtaDistributionSize2 (int p)
     std::stringstream hName;
     std::string planeName = thePlaneMapping_->getPlaneName(p);
 
+    float xCellPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
+    float yCellPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
+
     theAnalysisManager_->cd("/Charge/" + planeName + "/XcellCharge1D");
 
-    hName.str(""); hName << "projX_" << planeName;
-    projX_.push_back((TH1F*)h2DCellChargeNormSize2_[p]->ProjectionX(hName.str().c_str(), -75, 75));
+    hName.str(""); hName << "projXCellChargeSize1AllTracksNorm_" << planeName;
+    projXCellChargeSize1AllTracksNorm_.push_back((TH1F*)h2DCellChargeSize1AllTracksNorm_[p]->ProjectionX(hName.str().c_str(), -xCellPitch/2, xCellPitch/2));
 
-    hName.str(""); hName << "projXSize1_" << planeName;
-    projXSize1_.push_back((TH1F*)h2DCellChargeNormSize1_[p]->ProjectionX(hName.str().c_str(), -75, 75));
-
-    hName.str(""); hName << "projXUp_" << planeName;
-    projXUp_.push_back((TH1F*)h2DCellChargeNormSize2Up_[p]->ProjectionX(hName.str().c_str(), -75, 75));
-
-    hName.str(""); hName << "projXSize1Up_" << planeName;
-    projXSize1Up_.push_back((TH1F*)h2DCellChargeNormSize1Up_[p]->ProjectionX(hName.str().c_str(), -75, 75));
-
-    hName.str(""); hName << "projXDown_" << planeName;
-    projXDown_.push_back((TH1F*)h2DCellChargeNormSize2Down_[p]->ProjectionX(hName.str().c_str(), -75, 75));
-
-    hName.str(""); hName << "projXSize1Down_" << planeName;
-    projXSize1Down_.push_back((TH1F*)h2DCellChargeNormSize1Down_[p]->ProjectionX(hName.str().c_str(), -75, 75));
+    hName.str(""); hName << "projXCellChargeSize2AllTracksNorm_" << planeName;
+    projXCellChargeSize2AllTracksNorm_.push_back((TH1F*)h2DCellChargeSize2AllTracksNorm_[p]->ProjectionX(hName.str().c_str(), -xCellPitch/2, xCellPitch/2));
 
     theAnalysisManager_->cd("/Charge/" + planeName + "/XAsimmetry");
 
     hName.str(""); hName << "h1DXEtaDistribution_" << planeName;
-    h1DXEtaDistribution_.push_back((TH1F*)h2DXCellChargeAsimmetrySizeLE2_[p]->ProjectionY(hName.str().c_str(), -150, 150));
+    h1DXEtaDistribution_.push_back((TH1F*)h2DXCellChargeAsimmetrySizeLE2_[p]->ProjectionY(hName.str().c_str(), -xCellPitch, xCellPitch));
 
     theAnalysisManager_->cd("/Charge/" + planeName + "/YcellCharge1D");
 
-    hName.str(""); hName << "projY_" << planeName;
-    projY_.push_back((TH1F*)h2DCellChargeNormSize2_[p]->ProjectionY(hName.str().c_str(), -50, 50));
+    hName.str(""); hName << "projYCellChargeSize1AllTracksNorm_" << planeName;
+    projYCellChargeSize1AllTracksNorm_.push_back((TH1F*)h2DCellChargeSize1AllTracksNorm_[p]->ProjectionY(hName.str().c_str(), -yCellPitch/2, yCellPitch/2));
 
-    hName.str(""); hName << "projYSize1_" << planeName;
-    projYSize1_.push_back((TH1F*)h2DCellChargeNormSize1_[p]->ProjectionY(hName.str().c_str(), -50, 50));
-
-    hName.str(""); hName << "projYUp_" << planeName;
-    projYUp_.push_back((TH1F*)h2DCellChargeNormSize2Up_[p]->ProjectionY(hName.str().c_str(), -50, 50));
-
-    hName.str(""); hName << "projYSize1Up_" << planeName;
-    projYSize1Up_.push_back((TH1F*)h2DCellChargeNormSize1Up_[p]->ProjectionY(hName.str().c_str(), -50, 50));
-
-    hName.str(""); hName << "projYDown_" << planeName;
-    projYDown_.push_back((TH1F*)h2DCellChargeNormSize2Down_[p]->ProjectionY(hName.str().c_str(), -50, 50));
-
-    hName.str(""); hName << "projYSize1Down_" << planeName;
-    projYSize1Down_.push_back((TH1F*)h2DCellChargeNormSize1Down_[p]->ProjectionY(hName.str().c_str(), -50, 50));
+    hName.str(""); hName << "projYCellChargeSize2AllTracksNorm_" << planeName;
+    projYCellChargeSize2AllTracksNorm_.push_back((TH1F*)h2DCellChargeSize2AllTracksNorm_[p]->ProjectionY(hName.str().c_str(), -yCellPitch/2, yCellPitch/2));
 
     theAnalysisManager_->cd("/Charge/" + planeName + "/YAsimmetry");
 
     hName.str(""); hName << "h1DYEtaDistribution_" << planeName;
-    h1DYEtaDistribution_.push_back((TH1F*)h2DYCellChargeAsimmetrySizeLE2_[p]->ProjectionY(hName.str().c_str(),-75,75));
+    h1DYEtaDistribution_.push_back((TH1F*)h2DYCellChargeAsimmetrySizeLE2_[p]->ProjectionY(hName.str().c_str(), -xCellPitch/2, xCellPitch/2));
 
     for (int j = 1; j < h1DXEtaDistribution_[p]->GetXaxis()->GetNbins()+1; ++j)
     {
-        h1DXEtaDistribution_[p]->SetBinContent(j, (double)h1DXEtaDistribution_[p]->GetBinContent(j)/((double)projX_[p]->GetBinContent(j)));//projX_[p]->FindBin(h2DXCellChargeAsimmetrySizeLE2_[p]->GetXaxis()->GetBinCenter(i)))));
+        h1DXEtaDistribution_[p]->SetBinContent(j, (double)h1DXEtaDistribution_[p]->GetBinContent(j)/((double)projXCellChargeSize2AllTracksNorm_[p]->GetBinContent(j)));//projX_[p]->FindBin(h2DXCellChargeAsimmetrySizeLE2_[p]->GetXaxis()->GetBinCenter(i)))));
     }
-    h1DXEtaDistribution_[p]->Scale(projX_[p]->GetEntries()/(double)projX_[p]->GetXaxis()->GetNbins());
+    h1DXEtaDistribution_[p]->Scale(projXCellChargeSize2AllTracksNorm_[p]->GetEntries()/(double)projXCellChargeSize2AllTracksNorm_[p]->GetXaxis()->GetNbins());
 
     for (int j = 1; j < h1DYEtaDistribution_[p]->GetXaxis()->GetNbins()+1; ++j)
     {
-        h1DYEtaDistribution_[p]->SetBinContent(j, (double)h1DYEtaDistribution_[p]->GetBinContent(j)/((double)projY_[p]->GetBinContent(j)));//projX_[p]->FindBin(h2DXCellChargeAsimmetrySizeLE2_[p]->GetXaxis()->GetBinCenter(i)))));
+        h1DYEtaDistribution_[p]->SetBinContent(j, (double)h1DYEtaDistribution_[p]->GetBinContent(j)/((double)projYCellChargeSize2AllTracksNorm_[p]->GetBinContent(j)));//projX_[p]->FindBin(h2DXCellChargeAsimmetrySizeLE2_[p]->GetXaxis()->GetBinCenter(i)))));
     }
-    h1DYEtaDistribution_[p]->Scale(projY_[p]->GetEntries()/(double)projY_[p]->GetXaxis()->GetNbins());
+    h1DYEtaDistribution_[p]->Scale(projYCellChargeSize2AllTracksNorm_[p]->GetEntries()/(double)projYCellChargeSize2AllTracksNorm_[p]->GetXaxis()->GetNbins());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2385,9 +2403,9 @@ void Charge::normalizeEtaDistribution (int p)
         for (int i = 1; i < h2DXCellChargeAsimmetrySizeLE2_[p]->GetXaxis()->GetNbins()+1; ++i)
         {
             if (fabs((double)h2DXCellChargeAsimmetrySizeLE2_[p]->GetYaxis()->GetBinCenter(j) -1.) < 0.1 || fabs((double)h2DXCellChargeAsimmetrySizeLE2_[p]->GetYaxis()->GetBinCenter(j) +1.) < 0.1)
-                h2DXCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projXSize1_[p]->GetBinContent(i));
+                h2DXCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projXCellChargeSize1AllTracksNorm_[p]->GetBinContent(i));
             else
-                h2DXCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projX_[p]->GetBinContent(i));
+                h2DXCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projXCellChargeSize2AllTracksNorm_[p]->GetBinContent(i));
         }
     }
 
@@ -2396,9 +2414,9 @@ void Charge::normalizeEtaDistribution (int p)
         for (int i = 1; i < h2DYCellChargeAsimmetrySizeLE2_[p]->GetXaxis()->GetNbins()+1; ++i)
         {
             if (fabs((double)h2DYCellChargeAsimmetrySizeLE2_[p]->GetYaxis()->GetBinCenter(j) -1.) < 0.1 || fabs((double)h2DYCellChargeAsimmetrySizeLE2_[p]->GetYaxis()->GetBinCenter(j) +1.) < 0.1)
-                h2DYCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projYSize1_[p]->GetBinContent(i));
+                h2DYCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projYCellChargeSize1AllTracksNorm_[p]->GetBinContent(i));
             else
-                h2DYCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projY_[p]->GetBinContent(i));
+                h2DYCellChargeAsimmetrySizeLE2_[p]->SetBinContent(i, j, (double)h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(i, j)/(double)projYCellChargeSize2AllTracksNorm_[p]->GetBinContent(i));
         }
     }
 }
@@ -2455,14 +2473,14 @@ void Charge::normalizeEtaInverse (int p)
     {
         for (int i = 1; i < h2DXcellChargeAsimmetry_[p]->GetXaxis()->GetNbins()+1; ++i)
         {
-            if((double)projX_[p]->GetBinContent(i)<=0.) continue;
+            if((double)projXCellChargeSize2AllTracksNorm_[p]->GetBinContent(i)<=0.) continue;
             //if(i==1 && p==22) std::cout<<"X "<<(double)h2DXcellChargeAsimmetry_[p]->GetBinContent(1,j);
-            h2DXcellChargeAsimmetry_[p]->SetBinContent(i, j, (double)h2DXcellChargeAsimmetry_[p]->GetBinContent(i, j)/(double)projX_[p]->GetBinContent(i));
+            h2DXcellChargeAsimmetry_[p]->SetBinContent(i, j, (double)h2DXcellChargeAsimmetry_[p]->GetBinContent(i, j)/(double)projXCellChargeSize2AllTracksNorm_[p]->GetBinContent(i));
             //if(i==1 && p==22) std::cout<<" -> "<<(double)h2DXcellChargeAsimmetry_[p]->GetBinContent(1,j)<<std::endl;
         }
     }
 
-    h2DXcellChargeAsimmetry_[p]->Scale((double)projX_[p]->GetEntries()/(double)projX_[p]->GetXaxis()->GetNbins());
+    h2DXcellChargeAsimmetry_[p]->Scale((double)projXCellChargeSize2AllTracksNorm_[p]->GetEntries()/(double)projXCellChargeSize2AllTracksNorm_[p]->GetXaxis()->GetNbins());
 
     //-----------------------------------------------------------------------------------------------------------------------------//
 
@@ -2470,12 +2488,12 @@ void Charge::normalizeEtaInverse (int p)
     {
         for (int i = 1; i < h2DYcellChargeAsimmetry_[p]->GetXaxis()->GetNbins()+1; ++i)
         {
-            if((double)projY_[p]->GetBinContent(i)==0) continue;
-            h2DYcellChargeAsimmetry_[p]->SetBinContent(i, j, (double)h2DYcellChargeAsimmetry_[p]->GetBinContent(i, j)/(double)projY_[p]->GetBinContent(i));
+            if((double)projYCellChargeSize2AllTracksNorm_[p]->GetBinContent(i)==0) continue;
+            h2DYcellChargeAsimmetry_[p]->SetBinContent(i, j, (double)h2DYcellChargeAsimmetry_[p]->GetBinContent(i, j)/(double)projYCellChargeSize2AllTracksNorm_[p]->GetBinContent(i));
         }
     }
 
-    h2DYcellChargeAsimmetry_[p]->Scale((double)projY_[p]->GetEntries()/(double)projY_[p]->GetXaxis()->GetNbins());
+    h2DYcellChargeAsimmetry_[p]->Scale((double)projYCellChargeSize2AllTracksNorm_[p]->GetEntries()/(double)projYCellChargeSize2AllTracksNorm_[p]->GetXaxis()->GetNbins());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2659,14 +2677,10 @@ void Charge::endJob(void)
         ADD_THREADED(h2DCellCharge_                           [p]);
         ADD_THREADED(h2DCellChargeSecondHit_                  [p]);
         ADD_THREADED(h2DCellChargeNum_                        [p]);
-        ADD_THREADED(h2DallTracks_                            [p]);
+        ADD_THREADED(h2DAllTracks_                            [p]);
         ADD_THREADED(h2DCellChargeNorm_                       [p]);
-        ADD_THREADED(h2DCellChargeNormSize2_                  [p]);
-        ADD_THREADED(h2DCellChargeNormSize1_                  [p]);
-        ADD_THREADED(h2DCellChargeNormSize2Up_                [p]);
-        ADD_THREADED(h2DCellChargeNormSize1Up_                [p]);
-        ADD_THREADED(h2DCellChargeNormSize2Down_              [p]);
-        ADD_THREADED(h2DCellChargeNormSize1Down_              [p]);
+        ADD_THREADED(h2DCellChargeSize2AllTracksNorm_         [p]);
+        ADD_THREADED(h2DCellChargeSize1AllTracksNorm_         [p]);
         ADD_THREADED(h4CellsCharge_                           [p]);
         ADD_THREADED(h4CellsAllTracks_                        [p]);
         ADD_THREADED(h4CellsChargeNorm_                       [p]);
@@ -2677,6 +2691,40 @@ void Charge::endJob(void)
         ADD_THREADED(hChargeNotOnRowCol_                      [p]);
         ADD_THREADED(hCellChargeCoarse_                       [p]);
         ADD_THREADED(hCellChargeCoarseNorm_                   [p]);
+
+
+
+        ADD_THREADED(h2DCellPixelCharge4Rows_                                   [p]);
+        ADD_THREADED(h2DCellClusterCharge4Rows_                                 [p]);
+        ADD_THREADED(h2DAllTracks4Rows_                                         [p]);
+        ADD_THREADED(h2DCellCharge4RowsOnly50_                                  [p]);
+        ADD_THREADED(h2DCellCharge4RowsClusterSize_                             [p]);
+        ADD_THREADED(h2DCellCharge4RowsNorm_                                    [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsSameRow_                        [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsSameRowNorm_                    [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsSameCol_                        [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsSameColNorm_                    [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsClusterSize3_                   [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsClusterSize3Norm_               [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsClusterSize3LowCharge_          [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_      [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsClusterSize3HighCharge_         [p]);
+        ADD_THREADED(h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_     [p]);
+        ADD_THREADED(h2DCellPixelCharge4RowsClusterSize1_                       [p]);
+        ADD_THREADED(h2DCellPixelCharge4RowsClusterSize2_                       [p]);
+        ADD_THREADED(h2DCellPixelCharge4RowsClusterSize3_                       [p]);
+        ADD_THREADED(h2DCellPixelCharge4RowsClusterSize1Norm_                       [p]);
+        ADD_THREADED(h2DCellPixelCharge4RowsClusterSize2Norm_                       [p]);
+        ADD_THREADED(h2DCellPixelCharge4RowsClusterSize3Norm_                       [p]);
+
+
+
+
+
+
+
+
+
         for(std::vector<TH1F*>::iterator it=hCellChargeCoarseLandau_[p].begin(); it!=hCellChargeCoarseLandau_[p].end(); it++)
             ADD_THREADED(*it);
 
@@ -2733,7 +2781,7 @@ void Charge::endJob(void)
         ADD_THREADED(hXAsimmetry0_                            [p]);
         ADD_THREADED(h2DXAsimmetryLandau_                     [p]);
         ADD_THREADED(h2DXcellChargeAsimmetry_                 [p]);
-        ADD_THREADED(h2DXCellChargeAsimmetryY_                 [p]);
+        ADD_THREADED(h2DXCellChargeAsimmetryY_                [p]);
         ADD_THREADED(h2DXcellChargeAsimmetryInv_              [p]);
         ADD_THREADED(h2DXcellChargeAsimmetryUnconstrained_    [p]);
         ADD_THREADED(h2DXcellChargeAsimmetryUnconstrainedInv_ [p]);
@@ -2762,14 +2810,30 @@ void Charge::endJob(void)
             ADD_THREADED(mXYNorm_      [p][runIt->first]);
         }
 
-        //        h2DCellCharge_                [p]->Divide(h2DCellChargeNorm_       [p]); //to normalize with respect to the events that produced a hit
-        h2DCellCharge_                [p]->Divide(h2DallTracks_             [p]); //to normalize with respect to all the events
-        h2DCellChargeSecondHit_       [p]->Divide(h2DallTracks_             [p]); //to normalize with respect to all the events
+        h2DCellCharge_                [p]->Divide(h2DCellChargeNorm_       [p]); //to normalize with respect to the events that produced a hit
+        //h2DCellCharge_                [p]->Divide(h2DAllTracks_             [p]); //to normalize with respect to all the events
+
+
+        h2DCellPixelCharge4Rows_                               [p]->Divide(h2DAllTracks4Rows_                                                 [p]);
+        h2DCellClusterCharge4Rows_                             [p]->Divide(h2DCellCharge4RowsNorm_                                            [p]);
+        h2DCellCharge4RowsOnly50_                              [p]->Divide(h2DCellCharge4RowsNorm_                                            [p]);
+        h2DCellCharge4RowsClusterSize_                         [p]->Divide(h2DCellCharge4RowsNorm_                                            [p]);
+        h2DCellChargeSecondHit4RowsSameRow_                    [p]->Divide(h2DCellChargeSecondHit4RowsSameRowNorm_                            [p]);
+        h2DCellChargeSecondHit4RowsSameCol_                    [p]->Divide(h2DCellChargeSecondHit4RowsSameColNorm_                            [p]);
+        h2DCellChargeSecondHit4RowsClusterSize3_               [p]->Divide(h2DCellChargeSecondHit4RowsClusterSize3Norm_                       [p]);
+        h2DCellChargeSecondHit4RowsClusterSize3LowCharge_      [p]->Divide(h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_              [p]);
+        h2DCellChargeSecondHit4RowsClusterSize3HighCharge_     [p]->Divide(h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_             [p]);
+        h2DCellPixelCharge4RowsClusterSize1_                   [p]->Divide(h2DCellPixelCharge4RowsClusterSize1Norm_                           [p]);
+        h2DCellPixelCharge4RowsClusterSize2_                   [p]->Divide(h2DCellPixelCharge4RowsClusterSize2Norm_                           [p]);
+        h2DCellPixelCharge4RowsClusterSize3_                   [p]->Divide(h2DCellPixelCharge4RowsClusterSize3Norm_                           [p]);
+
+
+
+        h2DCellChargeSecondHit_       [p]->Divide(h2DAllTracks_             [p]); //to normalize with respect to all the events
         h4CellsCharge_                [p]->Divide(h4CellsChargeNorm_        [p]);
         h4HitsCharge_                 [p]->Divide(h4Hits_                   [p]);
         hClusterSizeDistribution1s_   [p]->Divide(hClusterSizeNormalization_[p]);
         hClusterSizeDistribution2s_   [p]->Divide(hClusterSizeNormalization_[p]);
-
         h1DXcellCharge_               [p]->Divide(h1DXcellChargeNorm_       [p]);
         h1DXcellChargeNormToAll_      [p]->Divide(h1DXallTracks_            [p]);
         h1DXcellChargeSumLE2_         [p]->Divide(h1DXcellChargeSumLE2Norm_ [p]);
@@ -2928,26 +2992,63 @@ void Charge::endJob(void)
 
         h2DCellCharge_                           [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DCellCharge_                           [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+
+
+
+        /*----------------------------------- 4 Rows ------------------------------------------------------------*/
+        h2DCellPixelCharge4Rows_                                  [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellPixelCharge4Rows_                                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellClusterCharge4Rows_                                [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellClusterCharge4Rows_                                [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DAllTracks4Rows_                                        [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DAllTracks4Rows_                                        [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellCharge4RowsOnly50_                                 [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellCharge4RowsOnly50_                                 [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellCharge4RowsClusterSize_                            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellCharge4RowsClusterSize_                            [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellCharge4RowsNorm_                                   [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellCharge4RowsNorm_                                   [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsSameRow_                       [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsSameRow_                       [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsSameRowNorm_                   [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsSameRowNorm_                   [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsSameCol_                       [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsSameCol_                       [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsSameColNorm_                   [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsSameColNorm_                   [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsClusterSize3_                  [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsClusterSize3_                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsClusterSize3Norm_              [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsClusterSize3Norm_              [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsClusterSize3LowCharge_         [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsClusterSize3LowCharge_         [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_     [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_     [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsClusterSize3HighCharge_        [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsClusterSize3HighCharge_        [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_    [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_    [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+        h2DCellPixelCharge4RowsClusterSize1_                      [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellPixelCharge4RowsClusterSize1Norm_                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellPixelCharge4RowsClusterSize2_                      [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellPixelCharge4RowsClusterSize2Norm_                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellPixelCharge4RowsClusterSize3_                      [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellPixelCharge4RowsClusterSize3Norm_                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+
+        /*-----------------------------------------------------------------------------------------------------------*/
+
         h2DCellChargeSecondHit_                  [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DCellChargeSecondHit_                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
         h2DCellChargeNum_                        [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DCellChargeNum_                        [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-        h2DallTracks_                            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-        h2DallTracks_                            [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DAllTracks_                            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DAllTracks_                            [p]->GetYaxis()->SetTitle("short pitch (um)"  );
         h2DCellChargeNorm_                       [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DCellChargeNorm_                       [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-        h2DCellChargeNormSize2_                  [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-        h2DCellChargeNormSize2_                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-        h2DCellChargeNormSize1_                  [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-        h2DCellChargeNormSize1_                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-        h2DCellChargeNormSize2Up_                [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-        h2DCellChargeNormSize2Up_                [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-        h2DCellChargeNormSize1Up_                [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-        h2DCellChargeNormSize1Up_                [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-        h2DCellChargeNormSize2Down_              [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-        h2DCellChargeNormSize2Down_              [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-        h2DCellChargeNormSize1Down_              [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-        h2DCellChargeNormSize1Down_              [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSize2AllTracksNorm_         [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSize2AllTracksNorm_         [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+        h2DCellChargeSize1AllTracksNorm_         [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DCellChargeSize1AllTracksNorm_         [p]->GetYaxis()->SetTitle("short pitch (um)"  );
         h4CellsCharge_                           [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h4CellsCharge_                           [p]->GetYaxis()->SetTitle("short pitch (um)"  );
         h4CellsAllTracks_                        [p]->GetXaxis()->SetTitle("long pitch (um)"   );
@@ -2962,6 +3063,7 @@ void Charge::endJob(void)
         hHitsNotOnRowCol_                        [p]->GetYaxis()->SetTitle("short pitch (um)"  );
         //        hCutsControl_                            [p]-> attach some legend...!
         hChargeNotOnRowCol_                      [p]->GetXaxis()->SetTitle("charge (electrons)");
+
 
         h1DXcellCharge_                          [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h1DXcellCharge_                          [p]->GetYaxis()->SetTitle("charge (electrons)");
@@ -3207,8 +3309,8 @@ void Charge::load(TFile* file)
         dirName = "Charge/" + planeName + "/2DCellCharge/";
         
         hName  = "h2DallTracks_"+ planeName;
-        h2DallTracks_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
-        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DallTracks_[p] << std::endl;
+        h2DAllTracks_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DAllTracks_[p] << std::endl;
         
         hName  = "h2DCellChargeNorm_"+ planeName;
         h2DCellChargeNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
@@ -3218,6 +3320,96 @@ void Charge::load(TFile* file)
         h2DCellCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellCharge_[p] << std::endl;
         
+        /*---------------------------------------------------- 4 Rows Histograms (2D cell charge) ----------------------------------------------------------------------------------------------------------------------------*/
+        hName  = "h2DCellPixelCharge4Rows_"+ planeName;
+        h2DCellPixelCharge4Rows_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellPixelCharge4Rows_[p] << std::endl;
+
+        hName  = "h2DCellClusterCharge4Rows_"+ planeName;
+        h2DCellClusterCharge4Rows_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellClusterCharge4Rows_[p] << std::endl;
+
+        hName  = "h2DAllTracks4Rows_ "+ planeName;
+        h2DAllTracks4Rows_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DAllTracks4Rows_ [p] << std::endl;
+
+        hName  = "h2DCellCharge4RowsOnly50_"+ planeName;
+        h2DCellCharge4RowsOnly50_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellCharge4RowsOnly50_ [p] << std::endl;
+
+        hName  = "h2DCellCharge4RowsClusterSize_"+ planeName;
+        h2DCellCharge4RowsClusterSize_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellCharge4RowsClusterSize_ [p] << std::endl;
+
+        hName  = "h2DCellCharge4RowsNorm_"+ planeName;
+        h2DCellCharge4RowsNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellCharge4RowsNorm_[p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4Rows_ "+ planeName;
+        h2DCellChargeSecondHit4RowsSameRow_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsSameRow_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHitNorm_ "+ planeName;
+        h2DCellChargeSecondHit4RowsSameRowNorm_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsSameRowNorm_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4RowsSameCol_ "+ planeName;
+        h2DCellChargeSecondHit4RowsSameCol_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsSameCol_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4RowsSameColNorm_ "+ planeName;
+        h2DCellChargeSecondHit4RowsSameColNorm_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsSameColNorm_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3_ "+ planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsClusterSize3_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4RowsNormClusterSize3_ "+ planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3Norm_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsClusterSize3Norm_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3LowCharge_ "+ planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3LowCharge_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsClusterSize3LowCharge_ [p] << std::endl;
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_ "+ planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3HighCharge_ "+ planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3HighCharge_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsClusterSize3HighCharge_ [p] << std::endl;
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_ "+ planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_ .push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_ [p] << std::endl;
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize1_"+ planeName;
+        h2DCellPixelCharge4RowsClusterSize1_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellPixelCharge4RowsClusterSize1_[p] << std::endl;
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize2_"+ planeName;
+        h2DCellPixelCharge4RowsClusterSize2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellPixelCharge4RowsClusterSize2_[p] << std::endl;
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize3_"+ planeName;
+        h2DCellPixelCharge4RowsClusterSize3_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellPixelCharge4RowsClusterSize3_[p] << std::endl;
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize1Norm_"+ planeName;
+        h2DCellPixelCharge4RowsClusterSize1Norm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellPixelCharge4RowsClusterSize1Norm_[p] << std::endl;
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize2Norm_"+ planeName;
+        h2DCellPixelCharge4RowsClusterSize2Norm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellPixelCharge4RowsClusterSize2Norm_[p] << std::endl;
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize3Norm_"+ planeName;
+        h2DCellPixelCharge4RowsClusterSize3Norm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellPixelCharge4RowsClusterSize3Norm_[p] << std::endl;
+
+        /*----------------------------------------------------------------2D cell charge-----------------------------------------------------------------------------------------------------------------------------------*/
+
         hName  = "h2DCellChargeSecondHit_"+ planeName;
         h2DCellChargeSecondHit_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSecondHit_[p] << std::endl;
@@ -3226,33 +3418,17 @@ void Charge::load(TFile* file)
         h2DCellChargeNum_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNum_[p] << std::endl;
         
-        hName  = "h2DCellChargeNormSize2_"+ planeName;
-        h2DCellChargeNormSize2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
-        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize2_[p] << std::endl;
+        hName  = "h2DCellChargeSize2Norm_"+ planeName;
+        h2DCellChargeSize2AllTracksNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSize2AllTracksNorm_[p] << std::endl;
         
         hName  = "h2DCellChargeNormSize1_"+ planeName;
-        h2DCellChargeNormSize1_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
-        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize1_[p] << std::endl;
+        h2DCellChargeSize1AllTracksNorm_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeSize1AllTracksNorm_[p] << std::endl;
         
         hName  = "h4CellsAllTracks_"+ planeName;
         h4CellsAllTracks_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << h4CellsAllTracks_[p] << std::endl;
-        
-        hName  = "h2DCellChargeNormSize2Up_"+ planeName;
-        h2DCellChargeNormSize2Up_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
-        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize2Up_[p] << std::endl;
-        
-        hName  = "h2DCellChargeNormSize1Up_"+ planeName;
-        h2DCellChargeNormSize1Up_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
-        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize1Up_[p] << std::endl;
-        
-        hName  = "h2DCellChargeNormSize2Down_"+ planeName;
-        h2DCellChargeNormSize2Down_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
-        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize2Down_[p] << std::endl;
-        
-        hName  = "h2DCellChargeNormSize1Down_"+ planeName;
-        h2DCellChargeNormSize1Down_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
-        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DCellChargeNormSize1Down_[p] << std::endl;
         
         hName  = "hCellChargeCoarse_"+ planeName;
         hCellChargeCoarse_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
@@ -3492,7 +3668,6 @@ void Charge::load(TFile* file)
         hName  = "hXAsimmetry0_"+ planeName;
         hXAsimmetry0_.push_back((TH1F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << hXAsimmetry0_[p] << std::endl;
-
         hName  = "h2DXAsimmetryLandau_"+ planeName;
         h2DXAsimmetryLandau_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXAsimmetryLandau_[p] << std::endl;
@@ -3655,6 +3830,10 @@ void Charge::book(void)
         hTitle = "Cluster size distribution on pixel normalization " + planeName;
         hClusterSizeNormalization_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)resYRange/binSize - removedBins, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
 
+        hName  = "h2DCellCharge4RowsClusterSize_"                         + planeName;
+        hTitle = "Cluster size distribution 4 Rows Cell " + planeName;
+        h2DCellCharge4RowsClusterSize_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
         theAnalysisManager_->cd("Charge/" + planeName);
 
         /*----------------------------------------------------------------------Landau distributions-----------------------------------------------------------------------------------------------------------*/
@@ -3711,7 +3890,7 @@ void Charge::book(void)
 
         hName  = "h2DallTracks_"                   + planeName;
         hTitle = "Cell charge normalization "      + planeName;
-        h2DallTracks_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)resYRange/binSize - removedBins, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
+        h2DAllTracks_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)resYRange/binSize - removedBins, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
 
         hName  = "h2DCellChargeNorm_"              + planeName;
         hTitle = "Cell charge normalization 2"     + planeName;
@@ -3729,33 +3908,17 @@ void Charge::book(void)
         hTitle = "Cell charge 2D distribution not normalized " + planeName;
         h2DCellChargeNum_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)resYRange/binSize - removedBins, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
 
-        hName  = "h2DCellChargeNormSize2_"              + planeName;
+        hName  = "h2DCellChargeSize2Norm_"              + planeName;
         hTitle = "Cell charge normalization for cluster size 2 "     + planeName;
-        h2DCellChargeNormSize2_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
+        h2DCellChargeSize2AllTracksNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
 
         hName  = "h2DCellChargeNormSize1_"              + planeName;
         hTitle = "Cell charge normalization for cluster size 1 "     + planeName;
-        h2DCellChargeNormSize1_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
+        h2DCellChargeSize1AllTracksNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
 
         hName  = "h4CellsAllTracks_"               + planeName;
         hTitle = "4 cells charge normalization "   + planeName;
         h4CellsAllTracks_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)resYRange/binSize - removedBins, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
-
-        hName  = "h2DCellChargeNormSize2Up_"              + planeName;
-        hTitle = "Cell charge normalization for cluster size 2 on the upper part of the revelator"     + planeName;
-        h2DCellChargeNormSize2Up_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
-
-        hName  = "h2DCellChargeNormSize1Up_"              + planeName;
-        hTitle = "Cell charge normalization for cluster size 1 on the upper part of the revelator"     + planeName;
-        h2DCellChargeNormSize1Up_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
-
-        hName  = "h2DCellChargeNormSize2Down_"              + planeName;
-        hTitle = "Cell charge normalization for cluster size 2 on the lower part of the revelator"     + planeName;
-        h2DCellChargeNormSize2Down_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
-
-        hName  = "h2DCellChargeNormSize1Down_"              + planeName;
-        hTitle = "Cell charge normalization for cluster size 1 on the lower part of the revelator"     + planeName;
-        h2DCellChargeNormSize1Down_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)resXRange/2 - 0, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, 2*(int)resYRange/2 - 0, -(resYRange/2) + removeHalf, resYRange/2 - removeHalf)));
 
         hName  = "hCellChargeCoarse_"              + planeName;
         hTitle = "Cell charge 2D distribution "    + planeName;
@@ -3792,6 +3955,90 @@ void Charge::book(void)
         hName  = "hChargeNotOnRowCol_" + planeName;
         hTitle = "Charge distributionn for hits whose tracks don't point on the same pixel " + planeName;
         hChargeNotOnRowCol_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+
+        hName  = "h2DCellPixelCharge4Rows_"                         + planeName;
+        hTitle = "4 Rows cell pixel charge 2D distribution" + planeName;
+        h2DCellPixelCharge4Rows_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellClusterCharge4Rows_"                         + planeName;
+        hTitle = "4 Rows cell cluster charge 2D distribution" + planeName;
+        h2DCellClusterCharge4Rows_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DAllTracks4Rows_"                   + planeName;
+        hTitle = "4 Rows Cell charge normalization (All tracks) "      + planeName;
+        h2DAllTracks4Rows_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellCharge4RowsOnly50_"                         + planeName;
+        hTitle = "Row 50 cell charge 2D distribution" + planeName;
+        h2DCellCharge4RowsOnly50_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellCharge4RowsNorm_"                         + planeName;
+        hTitle = "4 Rows Cell Charge Normalization  " + planeName;
+        h2DCellCharge4RowsNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsSameRow_"                    + planeName;
+        hTitle = "4 Rows Cell charge 2D distribution, second hit (Same Row) " + planeName;
+        h2DCellChargeSecondHit4RowsSameRow_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsSameRowNorm_"                         + planeName;
+        hTitle = "4 Rows Cell Charge Normalization Second Hit (Same Row) " + planeName;
+        h2DCellChargeSecondHit4RowsSameRowNorm_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsSameColNorm_"                         + planeName;
+        hTitle = "4 Rows Cell Charge Normalization Second Hit (Same Column) " + planeName;
+        h2DCellChargeSecondHit4RowsSameColNorm_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsSameCol_"                         + planeName;
+        hTitle = "4 Rows Cell charge 2D distribution, second hit (Same Column) " + planeName;
+        h2DCellChargeSecondHit4RowsSameCol_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsNormClusterSize3_"                         + planeName;
+        hTitle = "4 Rows Cell Charge Normalization Second Hit (Cluster Size 3 ) " + planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3Norm_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3_"                         + planeName;
+        hTitle = "4 Rows Cell charge 2D distribution, second hit (ClusterSize 3) " + planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3LowCharge_"                         + planeName;
+        hTitle = "4 Rows Cell charge 2D distribution, ClusterSize 3 Low Charge " + planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3LowCharge_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_"                         + planeName;
+        hTitle = "4 Rows Cell charge 2D distribution, ClusterSize 3 Low Charge Normalization" + planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3LowChargeNorm_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3HighCharge_"                         + planeName;
+        hTitle = "4 Rows Cell charge 2D distribution, ClusterSize 3: High Charge " + planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3HighCharge_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_"                         + planeName;
+        hTitle = "4 Rows Cell charge 2D distribution, ClusterSize 3 High Charge Normalization" + planeName;
+        h2DCellChargeSecondHit4RowsClusterSize3HighChargeNorm_ .push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize1_"                         + planeName;
+        hTitle = "4 Rows cell pixel charge 2D distribution ClusterSize1" + planeName;
+        h2DCellPixelCharge4RowsClusterSize1_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize2_"                         + planeName;
+        hTitle = "4 Rows cell pixel charge 2D distribution ClusterSize2" + planeName;
+        h2DCellPixelCharge4RowsClusterSize2_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize3_"                         + planeName;
+        hTitle = "4 Rows cell pixel charge 2D distribution ClusterSize3" + planeName;
+        h2DCellPixelCharge4RowsClusterSize3_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize1Norm_"                         + planeName;
+        hTitle = "4 Rows cell pixel charge 2D distribution ClusterSize1Norm" + planeName;
+        h2DCellPixelCharge4RowsClusterSize1Norm_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize2Norm_"                         + planeName;
+        hTitle = "4 Rows cell pixel charge 2D distribution ClusterSize2Norm" + planeName;
+        h2DCellPixelCharge4RowsClusterSize2Norm_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
+
+        hName  = "h2DCellPixelCharge4RowsClusterSize3Norm_"                         + planeName;
+        hTitle = "4 Rows cell pixel charge 2D distribution ClusterSize3Norm" + planeName;
+        h2DCellPixelCharge4RowsClusterSize3Norm_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)resXRange/binSize - removedBins, -(resXRange/2) + removeHalf, resXRange/2 - removeHalf, (int)4*(resYRange/binSize - removedBins), -4*((resYRange/2) + removeHalf), 4*(resYRange/2 - removeHalf))));
 
         theAnalysisManager_->cd("Charge/" + planeName);
 
