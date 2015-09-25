@@ -82,8 +82,8 @@ void EventConverter::convert(Event& event,int e)
     float                    col             =     0 ;
     int                      rowPredicted    =     0 ;
     int                      colPredicted    =     0 ;
-    unsigned int             clusterRow      =     0 ;
-    unsigned int             clusterCol      =     0 ;
+    unsigned int             pixelRow        =     0 ;
+    unsigned int             pixelCol        =     0 ;
     double                   xp,yp,zp,xRes,yRes      ;
     double                   xPixelPitch     =     0 ;
     double                   yPixelPitch     =     0 ;
@@ -186,36 +186,36 @@ void EventConverter::convert(Event& event,int e)
                 dataVector[t].setClusterCharge ((int)clusters[planeName][clusterID]["charge"], p);
 
                 size = (unsigned int)clustersHits[planeName][clusterID].size();
-
                 for(unsigned int h=0; h<size; h++)
                 {
 
-                    clusterRow = clustersHits[planeName][clusterID][h]["row"];
-                    clusterCol = clustersHits[planeName][clusterID][h]["col"];
-                    row += (float)clusterRow;
-                    col += (float)clusterCol;
-                    nRow.push_back(clusterRow);
-                    nCol.push_back(clusterCol);
+                    pixelRow = clustersHits[planeName][clusterID][h]["row"];
+                    pixelCol = clustersHits[planeName][clusterID][h]["col"];
+
+                    row += (float)pixelRow;
+                    col += (float)pixelCol;
+                    nRow.push_back(pixelRow);
+                    nCol.push_back(pixelCol);
                     if(size<=4)
                     {
-                        dataVector[t].setClusterPixelRow(clusterRow,h,p);
-                        dataVector[t].setClusterPixelCol(clusterCol,h,p);
+                        dataVector[t].setClusterPixelRow(pixelRow,h,p);
+                        dataVector[t].setClusterPixelCol(pixelCol,h,p);
                         dataVector[t].setClusterPixelCharge(clustersHits[planeName][clusterID][h]["charge"],h,p);
-                        xPixelCenter = detector->getPixelCenterLocalX(clusterCol);
-                        yPixelCenter = detector->getPixelCenterLocalY(clusterRow);
+                        xPixelCenter = detector->getPixelCenterLocalX(pixelCol);
+                        yPixelCenter = detector->getPixelCenterLocalY(pixelRow);
                         dataVector[t].setXClusterPixelCenterLocal(xPixelCenter*10,h,p);
                         dataVector[t].setYClusterPixelCenterLocal(yPixelCenter*10,h,p);
                         detector->fromLocalToGlobal(&xPixelCenter,&yPixelCenter,&zPixelCenter);
                         dataVector[t].setXClusterPixelCenterGlobal(xPixelCenter*10,h,p);
                         dataVector[t].setYClusterPixelCenterGlobal(yPixelCenter*10,h,p);
-                        ROC = detector->convertPixelToROC(&clusterRow,&clusterCol);
-                        dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(clusterRow,clusterCol),h,p);
+                        ROC = detector->convertPixelToROC(&pixelRow,&pixelCol);
+                        dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);
 
-                        if(!ROC->isPixelCalibrated(clusterRow,clusterCol) && thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                        if(!ROC->isPixelCalibrated(pixelRow,pixelCol) && thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                         {
                             ss.str("");
                             ss << "WARNING: fit failed for detector " << planeName;
-                            ss << " at row " << clusterRow << "," << " col " << clusterCol;
+                            ss << " at row " << pixelRow << "," << " col " << pixelCol;
                             ss << " of chip " << ROC->getID();
                             STDLINE(ss.str(),ACRed);
                         }
@@ -435,26 +435,26 @@ void EventConverter::convert(Event& event,int e)
 
                             for(unsigned int h=0; h<size; h++)
                             {
-                                clusterRow = clustersHits[planeName][clusterID][h]["row"];
-                                clusterCol = clustersHits[planeName][clusterID][h]["col"];
-                                row += (float)clusterRow;
-                                col += (float)clusterCol;
-                                nRow.push_back(clusterRow);
-                                nCol.push_back(clusterCol);
+                                pixelRow = clustersHits[planeName][clusterID][h]["row"];
+                                pixelCol = clustersHits[planeName][clusterID][h]["col"];
+                                row += (float)pixelRow;
+                                col += (float)pixelCol;
+                                nRow.push_back(pixelRow);
+                                nCol.push_back(pixelCol);
                                 if(size<=4)
                                 {
-                                    dataVector[t].setClusterPixelRow(clusterRow,h,p);
-                                    dataVector[t].setClusterPixelCol(clusterCol,h,p);
+                                    dataVector[t].setClusterPixelRow(pixelRow,h,p);
+                                    dataVector[t].setClusterPixelCol(pixelCol,h,p);
                                     dataVector[t].setClusterPixelCharge(clustersHits[planeName][clusterID][h]["charge"],h,p);
-                                    xPixelCenter = detector->getPixelCenterLocalX(clusterCol);
-                                    yPixelCenter = detector->getPixelCenterLocalY(clusterRow);
+                                    xPixelCenter = detector->getPixelCenterLocalX(pixelCol);
+                                    yPixelCenter = detector->getPixelCenterLocalY(pixelRow);
                                     dataVector[t].setXClusterPixelCenterLocal(xPixelCenter*10,h,p);
                                     dataVector[t].setYClusterPixelCenterLocal(yPixelCenter*10,h,p);
                                     detector->fromLocalToGlobal(&xPixelCenter,&yPixelCenter,&zPixelCenter);
                                     dataVector[t].setXClusterPixelCenterGlobal(xPixelCenter*10,h,p);
                                     dataVector[t].setYClusterPixelCenterGlobal(yPixelCenter*10,h,p);
-                                    ROC = detector->convertPixelToROC(&clusterRow,&clusterCol);
-                                    dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(clusterRow,clusterCol),h,p);
+                                    ROC = detector->convertPixelToROC(&pixelRow,&pixelCol);
+                                    dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);
                                 }
                             }
 

@@ -50,6 +50,13 @@ double Utilities::langaus(double *x, double *par)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
+double Utilities::linear(double *x, double *par)
+{
+
+    return (par[0] + par[1]*x[0]);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 double Utilities::calibrationFitFunk(double *x, double *par)
 {
     return par[0]+par[1]*tanh(par[2]*x[0]+par[3]);

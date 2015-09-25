@@ -94,7 +94,6 @@ private slots:
     void on_yErrEfficiencyCutCB_stateChanged   (int              arg1);
     void on_xEfficiencyCutCB_stateChanged      (int              arg1);
     void on_yEfficiencyCutCB_stateChanged      (int              arg1);
-    void on_hitsEfficiencyCutSB_valueChanged   (const QString&   arg1);
 
     void on_chi2ChargeCutCB_stateChanged       (int              arg1);
     void on_nTrackChargeCutCB_stateChanged     (int              arg1);
@@ -102,16 +101,13 @@ private slots:
     void on_yErrChargeCutCB_stateChanged       (int              arg1);
     void on_xChargeCutCB_stateChanged          (int              arg1);
     void on_yChargeCutCB_stateChanged          (int              arg1);
-    void on_hitsChargeCutSB_valueChanged       (const QString&   arg1);
 
     void on_chi2ResolutionCutCB_stateChanged   (int              arg1);
     void on_nTrackResolutionCutCB_stateChanged (int              arg1);
     void on_xErrResolutionCutCB_stateChanged   (int              arg1);
     void on_yErrResolutionCutCB_stateChanged   (int              arg1);
-    void on_hitsResolutionCutSB_valueChanged   (const QString&   arg1);
     void on_resetListPB_clicked();
     void on_convertResetListPB_clicked();
-    void on_badPlanesHitsSB_valueChanged(const QString &arg1);
     void on_excludeBadPlanesCB_clicked(bool checked);
     void on_cutFilePB_clicked();
     void on_windowsCB_isToggled() {checkBoxHandler();}

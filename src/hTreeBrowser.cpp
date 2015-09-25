@@ -15,6 +15,7 @@
 #include <TDirectoryFile.h>
 #include <TH1.h>
 #include <TGraph.h>
+#include <TGraphAsymmErrors.h>
 #include <TKey.h>
 #include <TIterator.h>
 #include <TObject.h>
@@ -270,7 +271,15 @@ void hTreeBrowser::populate(TFolder* currentFolder, QTreeWidgetItem* parentWItem
             wItem->setText(2, tr(ss_.str().c_str())) ;
             wItem->setIcon(0, tGraphIcon_);
         }
-        else
+        else if( this->getObjectType(obj) == "TGraphAsymmErrors" )   //Irene added
+        {
+            if( !create ) continue ;
+            ss_.str(""); ss_ << ((TGraphAsymmErrors*)obj)->GetN() ;
+            wItem->setText(0, tr(obj->GetName())) ;
+            wItem->setText(1, tr("TGraphAsymmErrors")) ;
+            wItem->setText(2, tr(ss_.str().c_str())) ;
+            wItem->setIcon(0, tGraphIcon_);
+        }       else
         {
             STDLINE(this->getObjectType(obj),ACPurple);
         }
@@ -380,6 +389,10 @@ void hTreeBrowser::populate(TDirectory* currentDirectory, QTreeWidgetItem* paren
                 wItem->setIcon(0, TH2Icon_);
             }
             else if( className.find("TGraph") != std::string::npos )
+            {
+                wItem->setIcon(0, tGraphIcon_);
+            }
+            else if( className.find("TGraphAsymmErrors") != std::string::npos )
             {
                 wItem->setIcon(0, tGraphIcon_);
             }
@@ -552,6 +565,13 @@ void hTreeBrowser::showContextMenu(const QPoint &)
 //                if (currentObject_) delete currentObject_;
                 currentObject_ = (*jt);
             }
+            else if(this->getObjectType(*jt).find("TGraphAsymmErrors") != std::string::npos)
+            {
+                options += "ACL" ;
+                (*jt)->Draw(options.c_str()) ;
+//                if (currentObject_) delete currentObject_;
+                currentObject_ = (*jt);
+            }
             else
             {
                 STDLINE(std::string("Don't know how to plot object of type: ") + this->getObjectType(*jt),ACRed);
@@ -596,6 +616,11 @@ void hTreeBrowser::unZoom()
                 ((TGraph*)(*jt))->GetXaxis()->UnZoom() ;
                 ((TGraph*)(*jt))->GetYaxis()->UnZoom() ;
             }
+            else if( this->getObjectType(*jt) == "TGraphAsymmErrors" )
+            {
+                ((TGraphAsymmErrors*)(*jt))->GetXaxis()->UnZoom() ;
+                ((TGraphAsymmErrors*)(*jt))->GetYaxis()->UnZoom() ;
+            }
         }
     }
     serviceCanvas_[currentCanvas_]->flush() ;
@@ -633,7 +658,14 @@ void hTreeBrowser::setRange(float xMin, float xMax, float yMin, float yMax, floa
                 if(yMin < yMax)
                     ((TGraph*)(*jt))->GetYaxis()->SetRangeUser(yMin,yMax);
             }
-        }
+            else if( this->getObjectType(*jt) == "TGraphAsymmErrors" )
+            {
+                STDLINE((*jt),ACPurple);
+                if(xMin < xMax)
+                    ((TGraphAsymmErrors*)(*jt))->GetXaxis()->SetRangeUser(xMin,xMax);
+                if(yMin < yMax)
+                    ((TGraphAsymmErrors*)(*jt))->GetYaxis()->SetRangeUser(yMin,yMax);
+            }        }
     }
     serviceCanvas_[currentCanvas_]->flush() ;
 }

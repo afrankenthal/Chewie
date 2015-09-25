@@ -459,7 +459,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>6</number>
    </property>
    <widget class="QWidget" name="converterT">
     <attribute name="title">
@@ -6327,7 +6327,7 @@ p, li { white-space: pre-wrap; }
        <string>Min hits</string>
       </property>
      </widget>
-     <widget class="QSpinBox" name="hitsEfficiencyCutSB">
+     <widget class="customSpinBox" name="hitsEfficiencyCutSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -6671,7 +6671,7 @@ p, li { white-space: pre-wrap; }
       </font>
      </property>
     </widget>
-    <widget class="customCheckBox" name="excludeBadPlanesEfficiencyCB">
+    <widget class="customCheckBox" name="efficiencyExcludeBadPlanesCB">
      <property name="geometry">
       <rect>
        <x>740</x>
@@ -7107,7 +7107,7 @@ p, li { white-space: pre-wrap; }
        <string>um</string>
       </property>
      </widget>
-     <widget class="QSpinBox" name="hitsChargeCutSB">
+     <widget class="customSpinBox" name="hitsChargeCutSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -7142,7 +7142,7 @@ p, li { white-space: pre-wrap; }
        <string>Min hits</string>
       </property>
      </widget>
-     <widget class="customSpinBox" name="thresholdSB">
+     <widget class="customSpinBox" name="chargePixelMinimumChargeSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -7164,10 +7164,10 @@ p, li { white-space: pre-wrap; }
        <number>100</number>
       </property>
       <property name="value">
-       <number>1</number>
+       <number>2000</number>
       </property>
      </widget>
-     <widget class="customSpinBox" name="minTotChargeSB">
+     <widget class="customSpinBox" name="chargeClusterMinimumChargeSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -7183,16 +7183,16 @@ p, li { white-space: pre-wrap; }
        <number>0</number>
       </property>
       <property name="maximum">
-       <number>10000</number>
+       <number>100000</number>
       </property>
       <property name="singleStep">
        <number>100</number>
       </property>
       <property name="value">
-       <number>1</number>
+       <number>22000</number>
       </property>
      </widget>
-     <widget class="QLabel" name="thresholdLB">
+     <widget class="QLabel" name="chargePixelMinimumChargeElectronLB">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -7205,7 +7205,7 @@ p, li { white-space: pre-wrap; }
        <string>e-</string>
       </property>
      </widget>
-     <widget class="QLabel" name="maxTotChargeLB">
+     <widget class="QLabel" name="chargeClusterMaximumChargeElectronLB">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -7218,7 +7218,7 @@ p, li { white-space: pre-wrap; }
        <string>e-</string>
       </property>
      </widget>
-     <widget class="customSpinBox" name="maxTotChargeSB">
+     <widget class="customSpinBox" name="chargeClusterMaximumChargeSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -7240,10 +7240,10 @@ p, li { white-space: pre-wrap; }
        <number>100</number>
       </property>
       <property name="value">
-       <number>1</number>
+       <number>24000</number>
       </property>
      </widget>
-     <widget class="QLabel" name="minTotChargeLB">
+     <widget class="QLabel" name="chargeClusterMinimumChargeElectronLB">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -7256,7 +7256,7 @@ p, li { white-space: pre-wrap; }
        <string>e-</string>
       </property>
      </widget>
-     <widget class="customSpinBox" name="maxChargeSB">
+     <widget class="customSpinBox" name="chargePixelMaximumChargeSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -7281,7 +7281,7 @@ p, li { white-space: pre-wrap; }
        <number>1</number>
       </property>
      </widget>
-     <widget class="QLabel" name="maxChargeLB">
+     <widget class="QLabel" name="chargePixelMaximumChargeElectronLB">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -7294,20 +7294,20 @@ p, li { white-space: pre-wrap; }
        <string>e-</string>
       </property>
      </widget>
-     <widget class="QLabel" name="thresholdLB_2">
+     <widget class="QLabel" name="chargePixelMinimumChargeLB">
       <property name="geometry">
        <rect>
         <x>30</x>
         <y>370</y>
-        <width>71</width>
+        <width>111</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Threshold</string>
+       <string>Pixel Min Charge</string>
       </property>
      </widget>
-     <widget class="QLabel" name="maxChargeLB_2">
+     <widget class="QLabel" name="chargePixelMaximumChargeLB">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -7317,10 +7317,10 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Maximum charge</string>
+       <string>Pixel Max Charge</string>
       </property>
      </widget>
-     <widget class="QLabel" name="minTotChargeLB_2">
+     <widget class="QLabel" name="chargeClusterMinimumChargeLB">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -7330,23 +7330,23 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Min total charge</string>
+       <string>Cluster Min Charge</string>
       </property>
      </widget>
-     <widget class="QLabel" name="maxTotChargeLB_2">
+     <widget class="QLabel" name="chargeClusterMaximumChargeLB">
       <property name="geometry">
        <rect>
         <x>30</x>
         <y>490</y>
-        <width>111</width>
+        <width>121</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Max total charge</string>
+       <string>Cluster Max Charge</string>
       </property>
      </widget>
-     <widget class="customCheckBox" name="excludeBadPlanesCB">
+     <widget class="customCheckBox" name="chargeExcludeBadPlanesCB">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -7365,14 +7365,14 @@ p, li { white-space: pre-wrap; }
         <x>50</x>
         <y>340</y>
         <width>81</width>
-        <height>16</height>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
        <string>with less than</string>
       </property>
      </widget>
-     <widget class="customSpinBox" name="badPlanesHitsSB">
+     <widget class="customSpinBox" name="chargeBadPlanesHitsSB">
       <property name="geometry">
        <rect>
         <x>140</x>
@@ -9236,7 +9236,7 @@ p, li { white-space: pre-wrap; }
        <string>um</string>
       </property>
      </widget>
-     <widget class="QSpinBox" name="hitsResolutionCutSB">
+     <widget class="customSpinBox" name="hitsResolutionCutSB">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -9284,7 +9284,7 @@ p, li { white-space: pre-wrap; }
        <string>Standard cuts</string>
       </property>
      </widget>
-     <widget class="customCheckBox" name="excludeBadPlanesResolutionCB">
+     <widget class="customCheckBox" name="resolutionExcludeBadPlanesCB">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -15868,7 +15868,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>TQtWidget</class>
    <extends>QWidget</extends>
-   <header>TQtWidget.h</header>
+   <header location="global">TQtWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

@@ -108,17 +108,6 @@ void AnalyzerDlg::setInnerGeometry(void)
     ui->resolutionCuts2LE    ->setInnerGeometry(ui->resolutionCuts2LE   ->geometry());
     ui->resolutionCuts3LE    ->setInnerGeometry(ui->resolutionCuts3LE   ->geometry());
     ui->resolutionCuts4LE    ->setInnerGeometry(ui->resolutionCuts4LE   ->geometry());
-    ui->convertMaxEventsSB   ->init();
-    ui->convertMaxThreadsSB  ->init();
-    ui->runMaxEventsSB       ->init();
-    ui->runMaxThreadsSB      ->init();
-    ui->priorityWindowsSB    ->init();
-    ui->priorityChargeSB     ->init();
-    ui->priorityEfficiencySB ->init();
-    ui->priorityResolutionSB ->init();
-    ui->priorityTracksSB     ->init();
-    ui->priorityTracksAfterSB->init();
-    ui->badPlanesHitsSB      ->init();
     ui->lowerRowDUT0LE       ->setInnerGeometry(ui->lowerRowDUT0LE      ->geometry());
     ui->lowerColDUT0LE       ->setInnerGeometry(ui->lowerColDUT0LE      ->geometry());
     ui->higherRowDUT0LE      ->setInnerGeometry(ui->higherRowDUT0LE     ->geometry());
@@ -135,6 +124,24 @@ void AnalyzerDlg::setInnerGeometry(void)
     ui->lowerColDUT3LE       ->setInnerGeometry(ui->lowerColDUT3LE      ->geometry());
     ui->higherRowDUT3LE      ->setInnerGeometry(ui->higherRowDUT3LE     ->geometry());
     ui->higherColDUT3LE      ->setInnerGeometry(ui->higherColDUT3LE     ->geometry());
+    ui->convertMaxEventsSB           ->init();
+    ui->convertMaxThreadsSB          ->init();
+    ui->runMaxEventsSB               ->init();
+    ui->runMaxThreadsSB              ->init();
+    ui->priorityWindowsSB            ->init();
+    ui->priorityChargeSB             ->init();
+    ui->priorityEfficiencySB         ->init();
+    ui->priorityResolutionSB         ->init();
+    ui->priorityTracksSB             ->init();
+    ui->priorityTracksAfterSB        ->init();
+    ui->chargeBadPlanesHitsSB        ->init();
+    ui->hitsEfficiencyCutSB          ->init();
+    ui->hitsChargeCutSB              ->init();
+    ui->hitsResolutionCutSB          ->init();
+    ui->chargePixelMinimumChargeSB   ->init();
+    ui->chargePixelMaximumChargeSB   ->init();
+    ui->chargeClusterMinimumChargeSB ->init();
+    ui->chargeClusterMaximumChargeSB ->init();
 }
 
 //============================================================================================================================================
@@ -750,39 +757,39 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     ui->maxWindowEventsLE->setText                ("PreAnalysisMaxEvents",theXmlParser_->getGeneral()->getPreAnalysisMaxEvents()        );
     ui->maxWindowEventsLE->assignXmlElement       (theXmlParser_->getGeneral()->getNode()                                               );
 
-    ui->tracksFitCB->setChecked                      ("DoFits",(theXmlParser_->getAnalysesFromString("Tracks"))->doFits()                        );
-    ui->tracksFitCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                                  );
-    ui->tracksCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Tracks"))->isToRun()                        );
-    ui->tracksCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                                  );
+    ui->tracksFitCB->setChecked                   ("DoFits",(theXmlParser_->getAnalysesFromString("Tracks"))->doFits()                  );
+    ui->tracksFitCB->assignXmlElement             ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                          );
+    ui->tracksCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Tracks"))->isToRun()                );
+    ui->tracksCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                          );
 
-    ui->tracksafterFitCB->setChecked                 ("DoFits",(theXmlParser_->getAnalysesFromString("TracksAfter"))->doFits()                   );
-    ui->tracksafterFitCB->assignXmlElement           ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                             );
-    ui->tracksafterCB->setChecked                 ("IsToRun",(theXmlParser_->getAnalysesFromString("TracksAfter"))->isToRun()                   );
-    ui->tracksafterCB->assignXmlElement           ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                             );
+    ui->tracksafterFitCB->setChecked              ("DoFits",(theXmlParser_->getAnalysesFromString("TracksAfter"))->doFits()             );
+    ui->tracksafterFitCB->assignXmlElement        ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                     );
+    ui->tracksafterCB->setChecked                 ("IsToRun",(theXmlParser_->getAnalysesFromString("TracksAfter"))->isToRun()           );
+    ui->tracksafterCB->assignXmlElement           ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                     );
 
-    ui->efficiencyFitCB->setChecked                  ("DoFits",(theXmlParser_->getAnalysesFromString("Efficiency"))->doFits()                    );
-    ui->efficiencyFitCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                              );
-    ui->efficiencyCB->setChecked                  ("IsToRun",(theXmlParser_->getAnalysesFromString("Efficiency"))->isToRun()                    );
-    ui->efficiencyCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                              );
+    ui->efficiencyFitCB->setChecked               ("DoFits",(theXmlParser_->getAnalysesFromString("Efficiency"))->doFits()              );
+    ui->efficiencyFitCB->assignXmlElement         ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                      );
+    ui->efficiencyCB->setChecked                  ("IsToRun",(theXmlParser_->getAnalysesFromString("Efficiency"))->isToRun()            );
+    ui->efficiencyCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                      );
 
     ui->efficiencyStandardCutsCB->setChecked      ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
     ui->efficiencyStandardCutsCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
 
-    ui->chargeFitCB->setChecked                      ("DoFits",(theXmlParser_->getAnalysesFromString("Charge"))->doFits()                        );
-    ui->chargeFitCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
+    ui->chargeFitCB->setChecked                   ("DoFits",(theXmlParser_->getAnalysesFromString("Charge"))->doFits()                        );
+    ui->chargeFitCB->assignXmlElement             ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
     ui->chargeCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Charge"))->isToRun()                        );
     ui->chargeCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
 
-    ui->chargeStandardCutsCB->setChecked          ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
-    ui->chargeStandardCutsCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
+    ui->chargeStandardCutsCB->setChecked          ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Charge"))->applyStandardCuts()); //Irene
+    ui->chargeStandardCutsCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
 
     ui->resolutionFitCB->setChecked                  ("DoFits",(theXmlParser_->getAnalysesFromString("Resolution"))->doFits()                    );
     ui->resolutionFitCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
     ui->resolutionCB->setChecked                  ("IsToRun",(theXmlParser_->getAnalysesFromString("Resolution"))->isToRun()                    );
     ui->resolutionCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
 
-    ui->resolutionStandardCutsCB->setChecked      ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
-    ui->resolutionStandardCutsCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
+    ui->resolutionStandardCutsCB->setChecked      ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Resolution"))->applyStandardCuts());
+    ui->resolutionStandardCutsCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Resolution"))->getNode());
 
     ui->windowsFitCB->setChecked                     ("DoFits",(theXmlParser_->getAnalysesFromString("Windows"))->doFits()                       );
     ui->windowsFitCB->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()                                 );
@@ -818,38 +825,38 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     ui->priorityTracksAfterSB->setValue           ("Priority", (theXmlParser_->getAnalysesFromString("TracksAfter"))->getPriority()             );
     ui->priorityTracksAfterSB->assignXmlElement   ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                             );
 
-    ui->excludeBadPlanesCB->setChecked            ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Charge"))->excludeBadPlanes()      );
-    ui->excludeBadPlanesCB->assignXmlElement      ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
+    ui->chargeExcludeBadPlanesCB->setChecked          ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Charge"))->excludeBadPlanes()      );
+    ui->chargeExcludeBadPlanesCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
 
-    ui->excludeBadPlanesEfficiencyCB->setChecked            ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Efficiency"))->excludeBadPlanes()      );
-    ui->excludeBadPlanesEfficiencyCB->assignXmlElement      ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                                  );
+    ui->efficiencyExcludeBadPlanesCB->setChecked      ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Efficiency"))->excludeBadPlanes()      );
+    ui->efficiencyExcludeBadPlanesCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                                  );
 
-    ui->excludeBadPlanesResolutionCB->setChecked            ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Resolution"))->excludeBadPlanes()      );
-    ui->excludeBadPlanesResolutionCB->assignXmlElement      ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                                  );
+    ui->resolutionExcludeBadPlanesCB->setChecked      ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Resolution"))->excludeBadPlanes()      );
+    ui->resolutionExcludeBadPlanesCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                                  );
 
-    ui->badPlanesHitsSB->valueIsAttribute         (true                                                                                         );
-    ui->badPlanesHitsSB->setValue                 ("BadPlanesHits", (theXmlParser_->getAnalysesFromString("Charge"))->getBadPlanesCut()         );
-    ui->badPlanesHitsSB->assignXmlElement         ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
+    ui->chargeBadPlanesHitsSB->valueIsAttribute       (true                                                                                         );
+    ui->chargeBadPlanesHitsSB->setValue               ("BadPlanesHits", (theXmlParser_->getAnalysesFromString("Charge"))->getBadPlanesCut()         );
+    ui->chargeBadPlanesHitsSB->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
 
-    ui->efficiencyMainCutsLE->textIsAttribute     (true                                                                                         );
-    ui->efficiencyMainCutsLE->setText             ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("main cut")         );
-    ui->efficiencyMainCutsLE->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("main cut")                 );
+    ui->efficiencyMainCutsLE->textIsAttribute         (true                                                                                         );
+    ui->efficiencyMainCutsLE->setText                 ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("main cut")         );
+    ui->efficiencyMainCutsLE->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("main cut")                 );
 
-    ui->efficiencyCuts2LE->textIsAttribute        (true                                                                                         );
-    ui->efficiencyCuts2LE->setText                ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("cell efficiency")  );
-    ui->efficiencyCuts2LE->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("cell efficiency")          );
+    ui->efficiencyCuts2LE->textIsAttribute            (true                                                                                         );
+    ui->efficiencyCuts2LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("cell efficiency")  );
+    ui->efficiencyCuts2LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("cell efficiency")          );
 
-    ui->efficiencyCuts3LE->textIsAttribute        (true                                                                                         );
-    ui->efficiencyCuts3LE->setText                ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("cell efficiency X"));
-    ui->efficiencyCuts3LE->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("cell efficiency X")        );
+    ui->efficiencyCuts3LE->textIsAttribute            (true                                                                                         );
+    ui->efficiencyCuts3LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("cell efficiency X"));
+    ui->efficiencyCuts3LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("cell efficiency X")        );
 
-    ui->efficiencyCuts4LE->textIsAttribute        (true                                                                                         );
-    ui->efficiencyCuts4LE->setText                ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("cell efficiency Y"));
-    ui->efficiencyCuts4LE->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("cell efficiency Y")        );
+    ui->efficiencyCuts4LE->textIsAttribute            (true                                                                                         );
+    ui->efficiencyCuts4LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Efficiency"))->getCut("cell efficiency Y"));
+    ui->efficiencyCuts4LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Efficiency"))->getCutNode("cell efficiency Y")        );
 
-    ui->chargeMainCutsLE->textIsAttribute         (true                                                                                         );
-    ui->chargeMainCutsLE->setText                 ("cutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("main cut")             );
-    ui->chargeMainCutsLE->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("main cut")                     );
+    ui->chargeMainCutsLE->textIsAttribute             (true                                                                                         );
+    ui->chargeMainCutsLE->setText                     ("cutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("main cut")             );
+    ui->chargeMainCutsLE->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("main cut")                     );
 
     ui->chargeCuts2LE->textIsAttribute            (true                                                                                         );
     ui->chargeCuts2LE->setText                    ("cutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell charge")          );
@@ -996,22 +1003,25 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
         parMaxLE[p]->assignXmlElement((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
     }
 
-    QDomNode threshold = (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("Threshold").at(0);
-    ui->thresholdSB->setValue("threshold", threshold.toElement().text().toInt());
-    ui->thresholdSB->assignXmlElement(threshold);
-    QDomNode maxCharge = (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("MaxCharge").at(0);
-    ui->maxChargeSB->setValue("maxCharge", maxCharge.toElement().text().toInt());
-    ui->maxChargeSB->assignXmlElement(maxCharge);
-    QDomNode minTotCharge = (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("TotalCharge").at(0).toElement().elementsByTagName("MinTotCharge").at(0);
-    ui->minTotChargeSB->setValue("minTotCharge", minTotCharge.toElement().text().toInt());
-    ui->minTotChargeSB->assignXmlElement(minTotCharge);
-    QDomNode maxTotCharge = (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("TotalCharge").at(0).toElement().elementsByTagName("MaxTotCharge").at(0);
-    ui->maxTotChargeSB->setValue("maxTotCharge", maxTotCharge.toElement().text().toInt());
-    ui->maxTotChargeSB->assignXmlElement(maxTotCharge);
+    ui->chargePixelMinimumChargeSB->valueIsAttribute(false);
+    ui->chargePixelMinimumChargeSB->setValue("PixelMinimumCharge", (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("PixelMinimumCharge").at(0).toElement().text().toInt());
+    ui->chargePixelMinimumChargeSB->assignXmlElement((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
 
-    std::string analysisName[3] = {"Charge"           ,"Efficiency"           ,"Resolution"           };
-    QCheckBox*  analysisCB  [3] = {ui->hitsChargeCutCB,ui->hitsEfficiencyCutCB,ui->hitsResolutionCutCB};
-    QSpinBox*   analysisSB  [3] = {ui->hitsChargeCutSB,ui->hitsEfficiencyCutSB,ui->hitsResolutionCutSB};
+    ui->chargePixelMaximumChargeSB->valueIsAttribute(false);
+    ui->chargePixelMaximumChargeSB->setValue("PixelMaximumCharge", (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("PixelMaximumCharge").at(0).toElement().text().toInt());
+    ui->chargePixelMaximumChargeSB->assignXmlElement((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
+
+    ui->chargeClusterMinimumChargeSB->valueIsAttribute(false);
+    ui->chargeClusterMinimumChargeSB->setValue("ClusterMinimumCharge", (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("ClusterMinimumCharge").at(0).toElement().text().toInt());
+    ui->chargeClusterMinimumChargeSB->assignXmlElement((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
+
+    ui->chargeClusterMaximumChargeSB->valueIsAttribute(false);
+    ui->chargeClusterMaximumChargeSB->setValue("ClusterMaximumCharge", (theXmlParser_->getAnalysesFromString("Charge"))->getNode().toElement().elementsByTagName("ClusterMaximumCharge").at(0).toElement().text().toInt());
+    ui->chargeClusterMaximumChargeSB->assignXmlElement((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
+
+    std::string    analysisName[3] = {"Charge"           ,"Efficiency"           ,"Resolution"           };
+    QCheckBox*     analysisCB  [3] = {ui->hitsChargeCutCB,ui->hitsEfficiencyCutCB,ui->hitsResolutionCutCB};
+    customSpinBox* analysisSB  [3] = {ui->hitsChargeCutSB,ui->hitsEfficiencyCutSB,ui->hitsResolutionCutSB};
     QDomNode    hits;
     for(int a=0; a<3; a++)
     {
@@ -1019,7 +1029,9 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
         if(!hits.isNull())
         {
             analysisCB[a]->setChecked(true);
-            analysisSB[a]->setValue(hits.toElement().text().toInt());
+//            analysisSB[a]->setValue(hits.toElement().text().toInt());
+            analysisSB[a]->setValue("MinHits", hits.toElement().text().toInt());
+            analysisSB[a]->assignXmlElement((theXmlParser_->getAnalysesFromString(analysisName[a]))->getNode());
         }
     }
 
@@ -1413,17 +1425,6 @@ void AnalyzerDlg::on_yEfficiencyCutCB_stateChanged(int)
 }
 
 //============================================================================================================================================
-void AnalyzerDlg::on_hitsEfficiencyCutSB_valueChanged(const QString &arg1)
-{
-    QDomNode hitsCut = theXmlParser_->getAnalysesFromString("Efficiency")->getNode().toElement().elementsByTagName("MinHits").at(0);
-    theXmlParser_->getAnalysesFromString("Efficiency")->getNode().removeChild(hitsCut);
-    QDomText value = theXmlParser_->getDocument()->createTextNode(arg1);
-    QDomElement newEl = theXmlParser_->getDocument()->createElement("MinHits");
-    newEl.appendChild(value);
-    theXmlParser_->getAnalysesFromString("Efficiency")->getNode().appendChild(newEl);
-}
-
-//============================================================================================================================================
 void AnalyzerDlg::on_chi2ChargeCutCB_stateChanged(int)
 {
     customLineEdit* cutsLE = 0;
@@ -1547,24 +1548,24 @@ void AnalyzerDlg::on_xErrChargeCutCB_stateChanged(int)
     if(ui->xErrChargeCutCB->isChecked())
     {
         if(text.size()==0)
-            QTextStream(&text) << "xErrorPredictedLocal[9] <= " << ui->xErrChargeCutSB->value();
-        else if(text.indexOf("xErrorPredictedLocal[9]")==-1)
-            QTextStream(&text) << " && xErrorPredictedLocal[9] <= " << ui->xErrChargeCutSB->value();
+            QTextStream(&text) << "xErrorPredictedLocal[22] <= " << ui->xErrChargeCutSB->value();
+        else if(text.indexOf("xErrorPredictedLocal[22]")==-1)
+            QTextStream(&text) << " && xErrorPredictedLocal[22] <= " << ui->xErrChargeCutSB->value();
 
         cutsLE->setText(text);
     }
     else
     {
         QString tmp;
-        if(text.indexOf("xErrorPredictedLocal[9]")==0)
+        if(text.indexOf("xErrorPredictedLocal[22]")==0)
         {
             if(text.indexOf("&")!=-1)
-                QTextStream(&tmp) << "xErrorPredictedLocal[9] <= " << ui->xErrChargeCutSB->value() << " && ";
+                QTextStream(&tmp) << "xErrorPredictedLocal[22] <= " << ui->xErrChargeCutSB->value() << " && ";
             else
-                QTextStream(&tmp) << "xErrorPredictedLocal[9] <= " << ui->xErrChargeCutSB->value();
+                QTextStream(&tmp) << "xErrorPredictedLocal[22] <= " << ui->xErrChargeCutSB->value();
         }
         else
-            QTextStream(&tmp) << " && xErrorPredictedLocal[9] <= " << ui->xErrChargeCutSB->value();
+            QTextStream(&tmp) << " && xErrorPredictedLocal[22] <= " << ui->xErrChargeCutSB->value();
 
         cutsLE->setText(text.remove(tmp));
     }
@@ -1596,24 +1597,24 @@ void AnalyzerDlg::on_yErrChargeCutCB_stateChanged(int)
     if(ui->yErrChargeCutCB->isChecked())
     {
         if(text.size()==0)
-            QTextStream(&text) << "yErrorPredictedLocal[9] <= " << ui->yErrChargeCutSB->value();
-        else if(text.indexOf("yErrorPredictedLocal[9]")==-1)
-            QTextStream(&text) << " && yErrorPredictedLocal[9] <= " << ui->yErrChargeCutSB->value();
+            QTextStream(&text) << "yErrorPredictedLocal[22] <= " << ui->yErrChargeCutSB->value();
+        else if(text.indexOf("yErrorPredictedLocal[22]")==-1)
+            QTextStream(&text) << " && yErrorPredictedLocal[22] <= " << ui->yErrChargeCutSB->value();
 
         cutsLE->setText(text);
     }
     else
     {
         QString tmp;
-        if(text.indexOf("yErrorPredictedLocal[9]")==0)
+        if(text.indexOf("yErrorPredictedLocal[22]")==0)
         {
             if(text.indexOf("&")!=-1)
-                QTextStream(&tmp) << "yErrorPredictedLocal[9] <= " << ui->yErrChargeCutSB->value() << " && ";
+                QTextStream(&tmp) << "yErrorPredictedLocal[22] <= " << ui->yErrChargeCutSB->value() << " && ";
             else
-                QTextStream(&tmp) << "yErrorPredictedLocal[9] <= " << ui->yErrChargeCutSB->value();
+                QTextStream(&tmp) << "yErrorPredictedLocal[22] <= " << ui->yErrChargeCutSB->value();
         }
         else
-            QTextStream(&tmp) << " && yErrorPredictedLocal[9] <= " << ui->yErrChargeCutSB->value();
+            QTextStream(&tmp) << " && yErrorPredictedLocal[22] <= " << ui->yErrChargeCutSB->value();
 
         cutsLE->setText(text.remove(tmp));
     }
@@ -1645,24 +1646,24 @@ void AnalyzerDlg::on_xChargeCutCB_stateChanged(int)
     if(ui->xChargeCutCB->isChecked())
     {
         if(text.size()==0)
-            QTextStream(&text) << "xPixelResidualLocal[9] <= " << ui->xChargeCutSB->value();
-        else if(text.indexOf("xPixelResidualLocal[9]")==-1)
-            QTextStream(&text) << " && xPixelResidualLocal[9] <= " << ui->xChargeCutSB->value();
+            QTextStream(&text) << "xPixelResidualLocal[22] <= " << ui->xChargeCutSB->value();
+        else if(text.indexOf("xPixelResidualLocal[22]")==-1)
+            QTextStream(&text) << " && xPixelResidualLocal[22] <= " << ui->xChargeCutSB->value();
 
         cutsLE->setText(text);
     }
     else
     {
         QString tmp;
-        if(text.indexOf("xPixelResidualLocal[9]")==0)
+        if(text.indexOf("xPixelResidualLocal[22]")==0)
         {
             if(text.indexOf("&")!=-1)
-                QTextStream(&tmp) << "xPixelResidualLocal[9] <= " << ui->xChargeCutSB->value() << " && ";
+                QTextStream(&tmp) << "xPixelResidualLocal[22] <= " << ui->xChargeCutSB->value() << " && ";
             else
-                QTextStream(&tmp) << "xPixelResidualLocal[9] <= " << ui->xChargeCutSB->value();
+                QTextStream(&tmp) << "xPixelResidualLocal[22] <= " << ui->xChargeCutSB->value();
         }
         else
-            QTextStream(&tmp) << " && xPixelResidualLocal[9] <= " << ui->xChargeCutSB->value();
+            QTextStream(&tmp) << " && xPixelResidualLocal[22] <= " << ui->xChargeCutSB->value();
 
         cutsLE->setText(text.remove(tmp));
     }
@@ -1694,41 +1695,29 @@ void AnalyzerDlg::on_yChargeCutCB_stateChanged(int)
     if(ui->yChargeCutCB->isChecked())
     {
         if(text.size()==0)
-            QTextStream(&text) << "yPixelResidualLocal[9] <= " << ui->yChargeCutSB->value();
-        else if(text.indexOf("yPixelResidualLocal[9]")==-1)
-            QTextStream(&text) << " && yPixelResidualLocal[9] <= " << ui->yChargeCutSB->value();
+            QTextStream(&text) << "yPixelResidualLocal[22] <= " << ui->yChargeCutSB->value();
+        else if(text.indexOf("yPixelResidualLocal[22]")==-1)
+            QTextStream(&text) << " && yPixelResidualLocal[22] <= " << ui->yChargeCutSB->value();
 
         cutsLE->setText(text);
     }
     else
     {
         QString tmp;
-        if(text.indexOf("yPixelResidualLocal[9]")==0)
+        if(text.indexOf("yPixelResidualLocal[22]")==0)
         {
             if(text.indexOf("&")!=-1)
-                QTextStream(&tmp) << "yPixelResidualLocal[9] <= " << ui->yChargeCutSB->value() << " && ";
+                QTextStream(&tmp) << "yPixelResidualLocal[22] <= " << ui->yChargeCutSB->value() << " && ";
             else
-                QTextStream(&tmp) << "yPixelResidualLocal[9] <= " << ui->yChargeCutSB->value();
+                QTextStream(&tmp) << "yPixelResidualLocal[22] <= " << ui->yChargeCutSB->value();
         }
         else
-            QTextStream(&tmp) << " && yPixelResidualLocal[9] <= " << ui->yChargeCutSB->value();
+            QTextStream(&tmp) << " && yPixelResidualLocal[22] <= " << ui->yChargeCutSB->value();
 
         cutsLE->setText(text.remove(tmp));
     }
 }
 
-//============================================================================================================================================
-void AnalyzerDlg::on_hitsChargeCutSB_valueChanged(const QString &arg1)
-{
-    QDomNode hitsCut = theXmlParser_->getAnalysesFromString("Charge")->getNode().toElement().elementsByTagName("MinHits").at(0);
-    theXmlParser_->getAnalysesFromString("Charge")->getNode().removeChild(hitsCut);
-    QDomText value = theXmlParser_->getDocument()->createTextNode(arg1);
-    QDomElement newEl = theXmlParser_->getDocument()->createElement("MinHits");
-    newEl.appendChild(value);
-    theXmlParser_->getAnalysesFromString("Charge")->getNode().appendChild(newEl);
-}
-
-//============================================================================================================================================
 //============================================================================================================================================
 void AnalyzerDlg::on_chi2ResolutionCutCB_stateChanged(int)
 {
@@ -1841,24 +1830,24 @@ void AnalyzerDlg::on_xErrResolutionCutCB_stateChanged(int)
     if(ui->xErrResolutionCutCB->isChecked())
     {
         if(text.size()==0)
-            QTextStream(&text) << "xErrorPredictedLocal[9] <= " << ui->xErrResolutionCutSB->value();
-        else if(text.indexOf("xErrorPredictedLocal[9]")==-1)
-            QTextStream(&text) << " && xErrorPredictedLocal[9] <= " << ui->xErrResolutionCutSB->value();
+            QTextStream(&text) << "xErrorPredictedLocal[22] <= " << ui->xErrResolutionCutSB->value();
+        else if(text.indexOf("xErrorPredictedLocal[22]")==-1)
+            QTextStream(&text) << " && xErrorPredictedLocal[22] <= " << ui->xErrResolutionCutSB->value();
 
         cutsLE->setText(text);
     }
     else
     {
         QString tmp;
-        if(text.indexOf("xErrorPredictedLocal[9]")==0)
+        if(text.indexOf("xErrorPredictedLocal[22]")==0)
         {
             if(text.indexOf("&")!=-1)
-                QTextStream(&tmp) << "xErrorPredictedLocal[9] <= " << ui->xErrResolutionCutSB->value() << " && ";
+                QTextStream(&tmp) << "xErrorPredictedLocal[22] <= " << ui->xErrResolutionCutSB->value() << " && ";
             else
-                QTextStream(&tmp) << "xErrorPredictedLocal[9] <= " << ui->xErrResolutionCutSB->value();
+                QTextStream(&tmp) << "xErrorPredictedLocal[22] <= " << ui->xErrResolutionCutSB->value();
         }
         else
-            QTextStream(&tmp) << " && xErrorPredictedLocal[9] <= " << ui->xErrResolutionCutSB->value();
+            QTextStream(&tmp) << " && xErrorPredictedLocal[22] <= " << ui->xErrResolutionCutSB->value();
 
         cutsLE->setText(text.remove(tmp));
     }
@@ -1886,38 +1875,27 @@ void AnalyzerDlg::on_yErrResolutionCutCB_stateChanged(int)
     if(ui->yErrResolutionCutCB->isChecked())
     {
         if(text.size()==0)
-            QTextStream(&text) << "yErrorPredictedLocal[9] <= " << ui->yErrResolutionCutSB->value();
-        else if(text.indexOf("yErrorPredictedLocal[9]")==-1)
-            QTextStream(&text) << " && yErrorPredictedLocal[9] <= " << ui->yErrResolutionCutSB->value();
+            QTextStream(&text) << "yErrorPredictedLocal[22] <= " << ui->yErrResolutionCutSB->value();
+        else if(text.indexOf("yErrorPredictedLocal[22]")==-1)
+            QTextStream(&text) << " && yErrorPredictedLocal[22] <= " << ui->yErrResolutionCutSB->value();
 
         cutsLE->setText(text);
     }
     else
     {
         QString tmp;
-        if(text.indexOf("yErrorPredictedLocal[9]")==0)
+        if(text.indexOf("yErrorPredictedLocal[22]")==0)
         {
             if(text.indexOf("&")!=-1)
-                QTextStream(&tmp) << "yErrorPredictedLocal[9] <= " << ui->yErrResolutionCutSB->value() << " && ";
+                QTextStream(&tmp) << "yErrorPredictedLocal[22] <= " << ui->yErrResolutionCutSB->value() << " && ";
             else
-                QTextStream(&tmp) << "yErrorPredictedLocal[9] <= " << ui->yErrResolutionCutSB->value();
+                QTextStream(&tmp) << "yErrorPredictedLocal[22] <= " << ui->yErrResolutionCutSB->value();
         }
         else
-            QTextStream(&tmp) << " && yErrorPredictedLocal[9] <= " << ui->yErrResolutionCutSB->value();
+            QTextStream(&tmp) << " && yErrorPredictedLocal[22] <= " << ui->yErrResolutionCutSB->value();
 
         cutsLE->setText(text.remove(tmp));
     }
-}
-
-//============================================================================================================================================
-void AnalyzerDlg::on_hitsResolutionCutSB_valueChanged(const QString &arg1)
-{
-    QDomNode hitsCut = theXmlParser_->getAnalysesFromString("Resolution")->getNode().toElement().elementsByTagName("MinHits").at(0);
-    theXmlParser_->getAnalysesFromString("Resolution")->getNode().removeChild(hitsCut);
-    QDomText value = theXmlParser_->getDocument()->createTextNode(arg1);
-    QDomElement newEl = theXmlParser_->getDocument()->createElement("MinHits");
-    newEl.appendChild(value);
-    theXmlParser_->getAnalysesFromString("Resolution")->getNode().appendChild(newEl);
 }
 
 //============================================================================================================================================
@@ -1959,21 +1937,9 @@ void AnalyzerDlg::setPrioritiesFromUi ()
 }
 
 //============================================================================================================================================
-void AnalyzerDlg::on_badPlanesHitsSB_valueChanged(const QString &arg1)
-{
-    theXmlParser_->getAnalysesFromString("Charge")->getNode().toElement().elementsByTagName("BadPlanesHits").at(0).toElement().text() = arg1;
-    QDomNode hitsCut = theXmlParser_->getAnalysesFromString("Charge")->getNode().toElement().elementsByTagName("BadPlanesHits").at(0);
-    theXmlParser_->getAnalysesFromString("Charge")->getNode().removeChild(hitsCut);
-    QDomText value = theXmlParser_->getDocument()->createTextNode(arg1);
-    QDomElement newEl = theXmlParser_->getDocument()->createElement("BadPlanesHits");
-    newEl.appendChild(value);
-    theXmlParser_->getAnalysesFromString("Charge")->getNode().appendChild(newEl);
-}
-
-//============================================================================================================================================
 void AnalyzerDlg::on_excludeBadPlanesCB_clicked(bool checked)
 {
-    ui->badPlanesHitsSB->setEnabled(checked);
+    ui->chargeBadPlanesHitsSB->setEnabled(checked);
 }
 
 //============================================================================================================================================

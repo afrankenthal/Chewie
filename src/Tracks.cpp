@@ -466,10 +466,10 @@ void Tracks::endJob(void)
     }
 
     hChi2_               ->GetXaxis()->SetTitle("chi2/DOF"              );
-     hNumberofHit_               ->GetXaxis()->SetTitle("#hit"              );
- hTracksPlane_               ->GetXaxis()->SetTitle("#plane"              );
- hTracksPlaneTelescopeHit_->GetXaxis()->SetTitle("# telescope hit");
-     hXSlope_             ->GetXaxis()->SetTitle("X Slope (rad)"         );
+    hNumberofHit_               ->GetXaxis()->SetTitle("#hit"           );
+    hTracksPlane_               ->GetXaxis()->SetTitle("#plane"         );
+    hTracksPlaneTelescopeHit_->GetXaxis()->SetTitle("# telescope hit"   );
+    hXSlope_             ->GetXaxis()->SetTitle("X Slope (rad)"         );
     hXSlopeInsideWindow_ ->GetXaxis()->SetTitle("X Slope (rad)"         );
     hXSlopeOutsideWindow_->GetXaxis()->SetTitle("X Slope (rad)"         );
     hYSlope_             ->GetXaxis()->SetTitle("Y Slope (rad)"         );

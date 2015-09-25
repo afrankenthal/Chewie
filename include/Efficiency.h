@@ -2,6 +2,7 @@
 #define _Efficiency_h_ 
 
 #include "Analysis.h"
+#include "TEfficiency.h"
 
 #include <vector>
 #include <iostream>
@@ -58,6 +59,8 @@ private:
     std::vector<TH1F*>                 h1DYcellEfficiencyFirstHit_          ;
     std::vector<TH1F*>                 h1DYcellEfficiencySecondHit_         ;
     std::vector<TH1F*>                 h1DYcellEfficiencyNorm_              ;
+    std::vector<TH1F*>                 h1DYcellEfficiency4RowsNorm_         ;
+    std::vector<TH1F*>                 h1DYcellEfficiency4Rows_             ;
     std::vector<TH1F*>                 hXCellEfficiencyRestricted_          ;
     std::vector<TH2F*>                 h2DEfficiency_                       ;
     std::vector<TH2F*>                 h2DEfficiencyNorm_                   ;
@@ -65,9 +68,11 @@ private:
     std::vector<TH2F*>                 h2D4cellEfficiencyNorm_              ;
     std::vector<TH2F*>                 h2DInefficiency_                     ;
     std::vector<TH2F*>                 hCellEfficiencyNorm_                 ;
+//    std::vector<TH2F*>                 hCellEfficiency4RowsNorm_            ;
     std::vector<TH2F*>                 hCellEfficiencyEvenColumnsNorm_      ;
     std::vector<TH2F*>                 hCellEfficiencyOddColumnsNorm_       ;
     std::vector<TH2F*>                 hCellEfficiency_                     ;
+//    std::vector<TH2F*>                 hCellEfficiency4Rows_                ;
     std::vector<TH2F*>                 hCellEfficiencyEvenColumns_          ;
     std::vector<TH2F*>                 hCellEfficiencyOddColumns_           ;
     std::vector<TH2F*>                 hCellInefficiency_                   ;

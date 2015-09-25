@@ -34,10 +34,17 @@ HistogramWindow::HistogramWindow(std::string name, int binXMin, int binXMax, int
         ss.str("");
         ss << runIt->first;
 
-        theHWindow_          .insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_Window_Run"+ss.str()).c_str()            ,(name_+"_Window_Run"+ss.str()).c_str()            ,nBinsX_, binXMin, binXMax+1,nBinsY_                 , binYMin,binYMax+1  )));
-        theH2TimeWindow_     .insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_TimeWindow_H2_Run"+ss.str()).c_str()     ,(name_+"_TimeWindow_H2_Run"+ss.str()).c_str()     ,nBinsX_, binXMin, binXMax+1,totalEvents/EventBinSize,0       ,totalEvents)));
-        theH2TimeWindow_norm_.insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_TimeWindow_norm_H2_Run"+ss.str()).c_str(),(name_+"_TimeWindow_norm_H2_Run"+ss.str()).c_str(),nBinsX_, binXMin, binXMax+1,totalEvents/EventBinSize,0       ,totalEvents)));
-        theH1TimeWindow_     .insert(std::pair<int,TH1F*> (runIt->first ,new TH1F ((name_ +"_TimeWindow_Run"+ss.str()).c_str()       ,(name_ +"_TimeWindow_Run"+ss.str()).c_str()       ,nBinsX_, binXMin, binXMax+1                                              )));
+        theHWindow_            .insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_Window_Run"+ss.str()).c_str()            ,(name_+"_Window_Run"+ss.str()).c_str()            ,nBinsX_, binXMin, binXMax+1,nBinsY_                 , binYMin,binYMax+1  )));
+        theH2TimeWindow_       .insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_TimeWindow_H2_Run"+ss.str()).c_str()     ,(name_+"_TimeWindow_H2_Run"+ss.str()).c_str()     ,nBinsX_, binXMin, binXMax+1,totalEvents/EventBinSize,0       ,totalEvents)));
+        theH2TimeWindow_norm_  .insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_TimeWindow_norm_H2_Run"+ss.str()).c_str(),(name_+"_TimeWindow_norm_H2_Run"+ss.str()).c_str(),nBinsX_, binXMin, binXMax+1,totalEvents/EventBinSize,0       ,totalEvents)));
+        theH1TimeWindow_       .insert(std::pair<int,TH1F*> (runIt->first ,new TH1F ((name_ +"_TimeWindow_Run"+ss.str()).c_str()       ,(name_ +"_TimeWindow_Run"+ss.str()).c_str()       ,nBinsX_, binXMin, binXMax+1                                              )));
+
+        theHWindowClusterSize1_.insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_WindowClusterSize1_Run"+ss.str()).c_str(),(name_+"_WindowClusterSize1_Run"+ss.str()).c_str()            ,nBinsX_, binXMin, binXMax+1,nBinsY_                 , binYMin,binYMax+1  )));
+        theHWindowClusterSize2_.insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_WindowClusterSize2_Run"+ss.str()).c_str(),(name_+"_WindowClusterSize2_Run"+ss.str()).c_str()            ,nBinsX_, binXMin, binXMax+1,nBinsY_                 , binYMin,binYMax+1  )));
+        theHWindowClusterSize3_.insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_WindowClusterSize3_Run"+ss.str()).c_str(),(name_+"_WindowClusterSize3_Run"+ss.str()).c_str()            ,nBinsX_, binXMin, binXMax+1,nBinsY_                 , binYMin,binYMax+1  )));
+        theHWindowClusterSize4_.insert(std::pair<int,TH2F*> (runIt->first ,new TH2F ((name_+"_WindowClusterSize4_Run"+ss.str()).c_str(),(name_+"_WindowClusterSize4_Run"+ss.str()).c_str()            ,nBinsX_, binXMin, binXMax+1,nBinsY_                 , binYMin,binYMax+1  )));
+
+
 
     }
 }
@@ -46,6 +53,26 @@ HistogramWindow::HistogramWindow(std::string name, int binXMin, int binXMax, int
 HistogramWindow::~HistogramWindow(void)
 {
     for(std::map<int,TH2F*>::iterator it=theHWindow_.begin(); it != theHWindow_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
+
+    for(std::map<int,TH2F*>::iterator it=theHWindowClusterSize1_.begin(); it != theHWindowClusterSize1_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
+
+    for(std::map<int,TH2F*>::iterator it=theHWindowClusterSize2_.begin(); it != theHWindowClusterSize2_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
+
+    for(std::map<int,TH2F*>::iterator it=theHWindowClusterSize3_.begin(); it != theHWindowClusterSize3_.end(); ++it){
+        if(!Window::fDoNotDelete_ && it->second )
+            delete it->second;
+    }
+
+    for(std::map<int,TH2F*>::iterator it=theHWindowClusterSize4_.begin(); it != theHWindowClusterSize4_.end(); ++it){
         if(!Window::fDoNotDelete_ && it->second )
             delete it->second;
     }
@@ -71,6 +98,8 @@ bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
 {
     TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
     TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
+
+    //std::cout << __PRETTY_FUNCTION__ << theHWindow_.find(runNumber)->second << " col:" << col << " find col: " << xAxis->FindBin(col) << " row:" << row << " find row: " << yAxis->FindBin(row) << std::endl;
 
     //std::cout << __PRETTY_FUNCTION__ << "Col: " << col << " ColBin: " << xAxis->FindBin(col) << std::endl;
     //WARNING THIS METHOD IS WRONG BECAUSE IT NEEDS TO CHECK THE DATA TYPE!
@@ -151,6 +180,7 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
     int   nCol  = data.getNumberOfCols(planeID);
     int   run   = data.getRunNumber();
     int   entry = data.getEventChewieNumber();
+    int   size  = data.getClusterSize(planeID);
 
     if( data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol ){
 
@@ -166,20 +196,58 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
     {
         //std::cout << __PRETTY_FUNCTION__ << "After  Plane: " << planeID << " row: " << row << " col: " << col << std::endl;
         if(nRow==1 && nCol==1)
+        {
             theHWindow_.find(run)->second->Fill(col,row);
+            if(size == 1)
+             theHWindowClusterSize1_.find(run)->second->Fill(col,row);
+            if(size == 2)
+             theHWindowClusterSize2_.find(run)->second->Fill(col,row);
+            if(size == 3)
+             theHWindowClusterSize3_.find(run)->second->Fill(col,row);
+            if(size == 4)
+             theHWindowClusterSize4_.find(run)->second->Fill(col,row);
+        }
         else if(nRow>1 && nCol==1)
         {
             if( ceil(nRow/2.) != nRow/2. ) //nRow odd
             {
                 theHWindow_.find(run)->second->Fill(col,row);
+                if(size == 1)
+                 theHWindowClusterSize1_.find(run)->second->Fill(col,row);
+                if(size == 2)
+                 theHWindowClusterSize2_.find(run)->second->Fill(col,row);
+                if(size == 3)
+                 theHWindowClusterSize3_.find(run)->second->Fill(col,row);
+                if(size == 4)
+                 theHWindowClusterSize4_.find(run)->second->Fill(col,row);
                 for(int r=1; r<nRow; r++)
                 {
                     if( ceil(r/2.) == r/2. )
                     {
                         if( (row+r/2.) <= higherRow )
+                         {\
                             theHWindow_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 1)
+                             theHWindowClusterSize1_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 2)
+                             theHWindowClusterSize2_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 3)
+                             theHWindowClusterSize3_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 4)
+                             theHWindowClusterSize4_.find(run)->second->Fill(col,row+r/2.);
+                         }
                         if( (row-r/2.) >= lowerRow )
+                         {
                             theHWindow_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 1)
+                             theHWindowClusterSize1_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 2)
+                             theHWindowClusterSize2_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 3)
+                             theHWindowClusterSize3_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 4)
+                             theHWindowClusterSize4_.find(run)->second->Fill(col,row-r/2.);
+                         }
                     }
                 }
             }
@@ -190,9 +258,29 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
                     if( ceil(r/2.) != r/2. )
                     {
                         if( (row+r/2.) <= higherRow )
+                         {
                             theHWindow_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 1)
+                             theHWindowClusterSize1_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 2)
+                             theHWindowClusterSize2_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 3)
+                             theHWindowClusterSize3_.find(run)->second->Fill(col,row+r/2.);
+                            if(size == 4)
+                             theHWindowClusterSize4_.find(run)->second->Fill(col,row+r/2.);
+                         }
                         if( (row-r/2.) >= lowerRow )
+                         {
                             theHWindow_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 1)
+                             theHWindowClusterSize1_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 2)
+                             theHWindowClusterSize2_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 3)
+                             theHWindowClusterSize3_.find(run)->second->Fill(col,row-r/2.);
+                            if(size == 4)
+                             theHWindowClusterSize4_.find(run)->second->Fill(col,row-r/2.);
+                         }
                     }
                 }
             }
@@ -202,14 +290,42 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
             if( ceil(nCol/2.) != nCol/2. )//nCol odd
             {
                 theHWindow_.find(run)->second->Fill(col,row);
+                if(size == 1)
+                 theHWindowClusterSize1_.find(run)->second->Fill(col,row);
+                if(size == 2)
+                 theHWindowClusterSize2_.find(run)->second->Fill(col,row);
+                if(size == 3)
+                 theHWindowClusterSize3_.find(run)->second->Fill(col,row);
+                if(size == 4)
+                 theHWindowClusterSize4_.find(run)->second->Fill(col,row);
                 for(int c=1; c<nCol; c++)
                 {
                     if( ceil(c/2.) == c/2. )
                     {
                         if( (col+c/2.) <= higherCol )
+                        {
                             theHWindow_.find(run)->second->Fill(col+c/2.,row);
+                            if(size == 1)
+                             theHWindowClusterSize1_.find(run)->second->Fill(col+c/2.,row);
+                            if(size == 2)
+                             theHWindowClusterSize2_.find(run)->second->Fill(col+c/2.,row);
+                            if(size == 3)
+                             theHWindowClusterSize3_.find(run)->second->Fill(col+c/2.,row);
+                            if(size == 4)
+                             theHWindowClusterSize4_.find(run)->second->Fill(col+c/2.,row);
+                        }
                         else if( (col-c/2.) >= lowerCol )
+                        {
                             theHWindow_.find(run)->second->Fill(col-c/2.,row);
+                            if(size == 1)
+                             theHWindowClusterSize1_.find(run)->second->Fill(col-c/2.,row);
+                            if(size == 2)
+                             theHWindowClusterSize2_.find(run)->second->Fill(col-c/2.,row);
+                            if(size == 3)
+                             theHWindowClusterSize3_.find(run)->second->Fill(col-c/2.,row);
+                            if(size == 4)
+                             theHWindowClusterSize4_.find(run)->second->Fill(col-c/2.,row);
+                        }
                     }
                 }
             }
@@ -220,9 +336,21 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
                     if( ceil(c/2.) != c/2. )
                     {
                         if( (col+c/2.) <= higherCol )
+                        {
                             theHWindow_.find(run)->second->Fill(col+c/2.,row);
+                            theHWindowClusterSize1_.find(run)->second->Fill(col+c/2.,row);
+                            theHWindowClusterSize2_.find(run)->second->Fill(col+c/2.,row);
+                            theHWindowClusterSize3_.find(run)->second->Fill(col+c/2.,row);
+                            theHWindowClusterSize4_.find(run)->second->Fill(col+c/2.,row);
+                        }
                         if( (col-c/2.) >= lowerCol )
+                        {
                             theHWindow_.find(run)->second->Fill(col-c/2.,row);
+                            theHWindowClusterSize1_.find(run)->second->Fill(col-c/2.,row);
+                            theHWindowClusterSize2_.find(run)->second->Fill(col-c/2.,row);
+                            theHWindowClusterSize3_.find(run)->second->Fill(col-c/2.,row);
+                            theHWindowClusterSize4_.find(run)->second->Fill(col-c/2.,row);
+                        }
                     }
                 }
             }

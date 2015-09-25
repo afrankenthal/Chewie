@@ -144,27 +144,27 @@ std::string XmlAnalysis::getMinHits(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-int XmlAnalysis::getThreshold(void)
+int XmlAnalysis::getPixelMinimumCharge(void)
 {
-    return thisNode_.toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("Threshold").at(0).toElement().text().toInt();
+    return thisNode_.toElement().elementsByTagName("PixelMinimumCharge").at(0).toElement().text().toInt();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-int XmlAnalysis::getMaxCharge(void)
+int XmlAnalysis::getPixelMaximumCharge(void)
 {
-    return thisNode_.toElement().elementsByTagName("CellCharge").at(0).toElement().elementsByTagName("MaxCharge").at(0).toElement().text().toInt();
+    return thisNode_.toElement().elementsByTagName("PixelMaximumCharge").at(0).toElement().text().toInt();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-int XmlAnalysis::getMinTotCharge(void)
+int XmlAnalysis::getClusterMinimumCharge(void)
 {
-    return thisNode_.toElement().elementsByTagName("TotalCharge").at(0).toElement().elementsByTagName("MinTotCharge").at(0).toElement().text().toInt();
+    return thisNode_.toElement().elementsByTagName("ClusterMinimumCharge").at(0).toElement().text().toInt();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-int XmlAnalysis::getMaxTotCharge(void)
+int XmlAnalysis::getClusterMaximumCharge(void)
 {
-    return thisNode_.toElement().elementsByTagName("TotalCharge").at(0).toElement().elementsByTagName("MaxTotCharge").at(0).toElement().text().toInt();
+    return thisNode_.toElement().elementsByTagName("ClusterMaximumCharge").at(0).toElement().text().toInt();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

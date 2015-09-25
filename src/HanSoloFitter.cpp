@@ -110,8 +110,8 @@ HanSoloFitter::HanSoloFitter(QWidget *parent ) :
     QDialog                     (                       parent)
   , theMainWindow_              (          (MainWindow*)parent)
   , ui_                         (        new Ui::HanSoloFitter)
-  , timer_                      (             new QTimer(this))
   , hanSoloTreeBrowser_         (                            0)
+  , timer_                      (             new QTimer(this))
   , emptyFileLabel_             ("No files are currently open")
   , displayAllLabel_            (                "Display all")
   , counter_                    (                            0)
@@ -181,7 +181,7 @@ HanSoloFitter::HanSoloFitter(QWidget *parent ) :
    ui_->fitFuncLW->insertItem(6, "Langaus");
    hanSoloFitFunctions_["Langaus"] = 4;
    ui_->fitFuncLW->insertItem(7, "Gauss");
-//  Directly declared as a string
+   hanSoloFitFunctions_["Gauss"] = 4;
    ui_->fitFuncLW->insertItem(8, "Gauss Convoluted with Constant");
    hanSoloFitFunctions_["Gauss Convoluted with Constant"] = 4;
    ui_->fitFuncLW->insertItem(9, "Eta Convoluted with Gauss");
@@ -196,6 +196,9 @@ HanSoloFitter::HanSoloFitter(QWidget *parent ) :
    hanSoloFitFunctions_["Eta Reproduction"] = 11;
    ui_->fitFuncLW->insertItem(14,"Eta Distribution");
    hanSoloFitFunctions_["Eta Distribution"] = 6;
+
+   ui_->fitFuncLW->insertItem(15,"Linear"); //Irene Added
+   hanSoloFitFunctions_["Linear"] = 2; //Irene Added
    initialize();
 
 
@@ -372,7 +375,7 @@ void HanSoloFitter::getFitters(void)
 
     std::cout << "getFitters()" << std::endl;
 
-    std::string charge = "Charge::fit";
+    std::string charge = "Charge::fitCharge";
     std::string resolution = "::fit";
     std::string efficiency = "::fit";
     std::ifstream inFile;
@@ -396,11 +399,12 @@ void HanSoloFitter::getFitters(void)
             pos=line.find(charge);
             if(pos != std::string::npos)
             {
+
                 int len = line.find_first_of('(') - 1 - line.find_last_of(':');
                 std::string methodName = line.substr(line.find_last_of(':') +1, len);
                 chargeVector_.push_back(methodName);
                 std::cout << "Found charge fit method: " << methodName << std::endl;
-                break;
+
             }
         }
     }
@@ -420,7 +424,6 @@ void HanSoloFitter::getFitters(void)
                 std::string methodName = line.substr(line.find_last_of(':') +1, len);
                 efficiencyVector_.push_back(methodName);
                 std::cout << "Found efficiency fit method: " << methodName << std::endl;
-                break;
             }
         }
     }
@@ -440,7 +443,6 @@ void HanSoloFitter::getFitters(void)
                 std::string methodName = line.substr(line.find_last_of(':') +1, len);
                 resolutionVector_.push_back(methodName);
                 std::cout << "Found resolution fit method: " << methodName << std::endl;
-                break;
             }
         }
     }
@@ -452,7 +454,7 @@ void HanSoloFitter::getFitters(void)
 void HanSoloFitter::makeFittersSelectable(void)
 {
     QString qstr;
-    int SPACING = 40, XBORDER = 10, YBORDER = 20;
+    int SPACING = 40, XBORDER = 10, YBORDER = 20, YSPACING = 0;
 
 
     //===========================================================================
@@ -478,8 +480,15 @@ void HanSoloFitter::makeFittersSelectable(void)
     //Charge
     for(unsigned int pos = 0; pos < chargeVector_.size(); pos++)
     {
-        if(pos > 14)
-         XBORDER = 245;
+        if(pos > 12)
+        {
+            XBORDER = 245;
+            YSPACING = (pos-13) * SPACING;
+
+        }else{
+
+            YSPACING = pos * SPACING;
+        }
         std::string type = "cha";
         std::string name = chargeVector_.at(pos).c_str();
         name = name.substr (0, name.find('.'));
@@ -487,7 +496,7 @@ void HanSoloFitter::makeFittersSelectable(void)
         generalChargeCheckBoxes_.at(pos) = chargeCheckBox;
         generalChargeCheckBoxes_.at(pos)->setObjectName(chargeVector_.at(pos).c_str());
         generalChargeCheckBoxes_.at(pos)->setText(qstr.fromStdString(name));
-        generalChargeCheckBoxes_.at(pos)->setGeometry(XBORDER, (YBORDER + (pos * SPACING)), 200, 20);
+        generalChargeCheckBoxes_.at(pos)->setGeometry(XBORDER, (YBORDER + (YSPACING)), 200, 20);
         generalChargeCheckBoxes_.at(pos)->show();
         connect(generalChargeCheckBoxes_.at(pos),
                 SIGNAL(clicked(bool)),
@@ -501,8 +510,15 @@ void HanSoloFitter::makeFittersSelectable(void)
     //Efficiency
     for(unsigned int pos = 0; pos < efficiencyVector_.size(); pos++)
     {
-        if(pos > 14)
-           XBORDER = 245;
+        if(pos > 12)
+        {
+            XBORDER = 245;
+            YSPACING = (pos-13) * SPACING;
+
+        }else{
+
+            YSPACING = pos * SPACING;
+        }
         std::string type = "eff";
         std::string name = efficiencyVector_.at(pos).c_str();
         name = name.substr (0, name.find('.'));
@@ -510,7 +526,7 @@ void HanSoloFitter::makeFittersSelectable(void)
         generalEfficiencyCheckBoxes_.at(pos) = efficiencyCheckBox;
         generalEfficiencyCheckBoxes_.at(pos)->setObjectName(efficiencyVector_.at(pos).c_str());
         generalEfficiencyCheckBoxes_.at(pos)->setText(qstr.fromStdString(name));
-        generalEfficiencyCheckBoxes_.at(pos)->setGeometry(XBORDER, (YBORDER + (pos * SPACING)), 200, 20);
+        generalEfficiencyCheckBoxes_.at(pos)->setGeometry(XBORDER, (YBORDER + (YSPACING)), 200, 20);
         generalEfficiencyCheckBoxes_.at(pos)->show();
         connect(generalEfficiencyCheckBoxes_.at(pos),
                 SIGNAL(clicked(bool)),
@@ -522,8 +538,15 @@ void HanSoloFitter::makeFittersSelectable(void)
     //Resolution
     for(unsigned int pos = 0; pos < resolutionVector_.size(); pos++)
     {
-        if(pos > 14)
-           XBORDER = 245;
+        if(pos > 12)
+        {
+            XBORDER = 245;
+            YSPACING = (pos-13) * SPACING;
+
+        }else{
+
+            YSPACING = pos * SPACING;
+        }
         std::string type = "res";
         std::string name = resolutionVector_.at(pos).c_str();
         name = name.substr (0, name.find('.'));
@@ -531,7 +554,7 @@ void HanSoloFitter::makeFittersSelectable(void)
         generalResolutionCheckBoxes_.at(pos) = efficiencyCheckBox;
         generalResolutionCheckBoxes_.at(pos)->setObjectName(resolutionVector_.at(pos).c_str());
         generalResolutionCheckBoxes_.at(pos)->setText(qstr.fromStdString(name));
-        generalResolutionCheckBoxes_.at(pos)->setGeometry(XBORDER, (YBORDER + (pos * SPACING)), 200, 20);
+        generalResolutionCheckBoxes_.at(pos)->setGeometry(XBORDER, (YBORDER + (YSPACING)), 200, 20);
         generalResolutionCheckBoxes_.at(pos)->show();
         connect(generalResolutionCheckBoxes_.at(pos),
                 SIGNAL(clicked(bool)),
@@ -782,9 +805,9 @@ void HanSoloFitter::on_saveConfigurationFile_clicked(void)
             root.appendChild(dut);
         }
 
-        for(signed int pos = 0; pos < root.childNodes().size(); pos++)
+        for(int pos = 0; pos < root.childNodes().size(); pos++)
         {
-            if(pos >= chargeCheckBoxes_.size()){
+            if(pos >= (int)chargeCheckBoxes_.size()){
 
                 std::cout << "Delete: " << pos << std::endl;
                 std::cout << root.childNodes().at(pos).toElement().tagName().toUtf8().constData() << std::endl;
@@ -1238,6 +1261,8 @@ void HanSoloFitter::on_fitterOptions_selected(const QString &arg1)
         {
             if(pos > 14)
              XBORDER = 245;
+
+            std::cout <<__PRETTY_FUNCTION__<< "chargevector = " << pos << std::endl;
             std::string type = "cha";
             std::string name = chargeVector_[pos].c_str();
             name = name.substr (0, name.find('.'));
@@ -1613,7 +1638,7 @@ void HanSoloFitter::on_runButton_clicked(void)
         std::cout << "Error: Couldn't open " << filePath << std::endl;
 
 
-
+    std::cout << "DDDDDDDDDDDDDDDDDDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONNNNNNNNNNNNNNNNNNNNNNNNNNNNEEEEEEEEEEEEEEEEEEEEEEEE" << std::endl;
 }
 //===========================================================================
 //========================== Run Buttons [END] ==============================
@@ -2089,6 +2114,8 @@ void HanSoloFitter::on_fitPB_clicked(void)
                 fitter = new TF1(hName.c_str(), Utilities::etaReproduction, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
             else if (ui_->fitFuncLW->currentItem()->text() == "Eta Distribution")
                 fitter = new TF1(hName.c_str(), Utilities::etaDistributionAngle, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
+            else if (ui_->fitFuncLW->currentItem()->text() == "Linear")
+                fitter = new TF1(hName.c_str(), Utilities::linear, xMin, xMax, hanSoloFitFunctions_[ui_->fitFuncLW->currentItem()->text().toStdString()]);
             else
                 STDLINE("Select a function!", ACYellow);
 
@@ -3287,6 +3314,43 @@ void HanSoloFitter::on_fitFuncLW_itemClicked(QListWidgetItem *item)
         }
     }
 
+    else if (item->text() == "Linear")
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            hanSoloParamManager_.push_back(new FitParamManagerWidget(ui_->parametersTW));
+
+            if (i == 0)
+            {
+                hanSoloParamManager_[i]->setParName  ("Intercept");
+                hanSoloParamManager_[i]->setParLimits(-100000, 100000);
+                hanSoloParamManager_[i]->setParValue (-3000);
+                hanSoloParamManager_[i]->setParLimInf(-100000);
+                hanSoloParamManager_[i]->setParLimSup(100000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(10);
+            }
+            else if (i == 1)
+            {
+                hanSoloParamManager_[i]->setParName  ("Slope");
+                hanSoloParamManager_[i]->setParLimits(-10, 100000);
+                hanSoloParamManager_[i]->setParValue (5);
+                hanSoloParamManager_[i]->setParLimInf(0);
+                hanSoloParamManager_[i]->setParLimSup(30000);
+                hanSoloParamManager_[i]->setParFixed (false);
+                hanSoloParamManager_[i]->setParPrecision(0);
+                hanSoloParamManager_[i]->setParStep(10);
+            }
+
+            connect(hanSoloParamManager_[i]->getParFixed(),
+                    SIGNAL(clicked() ),
+                    hanSoloParamManager_[i],
+                    SLOT(on_fixPar_clicked())
+                    );
+
+        }
+    }
 
     for (unsigned int j = 0; j < hanSoloParamManager_.size(); ++j)
     {

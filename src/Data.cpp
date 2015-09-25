@@ -36,8 +36,8 @@ void Data::setBranchAddress(TTree* tree)
   tree->SetBranchAddress("xSigmaSlope"                     , &xSigmaSlope_  	               );
   tree->SetBranchAddress("ySlope"                          , &ySlope_		                   );
   tree->SetBranchAddress("ySigmaSlope"                     , &ySigmaSlope_  	               );
-  tree->SetBranchAddress("hasHit"                          , &hasHit_		                   );
   tree->SetBranchAddress("dataType"                        , &dataType_		                   );
+  tree->SetBranchAddress("hasHit"                          , &hasHit_		                   );
   tree->SetBranchAddress("belongsToTrack"                  , &belongsToTrack_	               );
   tree->SetBranchAddress("isInDetector"                    , &isInDetector_ 	               );
   tree->SetBranchAddress("isInDetectorUnconstrained"       , &isInDetectorUnconstrained_       );
@@ -106,7 +106,7 @@ void Data::branch(TTree* tree)
 {
   tree->Branch("eventNumber"                     , &eventNumber_		             , "eventNumber/I" 		                   );
   tree->Branch("eventChewieNumber"               , &eventChewieNumber_		         , "eventChewieNumber/I" 		           );
-  tree->Branch("runNumber"                       , &runNumber_   		             , "eventNumber/I" 		                   );
+  tree->Branch("runNumber"                       , &runNumber_   		             , "runNumber/I" 		                   );
   tree->Branch("numberOfTracks"                  , &numberOfTracks_ 	             , "numberOfTracks/I"		               );
   tree->Branch("trackNumber"                     , &trackNumber_		             , "trackNumber/I"                         );
   tree->Branch("numberOfTelescopeHits"           , &numberOfTelescopeHits_           , "numberOfTelescopeHits/I"               );
@@ -121,8 +121,8 @@ void Data::branch(TTree* tree)
   tree->Branch("xSigmaSlope"                     , &xSigmaSlope_		             , "xSigmaSlope/D" 		                   );
   tree->Branch("ySlope"                          , &ySlope_ 		                 , "ySlope/D"			                   );
   tree->Branch("ySigmaSlope"                     , &ySigmaSlope_		             , "ySigmaSlope/D" 		                   );
-  tree->Branch("hasHit"                          , &hasHit_ 		                 , "hasHit[25]/O"  		                   );
   tree->Branch("dataType"                        , &dataType_ 		                 , "dataType[25]/O"  		               );
+  tree->Branch("hasHit"                          , &hasHit_ 		                 , "hasHit[25]/O"  		                   );
   tree->Branch("belongsToTrack"                  , &belongsToTrack_ 	             , "belongsToTrack[25]/O"  	               );
   tree->Branch("isInDetector"                    , &isInDetector_		             , "isInDetector[25]/O"		               );
   tree->Branch("isInDetectorUnconstrained"       , &isInDetectorUnconstrained_	     , "isInDetectorUnconstrained[25]/O"       );

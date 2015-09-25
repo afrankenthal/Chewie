@@ -128,8 +128,8 @@ bool XmlParser::parseDocument(QString fileName)
     {
         QDomNode analysisNode = analyses.at(a);
         std::string type      = analysisNode.toElement().attribute("Type").toStdString();
-        XmlAnalysis * newAnalysis = new XmlAnalysis(analysisNode);
-        int priority              = newAnalysis->getPriority();
+        XmlAnalysis* analysis = new XmlAnalysis(analysisNode);
+        int priority          = analysis->getPriority();
         if(theAnalyses_.find(priority) != theAnalyses_.end())
         {
             ss_ << "Error: Analyses " << theAnalyses_[priority].first << " and " << type
@@ -138,7 +138,7 @@ bool XmlParser::parseDocument(QString fileName)
             file.close();
             return false;
         }
-        theAnalyses_[priority]    = std::make_pair<std::string, XmlAnalysis*>(type, newAnalysis);
+        theAnalyses_[priority] = std::make_pair<std::string, XmlAnalysis*>(type, analysis);
     }
 
     QDomNode scan = document_->elementsByTagName("Scan").at(0);
@@ -148,15 +148,17 @@ bool XmlParser::parseDocument(QString fileName)
 }
 
 //================================================================================
-XmlAnalysis * XmlParser::getAnalysesFromString (std::string analysisName)
+XmlAnalysis* XmlParser::getAnalysesFromString (std::string analysisName)
 {
     int pos = -1;
-    for (int i = 0; i < (int)theAnalyses_.size(); ++i)
+    for (int i = 0; i < (int)theAnalyses_.size(); i++)
+        if (theAnalyses_[i].first == analysisName)
+            pos = i;
+
+    if (pos >= 0)
+        return theAnalyses_[pos].second;
+    else
     {
-        if (theAnalyses_[i].first == analysisName) pos = i;
-    }
-    if (pos >= 0) return theAnalyses_[pos].second;
-    else {
         STDLINE("Cannot find " + analysisName + " analysis!", ACRed);
         return 0;
     }

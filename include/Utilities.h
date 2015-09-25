@@ -9,6 +9,8 @@ class TH2F;
 namespace Utilities
 {
    double langaus                              (double *x, double *par);
+   double linear                               (double *x, double *par);
+
    double calibrationFitFunk                   (double *x, double *par);
    double calibrationFitFunkInv                (double *x, double *par);
 

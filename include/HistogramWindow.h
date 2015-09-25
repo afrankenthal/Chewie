@@ -32,11 +32,15 @@ public:
     std::pair<int,int> getNbins(void)const {return std::make_pair(nBinsX_,nBinsY_);}
 
 private:
-    std::map<int,TH2F*> theHWindow_          ;
-    std::map<int,TH2F*> theH2TimeWindow_     ;
-    std::map<int,TH2F*> theH2TimeWindow_norm_;
-    std::map<int,TH1F*> theH1TimeWindow_     ;
+    std::map<int,TH2F*> theHWindow_            ;
+    std::map<int,TH2F*> theH2TimeWindow_       ;
+    std::map<int,TH2F*> theH2TimeWindow_norm_  ;
+    std::map<int,TH1F*> theH1TimeWindow_       ;
 
+    std::map<int,TH2F*> theHWindowClusterSize1_;
+    std::map<int,TH2F*> theHWindowClusterSize2_;
+    std::map<int,TH2F*> theHWindowClusterSize3_;
+    std::map<int,TH2F*> theHWindowClusterSize4_;
 
 }; 
 

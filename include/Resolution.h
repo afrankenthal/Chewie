@@ -15,6 +15,7 @@ class TTreeFormula   ;
 class AnalysisManager;
 class WindowsManager ;
 class PlanesMapping  ;
+class XmlParser      ;
 
 class Resolution : public Analysis
 {
@@ -29,15 +30,29 @@ public:
     bool passStandardCuts    (int planeID                               , const Data& data        );
     bool passBadPlanesCut    (int  planeID, const Data& data                            );
 
-    void   getInFile                 (TFile *                                                             ){}
-    void   fitResolution             (int planeID                                               );
-    double smearedSquare             (double *xx, double *par                                   );
-    void   fitXresidualsSize1        (int planeID                                               );
-    void   fitXresidualsCalculated   (int planeID                                               );
-    void   fitXresidualsDigital      (int planeID                                               );
-    void   fitYresidualsSize1        (int planeID                                               );
-    void   fitYresidualsCalculated   (int planeID                                               );
-    void   fitYresidualsDigital      (int planeID                                               );
+    void   getInFile                   (TFile *                                                             ){}
+    void   fitResolution               (int planeID                                               );
+    double smearedSquare               (double *xx, double *par                                   );
+    void   fitXResiduals               (int planeID                                               );
+    void   fitXresidualsSize1          (int planeID                                               );
+    void   fitXresidualsSize2          (int planeID                                               );
+    void   fitXresidualsSize3          (int planeID                                               );
+    void   fitXresidualsSize4          (int planeID                                               );
+    void   fitXresidualsCalculated     (int planeID                                               );
+    void   fitXresidualsCalculatedSize2(int planeID                                               );
+    void   fitXresidualsCalculatedSize3(int planeID                                               );
+    void   fitXresidualsCalculatedSize4(int planeID                                               );
+    void   fitXresidualsDigital        (int planeID                                               );
+    void   fitYResiduals               (int planeID                                               );
+    void   fitYresidualsSize1          (int planeID                                               );
+    void   fitYresidualsSize2          (int planeID                                               );
+    void   fitYresidualsSize3          (int planeID                                               );
+    void   fitYresidualsSize4          (int planeID                                               );
+    void   fitYresidualsCalculated     (int planeID                                               );
+    void   fitYresidualsCalculatedSize2(int planeID                                               );
+    void   fitYresidualsCalculatedSize3(int planeID                                               );
+    void   fitYresidualsCalculatedSize4(int planeID                                               );
+    void   fitYresidualsDigital        (int planeID                                               );
 
 private:
     void book                (void                                                      );
@@ -54,38 +69,66 @@ private:
     PlanesMapping*                                     thePlaneMapping_    ;
     std::map< std::string,std::vector<TTreeFormula*> > cutsFormulas_       ;
     const WindowsManager*                              theWindowsManager_  ;
+    XmlParser*                                         theXmlParser_       ;
 
-    std::vector<TH1F*>          hXresiduals_                  ;
-    std::vector<TH1F*>          hXresidualCalculated_         ;
-    std::vector<TH2F*>          hX2DresidualCalculated_       ;
-    std::vector<TH1F*>          hXresidualsClusterSize1_      ;
-    std::vector<TH2F*>          hX2DresidualsClusterSize1_    ;
-    std::vector<TH1F*>          hXresidualsClusterSize2_      ;
-    std::vector<TH1F*>          hXresidualsDigital_           ;
-    std::vector<TH2F*>          hX2DresidualsDigital_         ;
-    std::vector<TH1F*>          hYresiduals_                  ;
-    std::vector<TH1F*>          hYresidualCalculated_         ;
-    std::vector<TH2F*>          hY2DresidualCalculated_       ;
-    std::vector<TH1F*>          hYresidualsClusterSize1_      ;
-    std::vector<TH2F*>          hY2DresidualsClusterSize1_    ;
-    std::vector<TH1F*>          hYresidualsClusterSize2_      ;
-    std::vector<TH1F*>          hYresidualsDigital_           ;
-    std::vector<TH2F*>          hY2DresidualsDigital_         ;
-    std::map<std::string,TH1F*> hPredictedXErrors_            ;
-    std::map<std::string,TH1F*> hPredictedYErrors_            ;
-    std::vector<TH1F*>          hSigmaXIntercept_             ;
-    std::vector<TH1F*>          hSigmaYIntercept_             ;
-    std::vector<TH1F*>          hSigmaXSlope_                 ;
-    std::vector<TH1F*>          hSigmaYSlope_                 ;
-    std::vector<TH2F*>          h2DCorrelationsResidualXvsX_  ;
-    std::vector<TH2F*>          h2DCorrelationsResidualXvsY_  ;
-    std::vector<TH2F*>          h2DCorrelationsResidualYvsY_  ;
-    std::vector<TH2F*>          h2DCorrelationsResidualYvsX_  ;
-    std::vector<TH1F*>          hCorrelationsResidualXvsX_    ;
-    std::vector<TH1F*>          hCorrelationsResidualXvsY_    ;
-    std::vector<TH1F*>          hCorrelationsResidualYvsY_    ;
-    std::vector<TH1F*>          hCorrelationsResidualYvsX_    ;
-    TF1*                        fSmearedSquare_               ;
+    std::vector<TH1F*>          hXResiduals_                             ;
+    std::vector<TH1F*>          hXResidualCalculated_                    ;
+    std::vector<TH1F*>          hXResidualCalculatedSize2_               ;
+    std::vector<TH2F*>          hX2DResidualCalculatedSize2_             ;
+    std::vector<TH1F*>          hXResidualCalculatedSize3_               ;
+    std::vector<TH2F*>          hX2DResidualCalculatedSize3_             ;
+    std::vector<TH1F*>          hXResidualCalculatedSize4_               ;
+    std::vector<TH2F*>          hX2DResidualCalculatedSize4_             ;
+    std::vector<TH1F*>          hXResidualsClusterSize1_                 ;
+    std::vector<TH2F*>          hX2DResidualsClusterSize1_               ;
+    std::vector<TH1F*>          hXResidualsClusterSize2_                 ;
+    std::vector<TH1F*>          hXResidualsClusterSize3_                 ;
+    std::vector<TH1F*>          hXResidualsClusterSize4_                 ;
+    std::vector<TH1F*>          hXResidualsDigital_                      ;
+    std::vector<TH2F*>          hX2DResidualsDigital_                    ;
+    std::vector<TH1F*>          hYResiduals_                             ;
+    std::vector<TH1F*>          hYResidualCalculated_                    ;
+    std::vector<TH1F*>          hYResidualCalculatedSize2_               ;
+    std::vector<TH2F*>          hY2DResidualCalculatedSize2_             ;
+    std::vector<TH1F*>          hYResidualCalculatedSize2Row1of4Rows_    ;
+    std::vector<TH1F*>          hYResidualCalculatedSize2Row2of4Rows_    ;
+    std::vector<TH1F*>          hYResidualCalculatedSize2Row3of4Rows_    ;
+    std::vector<TH1F*>          hYResidualCalculatedSize2Row4of4Rows_    ;
+    std::vector<TH1F*>          hLandauChargeDownSize2Row1of4Rows_       ;
+    std::vector<TH1F*>          hLandauChargeUpSize2Row2of4Rows_         ;
+    std::vector<TH1F*>          hLandauChargeDownSize2Row3of4Rows_       ;
+    std::vector<TH1F*>          hLandauChargeUpSize2Row4of4Rows_         ;
+    std::vector<TH1F*>          hYResidualCalculatedSize3_               ;
+    std::vector<TH2F*>          hY2DResidualCalculatedSize3_             ;
+    std::vector<TH1F*>          hYResidualCalculatedSize4_               ;
+    std::vector<TH2F*>          hY2DResidualCalculatedSize4_             ;
+    std::vector<TH1F*>          hYResidualsClusterSize1_                 ;
+    std::vector<TH2F*>          hY2DResidualsClusterSize1_               ;
+    std::vector<TH1F*>          hYResidualsClusterSize2_                 ;
+    std::vector<TH1F*>          hYResidualsClusterSize3_                 ;
+    std::vector<TH1F*>          hYResidualsClusterSize4_                 ;
+    std::vector<TH1F*>          hYResidualsDigital_                      ;
+    std::vector<TH2F*>          hY2DResidualsDigital_                    ;
+    std::map<std::string,TH1F*> hPredictedXErrors_                       ;
+    std::map<std::string,TH1F*> hPredictedYErrors_                       ;
+    std::vector<TH1F*>          hSigmaXIntercept_                        ;
+    std::vector<TH1F*>          hSigmaYIntercept_                        ;
+    std::vector<TH1F*>          hSigmaXSlope_                            ;
+    std::vector<TH1F*>          hSigmaYSlope_                            ;
+    std::vector<TH2F*>          h2DCorrelationsResidualXvsX_             ;
+    std::vector<TH2F*>          h2DCorrelationsResidualXvsY_             ;
+    std::vector<TH2F*>          h2DCorrelationsResidualYvsY_             ;
+    std::vector<TH2F*>          h2DCorrelationsResidualYvsX_             ;
+    std::vector<TH1F*>          hCorrelationsResidualXvsX_               ;
+    std::vector<TH1F*>          hCorrelationsResidualXvsY_               ;
+    std::vector<TH1F*>          hCorrelationsResidualYvsY_               ;
+    std::vector<TH1F*>          hCorrelationsResidualYvsX_               ;
+    std::vector<TH1F*>          hYResidualCalculatedSize2Row1of2Rows_    ;
+    std::vector<TH1F*>          hYResidualCalculatedSize2Row2of2Rows_    ;
+    TF1*                        fSmearedSquare_                          ;
+
+
+
 };
 
 #endif // RESOLUTION_H

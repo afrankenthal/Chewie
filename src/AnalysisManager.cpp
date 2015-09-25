@@ -27,9 +27,15 @@
 #include <sstream>
 #include <algorithm>
 
-struct Sorting {
-bool operator () (std::string A, std::string B) {AnalysisManager * a; return a->sorting(A,B); delete a;}
-}sorter_;
+struct Sorting
+{
+    bool operator () (std::string A, std::string B)
+    {
+        AnalysisManager* a=0;
+        return a->sorting(A,B);
+        delete a;
+    }
+} sorter_;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
