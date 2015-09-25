@@ -5964,6 +5964,10 @@ void Charge::book(void)
         hTitle = "L/R charge asimmetry - Y coordinate "                             + planeName;
         h2DYcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 102, -1.1, 1.1, (int)200, -100, 100)));// range +- 100 is not beacause of the pitch's dimension but because of the error on the track
 
+        theAnalysisManager_->cd("Charge/" + planeName);
+
+        theAnalysisManager_->mkdir("YAsimmetry4Rows25x600");
+
         hName  = "h2DYcellChargeAsimmetryInv4Rows_"                                      + planeName;
         hTitle = "L/R charge asimmetry - Y coordinate 4 Rows "                             + planeName;
         h2DYcellChargeAsimmetryInv4Rows_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 102, -1.1, 1.1, (int)200, -100, 100)));// range +- 100 is not beacause of the pitch's dimension but because of the error on the track
@@ -6003,6 +6007,8 @@ void Charge::book(void)
         hName  = "h2DYcellChargeAsimmetryInvDownRows4Rows_"                         + planeName;
         hTitle = "L/R charge asimmetry - Y coordinate - Up Rows of 4 Rows "         + planeName;
         h2DYcellChargeAsimmetryInvDownRows4Rows_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 102, -1.1, 1.1, (int)yPitch - 0, -(yPitch/2)-0.5, yPitch/2+0.5)));
+
+        theAnalysisManager_->cd("Charge/" + planeName+"/YAsimmetry/");
 
         hName  = "h2DYcellChargeAsimmetryUnconstrained_"                            + planeName;
         hTitle = "L/R unconstrained charge asimmetry - Y coordinate "               + planeName;
