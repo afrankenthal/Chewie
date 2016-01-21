@@ -28,6 +28,12 @@
 #include <iostream>
 #include <map>
 
+
+// @@@ Hard coded constants @@@
+#define maxChargeDeltaRay 13600. // = 8000 (MPV Landau for 100 um bulk thickness) * 1.7
+// ============================
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Charge::Charge(AnalysisManager* analysisManager, int nOfThreads) :
     Analysis                       (analysisManager, nOfThreads)
@@ -144,6 +150,7 @@ void Charge::destroy()
 
     /*------------------------------------------------------------------------------------2D cell charge - X coordinate-----------------------------------------------------------------------------------------*/
     for(std::vector<TH2F*>::iterator it=h2DXcellCharge_                         .begin(); it!=h2DXcellCharge_                         .end(); it++) delete *it; h2DXcellCharge_                         .clear();
+    for(std::vector<TH2F*>::iterator it=h2DXcellChargeSecondHit_                .begin(); it!=h2DXcellChargeSecondHit_                .end(); it++) delete *it; h2DXcellChargeSecondHit_                .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeSumLE2_                   .begin(); it!=h2DXcellChargeSumLE2_                   .end(); it++) delete *it; h2DXcellChargeSumLE2_                   .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellSingleHits_                     .begin(); it!=h2DXcellSingleHits_                     .end(); it++) delete *it; h2DXcellSingleHits_                     .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellDoubleHits_                     .begin(); it!=h2DXcellDoubleHits_                     .end(); it++) delete *it; h2DXcellDoubleHits_                     .clear();
@@ -151,6 +158,7 @@ void Charge::destroy()
 
     /*------------------------------------------------------------------------------------2D cell charge - Y coordinate-----------------------------------------------------------------------------------------*/
     for(std::vector<TH2F*>::iterator it=h2DYcellCharge_                         .begin(); it!=h2DYcellCharge_                         .end(); it++) delete *it; h2DYcellCharge_                         .clear();
+    for(std::vector<TH2F*>::iterator it=h2DYcellChargeSecondHit_                .begin(); it!=h2DYcellChargeSecondHit_                .end(); it++) delete *it; h2DYcellChargeSecondHit_                .clear();
     for(std::vector<TH2F*>::iterator it=h2DYcellChargeSumLE2_                   .begin(); it!=h2DYcellChargeSumLE2_                   .end(); it++) delete *it; h2DYcellChargeSumLE2_                   .clear();
     for(std::vector<TH2F*>::iterator it=h2DYcellSingleHits_                     .begin(); it!=h2DYcellSingleHits_                     .end(); it++) delete *it; h2DYcellSingleHits_                     .clear();
     for(std::vector<TH2F*>::iterator it=h2DYcellDoubleHits_                     .begin(); it!=h2DYcellDoubleHits_                     .end(); it++) delete *it; h2DYcellDoubleHits_                     .clear();
@@ -263,6 +271,8 @@ void Charge::destroy()
     for(std::vector<TH1F*>::iterator it=h1DXcellSingleHits_                     .begin(); it!=h1DXcellSingleHits_                     .end(); it++) delete *it; h1DXcellSingleHits_                     .clear();
     for(std::vector<TH1F*>::iterator it=h1DXcellDoubleHits_                     .begin(); it!=h1DXcellDoubleHits_                     .end(); it++) delete *it; h1DXcellDoubleHits_                     .clear();
     for(std::vector<TH1F*>::iterator it=h1DXcell3Hits_                          .begin(); it!=h1DXcell3Hits_                          .end(); it++) delete *it; h1DXcell3Hits_                          .clear();
+    for(std::vector<TH1F*>::iterator it=h1DXcellChargeSecondHit_                .begin(); it!=h1DXcellChargeSecondHit_                .end(); it++) delete *it; h1DXcellChargeSecondHit_                .clear();
+    for(std::vector<TH1F*>::iterator it=h1DXcellChargeSecondHitNorm_            .begin(); it!=h1DXcellChargeSecondHitNorm_            .end(); it++) delete *it; h1DXcellChargeSecondHitNorm_            .clear();
 
     /*------------------------------------------------------------------------------------1D charge-Y residuals------------------------------------------------------------------------------------------------*/
     for(std::vector<TH1F*>::iterator it=h1DYcellCharge_                         .begin(); it!=h1DYcellCharge_                         .end(); it++) delete *it; h1DYcellCharge_                         .clear();
@@ -279,6 +289,8 @@ void Charge::destroy()
     for(std::vector<TH1F*>::iterator it=h1DYcellSingleHits_                     .begin(); it!=h1DYcellSingleHits_                     .end(); it++) delete *it; h1DYcellSingleHits_                     .clear();
     for(std::vector<TH1F*>::iterator it=h1DYcellDoubleHits_                     .begin(); it!=h1DYcellDoubleHits_                     .end(); it++) delete *it; h1DYcellDoubleHits_                     .clear();
     for(std::vector<TH1F*>::iterator it=h1DYcell3Hits_                          .begin(); it!=h1DYcell3Hits_                          .end(); it++) delete *it; h1DYcell3Hits_                          .clear();
+    for(std::vector<TH1F*>::iterator it=h1DYcellChargeSecondHit_                .begin(); it!=h1DYcellChargeSecondHit_                .end(); it++) delete *it; h1DYcellChargeSecondHit_                .clear();
+    for(std::vector<TH1F*>::iterator it=h1DYcellChargeSecondHitNorm_            .begin(); it!=h1DYcellChargeSecondHitNorm_            .end(); it++) delete *it; h1DYcellChargeSecondHitNorm_            .clear();
 
     /*----------------------------------------------------------------------------------------X Asimmetry------------------------------------------------------------------------------------------------------*/
     for(std::vector<TH1F*>::iterator it=hXAsimmetry_                            .begin(); it!=hXAsimmetry_                            .end(); it++) delete *it; hXAsimmetry_                            .clear();
@@ -286,7 +298,6 @@ void Charge::destroy()
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetry_                .begin(); it!=h2DXcellChargeAsimmetry_                .end(); it++) delete *it; h2DXcellChargeAsimmetry_                .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryInv_             .begin(); it!=h2DXcellChargeAsimmetryInv_             .end(); it++) delete *it; h2DXcellChargeAsimmetryInv_             .clear();
     for(std::vector<TH1F*>::iterator it=h1DXcellChargeAsimmetryInv_             .begin(); it!=h1DXcellChargeAsimmetryInv_             .end(); it++) delete *it; h1DXcellChargeAsimmetryInv_             .clear();
-    //for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryInv_             .begin(); it!=h2DXcellChargeAsimmetryInv_             .end(); it++) delete *it; h2DXcellChargeAsimmetryInv_             .clear();
     for(std::vector<TH1F*>::iterator it=h1DXcellChargeAsimmetry_                .begin(); it!=h1DXcellChargeAsimmetry_                .end(); it++) delete *it; h1DXcellChargeAsimmetry_                .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryUnconstrained_   .begin(); it!=h2DXcellChargeAsimmetryUnconstrained_   .end(); it++) delete *it; h2DXcellChargeAsimmetryUnconstrained_   .clear();
     for(std::vector<TH2F*>::iterator it=h2DXcellChargeAsimmetryUnconstrainedInv_.begin(); it!=h2DXcellChargeAsimmetryUnconstrainedInv_.end(); it++) delete *it; h2DXcellChargeAsimmetryUnconstrainedInv_.clear();
@@ -751,8 +762,14 @@ void Charge::setErrorsBar(int planeID)
     hName.str(""); hName << "h1DXcellChargeAsimmetry_" << planeName;
     h1DXcellChargeAsimmetry_.push_back((TH1F*)h2DXcellChargeAsimmetry_[planeID]->ProfileX(hName.str().c_str(),1,-1));
 
+
+
+    // @@@ Please do not modify this code @@@
     hName.str(""); hName << "h1DXcellChargeAsimmetryInv_" << planeName;
     h1DXcellChargeAsimmetryInv_.push_back((TH1F*)h2DXcellChargeAsimmetryInv_[planeID]->ProfileX(hName.str().c_str(),1,-1));
+    // ======================================
+
+
 
     hName.str(""); hName << "h1DXcellChargeAsimmetryUnconstrained_" << planeName;
     h1DXcellChargeAsimmetryUnconstrained_.push_back((TH1F*)h2DXcellChargeAsimmetryUnconstrained_[planeID]->ProfileX(hName.str().c_str(),1,-1));
@@ -768,8 +785,14 @@ void Charge::setErrorsBar(int planeID)
     hName.str(""); hName << "h1DYcellChargeAsimmetry_" << planeName;
     h1DYcellChargeAsimmetry_.push_back((TH1F*)h2DYCellChargeAsimmetry_[planeID]->ProfileX(hName.str().c_str(),1,-1));
 
+
+
+    // @@@ Please do not modify this code @@@
     hName.str(""); hName << "h1DYcellChargeAsimmetryInv_" << planeName;
-    h1DYcellChargeAsimmetryInv_.push_back((TH1F*)h2DYcellChargeAsimmetryInvCutOnEntries_[planeID]->ProfileX(hName.str().c_str(),1,-1));
+    h1DYcellChargeAsimmetryInv_.push_back((TH1F*)h2DYcellChargeAsimmetryInv_[planeID]->ProfileX(hName.str().c_str(),1,-1));
+    // ======================================
+
+
 
     theAnalysisManager_->cd("/Charge/" + planeName + "/YAsimmetry4Rows25x600");
 
@@ -866,22 +889,46 @@ void Charge::setErrorsBar(int planeID)
 
     double binError;
 
+
+
+    // @@@ Please do not modify this code @@@
     int nBinsX = h2DXcellCharge_[planeID]->GetNbinsX();
     TH1D* hXchargeTmp[nBinsX];
-    for(int bX=1; bX<=nBinsX; ++bX)
-    {
+    for (int bX = 1; bX <= nBinsX; ++bX)
+      {
         hName.str(""); hName << "Xcharge_Proj_bin_" << bX;
         hXchargeTmp[bX-1] = h2DXcellCharge_[planeID]->ProjectionY(hName.str().c_str(),bX,bX);
-        if(hXchargeTmp[bX-1]->GetEntries()!=0)
-        {
-            binError = hXchargeTmp[bX-1]->GetRMS()/sqrt(hXchargeTmp[bX-1]->GetEntries());
-            h1DXcellCharge_[planeID]->SetBinError(bX,binError);
-        }
-        else
-            continue;
-    }
 
-    for(int p=0; p<nBinsX; p++) hXchargeTmp[p]->Delete("0");
+        if (hXchargeTmp[bX-1]->GetEntries() != 0)
+	  {
+            binError = hXchargeTmp[bX-1]->GetRMS() / sqrt(hXchargeTmp[bX-1]->GetEntries());
+            h1DXcellCharge_[planeID]->SetBinError(bX,binError);
+	  }
+        else continue;
+      }
+    
+    for (int p = 0; p < nBinsX; p++) hXchargeTmp[p]->Delete("0");
+
+
+    nBinsX = h2DXcellChargeSecondHit_[planeID]->GetNbinsX();
+    TH1D* hXchargeSecondHitTmp[nBinsX];
+    for(int bX = 1; bX <= nBinsX; ++bX)
+      {
+        hName.str(""); hName << "XchargeSecondHit_Proj_bin_" << bX;
+        hXchargeSecondHitTmp[bX-1] = h2DXcellChargeSecondHit_[planeID]->ProjectionY(hName.str().c_str(),bX,bX);
+
+        if (hXchargeSecondHitTmp[bX-1]->GetEntries() != 0)
+	  {
+            binError = hXchargeSecondHitTmp[bX-1]->GetRMS() / sqrt(hXchargeSecondHitTmp[bX-1]->GetEntries());
+            h1DXcellChargeSecondHit_[planeID]->SetBinError(bX,binError);
+	  }
+        else continue;
+      }
+    
+    for (int p = 0; p < nBinsX; p++) hXchargeSecondHitTmp[p]->Delete("0");
+    // ======================================
+
+
 
     nBinsX = h2DXcellChargeSumLE2_[planeID]->GetNbinsX();
     TH1D* hXchargeSumLE2Tmp[nBinsX];
@@ -919,22 +966,46 @@ void Charge::setErrorsBar(int planeID)
 
     theAnalysisManager_->cd("/Charge/" + planeName + "/YcellCharge1D");
 
+
+
+    // @@@ Please do not modify this code @@@ 
     int nBinsY = h2DYcellCharge_[planeID]->GetNbinsX();
     TH1D* hYchargeTmp[nBinsX];
-    for(int bY=1; bY<=nBinsY; ++bY)
-    {
+    for (int bY = 1; bY <= nBinsY; ++bY)
+      {
         hName.str(""); hName << "Ycharge_Proj_bin_" << bY;
         hYchargeTmp[bY-1] = h2DYcellCharge_[planeID]->ProjectionY(hName.str().c_str(),bY,bY);
-        if(hYchargeTmp[bY-1]->GetEntries()!=0)
-        {
-            binError = hYchargeTmp[bY-1]->GetRMS()/sqrt(hYchargeTmp[bY-1]->GetEntries());
-            h1DYcellCharge_[planeID]->SetBinError(bY,binError);
-        }
-        else
-            continue;
-    }
 
-    for(int p=0; p<nBinsY; p++) hYchargeTmp[p]->Delete("0");
+        if (hYchargeTmp[bY-1]->GetEntries() != 0)
+	  {
+	    binError = hYchargeTmp[bY-1]->GetRMS() / sqrt(hYchargeTmp[bY-1]->GetEntries());
+            h1DYcellCharge_[planeID]->SetBinError(bY,binError);
+	  }
+        else continue;
+      }
+    
+    for (int p = 0; p < nBinsY; p++) hYchargeTmp[p]->Delete("0");
+
+
+    nBinsY = h2DYcellChargeSecondHit_[planeID]->GetNbinsX();
+    TH1D* hYchargeSecondHitTmp[nBinsX];
+    for(int bY = 1; bY <= nBinsY; ++bY)
+      {
+        hName.str(""); hName << "YchargeSecondHit_Proj_bin_" << bY;
+        hYchargeSecondHitTmp[bY-1] = h2DYcellChargeSecondHit_[planeID]->ProjectionY(hName.str().c_str(),bY,bY);
+
+        if (hYchargeSecondHitTmp[bY-1]->GetEntries() != 0)
+	  {
+	    binError = hYchargeSecondHitTmp[bY-1]->GetRMS() / sqrt(hYchargeSecondHitTmp[bY-1]->GetEntries());
+            h1DYcellChargeSecondHit_[planeID]->SetBinError(bY,binError);
+	  }
+        else continue;
+      }
+    
+    for(int p = 0; p < nBinsY; p++) hYchargeSecondHitTmp[p]->Delete("0");
+    // ======================================
+
+
 
     nBinsY = h2DYcellChargeSumLE2_[planeID]->GetNbinsX();
     TH1D* hYchargeSumLE2Tmp[nBinsX];
@@ -1910,14 +1981,15 @@ void Charge::xChargeDivision(bool pass, int planeID, const Data& data, int threa
     if( !pass || !data.getIsInDetector(planeID) )
         return;
 
-    if (data.getYPixelResidualLocal(planeID) > 20 || data.getYPixelResidualLocal(planeID) < -20)
-        return;
-
     float maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str())                                   ;
     float maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str())                                   ;
 
+    // Mauro : what does it mean ? Probably useful for different pitch sensors
     if( data.getXPitchLocal(planeID) > maxPitchX || data.getYPitchLocal(planeID) > maxPitchY )
         return;
+    // Mauro : wredundant cut since it's already applied with "pass"
+    // if (data.getYPixelResidualLocal(planeID) > 20 || data.getYPixelResidualLocal(planeID) < -20)
+    //     return;
 
     float xRes = 0;
     float yRes = 0;
@@ -1937,77 +2009,88 @@ void Charge::xChargeDivision(bool pass, int planeID, const Data& data, int threa
     int           col       = data.getColPredicted(planeID)         ;
     int           run       = data.getRunNumber()                   ;
 
-    if( !theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) )
+    if( !theWindow->checkWindow(col,row,run) )
         return;
+
+
+
+    // @@@ Please do not modify this code @@@
+    if ((theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) == true) && (data.getClusterSize(planeID) <= 4))
+      {
+	for(int h = 0; h < data.getClusterSize(planeID); ++h)
+	  {
+	    if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // hits are in the window
+		|| !data.getIsPixelCalibrated  (h,planeID)                                                         // pixels are calibrated
+		||  data.getClusterPixelRow    (h,planeID) != row                                                  // hits are on the same column (sharing is along the row - x direction)
+		||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // charge is over threshold
+		||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // maximum allowed charge for this physics
+	      return;
+	  }
+
+	THREADED(h1DXcellChargeNorm_          [planeID])->Fill(xRes);
+	THREADED(h1DXcellChargeSecondHitNorm_ [planeID])->Fill(xRes);
+	
+	if (data.getHasHit(planeID) == true)
+	  {
+	    for(int h = 0; h < data.getClusterSize(planeID); ++h)
+	      {
+		if (data.getClusterPixelRow(h,planeID) == row && data.getClusterPixelCol(h,planeID) == col)
+		  {
+		    THREADED(h2DXcellCharge_          [planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
+		    THREADED(h2DXcellChargeSecondHit_ [planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
+		    THREADED(h1DXcellCharge_          [planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
+		    THREADED(h1DXcellChargeSecondHit_ [planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
+		  }
+		break;
+	      }
+
+	    for (int h = 0; h < data.getClusterSize(planeID); ++h)
+	      {
+	    	if (xRes <= 0 && data.getClusterPixelCol(h,planeID) - col == 1 && data.getClusterPixelRow(h,planeID) == row)
+	    	  {
+		    THREADED(h2DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
+	    	    THREADED(h1DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(h, planeID));
+	    	    break;
+	    	  }
+	    	else if (xRes > 0 && data.getClusterPixelCol(h,planeID) - col == -1 && data.getClusterPixelRow(h,planeID) == row)
+	    	  {
+		    THREADED(h2DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
+	    	    THREADED(h1DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(h, planeID));
+	    	    break;
+	    	  }
+	      }
+	  }
+      }
+    // ======================================
+
+
 
     THREADED(h1DXallTracks_[planeID])->Fill(xRes);
 
     int size = data.getClusterSize(planeID);
     if( data.getHasHit(planeID) && size <= 3 )
-    {
+      {
         for(int h=0; h<size; ++h)
-        {
+	  {
             if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
                    || !data.getIsPixelCalibrated(h,planeID)                                                           //pixels are calibrated
                    ||  data.getClusterPixelRow    (h,planeID) != row                                                  //hits are on the same row (sharing is along the row - x direction)
                    ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                                //charge is over threshold
                    ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_   )                        //maximum allowed charge for this physics
-                return;
-        }
-
+	      return;
+	  }
+	
         int hitID = -1;
         for(int h=0; h<size; ++h)
-        {
+	  {
             if( data.getClusterPixelRow(h,planeID) == row && data.getClusterPixelCol(h,planeID) == col )
-            {
-                THREADED(h2DXcellCharge_          [planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
-                THREADED(h1DXcellCharge_          [planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
+	      {
                 THREADED(h1DXcellChargeNormToAll_ [planeID])->Fill(xRes,data.getClusterPixelCharge(h,planeID));
-                THREADED(h1DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(h, planeID));
-                THREADED(h1DXcellChargeSecondHitNorm_[planeID])->Fill(xRes);
-                THREADED(h1DXcellChargeNorm_[planeID])->Fill(xRes);
                 hitID = h;
-                if (size > 1)
-                {
-                    for (int g = 0; g < size; ++g)
-                    {
-                        if (g != hitID)
-                        {
-                            if (xRes >= 0 && data.getClusterPixelCol(g,planeID) - col == 1 && data.getClusterPixelRow(g,planeID) == row)
-                            {
-                                THREADED(h1DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(g, planeID));
-                                THREADED(h1DXcellChargeSecondHitNorm_[planeID])->Fill(xRes);
-                            }
-                            else if (xRes < 0 && data.getClusterPixelCol(g,planeID) - col == -1 && data.getClusterPixelRow(g,planeID) == row)
-                            {
-                                THREADED(h1DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(g, planeID));
-                                THREADED(h1DXcellChargeSecondHitNorm_[planeID])->Fill(xRes);
-                            }
-                        }
-                    }
-                }
                 break;
-            }
-        }
-
-        if( hitID == -1 )
-        {
-            for (int l =0; l<size; ++l)
-            {
-                if (xRes <= 0 && data.getClusterPixelCol(l,planeID) - col == 1 && data.getClusterPixelRow(l,planeID) == row )
-                {
-                    THREADED(h1DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(l, planeID));
-                    THREADED(h1DXcellChargeSecondHitNorm_[planeID])->Fill(xRes);
-                }
-                else if (xRes > 0 && data.getClusterPixelCol(l,planeID) - col == -1 && data.getClusterPixelRow(l,planeID) == row )
-                {
-                    THREADED(h1DXcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(l, planeID));
-                    THREADED(h1DXcellChargeSecondHitNorm_[planeID])->Fill(xRes);
-                }
-            }
-            return;
-        }
-
+	      }
+	  }
+	
         if( size == 1 )
         {
             THREADED(h2DXcellSingleHits_ [planeID])->Fill(xRes,yRes);
@@ -2057,7 +2140,7 @@ void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
     if( !pass || !data.getIsInDetector(planeID)|| !data.getHasHit(planeID) )
         return;
 
-    float maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str())                                   ;
+    float maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
 
     if( data.getXPitchLocal(planeID) > maxPitchX )
         return;
@@ -2126,6 +2209,11 @@ void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
         }
 
         totalCharge = chargeLeft + chargeRight;
+
+
+	// Mauro : cut on delta rays
+	if (totalCharge > maxChargeDeltaRay) return;
+
 
         if (totalCharge > 0)
         {
@@ -2290,10 +2378,12 @@ void Charge::yChargeDivision(bool pass, int planeID, const Data& data, int threa
     float maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str())                                   ;
     float maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str())                                   ;
 
+    // Mauro : what does it mean ? Probably useful for different pitch sensors
     if( data.getXPitchLocal(planeID) > maxPitchX || data.getYPitchLocal(planeID) > maxPitchY )
         return;
-    if (data.getXPixelResidualLocal(planeID) > 55 || data.getXPixelResidualLocal(planeID) < -55)
-        return;
+    // Mauro : wredundant cut since it's already applied with "pass"
+    // if (data.getXPixelResidualLocal(planeID) > 55 || data.getXPixelResidualLocal(planeID) < -55)
+    //     return;
 
     float xRes = 0;
     float yRes = 0;
@@ -2316,6 +2406,59 @@ void Charge::yChargeDivision(bool pass, int planeID, const Data& data, int threa
     if( !theWindow->checkWindow(col,row,run) )
         return;
 
+
+
+    // @@@ Please do not modify this code @@@
+    if ((theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) == true) && (data.getClusterSize(planeID) <= 4))
+      {
+	for(int h = 0; h < data.getClusterSize(planeID); ++h)
+	  {
+	    if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // hits are in the window
+		|| !data.getIsPixelCalibrated  (h,planeID)                                                         // pixels are calibrated
+		||  data.getClusterPixelCol    (h,planeID) != col                                                  // hits are on the same column (sharing is along the column - y direction)
+		||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // charge is over threshold
+		||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // maximum allowed charge for this physics
+	      return;
+	  }
+
+	THREADED(h1DYcellChargeNorm_          [planeID])->Fill(yRes);
+	THREADED(h1DYcellChargeSecondHitNorm_ [planeID])->Fill(yRes);
+
+	if (data.getHasHit(planeID) == true)
+	  {
+	    for(int h = 0; h < data.getClusterSize(planeID); ++h)
+	      {
+		if (data.getClusterPixelRow(h,planeID) == row && data.getClusterPixelCol(h,planeID) == col)
+		  {
+		    THREADED(h2DYcellCharge_          [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
+		    THREADED(h2DYcellChargeSecondHit_ [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
+		    THREADED(h1DYcellCharge_          [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
+		    THREADED(h1DYcellChargeSecondHit_ [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
+		  }
+		break;
+	      }
+
+	    for (int h = 0; h < data.getClusterSize(planeID); ++h)
+	      {
+	    	if (yRes <= 0 && data.getClusterPixelRow(h,planeID) - row == 1 && data.getClusterPixelCol(h,planeID) == col)
+	    	  {
+		    THREADED(h2DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
+	    	    THREADED(h1DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(h, planeID));
+	    	    break;
+	    	  }
+	    	else if (yRes > 0 && data.getClusterPixelRow(h,planeID) - row == -1 && data.getClusterPixelCol(h,planeID) == col)
+	    	  {
+		    THREADED(h2DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
+	    	    THREADED(h1DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(h, planeID));
+	    	    break;
+	    	  }
+	      }
+	  }
+      }
+    // ======================================
+
+
+
     THREADED(h1DYallTracks_[planeID])->Fill(yRes);
     if (fabs(data.getXPixelResidualLocal(planeID)) > 35)
     {
@@ -2337,60 +2480,15 @@ void Charge::yChargeDivision(bool pass, int planeID, const Data& data, int threa
 
         int hitID = -1;
         for(int h=0; h<size; ++h)
-        {
+	  {
             if(data.getClusterPixelRow(h,planeID) == row && data.getClusterPixelCol(h,planeID) == col)
-            {
-                THREADED(h1DYcellCharge_          [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));//yRes=1er cuadro rojo
-                THREADED(h1DYcellChargeNormToAll_ [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
-                THREADED(h2DYcellCharge_          [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
-                if (fabs(data.getXPixelResidualLocal(planeID)) > 35)
-                {
-                    THREADED(h1DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
-                    THREADED(h1DYcellChargeSecondHitNorm_[planeID])->Fill(yRes);
-                    if (size > 1)
-                    {
-                        for (int g = 0; g < size; ++g)
-                        {
-                            if (g != hitID)
-                            {
-                                if (yRes > 0 && data.getClusterPixelRow(g,planeID) - row == 1 && data.getClusterPixelCol(g,planeID) == col)
-                                {
-                                    THREADED(h1DYcellChargeSecondHit_[planeID])->Fill(xRes,data.getClusterPixelCharge(g, planeID));
-                                    THREADED(h1DYcellChargeSecondHitNorm_[planeID])->Fill(xRes);
-                                }
-                                else if (yRes <= 0 && data.getClusterPixelRow(g,planeID) - row == -1 && data.getClusterPixelCol(g,planeID) == col)
-                                {
-                                    THREADED(h1DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(g, planeID));
-                                    THREADED(h1DYcellChargeSecondHitNorm_[planeID])->Fill(yRes);
-                                }
-                            }
-                        }
-                    }
-                }
-                THREADED(h1DYcellChargeNorm_[planeID])->Fill(yRes);
+	      {
+		THREADED(h1DYcellChargeNormToAll_ [planeID])->Fill(yRes,data.getClusterPixelCharge(h,planeID));
                 hitID = h;
                 break;
-            }
-        }
-
-        if( hitID == -1 && fabs(data.getXPixelResidualLocal(planeID)) > 35)
-        {
-            for (int l =0; l<size; ++l)
-            {
-                if (yRes <= 0 && data.getClusterPixelRow(l,planeID) - row == 1 && data.getClusterPixelCol(l,planeID) == col )
-                {
-                    THREADED(h1DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(l, planeID));
-                    THREADED(h1DYcellChargeSecondHitNorm_[planeID])->Fill(yRes);
-                }
-                else if (yRes > 0 && data.getClusterPixelRow(l,planeID) - row == -1 && data.getClusterPixelCol(l,planeID) == col )
-                {
-                    THREADED(h1DYcellChargeSecondHit_[planeID])->Fill(yRes,data.getClusterPixelCharge(l, planeID));
-                    THREADED(h1DYcellChargeSecondHitNorm_[planeID])->Fill(yRes);
-                }
-            }
-            return;
-        }
-
+	      }
+	  }
+	
         if( size == 1 )
         {
             THREADED(h1DYcellSingleHits_ [planeID])->Fill(yRes);
@@ -2444,9 +2542,9 @@ void Charge::yAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
         return;
 
     //Calculating asimmetry only for standard pixels
-    float yPitch = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+    float maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
 
-    if( data.getYPitchLocal(planeID) > yPitch )
+    if( data.getYPitchLocal(planeID) > maxPitchY )
         return;
 
 
@@ -2513,6 +2611,11 @@ void Charge::yAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
         }
 
         totalCharge = chargeDown + chargeUp;
+
+
+	// Mauro : cut on delta rays
+	if (totalCharge > maxChargeDeltaRay) return;
+
 
         if(totalCharge > 0)
         {
@@ -2936,8 +3039,8 @@ void Charge::normalizeEtaDistribution (int p)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Charge::normalizeEtaInverse (int p)
 {
-    int ip;
-    double xp;
+    // int ip;
+    // double xp;
     /*
     for (int j = 1; j < h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetNbins()+1; ++j)
     {
@@ -2951,16 +3054,16 @@ void Charge::normalizeEtaInverse (int p)
     h2DXcellChargeAsimmetryInv_[p]->Scale((double)projX_[p]->GetEntries()/(double)projX_[p]->GetXaxis()->GetNbins());
 */
 
-    for (int j = 1; j < h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetNbins()+1; ++j)
-    {
-        xp = h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetBinCenter(j);
-        ip = h1DXallTracks_[p]->GetXaxis()->FindBin(xp);
-        if((double)h1DXallTracks_[p]->GetBinContent(ip)<=0.) continue;
-        for (int i = 1; i < h2DXcellChargeAsimmetryInv_[p]->GetXaxis()->GetNbins()+1; ++i)
-            h2DXcellChargeAsimmetryInv_[p]->SetBinContent(i, j, (double)h2DXcellChargeAsimmetryInv_[p]->GetBinContent(i, j)/(double)h1DXallTracks_[p]->GetBinContent(ip));
-    }
+    // for (int j = 1; j < h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetNbins()+1; ++j)
+    // {
+    //     xp = h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->GetBinCenter(j);
+    //     ip = h1DXallTracks_[p]->GetXaxis()->FindBin(xp);
+    //     if((double)h1DXallTracks_[p]->GetBinContent(ip)<=0.) continue;
+    //     for (int i = 1; i < h2DXcellChargeAsimmetryInv_[p]->GetXaxis()->GetNbins()+1; ++i)
+    //         h2DXcellChargeAsimmetryInv_[p]->SetBinContent(i, j, (double)h2DXcellChargeAsimmetryInv_[p]->GetBinContent(i, j)/(double)h1DXallTracks_[p]->GetBinContent(ip));
+    // }
 
-    h2DXcellChargeAsimmetryInv_[p]->Scale((double)h1DXallTracks_[p]->GetEntries()/(double)h1DXallTracks_[p]->GetXaxis()->GetNbins());
+    // h2DXcellChargeAsimmetryInv_[p]->Scale((double)h1DXallTracks_[p]->GetEntries()/(double)h1DXallTracks_[p]->GetXaxis()->GetNbins());
 
     //-----------------------------------------------------------------------------------------------------------------------------//
 
@@ -3321,6 +3424,7 @@ void Charge::endJob(void)
         ADD_THREADED(h1DXcellChargeSecondHitNorm_             [p]);
 
         ADD_THREADED(h2DXcellCharge_                          [p]);
+        ADD_THREADED(h2DXcellChargeSecondHit_                 [p]);
         ADD_THREADED(h2DXcellChargeSumLE2_                    [p]);
         ADD_THREADED(h2DXcellChargeSumLE3_                    [p]);
         ADD_THREADED(h2DXcellSingleHits_                      [p]);
@@ -3347,6 +3451,7 @@ void Charge::endJob(void)
         ADD_THREADED(h1DYcellChargeSecondHitNorm_             [p]);
 
         ADD_THREADED(h2DYcellCharge_                          [p]);
+        ADD_THREADED(h2DYcellChargeSecondHit_                 [p]);
         ADD_THREADED(h2DYcellChargeSumLE2_                    [p]);
         ADD_THREADED(h2DYcellChargeSumLE3_                    [p]);
         ADD_THREADED(h2DYcellSingleHits_                      [p]);
@@ -3494,13 +3599,13 @@ void Charge::endJob(void)
         h1DXcellChargeSumLE2NormToAll_[p]->Divide(h1DXallTracks_            [p]);
         h1DXcellChargeSumLE3_         [p]->Divide(h1DXcellChargeSumLE3Norm_ [p]);
         h1DXcellChargeSumLE3NormToAll_[p]->Divide(h1DXallTracks_            [p]);
-        h1DXcellChargeSecondHit_      [p]->Divide(h1DXallTracks_            [p]);
+        h1DXcellChargeSecondHit_      [p]->Divide(h1DXcellChargeSecondHitNorm_[p]);
         hCellChargeCoarse_            [p]->Divide(hCellChargeCoarseNorm_    [p]);
 
         h1DYcellCharge_               [p]->Divide(h1DYcellChargeNorm_       [p]);
         h1DYcellChargeNormToAll_      [p]->Divide(h1DYallTracks_            [p]);
         h1DYcellChargeSumLE2_         [p]->Divide(h1DYcellChargeSumLE2Norm_ [p]);
-        h1DYcellChargeSecondHit_      [p]->Divide(h1DYallTracksNoElectrodes_[p]);
+        h1DYcellChargeSecondHit_      [p]->Divide(h1DYcellChargeSecondHitNorm_[p]);
         h1DYcellChargeSumLE2NormToAll_[p]->Divide(h1DYallTracks_            [p]);
         h1DYcellChargeSumLE3_         [p]->Divide(h1DYcellChargeSumLE3Norm_ [p]);
         h1DYcellChargeSumLE3NormToAll_[p]->Divide(h1DYallTracks_            [p]);
@@ -3615,6 +3720,11 @@ void Charge::endJob(void)
         h1DYcellChargeSumLE3_                    [p]->SetMarkerSize(0.6);
         h1DYcellChargeSumLE3_                    [p]->SetMarkerColor(kBlue);
         h1DYcellChargeSumLE3_                    [p]->SetLineColor(kBlue);
+
+        h1DXcellChargeSecondHit_                 [p]->SetMarkerStyle(20);
+        h1DXcellChargeSecondHit_                 [p]->SetMarkerSize(0.6);
+        h1DXcellChargeSecondHit_                 [p]->SetMarkerColor(kBlack);
+        h1DXcellChargeSecondHit_                 [p]->SetLineColor(kBlack);
 
         /*h1DXcellChargeNormToAll_                 [p]->SetMarkerStyle(20);
         h1DXcellChargeNormToAll_                 [p]->SetMarkerSize(0.6);
@@ -3935,6 +4045,8 @@ void Charge::endJob(void)
         h1DXcellChargeSecondHit_                 [p]->GetYaxis()->SetTitle("charge (electrons)");
         h2DXcellCharge_                          [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DXcellCharge_                          [p]->GetYaxis()->SetTitle("charge (electrons)");
+        h2DXcellChargeSecondHit_                 [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+        h2DXcellChargeSecondHit_                 [p]->GetYaxis()->SetTitle("charge (electrons)");
         h2DXcellChargeSumLE2_                    [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DXcellChargeSumLE2_                    [p]->GetYaxis()->SetTitle("charge (electrons)");
         h2DXcellChargeSumLE3_                    [p]->GetXaxis()->SetTitle("long pitch (um)"   );
@@ -3968,6 +4080,8 @@ void Charge::endJob(void)
         h1DYcellChargeSecondHit_                 [p]->GetYaxis()->SetTitle("charge (electrons)");
         h2DYcellCharge_                          [p]->GetXaxis()->SetTitle("short pitch (um)"  );
         h2DYcellCharge_                          [p]->GetYaxis()->SetTitle("charge (electrons)");
+        h2DYcellChargeSecondHit_                 [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+        h2DYcellChargeSecondHit_                 [p]->GetYaxis()->SetTitle("charge (electrons)");
         h2DYcellChargeSumLE2_                    [p]->GetXaxis()->SetTitle("short pitch (um)"  );
         h2DYcellChargeSumLE2_                    [p]->GetYaxis()->SetTitle("charge (electrons)");
         h1DYallTracks_                           [p]->GetXaxis()->SetTitle("short pitch (um)"  );
@@ -4730,6 +4844,10 @@ void Charge::load(TFile* file)
         hName  = "h2DXcellCharge_"                                      + planeName;
         h2DXcellCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellCharge_[p] << std::endl;
+
+        hName  = "h2DXcellChargeSecondHit_"                             + planeName;
+        h2DXcellChargeSecondHit_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DXcellChargeSecondHit_[p] << std::endl;
         
         hName  = "h2DXcellChargeSumLE2_"                                + planeName;
         h2DXcellChargeSumLE2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
@@ -4761,6 +4879,10 @@ void Charge::load(TFile* file)
         hName  = "h2DYcellCharge_"+ planeName;
         h2DYcellCharge_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
         std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellCharge_[p] << std::endl;
+
+        hName  = "h2DYcellChargeSecondHit_"+ planeName;
+        h2DYcellChargeSecondHit_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
+        std::cout << __PRETTY_FUNCTION__ << dirName+hName << h2DYcellChargeSecondHit_[p] << std::endl;
 
         hName  = "h2DYcellChargeSumLE2_"+ planeName;
         h2DYcellChargeSumLE2_.push_back((TH2F*)file->Get((dirName+hName).c_str()));
@@ -5691,6 +5813,10 @@ void Charge::book(void)
         hTitle = "Predicted cell charge vs. X coordinate "              + planeName;
         h2DXcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2,-(xPitch/2),xPitch/2, 100, -10000, 100000)));
 
+        hName  = "h2DXcellChargeSecondHit_"                             + planeName;
+        hTitle = "Predicted cell charge vs. X coordinate "              + planeName;
+        h2DXcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2,-(xPitch/2),xPitch/2, 100, -10000, 100000)));
+
         hName  = "h2DXcellChargeSumLE2_"                                + planeName;
         hTitle = "Up to 2 adjacent hits total charge vs. X coordinate " + planeName;
         h2DXcellChargeSumLE2_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2,-(xPitch/2),xPitch/2, 100, -10000, 100000)));
@@ -5723,6 +5849,10 @@ void Charge::book(void)
         hName  = "h2DYcellCharge_"                                      + planeName;
         hTitle = "Predicted cell charge vs. Y coordinate "              + planeName;
         h2DYcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2 - 0,-(yPitch/2) + 1.,yPitch/2 - 0., 100, -10000, 100000)));
+
+        hName  = "h2DYcellChargeSecondHit_"                             + planeName;
+        hTitle = "Predicted cell charge vs. Y coordinate "              + planeName;
+        h2DYcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2 - 0,-(yPitch/2) + 1.,yPitch/2 - 0., 100, -10000, 100000)));
 
         hName  = "h2DYcellChargeSumLE2_"                                + planeName;
         hTitle = "Up to 2 adjacent hits total charge vs. Y coordinate " + planeName;
@@ -5852,7 +5982,7 @@ void Charge::book(void)
 
         hName  = "h1DYallTracksSize2_"                                                              + planeName;
         hTitle = "All tracks normalization - Y coordinate (Size 2) "                                    + planeName;
-        h1DYallTracksSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200,-100.,100.))); //same range as h2DYcellChargeAsimmetryInv_
+        h1DYallTracksSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200,-100.,100.)));
 
         hName  = "h1DYallTracksNoElectrodes_"                                                              + planeName;
         hTitle = "All tracks normalization - Y coordinate "                                    + planeName;
@@ -5884,7 +6014,7 @@ void Charge::book(void)
 
         hName  = "h1DYcellChargeSecondHitNorm_"                                                       + planeName;
         hTitle = "Up to 2 adjacent hits total charge, second hit distribution - X coordinate "     + planeName;
-        h1DYcellChargeSecondHitNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), (int)yPitch/2,-(yPitch/2),yPitch/2)));
+        h1DYcellChargeSecondHitNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), (int)yPitch/2 - 0,-(yPitch/2) + 1.,yPitch/2 - 0.)));
 
         theAnalysisManager_->cd("Charge/" + planeName);
 
@@ -5907,9 +6037,15 @@ void Charge::book(void)
         hTitle = "L/R charge asimmetry - X coordinate "                             + planeName;
         h2DXcellChargeAsimmetry_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 2*(int)xPitch/2, -(xPitch/2), xPitch/2, 102, -1.1, 1.1)));
 
+
+
+	// @@@ Please do not modify this code @@@
         hName  = "h2DXcellChargeAsimmetryInv_"                                      + planeName;
         hTitle = "L/R charge asimmetry - X coordinate "                             + planeName;
         h2DXcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 102, -1.1, 1.1, 2*(int)xPitch/2, -(xPitch/2), xPitch/2)));
+	// ======================================
+
+
 
         hName  = "h2DXcellChargeAsimmetryUnconstrained_"                            + planeName;
         hTitle = "L/R unconstrained charge asimmetry - X coordinate "               + planeName;
@@ -5960,9 +6096,15 @@ void Charge::book(void)
         hTitle = "L/R charge asimmetry - Y coordinate "                             + planeName;
         h2DYCellChargeAsimmetry_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch+1, -(yPitch/2)-0.5, yPitch/2+0.5 , 102, -1.1, 1.1)));
 
+
+
+	// @@@ Please do not modify this code @@@
         hName  = "h2DYcellChargeAsimmetryInv_"                                      + planeName;
         hTitle = "L/R charge asimmetry - Y coordinate "                             + planeName;
-        h2DYcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 102, -1.1, 1.1, (int)200, -100, 100)));// range +- 100 is not beacause of the pitch's dimension but because of the error on the track
+        h2DYcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 102, -1.1, 1.1, 2*(int)yPitch/2, -(yPitch/2), yPitch/2)));
+	// ======================================
+
+
 
         theAnalysisManager_->cd("Charge/" + planeName);
 

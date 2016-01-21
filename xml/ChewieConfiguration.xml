@@ -179,12 +179,12 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane ZPosition="6" YPitch="50" Calibration="dut_PLT532A_LC500_cal_2_0" XPitch="300" Id="Dut0" Name="Station: 4 - Plaq: 0" ZRotation="90" XRocs="1" YRocs="1">
+    <Plane ZPosition="6" YPitch="100" Calibration="dut_PLT532A_LC500_cal_2_0" XPitch="150" Id="Dut0" Name="Station: 4 - Plaq: 0" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>1</LowerCol>
-        <HigherCol>50</HigherCol>
-        <LowerRow>20</LowerRow>
-        <HigherRow>49</HigherRow>
+        <LowerCol>2</LowerCol>
+        <HigherCol>48</HigherCol>
+        <LowerRow>2</LowerRow>
+        <HigherRow>78</HigherRow>
       </Window>
       <Calibrations Use="no">
         <File>/home/ngadiuba/MonicelliOutput/calibrationsPlots.root</File>
@@ -192,9 +192,9 @@
     </Plane>
     <Plane ZPosition="5" YPitch="100" Calibration="dut_PLT532A_LC500_cal_2_0" XPitch="150" Id="Dut1" Name="Station: 4 - Plaq: 1" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>1</LowerCol>
-        <HigherCol>50</HigherCol>
-        <LowerRow>1</LowerRow>
+        <LowerCol>2</LowerCol>
+        <HigherCol>48</HigherCol>
+        <LowerRow>2</LowerRow>
         <HigherRow>78</HigherRow>
       </Window>
       <Calibrations Use="no">
@@ -230,7 +230,7 @@
     <Analysis StandardCut="yes" Priority="5" IsToRun="no" Type="TracksAfter" DoFits="no">
       <MinHits>8</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="2" IsToRun="no" Type="Efficiency" DoFits="no">
+    <Analysis StandardCut="yes" Priority="2" IsToRun="yes" Type="Efficiency" DoFits="no">
       <Cut CutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 5" CutType="main cut"/>
       <Cut CutString="" CutType="cell efficiency"/>
       <Cut CutString="yPixelResidualLocal[22] &lt;= 30 &amp;&amp; yPixelResidualLocal[22] >= -30 &amp;&amp; ySigmaIntercept &lt;= 8" CutType="cell efficiency X"/>
@@ -238,15 +238,11 @@
       <MinHits>8</MinHits>
     </Analysis>
     <Analysis StandardCut="yes" Priority="1" IsToRun="yes" Type="Charge" DoFits="no">
-      <CellCharge>
-        <Threshold>500</Threshold>
-        <MaxCharge>60000</MaxCharge>
-      </CellCharge>
-      <TotalCharge>
-        <MinTotCharge>1000</MinTotCharge>
-        <MaxTotCharge>30000</MaxTotCharge>
-      </TotalCharge>
-      <Cut CutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 10" CutType="main cut" cutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 5"/>
+      <PixelMinimumCharge>0</PixelMinimumCharge>
+      <PixelMaximumCharge>70000</PixelMaximumCharge>
+      <ClusterMinimumCharge>0</ClusterMinimumCharge>
+      <ClusterMaximumCharge>70000</ClusterMaximumCharge>
+      <Cut CutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 5" CutType="main cut" cutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 5"/>
       <Cut CutString="" CutType="cluster Landau"/>
       <Cut CutString="xPixelResidualLocal[22] &lt;= 55 &amp;&amp; xPixelResidualLocal[22] >= -55 &amp;&amp; yPixelResidualLocal[22] &lt;= 30 &amp;&amp; yPixelResidualLocal[22] >= -30" CutType="cell Landau"/>
       <Cut CutString="" CutType="cell charge"/>
@@ -272,7 +268,7 @@
       </CalibCut>
       <MinHits>8</MinHits>
     </Analysis>
-    <Analysis StandardCut="yes" Priority="3" IsToRun="no" Type="Resolution" DoFits="no">
+    <Analysis StandardCut="yes" Priority="3" IsToRun="yes" Type="Resolution" DoFits="no">
       <Cut CutString="numberOfTracks &lt;= 1 &amp;&amp; chi2/ndof &lt;= 5" CutType="main cut"/>
       <Cut CutString="" CutType="X resolution"/>
       <Cut CutString="" CutType="Y resolution"/>

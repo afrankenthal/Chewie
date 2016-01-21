@@ -53,6 +53,8 @@ private:
     //Histograms
     std::vector<TH1F*>                 hEfficiency_                         ;
     std::vector<TH1F*>                 hEfficiencyNorm_                     ;
+    std::vector<TH1F*>                 hEfficiencyRef_                      ;
+    std::vector<TH1F*>                 hEfficiencyRefNorm_                  ;
     std::vector<TH1F*>                 h1DXcellEfficiencyFirstHit_          ;
     std::vector<TH1F*>                 h1DXcellEfficiencySecondHit_         ;
     std::vector<TH1F*>                 h1DXcellEfficiencyNorm_              ;
@@ -64,6 +66,8 @@ private:
     std::vector<TH1F*>                 hXCellEfficiencyRestricted_          ;
     std::vector<TH2F*>                 h2DEfficiency_                       ;
     std::vector<TH2F*>                 h2DEfficiencyNorm_                   ;
+    std::vector<TH2F*>                 h2DEfficiencyRef_                    ;
+    std::vector<TH2F*>                 h2DEfficiencyRefNorm_                ;
     std::vector<TH2F*>                 h2D4cellEfficiency_                  ;
     std::vector<TH2F*>                 h2D4cellEfficiencyNorm_              ;
     std::vector<TH2F*>                 h2DInefficiency_                     ;

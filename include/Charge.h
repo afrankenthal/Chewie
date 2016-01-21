@@ -155,6 +155,7 @@ private:
 
     /*------------2D cell charge - X coordinate--------------------*/
     std::vector<TH2F*>    h2DXcellCharge_                          ;
+    std::vector<TH2F*>    h2DXcellChargeSecondHit_                 ;
     std::vector<TH2F*>    h2DXcellChargeSumLE2_                    ;
     std::vector<TH2F*>    h2DXcellChargeSumLE3_                    ;
     std::vector<TH2F*>    h2DXcellDoubleHits_                      ;
@@ -165,6 +166,7 @@ private:
 
     /*------------------------2D cell charge - Y coordinate------*/
     std::vector<TH2F*>    h2DYcellCharge_                          ;
+    std::vector<TH2F*>    h2DYcellChargeSecondHit_                 ;
     std::vector<TH2F*>    h2DYcellChargeSum_                       ;
     std::vector<TH2F*>    h2DYcellChargeSumLE2_                    ;
     std::vector<TH2F*>    h2DYcellChargeSumLE3_                    ;
