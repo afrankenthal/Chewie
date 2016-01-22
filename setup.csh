@@ -48,10 +48,10 @@ else if(${HOSTNAME} == "hal9000.mib.infn.it") then
 
   #===== Local directories
   setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   $BASEDATADIR/MonicelliOutput
-  setenv CHEWIEINPUTDIR            $BASEDATADIR/ChewieInput
-  setenv CHEWIEOUTPUTDIR           $BASEDATADIR/ChewieOutput
-  setenv CHEWIEXMLDIR              $CHEWIEDIR/xml
+  setenv CHEWIEDATADIR		   ${BASEDATADIR}/MonicelliOutput
+  setenv CHEWIEINPUTDIR            ${BASEDATADIR}/ChewieInput
+  setenv CHEWIEOUTPUTDIR           ${BASEDATADIR}/ChewieOutput
+  setenv CHEWIEXMLDIR              ${CHEWIEDIR}/xml
   
   #===== Location of the ROOT components
   setenv ROOTSYS		  /opt/local/root

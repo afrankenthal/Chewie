@@ -77,26 +77,26 @@ private:
     void         makeDir               (std::string    dirName    ) ;
     void         addFile               (std::string    fileName, TFile* file) ;
 
-    MainWindow*             theMainWindow_      ;
-    QTimer*                 timer_              ;
-    Ui::HNavigator*         ui_                 ;
-    hTreeBrowser*           theHTreeBrowser_    ;
+    MainWindow                        * theMainWindow_      ;
+    QTimer                            * timer_              ;
+    Ui::HNavigator                    * ui_                 ;
+    hTreeBrowser                      * theHTreeBrowser_    ;
 
-    QString                 emptyFileLabel_     ;
-    QString                 displayAllLabel_    ;
-    QString                 displayMemoryLabel_ ;
+    QString                             emptyFileLabel_     ;
+    QString                             displayAllLabel_    ;
+    QString                             displayMemoryLabel_ ;
 
-    std::map<std::string, TFile*> openFiles_    ;
+    std::map<std::string, TFile*>       openFiles_          ;
 
-    int                     counter_            ;
-    std::stringstream       ss_                 ;
-    int                     shiftHSValue_       ;
+    int                                 counter_            ;
+    std::stringstream                   ss_                 ;
+    int                                 shiftHSValue_       ;
 
-    std::vector<FitParamManagerWidget*> theParamManager_;
-    int                                 numberOfFitting_;
-    int                                 numberofCanvas_;
+    std::vector<FitParamManagerWidget*> theParamManager_    ;
+    int                                 numberOfFitting_    ;
+    int                                 numberofCanvas_     ;
 
-    std::map<std::string, int> fitFunctions_;
+    std::map<std::string, int>          fitFunctions_       ;
 
 
 

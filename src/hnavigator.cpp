@@ -49,6 +49,8 @@ HNavigator::HNavigator(QWidget * parent) :
 {
     ui_->setupUi(this);
 
+    theHTreeBrowser_ = NULL ;
+
     this->addItem(emptyFileLabel_.toStdString()) ;
 
     this->collectExistingWidgets();
@@ -164,7 +166,7 @@ void HNavigator::checkNewObjectsInMemory(void)
 void HNavigator::updateTree(QString currentFile)
 {
     //STDLINE(currentFile.toStdString(),ACRed);
-    theHTreeBrowser_->clear();
+    if(theHTreeBrowser_) theHTreeBrowser_->clear();
     if( currentFile != displayAllLabel_ )
     {
         this->fillWidgetTree(currentFile.toStdString());
@@ -253,14 +255,15 @@ void HNavigator::addFile(std::string fileName, TFile* file)
         {
             openFiles_[fileName] = file;
             this->addItem(fileName) ;
+            return ;
         }
     }
     else if(!file->IsOpen())
     {
         openFiles_.erase(fileName);
         this->delItem(fileName);
+        return ;
     }
-
 }
 
 //===========================================================================
@@ -392,15 +395,15 @@ void HNavigator::resizeEvent(QResizeEvent * )
     int topFram = framRect.y() ; int botFram = topFram + framRect.height() ;
     int topGrbx = grbxRect.y() ; int botGrbx = topGrbx + grbxRect.height() ;
 
-    int dw = fileRect.height() + combRect.height() + grbxRect.height() + 30 ; // 40 is the total amount of vertical space between components
+    int dw = fileRect.height() + combRect.height() + grbxRect.height() + 80 ; // 40 is the total amount of vertical space between components
 
     // Adjust for width stretching first
-    ui_->hNavigatorInputFileCB->setGeometry(combRect.x(), combRect.y(), thisRect.width()-5, combRect.height()) ;
-    ui_->hNavigatorTreeFrame  ->setGeometry(framRect.x(), framRect.y(), thisRect.width()-5, framRect.height()) ;
+    ui_->hNavigatorInputFileCB->setGeometry(combRect.x(), combRect.y(), thisRect.width()-20, combRect.height()) ;
+    ui_->hNavigatorTreeFrame  ->setGeometry(framRect.x(), framRect.y(), thisRect.width()-20, framRect.height()) ;
 
     // Adjust for height stretching the only strechable part (the frame)
     framRect = ui_->hNavigatorTreeFrame  ->geometry() ;
-    ui_->hNavigatorTreeFrame  ->setGeometry(framRect.x(), framRect.y(), framRect.width()   , thisRect.height()-dw) ; // Consider room for components without vertical stretch
+    ui_->hNavigatorTreeFrame  ->setGeometry(framRect.x(), framRect.y(), thisRect.width()   , thisRect.height()-dw) ; // Consider room for components without vertical stretch
 
     // Recompute current corners for vertical stretch
     combRect = ui_->hNavigatorInputFileCB->geometry() ;
@@ -411,10 +414,10 @@ void HNavigator::resizeEvent(QResizeEvent * )
     topGrbx = botFram         ; botGrbx = topGrbx + grbxRect.height() ;
 
     // Adjust for vertical stretching
-    //  if( theHTreeBrowser_ ) // At first call this component is not yet existing
-    //    theHTreeBrowser_       ->setGeometry(framRect.x(), framRect.y(), thisRect.width()-5, framRect.height() ) ;
+      if( theHTreeBrowser_ ) // At first call this component is not yet existing
+        theHTreeBrowser_       ->setGeometry(framRect.x(), framRect.y(), thisRect.width()-5, framRect.height() ) ;
 
-    ui_->hNavigatorCanvasGB   ->setGeometry(grbxRect.x(), topGrbx     , thisRect.width()-5, grbxRect.height() ) ;
+    ui_->hNavigatorCanvasGB   ->setGeometry(grbxRect.x(), topGrbx     , thisRect.width()-0, grbxRect.height() ) ;
 
     int currentIndex = this->currentIndex() ;
     if( currentIndex == 0 )
@@ -1884,8 +1887,8 @@ void HNavigator::on_fitFuncLE_editingFinished()
     }
 
 }
-//===========================================================================================================
 
+//===========================================================================================================
 void HNavigator::on_fitPB_clicked()
 {
     ui_->fitPB->setEnabled(false);
@@ -1998,6 +2001,7 @@ void HNavigator::on_fitPB_clicked()
     return;
 }
 
+//===========================================================================================================
 std::string HNavigator::getObjectType (TObject * obj)
 {
     std::string objectType = "Unknown" ;
@@ -2013,6 +2017,7 @@ std::string HNavigator::getObjectType (TObject * obj)
     return objectType ;
 }
 
+//===========================================================================================================
 void HNavigator::on_fitLimitCB_clicked(bool checked)
 {
     if (checked == false)
@@ -2034,6 +2039,7 @@ void HNavigator::on_fitLimitCB_clicked(bool checked)
     }
 }
 
+//===========================================================================================================
 void HNavigator::on_customFunctionCB_clicked()
 {
         for (unsigned int j = 0; j < theParamManager_.size(); ++j)
@@ -2044,6 +2050,7 @@ void HNavigator::on_customFunctionCB_clicked()
         theParamManager_.clear();
 }
 
+//===========================================================================================================
 void HNavigator::on_saveImagePB_clicked()
 {
     QString localPath = getenv("CHEWIEIMAGEDIR");

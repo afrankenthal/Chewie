@@ -42,6 +42,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <sstream>
 
 class HNavigator   ;
 class AnalyzerDlg  ;
@@ -120,6 +121,8 @@ private:
     QAction*        analyzerAct_      ;
     QAction*        hNavigatorAct_    ;
     QAction*        hanSoloFitterAct_ ;
+
+    std::stringstream ss_ ;
 };
 
 #endif

@@ -1,52 +1,47 @@
-/****************************************************************************
-**
-** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** You may use this file under the terms of the BSD license as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
-**     the names of its contributors may be used to endorse or promote
-**     products derived from this software without specific prior written
-**     permission.
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+/*===============================================================================
+ * Monicelli: the FERMILAB MTEST geometry builder and track reconstruction tool
+ *
+ * Copyright (C) 2014
+ *
+ * Authors:
+ *
+ * Dario Menasce      (INFN)
+ * Luigi Moroni       (INFN)
+ * Jennifer Ngadiuba  (INFN)
+ * Stefano Terzo      (INFN)
+ * Lorenzo Uplegger   (FNAL)
+ * Luigi Vigani       (INFN)
+ *
+ * INFN: Piazza della Scienza 3, Edificio U2, Milano, Italy 20126
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ================================================================================*/
 
 #include <QApplication>
+#include <QFile>
 #include <QPlastiqueStyle>
 #include "MessageTools.h"
-
+#include <sstream>
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(Chewie);
+
+    system("clear") ;
+
+    std::stringstream ss_ ;
 
     QApplication::setStyle(new QPlastiqueStyle()) ;
     QApplication app(argc, argv);
@@ -72,6 +67,17 @@ int main(int argc, char *argv[])
         FATAL("The 'CHEWIEOUTPUTDIR' environment variable is not defined",ACYellow);
         missingEnvVariable = true;
     }
+    else
+    {
+        QFile tmpFile(envVariables) ;
+        if( !tmpFile.exists() )
+        {
+            ss_.str("") ; ss_ << "The " << envVariables << " directory (MonicelliOutputDir) does not exist" ;
+            FATAL(ss_.str(),ACRed) ;
+            FATAL("Please create one...",ACCyan) ;
+            missingEnvVariable = true;
+        }
+    }
     envVariables = getenv("CHEWIEXMLDIR");
     if(envVariables == 0)
     {
@@ -87,5 +93,22 @@ int main(int argc, char *argv[])
 
     MainWindow mainWin;
     mainWin.show();
+
+    std::string color = std::string(ACYellow)+std::string(ACBold)+std::string(ACReverse) ;
+    STDLINE("",color);
+    STDLINE("+--------------------------------------------------+",color);
+    STDLINE("|                                                  |",color);
+    STDLINE("|       W e l c o m e   t o   C h e w i e          |",color);
+    STDLINE("|                                                  |",color);
+    STDLINE("|        The MTEST pixel-telescope tracks          |",color);
+    STDLINE("|             analysis code framework              |",color);
+    STDLINE("|    at Fermi National Accelerator Laboratory      |",color);
+    STDLINE("|                                                  |",color);
+    STDLINE("|        D. Menasce, L. Moroni, S. Terzo           |",color);
+    STDLINE("|             J. Ngadiuba, L. Vigani               |",color);
+    STDLINE("|                                                  |",color);
+    STDLINE("+--------------------------------------------------+",color);
+    STDLINE("",color);
+
     return app.exec();
 }

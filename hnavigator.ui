@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>720</height>
+    <width>353</width>
+    <height>744</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,9 +34,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>45</y>
+      <y>50</y>
       <width>346</width>
-      <height>421</height>
+      <height>426</height>
      </rect>
     </property>
     <property name="sizeIncrement">
@@ -105,7 +105,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>465</y>
+      <y>485</y>
       <width>346</width>
       <height>226</height>
      </rect>
@@ -201,16 +201,21 @@
       </disabled>
      </palette>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>Controls</string>
     </property>
     <widget class="QComboBox" name="hCanvasCB">
      <property name="geometry">
       <rect>
-       <x>55</x>
-       <y>205</y>
+       <x>60</x>
+       <y>200</y>
        <width>39</width>
-       <height>16</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -227,7 +232,7 @@
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>205</y>
+       <y>203</y>
        <width>51</width>
        <height>16</height>
       </rect>
@@ -239,18 +244,18 @@
     <widget class="QComboBox" name="canvasSizeCB">
      <property name="geometry">
       <rect>
-       <x>125</x>
-       <y>205</y>
-       <width>71</width>
-       <height>16</height>
+       <x>138</x>
+       <y>200</y>
+       <width>56</width>
+       <height>20</height>
       </rect>
      </property>
     </widget>
     <widget class="QLabel" name="canvasSizeLB">
      <property name="geometry">
       <rect>
-       <x>95</x>
-       <y>205</y>
+       <x>105</x>
+       <y>203</y>
        <width>31</width>
        <height>16</height>
       </rect>
@@ -264,7 +269,7 @@
       <rect>
        <x>5</x>
        <y>15</y>
-       <width>341</width>
+       <width>336</width>
        <height>181</height>
       </rect>
      </property>
@@ -333,7 +338,7 @@
       </palette>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="actionsTP">
       <attribute name="title">
@@ -421,7 +426,7 @@ p, li { white-space: pre-wrap; }
          <x>5</x>
          <y>45</y>
          <width>46</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -437,7 +442,7 @@ p, li { white-space: pre-wrap; }
          <x>55</x>
          <y>45</y>
          <width>46</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -453,7 +458,7 @@ p, li { white-space: pre-wrap; }
          <x>175</x>
          <y>45</y>
          <width>46</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -495,7 +500,7 @@ p, li { white-space: pre-wrap; }
          <x>125</x>
          <y>45</y>
          <width>46</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -524,7 +529,7 @@ p, li { white-space: pre-wrap; }
          <x>240</x>
          <y>45</y>
          <width>46</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -540,7 +545,7 @@ p, li { white-space: pre-wrap; }
          <x>290</x>
          <y>45</y>
          <width>46</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -594,7 +599,7 @@ p, li { white-space: pre-wrap; }
          <x>240</x>
          <y>70</y>
          <width>61</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -788,7 +793,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>70</y>
+         <y>72</y>
          <width>226</width>
          <height>16</height>
         </rect>
@@ -807,7 +812,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>10</x>
          <y>5</y>
-         <width>111</width>
+         <width>126</width>
          <height>16</height>
         </rect>
        </property>
@@ -831,9 +836,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QTabWidget" name="parametersTW">
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>140</x>
          <y>15</y>
-         <width>201</width>
+         <width>191</width>
          <height>116</height>
         </rect>
        </property>
@@ -844,11 +849,48 @@ p, li { white-space: pre-wrap; }
       <widget class="QPushButton" name="fitPB">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>130</y>
-         <width>46</width>
-         <height>25</height>
+         <x>5</x>
+         <y>135</y>
+         <width>36</width>
+         <height>20</height>
         </rect>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>255</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>255</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>255</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
        </property>
        <property name="text">
         <string>Fit!</string>
@@ -857,9 +899,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_3">
        <property name="geometry">
         <rect>
-         <x>255</x>
+         <x>240</x>
          <y>135</y>
-         <width>46</width>
+         <width>56</width>
          <height>16</height>
         </rect>
        </property>
@@ -873,34 +915,34 @@ p, li { white-space: pre-wrap; }
          <x>300</x>
          <y>135</y>
          <width>36</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
       </widget>
       <widget class="QDoubleSpinBox" name="fitRangeMinSB">
        <property name="geometry">
         <rect>
-         <x>135</x>
+         <x>115</x>
          <y>135</y>
          <width>56</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
       </widget>
       <widget class="QDoubleSpinBox" name="fitRangeMaxSB">
        <property name="geometry">
         <rect>
-         <x>195</x>
+         <x>180</x>
          <y>135</y>
          <width>56</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
       </widget>
       <widget class="QCheckBox" name="fitLimitCB">
        <property name="geometry">
         <rect>
-         <x>75</x>
+         <x>45</x>
          <y>135</y>
          <width>66</width>
          <height>20</height>
@@ -929,24 +971,79 @@ p, li { white-space: pre-wrap; }
       <widget class="QLineEdit" name="fitFuncLE">
        <property name="geometry">
         <rect>
-         <x>7</x>
-         <y>105</y>
-         <width>116</width>
-         <height>24</height>
+         <x>5</x>
+         <y>110</y>
+         <width>126</width>
+         <height>20</height>
         </rect>
        </property>
       </widget>
       <widget class="QCheckBox" name="customFunctionCB">
        <property name="geometry">
         <rect>
-         <x>0</x>
-         <y>85</y>
-         <width>136</width>
+         <x>5</x>
+         <y>90</y>
+         <width>131</width>
          <height>20</height>
         </rect>
        </property>
        <property name="text">
-        <string>Or write it your own</string>
+        <string>Write it your own</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Image</string>
+      </attribute>
+      <widget class="QPushButton" name="saveImagePB">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>86</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>255</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>255</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>255</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="text">
+        <string>Save Image</string>
        </property>
       </widget>
      </widget>
@@ -955,32 +1052,19 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>205</y>
+       <y>200</y>
        <width>141</width>
-       <height>16</height>
+       <height>21</height>
       </rect>
      </property>
      <property name="title">
       <string/>
      </property>
-     <widget class="QLabel" name="currentCanvasLB_2">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>0</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Split:</string>
-      </property>
-     </widget>
      <widget class="QRadioButton" name="splitCanvasXYRB">
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>0</y>
+        <y>5</y>
         <width>41</width>
         <height>16</height>
        </rect>
@@ -996,7 +1080,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>0</y>
+        <y>5</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1009,7 +1093,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>0</y>
+        <y>5</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1018,26 +1102,26 @@ p, li { white-space: pre-wrap; }
        <string>Y</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QPushButton" name="saveImagePB">
-     <property name="geometry">
-      <rect>
-       <x>225</x>
-       <y>5</y>
-       <width>111</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Save Image</string>
-     </property>
+     <widget class="QLabel" name="currentCanvasLB_2">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>5</y>
+        <width>36</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Split:</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="openFilePB">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>5</x>
+      <y>2</y>
       <width>86</width>
       <height>21</height>
      </rect>
@@ -1086,9 +1170,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="saveComponentsPB">
     <property name="geometry">
      <rect>
-      <x>185</x>
-      <y>0</y>
-      <width>91</width>
+      <x>170</x>
+      <y>2</y>
+      <width>106</width>
       <height>21</height>
      </rect>
     </property>
@@ -1137,7 +1221,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>0</y>
+      <y>2</y>
       <width>66</width>
       <height>21</height>
      </rect>

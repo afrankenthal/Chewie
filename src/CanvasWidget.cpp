@@ -101,7 +101,7 @@ void CanvasWidget::clear( )
 //===========================================================================
 void CanvasWidget::resizeEvent ( QResizeEvent * re )
 {
-    int margin = 20 ;
+    int margin = 0 ;
     QSize newSize(re->size().width()-margin, re->size().height()-margin); // Allow room for margins
     ui->theCanvas->resize(newSize) ;
     ui->theCanvas->GetCanvas()->Modified() ;

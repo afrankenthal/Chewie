@@ -430,10 +430,6 @@ hTreeBrowser::dirPathDef hTreeBrowser::getFullPath(QTreeWidgetItem * wItem)
 //=========================================================================
 void hTreeBrowser::showContextMenu(const QPoint &)
 {
-    //STDLINE("Must plot now!",ACRed);
-
-    std::cout << "currentCanvas_ = " << currentCanvas_ << std::endl;
-
     theHNavigator_ = theMainWindow_->getHNavigator() ;
 
     // Create suitable canvas (a singleton)
@@ -449,7 +445,6 @@ void hTreeBrowser::showContextMenu(const QPoint &)
     {
         serviceCanvas_[currentCanvas_]->clear() ;
     }
-    std::cout << "currentCanvas_ = " << currentCanvas_ << std::endl;
 
     // Add the canvas to the main window
     if( cSw_.find(currentCanvas_) == cSw_.end())
@@ -526,8 +521,6 @@ void hTreeBrowser::showContextMenu(const QPoint &)
     serviceCanvas_[currentCanvas_]->setLogX(theHNavigator_->logX());
     serviceCanvas_[currentCanvas_]->setLogY(theHNavigator_->logY());
     serviceCanvas_[currentCanvas_]->setLogZ(theHNavigator_->logZ());
-    std::cout << "currentCanvas_ = " << currentCanvas_ << std::endl;
-
 
     std::string options = "" ;
 

@@ -58,21 +58,28 @@ MainWindow::MainWindow() :
 
     mdiArea_ = new QMdiArea;
     mdiArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    mdiArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    mdiArea_->setVerticalScrollBarPolicy  (Qt::ScrollBarAsNeeded);
+
+    QLinearGradient gradient(0,100,0,100);
+    gradient.setColorAt(0.5, QColor::fromRgb( 0,  0,  0, 255));
+    gradient.setColorAt(1.0, QColor::fromRgb(60, 60, 60, 255));
+
+    QBrush mdiAreaBrush(gradient);
+    mdiArea_->setBackground(mdiAreaBrush);
+
     setCentralWidget(mdiArea_);
-    //    connect(mdiArea_, SIGNAL(subWindowActivated(QMdiSubWindow*)),
-    //            this, SLOT(updateMenus()));
+
     windowMapper_ = new QSignalMapper(this);
+
     connect(windowMapper_, SIGNAL(mapped(QWidget*)),
             this, SLOT(setActiveSubWindow(QWidget*)));
 
-    createActions();
-    createMenus();
-    createToolBars();
+    createActions  ();
+    createMenus    ();
+    createToolBars ();
     createStatusBar();
-    updateMenus();
-
-    readSettings();
+    updateMenus    ();
+    readSettings   ();
 
     setWindowTitle(tr("Chewie"));
     setUnifiedTitleAndToolBarOnMac(true);
@@ -212,12 +219,12 @@ void MainWindow::createActions()
 //===========================================================================
 void MainWindow::destroyActions()
 {
-    delete exitAct_;
-    delete separatorAct_;
-    delete aboutAct_;
-    delete aboutQtAct_;
-    delete analyzerAct_;
-    delete hNavigatorAct_;
+    delete exitAct_         ;
+    delete separatorAct_    ;
+    delete aboutAct_        ;
+    delete aboutQtAct_      ;
+    delete analyzerAct_     ;
+    delete hNavigatorAct_   ;
     delete hanSoloFitterAct_;
 }
 
@@ -310,28 +317,33 @@ void MainWindow::openAnalyzer()
         QMdiSubWindow* subWindow = mdiArea_->addSubWindow(theAnalyzer_);
         enableAnalyzerButton(false) ;
         connect(subWindow, SIGNAL(destroyed()), this, SLOT(enableAnalyzerButton()));
-        subWindow->setGeometry(5,5,1024,680);
+        subWindow->setGeometry(10,10,theAnalyzer_->width(),theAnalyzer_->height());
         subWindow->show();
     }
 }
 //===========================================================================
 void MainWindow::openHNavigator()
 {
-
     if( !theHNavigator_)
     {
         theHNavigator_ = new HNavigator(this) ;
         QMdiSubWindow* subWindow = (mdiSubWindow*)mdiArea_->addSubWindow(theHNavigator_) ;
         enableHNavigatorButton(false) ;
         connect(subWindow, SIGNAL(destroyed()), this, SLOT(enableHNavigatorButton()));
-        subWindow->setGeometry(1026,5,theHNavigator_->width()+8,theHNavigator_->height()+40) ;
+        if( theAnalyzer_ )
+        {
+            subWindow->setGeometry(theAnalyzer_->width()+17,10,theHNavigator_->width(),theHNavigator_->height()) ;
+        }
+        else
+        {
+            subWindow->setGeometry(10,10,theHNavigator_->width(),theHNavigator_->height()) ;
+        }
         subWindow->show() ;
     }
 }
 //===========================================================================
 void MainWindow::openHanSoloFitter()
 {
-
     if( !theHanSoloFitter_)
     {
         theHanSoloFitter_ = new HanSoloFitter(this) ;
