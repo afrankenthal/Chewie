@@ -7,6 +7,7 @@
 **
 ****************************************************************************/
 #include <assert.h>
+#include <utility>
 
 #include <QTextStream>
 #include <QFile>
@@ -138,7 +139,7 @@ bool XmlParser::parseDocument(QString fileName)
             file.close();
             return false;
         }
-        theAnalyses_[priority] = std::make_pair<std::string, XmlAnalysis*>(type, analysis);
+        theAnalyses_[priority] = std::make_pair(type, analysis);
     }
 
     QDomNode scan = document_->elementsByTagName("Scan").at(0);

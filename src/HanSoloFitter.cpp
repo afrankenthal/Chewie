@@ -371,7 +371,7 @@ void HanSoloFitter::getFitters(void)
 
     //Charge
     size_t pos;
-    ifstream file("src/Charge.cpp", std::ios::out);
+    std::ifstream file("src/Charge.cpp", std::ios::out);
     if(file.is_open())
     {
         while(file.good())
@@ -901,7 +901,7 @@ void HanSoloFitter::on_saveConfigurationFile_clicked(void)
 
         myFile.close();
 
-        ofstream overWrite;
+	std::ofstream overWrite;
         overWrite.open(filePath.c_str());
         overWrite << newConfiguration;
         overWrite.close();
@@ -920,7 +920,7 @@ void HanSoloFitter::on_saveConfigurationFile_clicked(void)
 
         newConfiguration = doc.toString().toUtf8().constData();
         std::string completeFile = beforeSoloConfiguration + newConfiguration + afterSoloConfiguration;
-        ofstream overWrite;
+	std::ofstream overWrite;
         overWrite.open(filePath.c_str());
         overWrite << completeFile;
         overWrite.close();
@@ -1513,10 +1513,10 @@ void HanSoloFitter::on_runButton_clicked(void)
         }
     }
 
-    fstream file("ChewieExtended/ScriptToFit.cpp", std::ios::out);
+    std::fstream file("ChewieExtended/ScriptToFit.cpp", std::ios::out);
     file.close();
 
-    fstream scriptFile("ChewieExtended/ScriptToFit.cpp");
+    std::fstream scriptFile("ChewieExtended/ScriptToFit.cpp");
     std::string filePath = "ChewieExtended/ScriptToFit.cpp";
 
     if(scriptFile.is_open())

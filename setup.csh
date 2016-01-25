@@ -7,19 +7,18 @@
 # a modified copy of the original setupQt.csh if you have by mistake accidentally edited it.
 #
 # Before running Monicelli, source YOUR own, PRIVATE **copy** of this file:
+setenv BASEDATADIR /data/TestBeam/2015_10_October
 
-setenv BASEDATADIR /raid2/data1/vtx1/dinardo/TestBeamData2015
-
-if(${HOSTNAME} == "ftbftracker01.fnal.gov") then
+if(${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
 
   setenv MonicelliDir              ../Monicelli
   setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
 
   #===== Local directories
   setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   ${BASEDATADIR}/MonicelliOutput
-  setenv CHEWIEINPUTDIR            ${BASEDATADIR}/ChewieInput
-  setenv CHEWIEOUTPUTDIR           ${BASEDATADIR}/ChewieOutput
+  setenv CHEWIEDATADIR		   /home/uplegger/Programming/MonicelliOutput
+  setenv CHEWIEINPUTDIR            /home/uplegger/Programming/ChewieInput
+  setenv CHEWIEOUTPUTDIR           /home/uplegger/Programming/ChewieOutput
   setenv CHEWIEXMLDIR              $CHEWIEDIR/xml
   
   #===== Location of the ROOT components
@@ -30,8 +29,8 @@ if(${HOSTNAME} == "ftbftracker01.fnal.gov") then
   setenv QTCREATORDIR		   /opt/local/qtcreator
 
   #===== Location of the BOOST components
-  setenv BOOSTINC		   /usr/local/include/boost
-  setenv BOOSTLIB		   /usr/local/lib
+  setenv BOOSTINC		   /usr/include
+  setenv BOOSTLIB		   /usr/lib64
 
   #===== Location of the XERCES components
   setenv XERCESCINC		   /opt/local/xerces/include
@@ -39,42 +38,7 @@ if(${HOSTNAME} == "ftbftracker01.fnal.gov") then
   
   setenv LD_LIBRARY_PATH           /usr/lib64
 
-else if(${HOSTNAME} == "hal9000.mib.infn.it") then
-
-  echo "@@@ I'm on hal9000 @@@"
-
-  setenv MonicelliDir              ../Monicelli
-  setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
-
-  #===== Local directories
-  setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   ${BASEDATADIR}/MonicelliOutput
-  setenv CHEWIEINPUTDIR            ${BASEDATADIR}/ChewieInput
-  setenv CHEWIEOUTPUTDIR           ${BASEDATADIR}/ChewieOutput
-  setenv CHEWIEXMLDIR              ${CHEWIEDIR}/xml
-  
-  #===== Location of the ROOT components
-  setenv ROOTSYS		  /opt/local/root
-
-  #===== Location of the Qt components
-  setenv QTDIR  		  /opt/local/qt
-  setenv QTCREATORDIR		  /opt/local/qtcreator-2.7.1/bin/
-  setenv QTROOTSYSDIR		  `pwd`/qtrootsys
-  setenv QTROOT_INCLUDE_PATH	  $ROOTSYS/include
-
-  #===== Location of the BOOST components
-  setenv BOOSTINC		   /usr/local/include/boost
-  setenv BOOSTLIB		   /usr/local/lib
-
-  #===== Location of the XERCES components
-  setenv XERCESCINC		  /opt/local/xerces/include
-  setenv XERCESCLIB		  /opt/local/xerces/lib
-  
-  setenv LD_LIBRARY_PATH          /usr/lib64
-
-  alias qtcreator ${QTCREATORDIR}/qtcreator
-
-else if(${HOSTNAME} == "ftbftracker01.fnal.gov" || ${HOSTNAME} == "ftbftracker02.fnal.gov" || ${HOSTNAME} == "rulinux01.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux02.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
+else if(${HOSTNAME} == "ftbftracker01.fnal.gov" || ${HOSTNAME} == "ftbftracker02.fnal.gov" || ${HOSTNAME} == "rulinux01.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux02.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux03.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux04.dhcp.fnal.gov") then
 
   setenv MonicelliDir              ../Monicelli
   setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
@@ -140,6 +104,6 @@ endif
 
 #===== Final PATH definitions
 setenv PATH			$ROOTSYS/bin:$QTDIR/bin:$QTCREATORDIR/bin:$PATH
-setenv LD_LIBRARY_PATH          $ROOTSYS/lib:$QTDIR/lib:$QTCREATORDIR/lib:$XERCESCLIB/:$CHEWIEDIR/../Monicelli/plugins/libs/:${BOOSTLIB}:$LD_LIBRARY_PATH
+setenv LD_LIBRARY_PATH          $ROOTSYS/lib:$QTDIR/lib:$QTCREATORDIR/lib:$XERCESCLIB/:$CHEWIEDIR/../Monicelli/plugins/libs/:$LD_LIBRARY_PATH
 
 #----------------------------------------------------------------------------------------------------

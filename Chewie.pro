@@ -31,7 +31,7 @@
 include("$(ROOTSYS)/include/rootcint.pri")
 
 QMAKE_CFLAGS_RELEASE   = -O3
-QMAKE_CXXFLAGS_RELEASE = -g
+QMAKE_CXXFLAGS_RELEASE = -g -std=c++11
 
 target.path   	     = ./
 sources.path  	     = ./
@@ -155,8 +155,8 @@ LIBS         	    += -lTreePlayer						  \
 
 LIBS         	    += -L$(BOOSTLIB)						  \
              	       -lboost_regex						  \
-#            	    	-lboost_system  					  \
-             	    	-lboost_filesystem
+          	       -lboost_system  					          \
+             	       -lboost_filesystem     
 
 
 LIBS         	    += -L../Monicelli/plugins/libs				  \

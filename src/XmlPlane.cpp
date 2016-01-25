@@ -1,5 +1,6 @@
 #include "XmlPlane.h"
 #include "XmlWindow.h"
+#include <utility>
 //#include <iostream>
 //////////////////////////////////////////////////////////////////////////////////////
 XmlPlane::XmlPlane(QDomNode& node)
@@ -23,7 +24,7 @@ std::pair<std::string,std::string> XmlPlane::getChipsNumber(void)
     std::string xChipsNumber = thisNode_.toElement().attribute("XRocs").toStdString();
     std::string yChipsNumber = thisNode_.toElement().attribute("YRocs").toStdString();
     //std::cout << __PRETTY_FUNCTION__ << "X: " << xChipsNumber << " Y: " << yChipsNumber << std::endl;
-    return std::make_pair<std::string,std::string>(xChipsNumber,yChipsNumber);
+    return std::make_pair(xChipsNumber,yChipsNumber);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,7 @@ std::pair<std::string,std::string> XmlPlane::getCellPitches(void)
     std::string xCellPitch = thisNode_.toElement().attribute("XPitch").toStdString();
     std::string yCellPitch = thisNode_.toElement().attribute("YPitch").toStdString();
     //std::cout << __PRETTY_FUNCTION__ << "X: " << xCellPitch << " Y: " << yCellPitch << std::endl;
-    return std::make_pair<std::string,std::string>(xCellPitch,yCellPitch);
+    return std::make_pair(xCellPitch,yCellPitch);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
