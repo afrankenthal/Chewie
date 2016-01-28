@@ -28,10 +28,10 @@
 # * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ================================================================================*/
 
-include("$(ROOTSYS)/include/rootcint.pri")
+include("$(ROOTINC)/rootcint.pri")
 
-QMAKE_CFLAGS_RELEASE   = -O3
-QMAKE_CXXFLAGS_RELEASE = -g -std=c++11
+QMAKE_CFLAGS_RELEASE   = -O3 $(CPLUSPLUSFLAGS)
+QMAKE_CXXFLAGS_RELEASE = -g  $(CPLUSPLUSFLAGS)
 
 target.path   	     = ./
 sources.path  	     = ./
@@ -146,12 +146,14 @@ INCLUDEPATH  	    += ./include						  \
              	       ../Monicelli/plugins/customCheckBox			  \
              	       ../Monicelli/plugins/customSpinBox			  \
              	       ../Monicelli/plugins/customTableWidget			  \
-             	       -pthread $(ROOTSYS)/include				  \
+             	       -pthread $(ROOTINC)			                  \
              	       $(QTDIR)/include/QtXml					  \
              	       $(XERCESCINC)						  \
              	       $(BOOSTINC)/include/boost/
 
 LIBS         	    += -lTreePlayer						  \
+
+LIBS         	    += -L$(ROOTLIB)						  \
 
 LIBS         	    += -L$(BOOSTLIB)						  \
              	       -lboost_regex						  \

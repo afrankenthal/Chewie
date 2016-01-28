@@ -391,9 +391,9 @@ void HNavigator::resizeEvent(QResizeEvent * )
     QRect framRect = ui_->hNavigatorTreeFrame  ->geometry() ;
     QRect grbxRect = ui_->hNavigatorCanvasGB   ->geometry() ;
 
-    int topComb = combRect.y() ; int botComb = topComb + combRect.height() ;
+//    int topComb = combRect.y() ; int botComb = topComb + combRect.height() ;
     int topFram = framRect.y() ; int botFram = topFram + framRect.height() ;
-    int topGrbx = grbxRect.y() ; int botGrbx = topGrbx + grbxRect.height() ;
+    int topGrbx = grbxRect.y() ; // int botGrbx = topGrbx + grbxRect.height() ;
 
     int dw = fileRect.height() + combRect.height() + grbxRect.height() + 80 ; // 40 is the total amount of vertical space between components
 
@@ -409,9 +409,9 @@ void HNavigator::resizeEvent(QResizeEvent * )
     combRect = ui_->hNavigatorInputFileCB->geometry() ;
     framRect = ui_->hNavigatorTreeFrame  ->geometry() ;
 
-    topComb = combRect.y()    ; botComb = topComb + combRect.height() ;
+//    topComb = combRect.y()    ; botComb = topComb + combRect.height() ;
     topFram = framRect.y()    ; botFram = topFram + framRect.height() ;
-    topGrbx = botFram         ; botGrbx = topGrbx + grbxRect.height() ;
+    topGrbx = botFram         ; // botGrbx = topGrbx + grbxRect.height() ;
 
     // Adjust for vertical stretching
       if( theHTreeBrowser_ ) // At first call this component is not yet existing
@@ -1904,14 +1904,16 @@ void HNavigator::on_fitPB_clicked()
 
     TObject * toFit = theHTreeBrowser_->getCurrentObject();
     TH1F * toFit1D = 0;
-    TH2F * toFit2D = 0;
+//    TH2F * toFit2D = 0;
     int hDimension = 0;
-    if (this->getObjectType(toFit).find("TH1") != std::string::npos){
+    if (this->getObjectType(toFit).find("TH1") != std::string::npos)
+    {
         toFit1D = (TH1F*)toFit;
         hDimension = 1;
     }
-    if (this->getObjectType(toFit).find("TH2") != std::string::npos){
-        toFit2D = (TH2F*)toFit;
+    if (this->getObjectType(toFit).find("TH2") != std::string::npos)
+    {
+//        toFit2D = (TH2F*)toFit;
         hDimension = 2;
     }
 

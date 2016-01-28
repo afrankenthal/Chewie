@@ -434,8 +434,8 @@ double Utilities::gaussCutByConstant (double *x, double *par)
     //only x[0] = coordinate along pitch
 
     double step = 0.05;
-    int   steps = (int)(fabs(par[1] - par[0])/step);
-    double g = 0;
+//    int   steps = (int)(fabs(par[1] - par[0])/step);
+    double g    = 0;
 
     for (double y = -par[0]; y <= par[0]; y += step)
     {
@@ -498,13 +498,13 @@ double Utilities::uniformSideSmeared (double *x, double *par)
 {
     //par[0] = lim sup fo integration (the extreme of the pixel, should always be constant; par[1] = lim inf, it depends on the cut applied on the charge; par[2] = gauss sigma, par[3] = scale factor
     //only x[0] = coordinate along pitch
-
+/*
     double parOtherSide[4];
     parOtherSide[0] = -par[0];
     parOtherSide[1] = -par[1];
     parOtherSide[2] =  par[2];
     parOtherSide[3] =  par[3];
-
+*/
     return gaussCutByConstant(x, par);// + gaussCutByConstant(x, parOtherSide);
 }
 
@@ -670,7 +670,8 @@ double Utilities::etaReproduction (double *x, double *par)
     parEta2[6] = parGauss[2];
     parEta2[7] = parGauss[3];
     parEta2[8] = parGauss[4];
-    double probSize1, probSize2, probDelta;
+    double probSize1, probSize2;
+//    double probDelta;
 /*    if (x[0] > 0.) {
         parEta1[0] = 50;
         parEta1[1] = par[4];
@@ -692,7 +693,7 @@ double Utilities::etaReproduction (double *x, double *par)
     else return 0; */
         probSize1 = uniformSideSmeared  (x, parEta1 )/(uniformSideSmeared(x, parEta1)+ uniformCenterSmearedPlusConstant(x, parGauss));
         probSize2 = uniformCenterSmeared(x, parGauss)/(uniformSideSmeared(x, parEta1)+ uniformCenterSmearedPlusConstant(x, parGauss)); //plus constant at numerator if we don't count deltas
-        probDelta = par[10]                          /(uniformSideSmeared(x, parEta1)+ uniformCenterSmearedPlusConstant(x, parGauss));
+//        probDelta = par[10]                          /(uniformSideSmeared(x, parEta1)+ uniformCenterSmearedPlusConstant(x, parGauss));
 //        std::cout << "Prob size 1: " << probSize1 << ", prob size 2: " << probSize2 << "// Size 1 value: " << uniformSideSmeared(x, parEta1) << ", size 2 " << uniformCenterSmearedPlusConstant(x, parGauss) << "!!!\n";
         if      (x[0] > 0) return -probSize1 + etaSmeared(x, parEta2)*probSize2 + 2*par[10]/(par[6]*par[0])*( x[0])*log(fabs(par[0]/( x[0]) -1));
         else if (x[0] < 0) return  probSize1 + etaSmeared(x, parEta2)*probSize2 + 2*par[10]/(par[6]*par[0])*(-x[0])*log(fabs(par[0]/(-x[0]) -1));
@@ -842,7 +843,7 @@ double Utilities::smearedSquare(double *xx, double *par){
 
 //=======================================================================================================================================================
 //void Utilities::customProfileX(TH2F *h2DHist, vector<TH1F *>&prof, const char* outputName, const char* outputTitle, int yBinMin, int yBinMax, int minNumberOfEntries){
-void Utilities::customProfileX(TH2F *h2DHist, TH1F *profile, const char* outputName, const char* outputTitle, int yBinMin, int yBinMax, int minNumberOfEntries){
+void Utilities::customProfileX(TH2F *h2DHist, TH1F *profile, const char* /*outputName*/, const char* /*outputTitle*/, int yBinMin, int yBinMax, int minNumberOfEntries){
 
     if(yBinMax<=0) yBinMax = h2DHist->GetNbinsY();
     if(yBinMin<=0) yBinMin = 1;

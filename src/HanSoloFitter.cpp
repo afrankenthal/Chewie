@@ -1954,14 +1954,14 @@ void HanSoloFitter::on_fitPB_clicked(void)
 
     TObject * toFit = hanSoloTreeBrowser_->getCurrentObject();
     TH1F * toFit1D = 0;
-    TH2F * toFit2D = 0;
+//    TH2F * toFit2D = 0;
     int hDimension = 0;
     if (this->getObjectType(toFit).find("TH1") != std::string::npos){
         toFit1D = (TH1F*)toFit;
         hDimension = 1;
     }
     if (this->getObjectType(toFit).find("TH2") != std::string::npos){
-        toFit2D = (TH2F*)toFit;
+//        toFit2D = (TH2F*)toFit;
         hDimension = 2;
     }
 

@@ -1226,20 +1226,22 @@ bool Resolution::passStandardCuts(int planeID, const Data &data)
         return passBadPlanesCut(planeID, data);
 
     int minHits = 7;//To calculate efficiency on the telescope
-    int excludeMe = 0;
+//    int excludeMe = 0;
     if(thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)//Dut case
         minHits = atoi(theParser->getAnalysesFromString("Charge")->getMinHits().c_str());
-    else if(data.getHasHit(planeID) && data.getClusterSize(planeID)<=2)//Telescope case
-        excludeMe = 1;
+//    else if(data.getHasHit(planeID) && data.getClusterSize(planeID)<=2)//Telescope case
+//        excludeMe = 1;
 
-    int hitsontelescope = 0;
-    bool HitsClusterLE2 = true;
-    for (unsigned int i = 0; i < 8; i++) {
-        if (data.getHasHit(i) == true && thePlaneMapping_->getPlaneName(i).find("Dut") == std::string::npos) hitsontelescope++;
-        if (data.getClusterSize(i) > 2) {
-            HitsClusterLE2 = false;
-        }
-    }
+//    int hitsontelescope = 0;
+//    bool HitsClusterLE2 = true;
+//    for (unsigned int i = 0; i < 8; i++) 
+//    {
+//        if (data.getHasHit(i) == true && thePlaneMapping_->getPlaneName(i).find("Dut") == std::string::npos) hitsontelescope++;
+//        if (data.getClusterSize(i) > 2) 
+//	{
+//            HitsClusterLE2 = false;
+//        }
+//    }
 
     if(data.getNumberOfTelescopeHits() >= minHits)
         return true;

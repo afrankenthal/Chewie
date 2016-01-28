@@ -64,24 +64,25 @@ void TracksAfter::destroy(void)
 //    for(std::vector<TH1F*>::iterator it=hClusterSize_                           .begin(); it!=hClusterSize_                           .end(); it++) delete *it; hClusterSize_                           .clear();
 }
 
-bool TracksAfter::passCalibrationsCut(int planeID, const Data &data)
+bool TracksAfter::passCalibrationsCut(int planeID, const Data &/*data*/)
 {
     XmlParser* theParser = theAnalysisManager_->getXmlParser();
 
     if(!(theParser->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->useCalibrations())
         return true;
 
+    bool pass = true;
+ 
     //std::stringstream ss;
 
     //isMinToLimit = true  - isMaxToLimit = true  : min <= parValue <= max
     //isMinToLimit = false - isMaxToLimit = true  : parValue <= max
     //isMinToLimit = true  - isMaxToLimit = false : parValue >= min
     //isMinToLimit = false - isMaxToLimit = false : nothing!
-
+/*
     int    row;
     int    col;
 //    bool   pass = false;
-    bool pass = true;
 //    double parValue;
     for(int h=0; h<data.getClusterSize(planeID); h++)
     {
@@ -89,7 +90,7 @@ bool TracksAfter::passCalibrationsCut(int planeID, const Data &data)
         col = data.getClusterPixelCol(h,planeID);
         for(int p=0; p<4; p++)
         {
-/*            parValue = h2DparsPlots_[p]->GetBinContent(h2DparsPlots_[p]->GetXaxis()->FindBin(col),h2DparsPlots_[p]->GetYaxis()->FindBin(row));
+            parValue = h2DparsPlots_[p]->GetBinContent(h2DparsPlots_[p]->GetXaxis()->FindBin(col),h2DparsPlots_[p]->GetYaxis()->FindBin(row));
             if(isMinToLimit_[p]==false && isMaxToLimit_[p]==false)
                 continue;
             else if(isMinToLimit_[p]==true && isMaxToLimit_[p]== true)
@@ -106,10 +107,10 @@ bool TracksAfter::passCalibrationsCut(int planeID, const Data &data)
             {
                 if(parValue<parMax_[p])
                     pass = true;
-            }  */
+            }  
         }
     }
-
+*/
     return pass;
 }
 

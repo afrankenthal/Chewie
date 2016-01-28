@@ -280,7 +280,7 @@ void PixelMatrix::init(void)
       }
    }
 }
-void PixelMatrix::paintEvent(QPaintEvent *e)
+void PixelMatrix::paintEvent(QPaintEvent *)
 {
     QPainter painter(viewport());
 
@@ -384,7 +384,7 @@ void PixelMatrix::changeColorSwatch(int whichButton, QColor color)
    viewport()->repaint();      
 }
 //==================================================================================================
-void PixelMatrix::Calibrate(QString which, unsigned long trimOrLoop)
+void PixelMatrix::Calibrate(QString , unsigned long )
 {  
 /*
     string mthn = "[PixelMatrix::Calibrate()]" ;
@@ -856,7 +856,12 @@ void PixelMatrix::Calibrate(QString which, unsigned long trimOrLoop)
 */
 }
 //==================================================================================================
-void PixelMatrix::CalibrateGain(double fromCal, double toCal, double calSteps, unsigned long trim)
+void PixelMatrix::CalibrateGain(
+                                double        /*fromCal */, 
+				double        /*toCal   */, 
+				double        /*calSteps*/,
+				unsigned long /*trim	*/
+			       )
 {  
 /*
     string mthn = "[PixelMatrix::CalibrateGain()]" ;
@@ -1261,6 +1266,7 @@ bool PixelMatrix::doLinearFits()
       return false ;
    }
 */
+  return true ;
  }
 //==================================================================================================
 void PixelMatrix::getHistogramsFromFile(QString )
@@ -1386,7 +1392,11 @@ void PixelMatrix::doFits()
 */
 }
 //==================================================================================================
-void PixelMatrix::fitSCurve(int chip, int row, int col)
+void PixelMatrix::fitSCurve(
+                            int /*chip*/, 
+			    int /*row */, 
+			    int /*col */
+			   )
 {
 /*
     string mthn = "[PixelMatrix::fitSCurve()]" ;
@@ -2249,7 +2259,7 @@ void PixelMatrix::drawContents( QPainter * paint, int, int, int , int  )
       // Draw column tags
       for (int i=0;i<Ncols/2;i++) {
          border = border_1 ;
-         if( i<10 == 0 ) border = border_2 ;
+         if( (i<10) == 0 ) border = border_2 ;
          x1 = i*cellWidthX*2 + cellWidthX * 2 + border * 3 ;
          y1 =   cellWidthY*Nrows + border_2 * 2;
          paint->drawText(x1+cellWidthX/5, y1+(int)((double)cellWidthY*2), QString::number(i)) ;
@@ -2267,7 +2277,7 @@ void PixelMatrix::drawContents( QPainter * paint, int, int, int , int  )
       // Draw column tags
       for (int i=0;i<Ncols/2;i++) {
          border = border_1 ;
-         if( i<10 == 0 ) border = border_2 ;
+         if( (i<10) == 0 ) border = border_2 ;
          x1 = i*cellWidthX*2 + cellWidthX * 2 + border * 3 ;
          y1 =   cellWidthY*Nrows + border_2 * 26 ;
          paint->drawText(x1+cellWidthX/5, y1+(int)((double)cellWidthY*2), QString::number(i)) ;
@@ -2843,6 +2853,7 @@ void PixelMatrix::dcButton_released(int whichDc)
 void PixelMatrix::rowButton_released(int whichRow)
 {
     STDLINE(whichRow,ACGreen);
+   /*
    whichRow = Nrows - whichRow - 1 ;
    int sts ;
    int chip ;
@@ -2853,7 +2864,6 @@ void PixelMatrix::rowButton_released(int whichRow)
       chip = 0 ;
    }
    STDLINE(whichRow,ACRed);
-   /*
    if( theRenaissance->bumpBondInjectCB->isChecked() )
    {
       bumpSelection =  INJECT_WITH_BUMP_BOND ;

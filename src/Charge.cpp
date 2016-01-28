@@ -746,14 +746,14 @@ void Charge::setErrorsBar(int planeID)
     std::stringstream hName;
     std::string planeName = thePlaneMapping_->getPlaneName(planeID);
 
-    float xPitch   =   atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
+    float xPitch      = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
     int   removedBins =     0;
-    float removeHalf  =     0;
+//    float removeHalf  =     0;
     bool  centerBins  = false;
     if(centerBins)
     {
         removedBins = 1;
-        removeHalf = 5./2.;
+//        removeHalf = 5./2.;
     }
     //double binSize=5;
 
@@ -2158,12 +2158,12 @@ void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
     int size = data.getClusterSize(planeID);
     if (size > 4) return;
 
-    int  hitID = -1;
+//    int  hitID = -1;
     for(int h=0; h<size; ++h)
     {
         if( data.getClusterPixelRow(h,planeID) == rowPredicted && data.getClusterPixelCol(h,planeID) == colPredicted )
         {
-            hitID = h;
+//            hitID = h;
             break;
         }
     }
@@ -2561,12 +2561,12 @@ void Charge::yAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
     if (size > 4)
         return;
 
-    int hitID = -1;
+//    int hitID = -1;
     for(int h=0; h<size; h++)
     {
         if( data.getClusterPixelRow(h,planeID) == rowPredicted && data.getClusterPixelCol(h,planeID) == colPredicted )
         {
-            hitID = h;
+//            hitID = h;
             break;
         }
     }

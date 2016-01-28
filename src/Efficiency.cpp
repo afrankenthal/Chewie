@@ -614,7 +614,7 @@ void Efficiency::book(void)
 {
     destroy();
 
-    const Window*     theWindow ;
+//    const Window*     theWindow ;
     std::string       hName     ;
     std::stringstream value     ;
     std::string       hTitle    ;
@@ -649,7 +649,7 @@ void Efficiency::book(void)
     for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
     {
         planeName = thePlaneMapping_->getPlaneName(p);
-        theWindow = theWindowsManager_->getWindow(p);
+//        theWindow = theWindowsManager_->getWindow(p);
 
         xPitch   = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
         yPitch   = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());

@@ -182,11 +182,11 @@ bool Tracks::passStandardCuts(int  , const Data& data)
     int minHits = atoi(theParser->getAnalysesFromString("Charge")->getMinHits().c_str());//To calculate efficiency on the telescope
 
     int hitsontelescope = 0;
-    bool HitsClusterLE2 = true;
+//    bool HitsClusterLE2 = true;
     for (unsigned int i = 0; i < 8; i++) {
         if (data.getHasHit(i) == true && thePlaneMapping_->getPlaneName(i).find("Dut") == std::string::npos) hitsontelescope++;
         if (data.getClusterSize(i) > 2) {
-            HitsClusterLE2 = false;
+//            HitsClusterLE2 = false;
         }
     }
 
