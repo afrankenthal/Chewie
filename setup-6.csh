@@ -31,60 +31,61 @@
 
 setenv BASEDATADIR ../data/2015_10_October
 
-if(${HOSTNAME} == "ftbftracker01.fnal.gov") then
+# if(${HOSTNAME} == "ftbftracker01.fnal.gov") then
+#
+#   setenv MonicelliDir 	     ../Monicelli
+#   setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
+#
+#   #===== Local directories
+#   setenv CHEWIEDIR		     `pwd`
+#   setenv CHEWIEDATADIR	     ${BASEDATADIR}/MonicelliOutput
+#   setenv CHEWIEINPUTDIR	     ${BASEDATADIR}/ChewieInput
+#   setenv CHEWIEOUTPUTDIR	     ${BASEDATADIR}/ChewieOutput
+#   setenv CHEWIEXMLDIR 	     $CHEWIEDIR/xml
+#   
+#   #===== Location of the ROOT components
+#   setenv ROOTSYS		     /opt/local/root
+#
+#   #===== Location of the Qt components
+#   setenv QTDIR		     /opt/local/qt
+#   setenv QTCREATORDIR 	     /opt/local/qtcreator
+#
+#   #===== Location of the BOOST components
+#   setenv BOOSTINC		     /usr/local/include/boost
+#   setenv BOOSTLIB		     /usr/local/lib
+#
+#   #===== Location of the XERCES components
+#   setenv XERCESCINC		     /opt/local/xerces/include
+#   setenv XERCESCLIB		     /opt/local/xerces/lib
+#   
+#  setenv LD_LIBRARY_PATH	    /usr/lib64
+#
+#else if(${HOSTNAME} == "hal9000.mib.infn.it") then
+if(${HOSTNAME} == "hal9000.mib.infn.it") then
 
-  setenv MonicelliDir              ../Monicelli
-  setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
-
-  #===== Local directories
-  setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   ${BASEDATADIR}/MonicelliOutput
-  setenv CHEWIEINPUTDIR            ${BASEDATADIR}/ChewieInput
-  setenv CHEWIEOUTPUTDIR           ${BASEDATADIR}/ChewieOutput
-  setenv CHEWIEXMLDIR              $CHEWIEDIR/xml
-  
-  #===== Location of the ROOT components
-  setenv ROOTSYS		   /opt/local/root
-
-  #===== Location of the Qt components
-  setenv QTDIR  		   /opt/local/qt
-  setenv QTCREATORDIR		   /opt/local/qtcreator
-
-  #===== Location of the BOOST components
-  setenv BOOSTINC		   /usr/local/include/boost
-  setenv BOOSTLIB		   /usr/local/lib
-
-  #===== Location of the XERCES components
-  setenv XERCESCINC		   /opt/local/xerces/include
-  setenv XERCESCLIB		   /opt/local/xerces/lib
-  
-  setenv LD_LIBRARY_PATH           /usr/lib64
-
-else if(${HOSTNAME} == "hal9000.mib.infn.it") then
-
-  if      ( ${USERNAME} == "menasce" ) then
+  if	  ( ${USER} == "menasce" ) then
    setenv BASEDATADIR ../data/2015_10_October
-  else if ( ${USERNAME} == "dinardo" ) then
+  else if ( ${USER} == "dinardo" ) then
    setenv BASEDATADIR /raid2/data1/user/gr1/e831/dinardo/TestBeamData2015
   endif
 
-  setenv MonicelliDir              ../Monicelli/
+  setenv MonicelliDir		   ../Monicelli/
   setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
 
   #===== Local directories
   setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   ${BASEDATADIR}/MonicelliOutput
-  setenv CHEWIEINPUTDIR            ${BASEDATADIR}/ChewieInput
-  setenv CHEWIEOUTPUTDIR           ${BASEDATADIR}/ChewieOutput
-  setenv CHEWIEXMLDIR              ${CHEWIEDIR}/xml
+  setenv CHEWIEDATADIR  	   ${BASEDATADIR}/MonicelliOutput
+  setenv CHEWIEINPUTDIR 	   ${BASEDATADIR}/ChewieInput
+  setenv CHEWIEOUTPUTDIR	   ${BASEDATADIR}/ChewieOutput
+  setenv CHEWIEXMLDIR		   ${CHEWIEDIR}/xml
   
   #===== Compiler specs
-  setenv CPLUSPLUSFLAGS            -std=c++11
+  setenv CPLUSPLUSFLAGS 	   -std=c++11
 
   #===== Location of the ROOT components
-  setenv ROOTSYS		  /opt/local/root
-  setenv ROOTINC		  $ROOTSYS/include
-  setenv ROOTLIB		  $ROOTSYS/lib
+  setenv ROOTSYS		 /user/service/root-6.04.10/
+  setenv ROOTINC		  $ROOTSYS/include/root
+  setenv ROOTLIB		  $ROOTSYS/lib/root
 
   #===== Location of the Qt components
   setenv QTDIR  		  /opt/local/qt
@@ -100,76 +101,72 @@ else if(${HOSTNAME} == "hal9000.mib.infn.it") then
   setenv XERCESCINC		  /opt/local/xerces/include
   setenv XERCESCLIB		  /opt/local/xerces/lib
   
-  setenv LD_LIBRARY_PATH          /usr/lib64
+  setenv LD_LIBRARY_PATH	  /usr/lib64
 
   alias qtcreator ${QTCREATORDIR}/qtcreator
 
-else if(${HOSTNAME} == "ftbftracker01.fnal.gov"  || 
-        ${HOSTNAME} == "ftbftracker02.fnal.gov"  || 
-	${HOSTNAME} == "rulinux01.dhcp.fnal.gov" || 
-	${HOSTNAME} == "rulinux02.dhcp.fnal.gov" || 
-	${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
-
-  setenv MonicelliDir              ../Monicelli
-  setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
-
-  #===== Local directories
-  setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   $CHEWIEDIR/../MonicelliOutput
-  setenv CHEWIEINPUTDIR            $CHEWIEDIR/../ChewieInput
-  setenv CHEWIEOUTPUTDIR           $CHEWIEDIR/../ChewieOutput
-  setenv CHEWIEXMLDIR              $CHEWIEDIR/xml
-  
-  #===== Location of the ROOT components
-  setenv ROOTSYS		  /opt/local/root
-
-  #===== Location of the Qt components
-  setenv QTDIR  		  /opt/local/qt
-  setenv QTCREATORDIR		  /opt/local/qtcreator
-  setenv QTROOTSYSDIR		  `pwd`/qtrootsys
-  setenv QTROOT_INCLUDE_PATH	  $ROOTSYS/include
-
-  #===== Location of the BOOST components
-  setenv BOOSTINC		  /usr/include
-  setenv BOOSTLIB		  /usr/lib64
-
-  #===== Location of the XERCES components
-  setenv XERCESCINC		  /opt/local/xerces/include
-  setenv XERCESCLIB		  /opt/local/xerces/lib
-  
-  setenv LD_LIBRARY_PATH          /usr/lib64
-  
-else if(${HOSTNAME} == "hercules.mib.infn.it" ) then
-
-  #===== Local directories
-  setenv MonicelliDir              ../Monicelli
-  setenv Monicelli_CalSample_Dir   ../calibrations
-
-  setenv CHEWIEDIR		   `pwd`
-  setenv CHEWIEDATADIR		   $CHEWIEDIR/../MonicelliOutput
-  setenv CHEWIEINPUTDIR            $CHEWIEDIR/../ChewieInput
-  setenv CHEWIEOUTPUTDIR           $CHEWIEDIR/../ChewieOutput
-  setenv CHEWIEXMLDIR              $CHEWIEDIR/xml
-
-  #===== Location of the ROOT components
-  setenv ROOTSYS		   /gwterax3/local/root_v5.27.06-qtroot
-
-  #===== Location of the Qt components
-  setenv QTDIR  		   /usr/local/Trolltech/Qt-4.7.0/
-  setenv QTCREATORDIR		   /usr/local/qtcreator
-  setenv QTROOTSYSDIR		   `pwd`/qtrootsys
-  setenv QTROOT_INCLUDE_PATH	   $ROOTSYS/include
-
-  #===== Location of the BOOST components
-  setenv BOOSTINC		   /usr/include/boost/
-  setenv BOOSTLIB		   /usr/lib64/
-
-  #===== Location of the XERCES components
-  setenv XERCESCINC		   /usr/include/xercesc/ 
-  setenv XERCESCLIB		   /usr/lib64/
-
-  source                           /gwpool/initcms/cvs-hercules.csh
-
+#else if(${HOSTNAME} == "ftbftracker01.fnal.gov"  || ${HOSTNAME} == "ftbftracker02.fnal.gov"  || ${HOSTNAME} == "rulinux01.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux02.dhcp.fnal.gov" || ${HOSTNAME} == "rulinux03.dhcp.fnal.gov") then
+#
+#  setenv MonicelliDir  	    ../Monicelli
+#  setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
+#
+#  #===== Local directories
+#  setenv CHEWIEDIR		    `pwd`
+#  setenv CHEWIEDATADIR 	    $CHEWIEDIR/../MonicelliOutput
+#  setenv CHEWIEINPUTDIR	    $CHEWIEDIR/../ChewieInput
+#  setenv CHEWIEOUTPUTDIR	    $CHEWIEDIR/../ChewieOutput
+#  setenv CHEWIEXMLDIR  	    $CHEWIEDIR/xml
+#  
+#  #===== Location of the ROOT components
+#  setenv ROOTSYS		   /opt/local/root
+#
+#  #===== Location of the Qt components
+#  setenv QTDIR 		   /opt/local/qt
+#  setenv QTCREATORDIR  	   /opt/local/qtcreator
+#  setenv QTROOTSYSDIR  	   `pwd`/qtrootsys
+#  setenv QTROOT_INCLUDE_PATH	   $ROOTSYS/include
+#
+#  #===== Location of the BOOST components
+#  setenv BOOSTINC		   /usr/include
+#  setenv BOOSTLIB		   /usr/lib64
+#
+#  #===== Location of the XERCES components
+#  setenv XERCESCINC		   /opt/local/xerces/include
+#  setenv XERCESCLIB		   /opt/local/xerces/lib
+#  
+#  setenv LD_LIBRARY_PATH	   /usr/lib64
+#  
+#else if(${HOSTNAME} == "hercules.mib.infn.it" ) then
+#
+#  #===== Local directories
+#  setenv MonicelliDir  	    ../Monicelli
+#  setenv Monicelli_CalSample_Dir   ../calibrations
+#
+#  setenv CHEWIEDIR		    `pwd`
+#  setenv CHEWIEDATADIR 	    $CHEWIEDIR/../MonicelliOutput
+#  setenv CHEWIEINPUTDIR	    $CHEWIEDIR/../ChewieInput
+#  setenv CHEWIEOUTPUTDIR	    $CHEWIEDIR/../ChewieOutput
+#  setenv CHEWIEXMLDIR  	    $CHEWIEDIR/xml
+#
+#  #===== Location of the ROOT components
+#  setenv ROOTSYS		    /gwterax3/local/root_v5.27.06-qtroot
+#
+#  #===== Location of the Qt components
+#  setenv QTDIR 		    /usr/local/Trolltech/Qt-4.7.0/
+#  setenv QTCREATORDIR  	    /usr/local/qtcreator
+#  setenv QTROOTSYSDIR  	    `pwd`/qtrootsys
+#  setenv QTROOT_INCLUDE_PATH	    $ROOTSYS/include
+#
+#  #===== Location of the BOOST components
+#  setenv BOOSTINC		    /usr/include/boost/
+#  setenv BOOSTLIB		    /usr/lib64/
+#
+#  #===== Location of the XERCES components
+#  setenv XERCESCINC		    /usr/include/xercesc/ 
+#  setenv XERCESCLIB		    /usr/lib64/
+#
+#  source			    /gwpool/initcms/cvs-hercules.csh
+#
 endif
 
 #===== Final PATH definitions

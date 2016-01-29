@@ -199,10 +199,10 @@ trees.commands       = rootcint -f tmp/EventDict.C			     	  \
 QMAKE_EXTRA_TARGETS += trees
 QMAKE_EXTRA_TARGETS += header
 
-FORMS 		    += analyzerdlg.ui   				     	  \
-      		       hnavigator.ui    				     	  \
-      		       canvaswidget.ui  				     	  \
-      		       hanSoloFitter.ui
+FORMS 		    += uiFiles/analyzerdlg.ui   				  \
+      		       uiFiles/hnavigator.ui    				  \
+      		       uiFiles/canvaswidget.ui  				  \
+      		       uiFiles/hanSoloFitter.ui
 
 MOC_DIR             += mocFiles
 UI_DIR              += uiFiles

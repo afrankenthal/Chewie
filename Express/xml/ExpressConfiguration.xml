@@ -2,10 +2,10 @@
 <!DOCTYPE ChewieExpressConfiguration SYSTEM "./dtd/ExpressConfiguration.dtd">
 <ChewieExpressConfiguration>
   <Defaults FilesPath="/raid2/data1/vtx1/dinardo/TestBeamData2015/MonicelliOutput/"
-            Convert="yes"
+            Convert="no"
 	    RunAnalysis="yes"
 	    NumberOfEvents="-1"/>
-  <Files Configuration="ChewieConfiguration.xml" OutFileName="Chewie_Run218_Merged.root">
-    <File Name="Run218_Merged.root"/>
+  <Files Configuration="ChewieConfiguration.xml" OutFileName="Chewie_Run217_Merged_threshold.root">
+    <File Name="Run217_Merged.root"/>
   </Files>
 </ChewieExpressConfiguration>

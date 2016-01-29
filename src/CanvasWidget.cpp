@@ -7,7 +7,7 @@
 **
 ****************************************************************************/
 #include "CanvasWidget.h"
-#include "ui_canvaswidget.h"
+#include "uiFiles/ui_canvaswidget.h"
 
 #include "MessageTools.h"
 

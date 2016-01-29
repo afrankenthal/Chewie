@@ -8,7 +8,7 @@
 ****************************************************************************/
 
 #include "hnavigator.h"
-#include "ui_hnavigator.h"
+#include "uiFiles/ui_hnavigator.h"
 #include "analyzerdlg.h"
 #include "Utilities.h"
 

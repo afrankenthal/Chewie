@@ -1303,9 +1303,6 @@ void Efficiency::planeEfficiency(bool pass, int planeID, const Data& data, int t
             //std::cout << __PRETTY_FUNCTION__  << "Inefficient: IMPOSSIBLE!!!!! " << "Row: " << row << " Column: " << col << std::endl;
             THREADED(h2DInefficiency_[planeID])->Fill(col,row);
         }
-
-
-
     }
 
 
@@ -1732,7 +1729,7 @@ void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int t
     int           event           = data.getEventChewieNumber()            ;
     int           run             = data.getRunNumber()                    ;
     float         maxPitchX       = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
-    float         xRes            = 0.  ;
+    float         xRes            = 0.;
     float         sizePixelLeft   = 300;
     float         sizePixelRight  = 300;
     float         edgeLeft        = 200.;
@@ -1771,81 +1768,69 @@ void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int t
     }
 
 
-    if(!data.getIsInDetector(planeID))
-        return;
+    if(!data.getIsInDetector(planeID)) return;
+    
+    
+    if (data.getXPitchLocal(planeID) == maxPitchX)
+      {
+        if (data.getXPixelResidualLocal(planeID) > 0)
+	  xRes =-data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
+        else if (data.getXPixelResidualLocal(planeID) <= 0)
+	  xRes = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
+      }
+    else return;
 
-    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
-    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
-    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
-    //FIXME HARDCODED VALUE (30) THAT SHOULD BE TAKEN FROM THE GUI
-    // Mauro : wredundant cut since it's already applied with "pass"
-    // if (data.getYPixelResidualLocal(planeID) > 30 || data.getYPixelResidualLocal(planeID) < -30)
-    //     return;
 
-    //    if (fabs(data.getXTrackResidualLocal(planeID)) > 85 && fabs(data.getYTrackResidualLocal(planeID)) > 60)
-    //            return;
 
-    if(data.getXPitchLocal(planeID) == maxPitchX)
-    {
-        if(data.getXPixelResidualLocal(planeID) > 0)
-            xRes =-data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
-        else if(data.getXPixelResidualLocal(planeID) <= 0)
-            xRes = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
-    }
-    else
-        return;
-
-    if(theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) && theWindow->checkTimeWindowAbout(col,event,run))
-        //if(theWindow->checkWindow(col,row))
-    {
+    // @@@ Please do not modify this code @@@
+    if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) && (theWindow->checkTimeWindowAbout(col,event,run)))
+      {
         THREADED(h1DXcellEfficiencyNorm_[planeID])->Fill(xRes);
-        if(data.getHasHit(planeID) /*&& data.getClusterSize(planeID)<=4*/)
-        {
-            if(data.getClusterSize(planeID)>4)
-            {
-                //std::cout << "ok!" << std::endl;
+	
+        if (data.getHasHit(planeID))
+	  {
+            if (data.getClusterSize(planeID) > 4)
+	      {
                 THREADED(h1DXcellEfficiencyFirstHit_ [planeID])->Fill(xRes);
                 THREADED(h1DXcellEfficiencySecondHit_[planeID])->Fill(xRes);
                 return;
-            }
-
+	      }
+	    
             bool isOk = false;
-            for(int h=0; h<data.getClusterSize(planeID); h++)
-            {
-                if((data.getClusterPixelCol(h,planeID) == col) && (data.getClusterPixelRow(h,planeID) == row))
-                {
+            for (int h = 0; h < data.getClusterSize(planeID); h++)
+	      {
+                if ((data.getClusterPixelCol(h,planeID) == col) && (data.getClusterPixelRow(h,planeID) == row))
+		  {
                     THREADED(h1DXcellEfficiencyFirstHit_ [planeID])->Fill(xRes);
                     THREADED(h1DXcellEfficiencySecondHit_[planeID])->Fill(xRes);
                     isOk = true;
                     break;
-                }
-
-            }
-            if(isOk)
-                return;
+		  }
+	      }
+	    
+            if (isOk) return;
             else
-            {
-                isOk=false;
-                for(int h=0; h<data.getClusterSize(planeID); h++)
-                {
-                    if(data.getClusterPixelRow(h,planeID) == row)
-                    {
-                        /*if((data.getXPixelResidualLocal(planeID)>0 && (col-data.getClusterPixelCol(h,planeID))==1) ||
-                          (data.getXPixelResidualLocal(planeID)<0 && (col-data.getClusterPixelCol(h,planeID))==-1))*/
-                        if( ( (col-data.getClusterPixelCol(h,planeID)) ==  1) || ( (col-data.getClusterPixelCol(h,planeID)) == -1) )
-                        {
-                            isOk=true;
+	      {
+                isOk = false;
+                for (int h = 0; h < data.getClusterSize(planeID); h++)
+		  {
+                    if (data.getClusterPixelRow(h,planeID) == row)
+		      {
+                        if (((col-data.getClusterPixelCol(h,planeID)) == 1) || ((col-data.getClusterPixelCol(h,planeID)) == -1))
+			  {
+                            isOk = true;
                             break;
-                        }
-                    }
-                }
-                if(!isOk)
-                    return;
+			  }
+		      }
+		  }
 
+                if (!isOk) return;
+		
                 THREADED(h1DXcellEfficiencySecondHit_[planeID])->Fill(xRes);
-            }
-        }
-    }
+	      }
+	  }
+      }
+    // ======================================
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1862,7 +1847,7 @@ void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int t
     int           event         = data.getEventChewieNumber()            ;
     int           run           = data.getRunNumber()                    ;
     float         maxPitchY     = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
-    float         yRes          = 0.  ;
+    float         yRes          = 0.;
     float         sizePixelDown = 100.;
     float         sizePixelUp   = 200.;
     float         edgeDown      = 200.;
@@ -1898,84 +1883,79 @@ void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int t
 
     }
 
-    if(!data.getIsInDetector(planeID))
-        return;
-    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
-    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
-    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
-    //FIXME HARDCODED VALUE (20) THAT SHOULD BE TAKEN FROM THE GUI
-    // Mauro : wredundant cut since it's already applied with "pass"
-    // if (data.getXPixelResidualLocal(planeID) > 20 || data.getXPixelResidualLocal(planeID) < -20)
-    //     return;
+    
+    if (!data.getIsInDetector(planeID)) return;
 
-    if(data.getYPitchLocal(planeID)<=maxPitchY)
-    {
-        if(data.getYPixelResidualLocal(planeID)>0)
-            yRes = -data.getYPitchLocal(planeID)/2 + data.getYPixelResidualLocal(planeID);
-        else if(data.getYPixelResidualLocal(planeID)<=0)
-            yRes = (data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
-    }
-    else
-        return;
-    if(row!=50)
-    {
+
+    if (data.getYPitchLocal(planeID) == maxPitchY)
+      {
+        if (data.getYPixelResidualLocal(planeID) > 0)
+	  yRes = -data.getYPitchLocal(planeID)/2 + data.getYPixelResidualLocal(planeID);
+        else if (data.getYPixelResidualLocal(planeID) <= 0)
+	  yRes = (data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
+      }
+    else return;
+
+    if (row != 50)
+      {
         THREADED(h1DYcellEfficiency4RowsNorm_[planeID])->Fill(data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
         if(theWindow->checkWindow(col,row,run))
-        {
-            THREADED(h1DYcellEfficiency4Rows_    [planeID])->Fill(data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
-        }
-    }
-    if(theWindow->checkWindowAbout(col,row,run, thePlaneMapping_->getPlaneType(planeID)) && theWindow->checkTimeWindowAbout(col,event,run))
-        //if(theWindow->checkWindow(col,row))
-    {
+	  {
+            THREADED(h1DYcellEfficiency4Rows_[planeID])->Fill(data.getYPixelResidualLocal(planeID)+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
+	  }
+      }
+    
+
+
+    // @@@ Please do not modify this code @@@
+    if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) && (theWindow->checkTimeWindowAbout(col,event,run)))
+      {
         THREADED(h1DYcellEfficiencyNorm_[planeID])->Fill(yRes);
-        if(data.getHasHit(planeID) /*&& data.getClusterSize(planeID)<=4*/)
-        {
-            if(data.getClusterSize(planeID)>4)
-            {
-                //std::cout << "ok!" << std::endl;
+	
+        if (data.getHasHit(planeID))
+	  {
+            if (data.getClusterSize(planeID) > 4)
+	      {
                 THREADED(h1DYcellEfficiencyFirstHit_ [planeID])->Fill(yRes);
                 THREADED(h1DYcellEfficiencySecondHit_[planeID])->Fill(yRes);
                 return;
-            }
-
+	      }
+	    
             bool isOk = false;
-            for(int h=0; h<data.getClusterSize(planeID); h++)
-            {
-                if(data.getClusterPixelCol(h,planeID)==col && data.getClusterPixelRow(h,planeID)==row)
-                {
-                    THREADED(h1DYcellEfficiencyFirstHit_[planeID])->Fill(yRes);
+            for (int h = 0; h < data.getClusterSize(planeID); h++)
+	      {
+                if ((data.getClusterPixelCol(h,planeID) == col) && (data.getClusterPixelRow(h,planeID) == row))
+		  {
+                    THREADED(h1DYcellEfficiencyFirstHit_ [planeID])->Fill(yRes);
                     THREADED(h1DYcellEfficiencySecondHit_[planeID])->Fill(yRes);
                     isOk = true;
                     break;
-                }
-            }
-            if(isOk)
-                return;
-            else
-            {
-                isOk=false;
-                for(int h=0; h<data.getClusterSize(planeID); h++)
-                {
-                    if(data.getClusterPixelCol(h,planeID)==col)
-                    {
-                        /*if((data.getYPixelResidualLocal(planeID)>0 && (row-data.getClusterPixelRow(h,planeID))==1) ||
-                          (data.getYPixelResidualLocal(planeID)<0 && (row-data.getClusterPixelRow(h,planeID))==-1))*/
-                        if( ( (row-data.getClusterPixelRow(h,planeID)) ==  1  ) ||
-                                ( (row-data.getClusterPixelRow(h,planeID)) == -1  )  )
-                        {
-                            isOk=true;
-                            break;
-                        }
-                    }
-                }
-                if(!isOk)
-                    return;
+		  }
+	      }
 
+            if (isOk) return;
+            else
+	      {
+                isOk = false;
+                for (int h = 0; h < data.getClusterSize(planeID); h++)
+		  {
+                    if (data.getClusterPixelCol(h,planeID) == col)
+		      {
+                        if (((row-data.getClusterPixelRow(h,planeID)) == 1) || ((row-data.getClusterPixelRow(h,planeID)) == -1))
+			  {
+			    isOk = true;
+			    break;
+			  }
+		      }
+		  }
+		
+                if (!isOk) return;
+		
                 THREADED(h1DYcellEfficiencySecondHit_[planeID])->Fill(yRes);
-            }
-        }
-    }
+	      }
+	  }
+      }
+    // ======================================
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
