@@ -1,14 +1,13 @@
 /*===============================================================================
- * Monicelli: the FERMILAB MTEST geometry builder and track reconstruction tool
- *
- * Copyright (C) 2014
+ * Chewie: the FERMILAB MTEST telescope and DUT anaysis tool
+ * 
+ * Copyright (C) 2014 
  *
  * Authors:
  *
- * Dario Menasce      (INFN)
- * Luigi Moroni       (INFN)
+ * Mauro Dinardo      (Universita' Bicocca) 
+ * Dario Menasce      (INFN) 
  * Jennifer Ngadiuba  (INFN)
- * Stefano Terzo      (INFN)
  * Lorenzo Uplegger   (FNAL)
  * Luigi Vigani       (INFN)
  *
@@ -35,11 +34,15 @@
 #include <sstream>
 #include "mainwindow.h"
 
+#include <TApplication.h>
+
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(Chewie);
 
     system("clear") ;
+
+    TApplication rootapp("Simple Qt ROOT Application", &argc, argv);
 
     std::stringstream ss_ ;
 
@@ -72,7 +75,7 @@ int main(int argc, char *argv[])
         QFile tmpFile(envVariables) ;
         if( !tmpFile.exists() )
         {
-            ss_.str("") ; ss_ << "The " << envVariables << " directory (MonicelliOutputDir) does not exist" ;
+            ss_.str("") ; ss_ << "The " << envVariables << " directory (CHEWIEOUTPUTDIR) does not exist" ;
             FATAL(ss_.str(),ACRed) ;
             FATAL("Please create one...",ACCyan) ;
             missingEnvVariable = true;

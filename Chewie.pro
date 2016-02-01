@@ -86,7 +86,8 @@ HEADERS       	     = include/mainwindow.h					  \
     		       include/PixelMatrixCutButton.h				  \
     		       include/HanSoloFitter.h  				  \
     		       include/HanSoloTreeBrowser.h				  \
-    		       include/hTreeBrowser.h
+                       include/hTreeBrowser.h                                     \
+                       include/qrootcanvas.h
 
 SOURCES       	     = src/EventManager.cpp		 			  \
               	       src/EventConverter.cpp		 			  \
@@ -132,7 +133,8 @@ SOURCES       	     = src/EventManager.cpp		 			  \
     		       src/PixelMatrixCutButton.cpp	 			  \
     		       src/HanSoloFitter.cpp		 			  \
     		       src/HanSoloTreeBrowser.cpp	 			  \
-    		       src/hTreeBrowser.cpp
+                       src/hTreeBrowser.cpp                                       \
+                       src/qrootcanvas.cpp
 
 RESOURCES    	     = Chewie.qrc
 
@@ -181,28 +183,51 @@ INSTALLS            += target sources
 header.depends       = ../Monicelli/include/EventHeader.h
 
 header.target        = tmp/EventHeaderDict.C
-header.commands      = rootcint -f tmp/EventHeaderDict.C		     	  \
-                    		-c ../Monicelli/include/EventHeader.h+
 
-trees.depends        = ../Monicelli/include/Event.h			     	  \
-                       ../Monicelli/include/Geometry.h  		     	  \
-                       ../Monicelli/include/Detector.h  		     	  \
+ROOTVER              = $(ROOTVER)
+
+contains(ROOTVER, FIVE) {
+ header.commands     = @echo "------ ROOT5 header ----------"                  && \
+                       rootcint -f tmp/EventHeaderDict.C                          \
+                                -c ../Monicelli/include/EventHeader.h+
+} else {
+ header.commands     = @echo "------ ROOT6 header ----------"                  && \
+                       rootcint -f tmp/EventHeaderDict.C                          \
+                                -c ../Monicelli/include/EventHeader.h+         && \
+                       cp tmp/*.pcm .
+}
+
+trees.depends        = ../Monicelli/include/Event.h                               \
+                       ../Monicelli/include/Geometry.h                            \
+                       ../Monicelli/include/Detector.h                            \
                        ../Monicelli/include/ROC.h
 
 trees.target         = tmp/EventDict.C
-trees.commands       = rootcint -f tmp/EventDict.C			     	  \
-                    		-c ../Monicelli/include/Event.h+	     	  \
-                    		   ../Monicelli/include/Geometry.h+	     	  \
-                    		   ../Monicelli/include/Detector.h+	     	  \
-                    		   ../Monicelli/include/ROC.h+
+
+contains(ROOTVER, FIVE) {
+ trees.commands      = @echo "------ ROOT5 commands --------"                  && \
+                       rootcint -f tmp/EventDict.C                                \
+                                -c ../Monicelli/include/Event.h+                  \
+                                   ../Monicelli/include/Geometry.h+               \
+                                   ../Monicelli/include/Detector.h+               \
+                                   ../Monicelli/include/ROC.h+
+} else {
+ trees.commands      = @echo "------ ROOT6 commands --------"                  && \
+                       rootcint -f tmp/EventDict.C                                \
+                                -c ../Monicelli/include/Event.h+                  \
+                                   ../Monicelli/include/Geometry.h+               \
+                                   ../Monicelli/include/Detector.h+               \
+                                   include/ROC.h+                              && \
+                       cp tmp/*.pcm .
+}
 
 QMAKE_EXTRA_TARGETS += trees
 QMAKE_EXTRA_TARGETS += header
 
 FORMS 		    += uiFiles/analyzerdlg.ui   				  \
-      		       uiFiles/hnavigator.ui    				  \
-      		       uiFiles/canvaswidget.ui  				  \
-      		       uiFiles/hanSoloFitter.ui
+                       uiFiles/hnavigator.ui    				  \
+                       uiFiles/canvaswidget.ui  				  \
+                       uiFiles/hanSoloFitter.ui
 
 MOC_DIR             += mocFiles
 UI_DIR              += uiFiles

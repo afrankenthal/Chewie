@@ -20,7 +20,7 @@
 #include <QVBoxLayout>
 #include <QActionGroup>
 #include <CanvasWidget.h>
-#include <TQtWidget.h>
+//#include <TQtWidget.h>
 #include "HanSoloTreeBrowser.h"
 #include "mainwindow.h"
 #include "fitParamManagerWidget.h"
@@ -40,7 +40,7 @@
 
 
 class MainWindow         ;
-class HanSoloTreeBrowser       ;
+class HanSoloTreeBrowser ;
 class TFile              ;
 class QVBoxLayout        ;
 class XmlParser          ;

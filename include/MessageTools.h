@@ -1,14 +1,13 @@
 /*===============================================================================
- * Monicelli: the FERMILAB MTEST geometry builder and track reconstruction tool
+ * Chewie: the FERMILAB MTEST telescope and DUT anaysis tool
  * 
  * Copyright (C) 2014 
  *
  * Authors:
  *
+ * Mauro Dinardo      (Universita' Bicocca) 
  * Dario Menasce      (INFN) 
- * Luigi Moroni       (INFN)
  * Jennifer Ngadiuba  (INFN)
- * Stefano Terzo      (INFN)
  * Lorenzo Uplegger   (FNAL)
  * Luigi Vigani       (INFN)
  *
