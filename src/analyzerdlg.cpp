@@ -1975,11 +1975,12 @@ void AnalyzerDlg::setPrioritiesFromUi ()
 }
 
 //============================================================================================================================================
-void AnalyzerDlg::on_excludeBadPlanesCB_clicked(bool checked)
+/*
+  void AnalyzerDlg::on_excludeBadPlanesCB_clicked(bool checked)
 {
     ui->chargeBadPlanesHitsSB->setEnabled(checked);
 }
-
+*/
 //============================================================================================================================================
 void AnalyzerDlg::on_cutFilePB_clicked()
 {

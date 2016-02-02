@@ -98,56 +98,55 @@ private slots:
     void advanceProgressBar                    (void                 );
     void updateFileName                        (void                 );
     void on_abortPB_clicked                    (void                 );
-    void on_calibParsCB_stateChanged           (int              arg1);
-    void on_calibDispersionCB_stateChanged     (int              arg1);
+    void on_calibParsCB_stateChanged           (int   arg1           );
+    void on_calibDispersionCB_stateChanged     (int   arg1           );
     void on_dutsListLW_2_itemSelectionChanged  (void                 );
     void on_makeCalibPlotsPB_clicked           (void                 );
     void on_openCalibrationPlotsPB_clicked     (void                 );
     void on_runConverterPB_clicked             (void                 );
     void on_openConfigurationFilePB_clicked    (void                 );
     void on_saveConfigurationFile_clicked      (void                 );
-    void on_useCalibrationsCB_stateChanged     (int              arg1);
+    void on_useCalibrationsCB_stateChanged     (int   arg1           );
     void on_resetRemovedPxlsDUT1PB_clicked     (void                 );
     void on_resetRemovedPxlsDUT0PB_clicked     (void                 );
     void on_removePxlDUT1PB_clicked            (void                 );
     void on_removePxlDUT0PB_clicked            (void                 );
     void on_loadFileToScanListPB_clicked       (void                 );
-    void on_scanListTW_cellChanged             (int row, int column  );
+    void on_scanListTW_cellChanged             (int  row,
+                                                int  column          );
     void on_resetScanListPB_clicked            (void                 );
     void on_runScanPB_clicked                  (void                 );
 
     //////////cuts//////////////////////////////////////////////////
-    void on_chi2EfficiencyCutCB_stateChanged   (int              arg1);
-    void on_nTrackEfficiencyCutCB_stateChanged (int              arg1);
-    void on_xErrEfficiencyCutCB_stateChanged   (int              arg1);
-    void on_yErrEfficiencyCutCB_stateChanged   (int              arg1);
-    void on_xEfficiencyCutCB_stateChanged      (int              arg1);
-    void on_yEfficiencyCutCB_stateChanged      (int              arg1);
+    void on_chi2EfficiencyCutCB_stateChanged   (int  arg1            );
+    void on_nTrackEfficiencyCutCB_stateChanged (int  arg1            );
+    void on_xErrEfficiencyCutCB_stateChanged   (int  arg1            );
+    void on_yErrEfficiencyCutCB_stateChanged   (int  arg1            );
+    void on_xEfficiencyCutCB_stateChanged      (int  arg1            );
+    void on_yEfficiencyCutCB_stateChanged      (int  arg1            );
+    void on_chi2ChargeCutCB_stateChanged       (int  arg1            );
+    void on_nTrackChargeCutCB_stateChanged     (int  arg1            );
+    void on_xErrChargeCutCB_stateChanged       (int  arg1            );
+    void on_yErrChargeCutCB_stateChanged       (int  arg1            );
+    void on_xChargeCutCB_stateChanged          (int  arg1            );
+    void on_yChargeCutCB_stateChanged          (int  arg1            );
+    void on_chi2ResolutionCutCB_stateChanged   (int  arg1            );
+    void on_nTrackResolutionCutCB_stateChanged (int  arg1            );
+    void on_xErrResolutionCutCB_stateChanged   (int  arg1            );
+    void on_yErrResolutionCutCB_stateChanged   (int  arg1            );
+    void on_resetListPB_clicked                (void                 );
+    void on_convertResetListPB_clicked         (void                 );
+//    void on_excludeBadPlanesCB_clicked         (bool checked         );
+    void on_cutFilePB_clicked                  (void                 );
+    void on_windowsCB_isToggled                (void                 ) {checkBoxHandler();}
+    void on_tracksCB_isToggled                 (void                 ) {checkBoxHandler();}
+    void on_efficiencyCB_isToggled             (void                 ) {checkBoxHandler();}
+    void on_chargeCB_isToggled                 (void                 ) {checkBoxHandler();}
+    void on_resolutionCB_isToggled             (void                 ) {checkBoxHandler();}
+    void on_tracksafterCB_isToggled            (void                 ) {checkBoxHandler();}
 
-    void on_chi2ChargeCutCB_stateChanged       (int              arg1);
-    void on_nTrackChargeCutCB_stateChanged     (int              arg1);
-    void on_xErrChargeCutCB_stateChanged       (int              arg1);
-    void on_yErrChargeCutCB_stateChanged       (int              arg1);
-    void on_xChargeCutCB_stateChanged          (int              arg1);
-    void on_yChargeCutCB_stateChanged          (int              arg1);
-
-    void on_chi2ResolutionCutCB_stateChanged   (int              arg1);
-    void on_nTrackResolutionCutCB_stateChanged (int              arg1);
-    void on_xErrResolutionCutCB_stateChanged   (int              arg1);
-    void on_yErrResolutionCutCB_stateChanged   (int              arg1);
-    void on_resetListPB_clicked();
-    void on_convertResetListPB_clicked();
-    void on_excludeBadPlanesCB_clicked(bool checked);
-    void on_cutFilePB_clicked();
-    void on_windowsCB_isToggled() {checkBoxHandler();}
-    void on_tracksCB_isToggled() {checkBoxHandler();}
-    void on_efficiencyCB_isToggled() {checkBoxHandler();}
-    void on_chargeCB_isToggled() {checkBoxHandler();}
-    void on_resolutionCB_isToggled() {checkBoxHandler();}
-    void on_tracksafterCB_isToggled() {checkBoxHandler();}
-
-    void setPixelMatrixReferenceHistogram();
-    void on_cutVarLW_itemDoubleClicked(QListWidgetItem *item);
+    void setPixelMatrixReferenceHistogram      (void                 );
+    void on_cutVarLW_itemDoubleClicked         (QListWidgetItem *item);
 };
 
 #endif // ANALYZERDLG_H

@@ -101,8 +101,9 @@ void EventConverter::convert(Event& event,int e)
     Event::unconstrainedFittedTracksCovarianceDef & unconstrainedFittedTracksCovariance = event.getUnconstrainedFittedTracksCovariance();
     Event::unconstrainedChi2VectorDef	          & unconstrainedFittedTracksChi2       = event.getUnconstrainedFittedTracksChi2      ();
 
-    bool        wrong     = false ;
-    std::string dataBlock = ""    ;
+    static bool wrong        = false ;
+    std::string dataBlock    = ""    ;
+    static bool alreadyWrong = false ;
     if( theRawData                         .size() == 0 ) {wrong = true; dataBlock="theRawData"                         ;}
     if( clusters                           .size() == 0 ) {wrong = true; dataBlock="clusters"                           ;}
     if( clustersHits                       .size() == 0 ) {wrong = true; dataBlock="clustersHits"                       ;}
@@ -114,11 +115,13 @@ void EventConverter::convert(Event& event,int e)
     if( unconstrainedFittedTracks          .size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracks"          ;}
     if( unconstrainedFittedTracksCovariance.size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracksCovariance";}
     if( unconstrainedFittedTracksChi2      .size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracksChi2"      ;}
-    if( wrong )
+    if( wrong && !alreadyWrong )
     {
         ss_.str("") ; ss_ << "WARNING: block missing in input (not produced by Monicelli): "
                           << dataBlock ;
         STDLINE(ss_.str().c_str(),ACRed) ;
+        STDLINE("The above message is only printed once...",ACYellow) ;
+        alreadyWrong = true ;
     }
 
     if( trackCandidates.size() == 0 )
