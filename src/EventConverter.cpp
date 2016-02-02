@@ -89,7 +89,6 @@ void EventConverter::beginJob()
 ///////////////////////////////////////////////////////////////////////////////////////////
 void EventConverter::convert(Event& event,int e)
 {
-    STDLINE("Converting...", ACWhite) ;
     Event::plaqMapDef  	                          & theRawData	                        = event.getRawData                            ();
     Event::clustersMapDef	                      & clusters  	                        = event.getClusters                           ();
     Event::clustersHitsMapDef                     & clustersHits	                    = event.getClustersHits                       ();
@@ -101,6 +100,26 @@ void EventConverter::convert(Event& event,int e)
     Event::unconstrainedFittedTracksDef           & unconstrainedFittedTracks           = event.getUnconstrainedFittedTracks          ();
     Event::unconstrainedFittedTracksCovarianceDef & unconstrainedFittedTracksCovariance = event.getUnconstrainedFittedTracksCovariance();
     Event::unconstrainedChi2VectorDef	          & unconstrainedFittedTracksChi2       = event.getUnconstrainedFittedTracksChi2      ();
+
+    bool        wrong     = false ;
+    std::string dataBlock = ""    ;
+    if( theRawData                         .size() == 0 ) {wrong = true; dataBlock="theRawData"                         ;}
+    if( clusters                           .size() == 0 ) {wrong = true; dataBlock="clusters"                           ;}
+    if( clustersHits                       .size() == 0 ) {wrong = true; dataBlock="clustersHits"                       ;}
+    if( fittedTrackResiduals               .size() == 0 ) {wrong = true; dataBlock="fittedTrackResiduals"               ;}
+    if( trackCandidates                    .size() == 0 ) {wrong = true; dataBlock="trackCandidates"                    ;}
+    if( fittedTracks                       .size() == 0 ) {wrong = true; dataBlock="fittedTracks"                       ;}
+    if( fittedTracksCovariance             .size() == 0 ) {wrong = true; dataBlock="fittedTracksCovariance"             ;}
+    if( fittedTracksChi2                   .size() == 0 ) {wrong = true; dataBlock="fittedTracksChi2"                   ;}
+    if( unconstrainedFittedTracks          .size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracks"          ;}
+    if( unconstrainedFittedTracksCovariance.size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracksCovariance";}
+    if( unconstrainedFittedTracksChi2      .size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracksChi2"      ;}
+    if( wrong )
+    {
+        ss_.str("") ; ss_ << "WARNING: block missing in input (not produced by Monicelli): "
+                          << dataBlock ;
+        STDLINE(ss_.str().c_str(),ACRed) ;
+    }
 
     if( trackCandidates.size() == 0 )
         return ;
@@ -135,7 +154,6 @@ void EventConverter::convert(Event& event,int e)
     
     for(unsigned int t=0; t<trackCandidates.size(); t++)
     {
-        STDLINE("",ACWhite) ;
         dataVector[t].setEventNumber      (e);
         dataVector[t].setRunNumber        (runNumber_); //it is a private variable because it's not taken from Monicelli output, but it is passed before beginJob in method startConverter of EventManager.cpp
         dataVector[t].setNumberOfTracks   (trackCandidates.size());
@@ -153,31 +171,19 @@ void EventConverter::convert(Event& event,int e)
 
         int nTelescopeHits  = 0;
         int clustersSizeLE2 = 0 ;
-        STDLINE("",ACWhite) ;
         for(unsigned int p=0; p<thePlanesMapping_.getNumberOfPlanes(); p++)
         {
-            ss_.str(""); ss_<<"Plane: " << p;  STDLINE(ss_.str().c_str(),ACWhite) ;
+//            ss_.str(""); ss_<<"Plane: " << p;  STDLINE(ss_.str().c_str(),ACWhite) ;
             nRow.clear();
             nCol.clear();
             row       = 0;
             col       = 0;
             planeName = thePlanesMapping_.getMonicelliPlaneName(p);
-            STDLINE("",ACWhite) ;
             detector  = theGeometry_->getDetector(thePlanesMapping_.getStation(p), thePlanesMapping_.getPlaquette(p));
-            STDLINE("",ACWhite) ;
 
             if(detector == 0)
                 continue;
-/*
-            STDLINE("",ACWhite) ;
-            std::cout << "size: " << unconstrainedFittedTracksChi2.size() << std::endl ;
-            for( std::vector<std::map<std::string, Event::vectorDef> >::iterator it = unconstrainedFittedTracksChi2.begin();
-                                                                                 it!= unconstrainedFittedTracksChi2.end()  ;
-                                                                               ++it)
-            {
-              std::cout << "   --- > " << *it.first << std::endl ;
-            }
-*/
+
             dataVector[t].setChi2Unconstrained           (unconstrainedFittedTracksChi2[t][planeName]                    ,p);
             dataVector[t].setXInterceptUnconstrained     (unconstrainedFittedTracks[t][planeName][1]*10                  ,p);
             dataVector[t].setXSigmaInterceptUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](1,1))*10,p);
@@ -187,7 +193,6 @@ void EventConverter::convert(Event& event,int e)
             dataVector[t].setXSigmaSlopeUnconstrained    (sqrt(unconstrainedFittedTracksCovariance[t][planeName](0,0))   ,p);
             dataVector[t].setYSlopeUnconstrained         (unconstrainedFittedTracks[t][planeName][2]                     ,p);
             dataVector[t].setYSigmaSlopeUnconstrained    (sqrt(unconstrainedFittedTracksCovariance[t][planeName](2,2))   ,p);
-            STDLINE("",ACWhite) ;
             if(trackCandidates[t].find(planeName) != trackCandidates[t].end())
             {
 
@@ -545,14 +550,11 @@ void EventConverter::convert(Event& event,int e)
                     dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
                 }
             }
-            STDLINE("",ACWhite) ;
         }
         dataVector[t].setNumberOfTelescopeHits(nTelescopeHits);
         dataVector[t].setNumberOfTelescopeClustersSizeLE2(clustersSizeLE2);
-        STDLINE("",ACWhite) ;
     }
 
-    STDLINE("",ACWhite) ;
     for(unsigned int t=0; t<trackCandidates.size(); t++)
     {
         TThread::Lock();
@@ -561,8 +563,6 @@ void EventConverter::convert(Event& event,int e)
         outTree_->Fill();
         TThread::UnLock();
     }
-    STDLINE("",ACWhite) ;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

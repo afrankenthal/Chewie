@@ -101,7 +101,6 @@ bool XmlParser::parseDocument(QString fileName)
 {
     destroy();
 
-    STDLINE("",ACWhite);
     document_ = new QDomDocument( "ConfigurationFile" );
     STDLINE("",ACWhite);
     QFile file(fileName);
@@ -124,7 +123,6 @@ bool XmlParser::parseDocument(QString fileName)
     }
 
     STDLINE(std::string("Parsing ")+file.fileName().toStdString(),ACGreen);
-    STDLINE("",ACWhite);
     STDLINE("",ACWhite);
 
     rootNode_ = document_->elementsByTagName("ChewieConfiguration").at(0);
