@@ -32,6 +32,7 @@
 setenv BASEDATADIR ../data/2015_10_October
 
 if(${HOSTNAME} == "hal9000.mib.infn.it") then
+
   if	  ( ${USER} == "menasce" ) then
    setenv BASEDATADIR ../data/2015_10_October
   else if ( ${USER} == "dinardo" ) then
@@ -48,15 +49,11 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   setenv CHEWIEOUTPUTDIR	  ${BASEDATADIR}/ChewieOutput
   setenv CHEWIEXMLDIR		  ${CHEWIEDIR}/xml
 
+  #===== Location of the ROOT components
   setenv ROOTVER                  SIX
   setenv ROOTSYS		  /user/service/root-6.04.10/
   setenv ROOTINC		  $ROOTSYS/include/root
   setenv ROOTLIB		  $ROOTSYS/lib/root
-=======
-  setenv ROOTSYS		 /user/service/root-6.04.10/
-  setenv ROOTINC		  $ROOTSYS/include/root
-  setenv ROOTLIB		  $ROOTSYS/lib/root
->>>>>>> .r34
 
   #===== Location of the Qt components
   setenv QTDIR  		  /usr/local/Trolltech/Qt-4.8.5

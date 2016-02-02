@@ -105,7 +105,6 @@ int Threader::startThreads()
             else
                 return -1;
             STDLINE(threadName.str()+" is running...",ACWhite);
-            STDLINE("",ACWhite);
         }
     }
     return 0;

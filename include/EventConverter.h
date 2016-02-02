@@ -72,7 +72,8 @@ private:
     PlanesMapping       thePlanesMapping_;
     std::vector<Event>  eventVector_     ;
     int                 counter_         ;
-    int                 runNumber_;
+    int                 runNumber_       ;
+    std::stringstream   ss_              ;
 };
 
 #endif

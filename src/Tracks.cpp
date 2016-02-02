@@ -48,6 +48,7 @@ Tracks::Tracks(AnalysisManager* analysisManager, int nOfThreads) :
         Analysis           (analysisManager, nOfThreads)
         , thePlaneMapping_ (0                          )
 {
+    STDLINE("=======================================================================",ACCyan) ;
     thePlaneMapping_ = new PlanesMapping();
     hNumberofHit_       =0;
     hTracksPlane_ =0;
@@ -86,6 +87,7 @@ Tracks::Tracks(AnalysisManager* analysisManager, int nOfThreads) :
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Tracks::~Tracks(void)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     destroy();
     if(thePlaneMapping_)
         delete thePlaneMapping_;
@@ -94,6 +96,7 @@ Tracks::~Tracks(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Tracks::destroy(void)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     if(Analysis::fDoNotDelete_) return;
     /*if(hXSlope_)
     {
@@ -193,6 +196,7 @@ void Tracks::destroy(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Tracks::setCutsFormula(std::map<std::string, std::string>, std::vector<TTree *>)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     std::stringstream ss;
 
     STDLINE("",ACWhite);
@@ -204,6 +208,7 @@ void Tracks::setCutsFormula(std::map<std::string, std::string>, std::vector<TTre
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Tracks::passStandardCuts(int  , const Data& data)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     XmlParser* theParser = theAnalysisManager_->getXmlParser();
     if(!theParser->getAnalysesFromString("Charge")->applyStandardCuts())
         return true;
@@ -256,13 +261,14 @@ bool Tracks::passStandardCuts(int  , const Data& data)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Tracks::beginJob(void)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     book();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void Tracks::PositionUnfolded_prepare   (int planeID, const Data &data, int threadNumber)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     if (!data.getHasHit(planeID)) return;
 
 //    float pixelLengthX = 150;
@@ -291,6 +297,7 @@ void Tracks::PositionUnfolded_prepare   (int planeID, const Data &data, int thre
 
 void Tracks::PositionUnfolded_book ()
 {
+    STDLINE("=======================================================================",ACCyan) ;
     std::string hName;
     std::string hTitle;
     std::string planeName;
@@ -314,6 +321,7 @@ void Tracks::PositionUnfolded_book ()
 
 void Tracks::numberOfTracksAnalysis (const Data& data, int threadNumber)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     THREADED(hNumberOfTracks_  )->Fill(data.getNumberOfTracks()                          );
     THREADED(hRunNumber_       )->Fill(data.getRunNumber     ()                          );
     THREADED(hEventNumber_     )->Fill(data.getEventNumber   ()                          );
@@ -327,6 +335,7 @@ void Tracks::numberOfTracksAnalysis (const Data& data, int threadNumber)
 
 void Tracks::analyze(const Data &data, int threadNumber)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     numberOfTracksAnalysis(data, threadNumber);
 
 //    if(!passStandardCuts(0,data)) return;
@@ -468,6 +477,7 @@ void Tracks::analyze(const Data &data, int threadNumber)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Tracks::endJob(void)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     ADD_THREADED(hChi2_               );
     ADD_THREADED(hNumberofHit_               );
     ADD_THREADED(hTracksPlane_               );
@@ -662,6 +672,7 @@ void Tracks::endJob(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Tracks::book(void)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     destroy();
 
     std::string hName;

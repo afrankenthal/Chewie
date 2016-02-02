@@ -180,7 +180,7 @@ sources.files        = $$SOURCES   						  \
  
 INSTALLS            += target sources
 
-header.depends       = ../Monicelli/include/EventHeader.h
+header.depends       = ../Monicelli/include/EventHeader.h                         \
 
 header.target        = tmp/EventHeaderDict.C
 
@@ -217,7 +217,7 @@ contains(ROOTVER, FIVE) {
                                 -c ../Monicelli/include/Event.h+                  \
                                    ../Monicelli/include/Geometry.h+               \
                                    ../Monicelli/include/Detector.h+               \
-                                   include/ROC.h+                              && \
+                                   ../Monicelli/include/ROC.h+                 && \
                        cp tmp/*.pcm .
 }
 
@@ -236,6 +236,11 @@ OBJECTS_DIR         += objFiles
 QT                  *= xml
 
 DEPENDPATH          += . src include ../Monicelli/plugins/customTableWidget
+
+extraclean.commands  = rm -rf tmp/*                                             
+
+clean.depends        = extraclean
+QMAKE_EXTRA_TARGETS += clean extraclean
 
 unix:!macx:!symbian: LIBS += -lTreePlayer
 

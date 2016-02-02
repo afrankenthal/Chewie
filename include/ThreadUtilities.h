@@ -36,12 +36,14 @@
 #include <TDirectory.h>
 #include <iostream>
 
-#define NEW_THREADED(x)  (ThreadUtilities::newThreadedObject(new x,Threader::nOfThreads_))
-#define CLONE_THREADED(x)(ThreadUtilities::newThreadedObject(x,Threader::nOfThreads_))
-#define THREADED(x)      (ThreadUtilities::getThreadedObject(x,threadNumber))
-#define ADD_THREADED(x)  (ThreadUtilities::addThreadedObject(x,Threader::nOfThreads_))
-#define ADD_THREADED_CHAIN(x,y) (ThreadUtilities::addThreadedObjectInChain(x, y, Threader::nOfThreads_))
-#define MERGE_THREADED(x,y)     (ThreadUtilities::mergeThreadedObject(x,y,Threader::nOfThreads_))
+#define NEW_THREADED(x)  	(ThreadUtilities::newThreadedObject	  (new x, Threader::nOfThreads_ 		      ))
+#define CLONE_THREADED(x)	(ThreadUtilities::newThreadedObject	  (x	, Threader::nOfThreads_ 		      ))
+#define THREADED(x)      	(ThreadUtilities::getThreadedObject	  (x	, threadNumber          		      ))
+#define ADD_THREADED(x)  	{                                                                                                \
+                                 ThreadUtilities::addThreadedObject	  (x	, Threader::nOfThreads_ 		      ); \
+				}
+#define ADD_THREADED_CHAIN(x,y) (ThreadUtilities::addThreadedObjectInChain(x	, y		       , Threader::nOfThreads_))
+#define MERGE_THREADED(x,y)     (ThreadUtilities::mergeThreadedObject     (x	, y		       , Threader::nOfThreads_))
 
 //class TTree;
 

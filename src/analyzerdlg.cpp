@@ -1,12 +1,12 @@
 /*===============================================================================
  * Chewie: the FERMILAB MTEST telescope and DUT anaysis tool
- * 
- * Copyright (C) 2014 
+ *
+ * Copyright (C) 2014
  *
  * Authors:
  *
- * Mauro Dinardo      (Universita' Bicocca) 
- * Dario Menasce      (INFN) 
+ * Mauro Dinardo      (Universita' Bicocca)
+ * Dario Menasce      (INFN)
  * Jennifer Ngadiuba  (INFN)
  * Lorenzo Uplegger   (FNAL)
  * Luigi Vigani       (INFN)
@@ -73,8 +73,8 @@ AnalyzerDlg::AnalyzerDlg(QWidget *parent) :
 
     ui->studiesTW->setCurrentWidget(ui->runT);
     //Settings
-    ui->progressBar->reset();
-    ui->scanListTW     ->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+    ui->progressBar ->reset();
+    ui->scanListTW  ->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
     ui->dutsListLW  ->addItem("Dut0");
     ui->dutsListLW  ->addItem("Dut1");
     ui->dutsListLW_2->addItem("Dut0");
@@ -92,8 +92,8 @@ AnalyzerDlg::AnalyzerDlg(QWidget *parent) :
     //PixelMatrix* pixelMatrix = new PixelMatrix(this);
     ui->pixelMatrixW->init();
     ui->pixelCutMatrixW->init();
-    ui->cutVarLW->addItem((QString)"None");
-    ui->cutVarLW->addItem((QString)"Window");
+    ui->cutVarLW->addItem((QString)"None"      );
+    ui->cutVarLW->addItem((QString)"Window"    );
     ui->cutVarLW->addItem((QString)"Efficiency");
     cutFile_ = "no";
     //connect(ui->cutVarLW, SIGNAL(test()), this, SLOT(on_cutFilePB_clicked()));
@@ -221,12 +221,21 @@ void* AnalyzerDlg::threaderMethod(void* myClass, void* whatToRun, int )//Last va
     AnalyzerDlg* theWindow = (AnalyzerDlg*) myClass;
     theWindow->whatToRun_ = QString((const char*)whatToRun);
 
-    if(theWindow->whatToRun_ == "AnalysisManager::startSequence")
+    if(     theWindow->whatToRun_ == "AnalysisManager::startSequence")
+    {
+        STDLINE("==== AnalysisManager::startSequence ===========", ACPurple) ;
         theWindow->theAnalysisManager_->startSequence();
+    }
     else if(theWindow->whatToRun_ == "EventManager::startCalibrationManager")
+    {
+        STDLINE("==== EventManager::startCalibrationManager ====", ACPurple) ;
         theWindow->theEventManager_->startCalibrationManager();
+    }
     else if(theWindow->whatToRun_ == "EventManager::startConverter")
+    {
+        STDLINE("==== EventManager::startConverte ==============", ACPurple) ;
         theWindow->theEventManager_->startConverter();
+    }
     else
     {
         FATAL((theWindow->whatToRun_ + " is not a recognized threaded operation!").toStdString(),ACRed);
@@ -259,7 +268,7 @@ void AnalyzerDlg::displayFinishedBox(void)
 //============================================================================================================================================
 void AnalyzerDlg::updateFileName(void)
 {
-/*
+    /*
     QString     entries    ;
     QString     inFileName1;
     QString     inFileName2;
@@ -657,7 +666,7 @@ void AnalyzerDlg::on_runAnalysisPB_clicked(void)
 
     ui->progressBar->reset();
     theTimer_->start();
-    *theFuture_ = QtConcurrent::run(threaderMethod,this,(void*)"AnalysisManager::startSequence",0);
+    *theFuture_ = QtConcurrent::run(this->threaderMethod,this,(void*)"AnalysisManager::startSequence",0);
     theWatcher_->setFuture(*theFuture_);
 }
 
@@ -723,7 +732,7 @@ void AnalyzerDlg::on_resetRemovedPxlsDUT1PB_clicked(void)
 //============================================================================================================================================
 void AnalyzerDlg::on_saveOutputFilePB_clicked(void)
 {
-//    QString localPath = this->getEnvPath("CHEWIEDATADIR");
+    //    QString localPath = this->getEnvPath("CHEWIEDATADIR");
     QString fileName = QFileDialog::getSaveFileName(this,tr("Save File"),ui->outputFileLE->text(),tr("Root files (*.root)"));
     ui->outputFileLE->setText(fileName);
 
@@ -1058,7 +1067,7 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
         if(!hits.isNull())
         {
             analysisCB[a]->setChecked(true);
-//            analysisSB[a]->setValue(hits.toElement().text().toInt());
+            //            analysisSB[a]->setValue(hits.toElement().text().toInt());
             analysisSB[a]->setValue("MinHits", hits.toElement().text().toInt());
             analysisSB[a]->assignXmlElement((theXmlParser_->getAnalysesFromString(analysisName[a]))->getNode());
         }
@@ -1150,8 +1159,8 @@ void AnalyzerDlg::on_runScanPB_clicked(void)
 
     QString fileName = ui->scanListTW->item(0,0)->text();
 
-//    ui->loadedNtupleFileLE->setText(fileName);
-//    ui->loadedNtupleFileLE->setToolTip(fileName);
+    //    ui->loadedNtupleFileLE->setText(fileName);
+    //    ui->loadedNtupleFileLE->setToolTip(fileName);
 
     theAnalysisManager_->clearFilesList();
     for(int r=0; r<ui->scanListTW->rowCount(); ++r)
@@ -1987,7 +1996,7 @@ void AnalyzerDlg::on_cutFilePB_clicked()
     ui->cutFileLE->setText((QString)name.c_str());
     cutFile_ = fileNames.at(0).toStdString();
 
-//    setPixelMatrixReferenceHistogram();
+    //    setPixelMatrixReferenceHistogram();
 }
 
 //============================================================================================================================================

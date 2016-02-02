@@ -68,32 +68,30 @@ struct Sorting
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-AnalysisManager::AnalysisManager()://TTree* tree) :
-    nOfThreads_           (0)
-  , maxNOfThreads_        (0)
-  , maxEvents_            (-1)
-  , currentEntry_         (0)
-  , outFileName_          ("")
-  , outFile_              (0)
-  , theXmlParser_         (0)
-  , totalEvents_          (0)
-  , totalEventsToProcess_ (0)
+AnalysisManager::AnalysisManager():
+    nOfThreads_           (0    )
+  , maxNOfThreads_        (0    )
+  , maxEvents_            (-1   )
+  , currentEntry_         (0    )
+  , outFileName_          (""   )
+  , outFile_              (0    )
+  , theXmlParser_         (0    )
+  , totalEvents_          (0    )
+  , totalEventsToProcess_ (0    )
   , abort_                (false)
-  , isFinished_           (true)
-  , completionStatus_     (0)
-  , completionStatusBegin_(0)
-  , completionStatusEnd_  (100)
-  , currentOperation_     ("")
+  , isFinished_           (true )
+  , completionStatus_     (0    )
+  , completionStatusBegin_(0    )
+  , completionStatusEnd_  (100  )
+  , currentOperation_     (""   )
 {
-    //if(tree)
-    //    initializeTree();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 AnalysisManager::~AnalysisManager(void)
 {
     STDLINE("Destructor",ACRed);
-    stopSequence();
+    stopSequence  ();
     clearFilesList();
     resetAnalyses();
 }
@@ -284,7 +282,7 @@ int AnalysisManager::openOutFile(std::string fileName, std::string mode)
     }
     else if(outFileName_ == "")
     {
-        STDLINE("ERROR: Don't have an output file name set!",ACRed);
+        STDLINE("ERROR: No output file name was set!",ACRed);
         return 0;
     }
     outFile_  = TFile::Open(outFileName_.c_str(),mode.c_str());
@@ -465,7 +463,9 @@ void AnalysisManager::startSequence(void)
         STDLINE("Done!",ACGreen);
     }
     else
+    {
         STDLINE("Not using calibrations!",ACRed);
+    }
 
     std::map<int, std::pair<std::string,XmlAnalysis*> > analyses = theXmlParser_->getAnalyses();
     int totAnalysesToRun = 0;
@@ -518,40 +518,53 @@ void AnalysisManager::startSequence(void)
             analyses_[it].second->getInFile(outFile_);
         //}
 
-        currentOperation_ = "Begin " + analyses_[it].first + "jobs";
+        currentOperation_ = "Begin " + analyses_[it].first + " job ";
         STDLINE(currentOperation_, ACRed);
 
         if (!outFile_) STDLINE("Where the hell is the output file??", ACRed);
-        outFile_->cd();
-        analyses_[it].second->beginJob();
 
-        currentOperation_ += " done!";
-        STDLINE(currentOperation_, ACGreen);
+        outFile_->cd();                     //
+        analyses_[it].second->beginJob();   // --->
 
-        if(abort_) return;
-        currentOperation_ += " done!";
+        if(abort_)
+        {
+            currentOperation_ += analyses_[it].first + " job  ABORTED!";
+            STDLINE(currentOperation_, ACGreen);
+            return;
+        }
+
+        currentOperation_      = "Begin " +  analyses_[it].first + " job  accomplished!";
         STDLINE(currentOperation_, ACGreen);
 
         completionStatus_      = 3 + completionRunning*n + 1;
-        if(abort_) return;
+
+        if(abort_)
+        {
+            currentOperation_ += analyses_[it].first + " job  ABORTED!";
+            STDLINE(currentOperation_, ACGreen);
+            return;
+        }
+
         completionStatusBegin_ = completionStatusEnd_ = completionStatus_;
 
-        if(abort_) return;
-        currentOperation_ = "Running " + analyses_[it].first + " analysis";
+        currentOperation_      = "Running " + analyses_[it].first + " analysis";
         STDLINE(currentOperation_, ACRed);
 
-        currentEntry_ = 0;
+        currentEntry_          = 0;
         completionStatusBegin_ = completionStatusEnd_;
-        completionStatusEnd_ += completionRunning -1;
-        resetThreadedEntries();
-        outFile_->cd();
-        analyses_[it].second->runAnalysis();
+        completionStatusEnd_  += completionRunning -1;
+
+        resetThreadedEntries();                       //
+        outFile_->cd();                               // --->
+        analyses_[it].second->runAnalysis();          //
+
         if(abort_) return;
+
         currentOperation_ = analyses_[it].first + " analysis done!";
         STDLINE(currentOperation_, ACGreen);
 
         if(abort_) return;
-        currentOperation_ = "End " + analyses_[it].first + " jobs";
+        currentOperation_ = "End " + analyses_[it].first + " job";
         STDLINE(currentOperation_, ACRed);
 
         outFile_->cd();

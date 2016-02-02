@@ -3166,11 +3166,21 @@ void Charge::calculateEtaDerivative (int p)
 {
     for (int l = 1; l < h1DXEtaDerivativeDistribution_[p]->GetXaxis()->GetNbins(); ++l)
     {
-        h1DXEtaDerivativeDistribution_[p]->SetBinContent(l, double(-h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l+1) + h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l))/h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinWidth(l));
+        h1DXEtaDerivativeDistribution_[p]->SetBinContent(
+                                                         l,
+                                                         double(-h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l+1) +
+                                                                 h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l))  /
+                                                                 h1DXCellChargeAsimmetrySizeLE2_[p]->GetBinWidth(l)
+                                                        );
     }
     for (int l = 1; l < h1DYEtaDerivativeDistribution_[p]->GetXaxis()->GetNbins(); ++l)
     {
-        h1DYEtaDerivativeDistribution_[p]->SetBinContent(l, double(-h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l+1) + h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l))/h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinWidth(l));
+        h1DYEtaDerivativeDistribution_[p]->SetBinContent(
+                                                         l,
+                                                         double(-h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l+1) +
+                                                                 h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinContent(l))  /
+                                                                 h1DYCellChargeAsimmetrySizeLE2_[p]->GetBinWidth(l)
+                                                        );
     }
 }
 
@@ -3315,9 +3325,12 @@ void Charge::endJob(void)
 {
     std::stringstream ss;
 
+    STDLINE("",ACWhite) ;
 
     for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
     {
+        ss.str("") ; ss << "Adding threads for plane " << p ;
+        STDLINE(ss.str().c_str(),ACYellow) ;
         std::string planeName = thePlaneMapping_->getPlaneName(p);
 
         ADD_THREADED(hClusterSize_                            [p]);
@@ -3453,13 +3466,12 @@ void Charge::endJob(void)
         ADD_THREADED(h1DPixelYTRackResiduals2RowsNorm_                          [p]);
         ADD_THREADED(h2DPixelChargeClusterSize2Row1vsRow2Of2Rows_               [p]);
 
-
-
-
-
-
-        for(std::vector<TH1F*>::iterator it=hCellChargeCoarseLandau_[p].begin(); it!=hCellChargeCoarseLandau_[p].end(); it++)
+        for(std::vector<TH1F*>::iterator it =hCellChargeCoarseLandau_[p].begin();
+                                         it!=hCellChargeCoarseLandau_[p].end();
+                                         it++)
+        {
             ADD_THREADED(*it);
+        }
 
         ADD_THREADED(h1DXcellCharge_                          [p]);
         ADD_THREADED(h1DXcellChargeNormToAll_                 [p]);
@@ -3547,7 +3559,9 @@ void Charge::endJob(void)
         ADD_THREADED(h2DYcellChargeAsimmetryInvRows4And3Of4RowsCutOnEntries_[p]);
         ADD_THREADED(h2DYcellChargeAsimmetryInv4Rows_                       [p]);
 
+        STDLINE("Threading phase completed",ACGreen) ;
 
+        STDLINE("Filling phase...",ACWhite) ;
         //Fill Y Asimmetry histograms only if there are enough entries in order to get a better TProfile
         for (int j = 1; j < h2DYcellChargeAsimmetryInv_[p]->GetYaxis()->GetNbins()+1; ++j)
         {
@@ -3688,12 +3702,16 @@ void Charge::endJob(void)
                 STDLINE("",ACWhite);
             }
         }
+        STDLINE("normalizeEtaDistributionSize2",ACWhite) ;
         normalizeEtaDistributionSize2 (p);
         //        NormalizeEtaDistribution      (p);
+        STDLINE("normalizeEtaInverse",ACWhite) ;
         normalizeEtaInverse(p);
 
+        STDLINE("calculateEtaDerivative",ACWhite) ;
         calculateEtaDerivative(p);
 
+        STDLINE("Setting styles...",ACWhite) ;
         h1DXcellChargeAsimmetry_                 [p]->SetMinimum(-1);
         h1DXcellChargeAsimmetry_                 [p]->SetMaximum( 1);
         h1DXcellChargeAsimmetry_                 [p]->SetMarkerStyle(20);
@@ -3779,7 +3797,8 @@ void Charge::endJob(void)
         h1DXcellChargeSecondHit_                 [p]->SetMarkerColor(kBlack);
         h1DXcellChargeSecondHit_                 [p]->SetLineColor(kBlack);
 
-        /*h1DXcellChargeNormToAll_                 [p]->SetMarkerStyle(20);
+/*
+        h1DXcellChargeNormToAll_                 [p]->SetMarkerStyle(20);
         h1DXcellChargeNormToAll_                 [p]->SetMarkerSize(0.6);
         h1DXcellChargeNormToAll_                 [p]->SetMarkerColor(kBlack);
 
@@ -3789,7 +3808,8 @@ void Charge::endJob(void)
 
         h1DXcellChargeSumLE3NormToAll_           [p]->SetMarkerStyle(20);
         h1DXcellChargeSumLE3NormToAll_           [p]->SetMarkerSize(0.6);
-        h1DXcellChargeSumLE3NormToAll_           [p]->SetMarkerColor(kMagenta);*/
+        h1DXcellChargeSumLE3NormToAll_           [p]->SetMarkerColor(kMagenta);
+*/
 
         hClusterSize_                                  [p]->GetXaxis()->SetTitle("cluster size"      );
         hClusterSizeStandardCutsThreshold_             [p]->GetXaxis()->SetTitle("cluster size"      );
@@ -3807,20 +3827,20 @@ void Charge::endJob(void)
         h1DClusterSizeYProjection_                     [p]->GetXaxis()->SetTitle("short pitch (um)"  );
         h1DClusterSizeYProjection_                     [p]->GetYaxis()->SetTitle("Cluster Size"      );
 
-        hLandauClusterSize1_                     [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hCellLandau_                             [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hCellLandau3D_                           [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hCellLandau3DElectrodes_                 [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hCellLandauSinglePixel_                  [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize2_                     [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize2ChargeOver5000_       [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize2sameRow_              [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize2sameCol_              [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize3_                     [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize3ChargeOver5000_       [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize3sameRow_              [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize3sameCol_              [p]->GetXaxis()->SetTitle("charge (electrons)");
-        hLandauClusterSize4_                     [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize1_                           [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hCellLandau_                                   [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hCellLandau3D_                                 [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hCellLandau3DElectrodes_                       [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hCellLandauSinglePixel_                        [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize2_                           [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize2ChargeOver5000_             [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize2sameRow_                    [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize2sameCol_                    [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize3_                           [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize3ChargeOver5000_             [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize3sameRow_                    [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize3sameCol_                    [p]->GetXaxis()->SetTitle("charge (electrons)");
+        hLandauClusterSize4_                           [p]->GetXaxis()->SetTitle("charge (electrons)");
 
 
         h1DPixelYTrackResiduals_                 [p]->GetXaxis()->SetTitle("short pitch (um)"        );
@@ -4009,11 +4029,6 @@ void Charge::endJob(void)
         h2DPixelChargeClusterSize2Row1vsRow2Of2Rows_              [p]->GetXaxis()->SetTitle("Charge in Row 2"       );
         h2DPixelChargeClusterSize2Row1vsRow2Of2Rows_              [p]->GetYaxis()->SetTitle("Charge in Row 1"       );
 
-        /*-----------------------------------------------------------------------------------------------------------*/
-
-
-
-
         /*----------------------------------- 4 Rows ------------------------------------------------------------*/
         h2DCellPixelCharge4Rows_                                  [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DCellPixelCharge4Rows_                                  [p]->GetYaxis()->SetTitle("short pitch (um)"  );
@@ -4151,13 +4166,6 @@ void Charge::endJob(void)
         hHitsNotONRowColVsYSlope_                [p]->GetXaxis()->SetTitle("short pitch (um)"  );
         hHitsNotONRowColVsYSlope_                [p]->GetYaxis()->SetTitle("y slope (1/um)"    );
         hHitsNotOnRowColProjY_                   [p]->GetXaxis()->SetTitle("short pitch (um)"  );
-
-
-        TF1* fXAsimmetryFit   = new TF1("fXAsimmetryFit","pol1",-0.8,0.8);
-
-        if(h1DXcellChargeAsimmetryInv_[p]->GetEntries()!=0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"QR");
-
-
         hXAsimmetry_                             [p]->GetXaxis()->SetTitle("Asimmetry"         );
         hXAsimmetry0_                            [p]->GetXaxis()->SetTitle("Asimmetry on one side");
         h2DXAsimmetryLandau_                     [p]->GetXaxis()->SetTitle("charge (electrons)");
@@ -4242,30 +4250,45 @@ void Charge::endJob(void)
         h2DYCellChargeAsimmetryCell_                           [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DYCellChargeAsimmetryCell_                           [p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
+        STDLINE("Fitting phase",ACWhite) ;
+
+        STDLINE("fXAsimmetryFit",ACWhite) ;
+        TF1* fXAsimmetryFit = new TF1("fXAsimmetryFit","pol1",-0.8,0.8);
+        if(h1DXcellChargeAsimmetryInv_[p]->GetEntries()!=0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"QR");
+
+        STDLINE("fXAsimmetryFit",ACWhite) ;
         TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-0.8,0.8);
-
         if(h1DYcellChargeAsimmetryInv_[p]->GetEntries()!=0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"QR");
-
-
         if(p==22)
-            std::cout<<__PRETTY_FUNCTION__<< "Fit h1DYcellChargeAsimmetryInv:   "
-                    << "intercept: " << fYAsimmetryFit->GetParameter(0)
-                    << "slope: "     << fYAsimmetryFit->GetParameter(1) << std::endl;
+        {
+            ss << "Fit h1DYcellChargeAsimmetryInv_:   "
+               << "intercept: " << fYAsimmetryFit->GetParameter(0)
+               << "slope: "     << fYAsimmetryFit->GetParameter(1) ;
+            STDLINE(ss.str().c_str(),ACWhite) ;
+        }
 
         if(h1DYcellChargeAsimmetryInvRows1And2Of4Rows_[p]->GetEntries()!=0) h1DYcellChargeAsimmetryInvRows1And2Of4Rows_[p]->Fit(fYAsimmetryFit,"QR");
         if(p==22)
-            std::cout<<__PRETTY_FUNCTION__<< "Fit h1DYcellChargeAsimmetryInvRows1And2Of4Rows:   "
-                    << "intercept: " << fYAsimmetryFit->GetParameter(0)
-                    << "slope: "     << fYAsimmetryFit->GetParameter(1) << std::endl;
+        {
+            ss << "Fit h1DYcellChargeAsimmetryInvRows1And2Of4Rows_:   "
+               << "intercept: " << fYAsimmetryFit->GetParameter(0)
+               << "slope: "     << fYAsimmetryFit->GetParameter(1) ;
+            STDLINE(ss.str().c_str(),ACWhite) ;
+        }
 
         if(h1DYcellChargeAsimmetryInvRows4And3Of4Rows_[p]->GetEntries()!=0) h1DYcellChargeAsimmetryInvRows4And3Of4Rows_[p]->Fit(fYAsimmetryFit,"QR");
         if(p==22)
-            std::cout<<__PRETTY_FUNCTION__<< "Fit h1DYcellChargeAsimmetryInvRows4And3Of4Rows:   "
-                    << "intercept: " << fYAsimmetryFit->GetParameter(0)
-                    << "slope: "     << fYAsimmetryFit->GetParameter(1) << std::endl;
+        {
+            ss << "Fit h1DYcellChargeAsimmetryInvRows4And3Of4Rows_:   "
+               << "intercept: " << fYAsimmetryFit->GetParameter(0)
+               << "slope: "     << fYAsimmetryFit->GetParameter(1) ;
+            STDLINE(ss.str().c_str(),ACWhite) ;
+        }
     }
 
+    STDLINE("calculateMeanCharge",ACWhite) ;
     calculateMeanCharge();
+    STDLINE("Done!!",ACGreen) ;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

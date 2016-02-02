@@ -132,7 +132,7 @@ bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
 
     //std::cout << __PRETTY_FUNCTION__ << "Col: " << col << " ColBin: " << xAxis->FindBin(col) << std::endl;
     //WARNING THIS METHOD IS WRONG BECAUSE IT NEEDS TO CHECK THE DATA TYPE!
-    if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0)
+    if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0)
     {
         //std::cout << __PRETTY_FUNCTION__ << "theHWindow_.find(runNumber)" << std::endl;
         return true;
@@ -146,24 +146,24 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
     TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
     if(type==0)
     {
-        if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
+        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
             return true;
         else
             return false;
     }
     else if(type==1)
     {
-        if(theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col  ),yAxis->FindBin(0.)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col-1),yAxis->FindBin(0.)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetCellContent(xAxis->FindBin(col+1),yAxis->FindBin(0.)) != 0 )
+        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(0.)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(0.)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(0.)) != 0 )
 
             return true;
         else

@@ -255,9 +255,9 @@ void MainWindow::createStatusBar()
 void MainWindow::readSettings()
 {
     QSettings settings("Trolltech", "Chewie Analyzer");
-    QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
-    QSize size = settings.value("size", QSize(1024, 620)).toSize();
-    move(pos);
+    QPoint pos = settings.value("pos",  QPoint(200, 200)).toPoint();
+    QSize size = settings.value("size", QSize(1024, 820)).toSize();
+    move  (pos );
     resize(size);
 }
 
@@ -265,7 +265,8 @@ void MainWindow::readSettings()
 void MainWindow::writeSettings()
 {
     QSettings settings("Trolltech", "Chewie Analyzer");
-    settings.setValue("pos", pos());
+    settings.setValue("pos",  pos ());
+    cout << __LINE__ << "] " << this->size().width() << " " << this->size().height() << endl ;
     settings.setValue("size", size());
 }
 
@@ -301,12 +302,11 @@ void MainWindow::openAnalyzer()
 {
     if(!theAnalyzer_)
     {
-        //    QDialog* child = new AnalyzerDlg(this) ;
         theAnalyzer_ = new AnalyzerDlg(this) ;
         QMdiSubWindow* subWindow = mdiArea_->addSubWindow(theAnalyzer_);
         enableAnalyzerButton(false) ;
         connect(subWindow, SIGNAL(destroyed()), this, SLOT(enableAnalyzerButton()));
-        subWindow->setGeometry(10,10,theAnalyzer_->width(),theAnalyzer_->height());
+        subWindow->setGeometry(10,10,theAnalyzer_->width(),theAnalyzer_->height()+28);
         subWindow->show();
     }
 }

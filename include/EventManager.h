@@ -33,6 +33,7 @@
 #include "TTree.h"
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <map>
 
@@ -140,6 +141,8 @@ private:
     int                          completionStatus_     ;
     int                          completionStatusBegin_;
     int                          completionStatusEnd_  ;
+
+    std::stringstream            ss_                   ;
 };
 
 #endif

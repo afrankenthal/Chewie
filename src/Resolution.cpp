@@ -68,6 +68,7 @@ Resolution::Resolution(AnalysisManager* analysisManager, int nOfThreads) :
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Resolution::~Resolution(void)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     if(thePlaneMapping_)
         delete thePlaneMapping_;
 
@@ -77,6 +78,7 @@ Resolution::~Resolution(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Resolution::destroy(void)
 {
+    STDLINE("=======================================================================",ACCyan) ;
     if(Analysis::fDoNotDelete_) return;
 
     for(std::vector<TH1F*>::iterator it=hXResiduals_                .begin(); it!=hXResiduals_                .end(); it++) delete *it; hXResiduals_                .clear();
@@ -163,7 +165,9 @@ double Resolution::smearedSquare(double *xx, double *par){
 
 }*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsSize1(int planeID){
+void Resolution::fitXresidualsSize1(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResidualsClusterSize1_[planeID]->GetEntries()==0)
         return;
@@ -186,6 +190,7 @@ void Resolution::fitXresidualsSize1(int planeID){
 
     fSmearedSquare_->SetParLimits(2,10.,20.);
     fSmearedSquare_->SetParLimits(3,50.,160.);
+    STDLINE("=======================================================================",ACRed) ;
 
     hXResidualsClusterSize1_[planeID]->Fit(fSmearedSquare_,"Q","",-150.,150.);//Irene changed it, before it was +- 150
     //hXresidualsClusterSize14Rows_[planeID]->Fit(fSmearedSquare_,"Q","",-600.,600.);
@@ -220,7 +225,9 @@ void Resolution::fitXresidualsSize1(int planeID){
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitYresidualsSize1(int planeID){
+void Resolution::fitYresidualsSize1(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hYResidualsClusterSize1_[planeID]->GetEntries()==0)
         return;
@@ -276,7 +283,9 @@ void Resolution::fitYresidualsSize1(int planeID){
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXResiduals(int planeID){
+void Resolution::fitXResiduals(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResiduals_[planeID]->GetEntries()==0)
         return;
@@ -286,7 +295,9 @@ void Resolution::fitXResiduals(int planeID){
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitYResiduals(int planeID){
+void Resolution::fitYResiduals(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hYResiduals_[planeID]->GetEntries()==0)
         return;
@@ -296,7 +307,9 @@ void Resolution::fitYResiduals(int planeID){
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsCalculated(int planeID){
+void Resolution::fitXresidualsCalculated(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResidualCalculated_[planeID]->GetEntries()==0)
         return;
@@ -305,7 +318,9 @@ void Resolution::fitXresidualsCalculated(int planeID){
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsCalculatedSize2(int planeID){
+void Resolution::fitXresidualsCalculatedSize2(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResidualCalculatedSize2_[planeID]->GetEntries()==0)
         return;
@@ -315,7 +330,9 @@ void Resolution::fitXresidualsCalculatedSize2(int planeID){
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsCalculatedSize3(int planeID){
+void Resolution::fitXresidualsCalculatedSize3(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResidualCalculatedSize3_[planeID]->GetEntries()==0)
         return;
@@ -325,7 +342,9 @@ void Resolution::fitXresidualsCalculatedSize3(int planeID){
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsCalculatedSize4(int planeID){
+void Resolution::fitXresidualsCalculatedSize4(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResidualCalculatedSize4_[planeID]->GetEntries()==0)
         return;
@@ -335,7 +354,9 @@ void Resolution::fitXresidualsCalculatedSize4(int planeID){
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsSize2(int planeID){
+void Resolution::fitXresidualsSize2(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
     if(hXResidualsClusterSize2_[planeID]->GetEntries()==0)
         return;
 
@@ -344,7 +365,9 @@ void Resolution::fitXresidualsSize2(int planeID){
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsSize3(int planeID){
+void Resolution::fitXresidualsSize3(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResidualsClusterSize3_[planeID]->GetEntries()==0)
         return;
@@ -354,7 +377,9 @@ void Resolution::fitXresidualsSize3(int planeID){
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsSize4(int planeID){
+void Resolution::fitXresidualsSize4(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hXResidualsClusterSize4_[planeID]->GetEntries()==0)
         return;
@@ -364,7 +389,9 @@ void Resolution::fitXresidualsSize4(int planeID){
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitYresidualsSize2(int planeID){
+void Resolution::fitYresidualsSize2(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
     if(hYResidualsClusterSize2_[planeID]->GetEntries()==0)
         return;
 
@@ -373,7 +400,9 @@ void Resolution::fitYresidualsSize2(int planeID){
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitYresidualsSize3(int planeID){
+void Resolution::fitYresidualsSize3(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hYResidualsClusterSize3_[planeID]->GetEntries()==0)
         return;
@@ -383,7 +412,9 @@ void Resolution::fitYresidualsSize3(int planeID){
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitYresidualsSize4(int planeID){
+void Resolution::fitYresidualsSize4(int planeID)
+{
+    STDLINE("=======================================================================",ACCyan) ;
 
     if(hYResidualsClusterSize4_[planeID]->GetEntries()==0)
         return;
@@ -393,8 +424,10 @@ void Resolution::fitYresidualsSize4(int planeID){
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Resolution::fitXresidualsDigital(int planeID){
+void Resolution::fitXresidualsDigital(int planeID)
+{
 
+    STDLINE("=======================================================================",ACCyan) ;
     if(hXResidualsDigital_[planeID]->GetEntries()==0)
         return;
 

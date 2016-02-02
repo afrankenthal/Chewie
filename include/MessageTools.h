@@ -46,9 +46,9 @@
          if(PFSize > 30) {PFSize = 30 ;}                     \
          for(int i=0; i<PFSize; ++i) {PFs_<<PF_[i];}         \
          if( PFSize < 30 )                                   \
-	 {                                                   \
+         {                                                   \
           for(int i=0; i<33-PFSize; ++i) {PFs_<<" ";}        \
-	 }                                                   \
+         }                                                   \
          if(PFSize<(int)PF_.size())                          \
           {maxL -= 3; PFs_<<ACRed<<"...";}                   \
          msg_ << ACCyan  << ACBold                           \

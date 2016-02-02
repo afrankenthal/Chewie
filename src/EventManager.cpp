@@ -260,7 +260,6 @@ void EventManager::startConverter(void)
         if(abort_) return;
         currentOperation_ = "Converting " + (it->first).substr(it->first.find_last_of('/')+1,it->first.size()-it->first.find_last_of('/')-1);
         std::string runNumberString = (it->first).substr(it->first.find_last_of('/')+4,it->first.size()-it->first.find_last_of('/')-16);
-//        STDLINE(runNumberString, ACYellow);
 //        return;
         int runNumber = atoi(runNumberString.c_str());
         std::string dataDir = AnalyzerDlg::getEnvPath("CHEWIEINPUTDIR").toStdString();

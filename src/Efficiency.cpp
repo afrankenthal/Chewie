@@ -88,10 +88,10 @@ void Efficiency::destroy(void)
     for(it1=hEfficiencyNorm_                 .begin(); it1!=hEfficiencyNorm_	      	     .end(); it1++) delete *it1; hEfficiencyNorm_		          .clear();
     for(it2=h2DEfficiency_                   .begin(); it2!=h2DEfficiency_	      	         .end(); it2++) delete *it2; h2DEfficiency_		              .clear();
     for(it2=h2DEfficiencyNorm_               .begin(); it2!=h2DEfficiencyNorm_	      	     .end(); it2++) delete *it2; h2DEfficiencyNorm_ 	          .clear();
-    for(it1=hEfficiencyRef_                  .begin(); it1!=hEfficiencyRef_  	      	     .end(); it1++) delete *it1; hEfficiencyRef_	          .clear();
+    for(it1=hEfficiencyRef_                  .begin(); it1!=hEfficiencyRef_  	      	     .end(); it1++) delete *it1; hEfficiencyRef_	              .clear();
     for(it1=hEfficiencyRefNorm_              .begin(); it1!=hEfficiencyRefNorm_	      	     .end(); it1++) delete *it1; hEfficiencyRefNorm_	          .clear();
-    for(it2=h2DEfficiencyRef_                .begin(); it2!=h2DEfficiencyRef_	      	     .end(); it2++) delete *it2; h2DEfficiencyRef_	          .clear();
-    for(it2=h2DEfficiencyRefNorm_            .begin(); it2!=h2DEfficiencyRefNorm_	     .end(); it2++) delete *it2; h2DEfficiencyRefNorm_ 	          .clear();
+    for(it2=h2DEfficiencyRef_                .begin(); it2!=h2DEfficiencyRef_	      	     .end(); it2++) delete *it2; h2DEfficiencyRef_	              .clear();
+    for(it2=h2DEfficiencyRefNorm_            .begin(); it2!=h2DEfficiencyRefNorm_	         .end(); it2++) delete *it2; h2DEfficiencyRefNorm_ 	          .clear();
     for(it2=h2D4cellEfficiency_              .begin(); it2!=h2D4cellEfficiency_	      	     .end(); it2++) delete *it2; h2D4cellEfficiency_	          .clear();
     for(it2=h2D4cellEfficiencyNorm_          .begin(); it2!=h2D4cellEfficiencyNorm_     	 .end(); it2++) delete *it2; h2D4cellEfficiencyNorm_	      .clear();
     for(it2=h2DInefficiency_                 .begin(); it2!=h2DInefficiency_	      	     .end(); it2++) delete *it2; h2DInefficiency_		          .clear();
@@ -201,7 +201,6 @@ void Efficiency::beginJob(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Efficiency::fitEfficiency(int ) //planeID
 {
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -273,7 +272,6 @@ void Efficiency::endJob(void)
     {
         if(theXmlParser_->getScan()->getScanValues().size()==0)
         {
-
             ADD_THREADED(hEfficiency_                	      [p]);
             ADD_THREADED(hEfficiencyNorm_            	      [p]);
             ADD_THREADED(h2DEfficiency_              	      [p]);
@@ -443,51 +441,51 @@ void Efficiency::endJob(void)
             hCellEfficiencyEdgeRight1D_cl4_  [p]->Divide(hCellEfficiencyEdgeRight1DNorm_  [p]);
             hCellEfficiencyEdgeCentral1D_cl4_[p]->Divide(hCellEfficiencyEdgeCentralNorm1D_[p]);
 
-            h2DEfficiency_                  [p]->GetXaxis()->SetTitle("column");
-            h2DEfficiency_                  [p]->GetYaxis()->SetTitle("row"   );
-            h2DInefficiency_                [p]->GetXaxis()->SetTitle("column");
-            h2DInefficiency_                [p]->GetYaxis()->SetTitle("row"   );
-            hCellEfficiency_                [p]->GetXaxis()->SetTitle("x (um)");
-            hCellEfficiencyEvenColumns_     [p]->GetXaxis()->SetTitle("x (um)");
-            hCellEfficiencyOddColumns_      [p]->GetXaxis()->SetTitle("x (um)");
-            h2D4cellEfficiency_             [p]->GetXaxis()->SetTitle("x (um)");
-            h2D4cellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("x (um)");
-            h1DXcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("x (um)");
-            h1DXcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("x (um)");
-            h1DYcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("y (um)");
-            h1DYcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("y (um)");
-            h1DYcellEfficiency4RowsNorm_    [p]->GetXaxis()->SetTitle("y (um)");
+            h2DEfficiency_                  [p]->GetXaxis()->SetTitle("column"    );
+            h2DEfficiency_                  [p]->GetYaxis()->SetTitle("row"       );
+            h2DInefficiency_                [p]->GetXaxis()->SetTitle("column"    );
+            h2DInefficiency_                [p]->GetYaxis()->SetTitle("row"       );
+            hCellEfficiency_                [p]->GetXaxis()->SetTitle("x (um)"    );
+            hCellEfficiencyEvenColumns_     [p]->GetXaxis()->SetTitle("x (um)"    );
+            hCellEfficiencyOddColumns_      [p]->GetXaxis()->SetTitle("x (um)"    );
+            h2D4cellEfficiency_             [p]->GetXaxis()->SetTitle("x (um)"    );
+            h2D4cellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1DXcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1DXcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1DYcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("y (um)"    );
+            h1DYcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("y (um)"    );
+            h1DYcellEfficiency4RowsNorm_    [p]->GetXaxis()->SetTitle("y (um)"    );
             h1DYcellEfficiency4RowsNorm_    [p]->GetYaxis()->SetTitle("efficiency");
-            h1DYcellEfficiency4Rows_        [p]->GetXaxis()->SetTitle("y (um)");
+            h1DYcellEfficiency4Rows_        [p]->GetXaxis()->SetTitle("y (um)"    );
             h1DYcellEfficiency4Rows_        [p]->GetYaxis()->SetTitle("efficiency");
-            hCellEfficiency_                [p]->GetYaxis()->SetTitle("y (um)");
-            hCellEfficiencyEvenColumns_     [p]->GetYaxis()->SetTitle("y (um)");
-            hCellEfficiencyOddColumns_      [p]->GetYaxis()->SetTitle("y (um)");
-            hXCellEfficiencyRestricted_     [p]->GetXaxis()->SetTitle("x (um)");
+            hCellEfficiency_                [p]->GetYaxis()->SetTitle("y (um)"    );
+            hCellEfficiencyEvenColumns_     [p]->GetYaxis()->SetTitle("y (um)"    );
+            hCellEfficiencyOddColumns_      [p]->GetYaxis()->SetTitle("y (um)"    );
+            hXCellEfficiencyRestricted_     [p]->GetXaxis()->SetTitle("x (um)"    );
             hXCellEfficiencyRestricted_     [p]->GetYaxis()->SetTitle("efficiency");
-            h2D4cellEfficiency_             [p]->GetYaxis()->SetTitle("y (um)");
-            h2D4cellEfficiencyNorm_         [p]->GetYaxis()->SetTitle("y (um)");
-            hCellInefficiency_              [p]->GetXaxis()->SetTitle("x (um)");
-            hCellInefficiency_              [p]->GetYaxis()->SetTitle("y (um)");
-            hCellEfficiencyEdgeRight_       [p]->GetXaxis()->SetTitle("x (um)");
-            h1EfficiencyEdgeRight_          [p]->GetXaxis()->SetTitle("x (um)");
-            h1EfficiencyEdgeLeft_           [p]->GetXaxis()->SetTitle("x (um)");
-            h1EfficiencyEdgeUp_             [p]->GetXaxis()->SetTitle("y (um)");
-            h1EfficiencyEdgeDown_           [p]->GetXaxis()->SetTitle("y (um)");
-            h1EfficiencyEdgeRightNorm_      [p]->GetXaxis()->SetTitle("x (um)");
-            h1EfficiencyEdgeLeftNorm_       [p]->GetXaxis()->SetTitle("x (um)");
-            h1EfficiencyEdgeUpNorm_         [p]->GetXaxis()->SetTitle("y (um)");
-            h1EfficiencyEdgeDownNorm_       [p]->GetXaxis()->SetTitle("y (um)");
+            h2D4cellEfficiency_             [p]->GetYaxis()->SetTitle("y (um)"    );
+            h2D4cellEfficiencyNorm_         [p]->GetYaxis()->SetTitle("y (um)"    );
+            hCellInefficiency_              [p]->GetXaxis()->SetTitle("x (um)"    );
+            hCellInefficiency_              [p]->GetYaxis()->SetTitle("y (um)"    );
+            hCellEfficiencyEdgeRight_       [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1EfficiencyEdgeRight_          [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1EfficiencyEdgeLeft_           [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1EfficiencyEdgeUp_             [p]->GetXaxis()->SetTitle("y (um)"    );
+            h1EfficiencyEdgeDown_           [p]->GetXaxis()->SetTitle("y (um)"    );
+            h1EfficiencyEdgeRightNorm_      [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1EfficiencyEdgeLeftNorm_       [p]->GetXaxis()->SetTitle("x (um)"    );
+            h1EfficiencyEdgeUpNorm_         [p]->GetXaxis()->SetTitle("y (um)"    );
+            h1EfficiencyEdgeDownNorm_       [p]->GetXaxis()->SetTitle("y (um)"    );
 
             setErrorsBar(p);
 
-            hCellEfficiencyEdgeCentral1D_        [p]->GetXaxis()->SetTitle("x (um)");
-            hCellEfficiencyEdgeCentralNorm1D_    [p]->GetXaxis()->SetTitle("x (um)");
-            hCellEfficiencyEdgeLeft1D_cl1_       [p]->GetXaxis()->SetTitle("x (um)");
+            hCellEfficiencyEdgeCentral1D_        [p]->GetXaxis()->SetTitle("x (um)"      );
+            hCellEfficiencyEdgeCentralNorm1D_    [p]->GetXaxis()->SetTitle("x (um)"      );
+            hCellEfficiencyEdgeLeft1D_cl1_       [p]->GetXaxis()->SetTitle("x (um)"      );
             hCellEfficiencyEdgeLeft1D_cl_        [p]->GetXaxis()->SetTitle("cluster size");
-            hCellEfficiencyEdgeRight1D_cl1_      [p]->GetXaxis()->SetTitle("x (um)");
+            hCellEfficiencyEdgeRight1D_cl1_      [p]->GetXaxis()->SetTitle("x (um)"      );
             hCellEfficiencyEdgeRight1D_cl_       [p]->GetXaxis()->SetTitle("cluster size");
-            hCellEfficiencyEdgeCentral1D_cl1_    [p]->GetXaxis()->SetTitle("x (um)");
+            hCellEfficiencyEdgeCentral1D_cl1_    [p]->GetXaxis()->SetTitle("x (um)"      );
             hCellEfficiencyEdgeCentral1D_cl_     [p]->GetXaxis()->SetTitle("cluster size");
             hCellEfficiencyEdgeLeft1D_cl2_       [p]->GetXaxis()->SetTitle("x (um)");
             hCellEfficiencyEdgeLeft1DNorm_cl2_   [p]->GetXaxis()->SetTitle("x (um)");
@@ -688,63 +686,67 @@ void Efficiency::book(void)
 
         theAnalysisManager_->mkdir("Efficiency");
 
-        hName  = "Efficiency_"         + planeName;
-        hTitle = "Overall efficiency " + planeName;
-        hEfficiency_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
+        hName  = "Efficiency_"                                            + planeName;
+        hTitle = "Overall efficiency "                                    + planeName;
+        hEfficiency_.push_back                (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
 
-        hName  = "EfficiencyRef_"           + planeName;
-        hTitle = "Overall efficiency ref. " + planeName;
-        hEfficiencyRef_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
+        hName  = "EfficiencyRef_"                                         + planeName;
+        hTitle = "Overall efficiency ref. "                               + planeName;
+        hEfficiencyRef_.push_back             (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
 
-        hName  = "EfficiencyNorm_"                   + planeName;
-        hTitle = "Overall efficiency normalization " + planeName;
-        hEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
+        hName  = "EfficiencyNorm_"                                        + planeName;
+        hTitle = "Overall efficiency normalization "                      + planeName;
+        hEfficiencyNorm_.push_back            (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
 
-        hName  = "EfficiencyRefNorm_"                     + planeName;
-        hTitle = "Overall efficiency ref. normalization " + planeName;
-        hEfficiencyRefNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
+        hName  = "EfficiencyRefNorm_"                                     + planeName;
+        hTitle = "Overall efficiency ref. normalization "                 + planeName;
+        hEfficiencyRefNorm_.push_back         (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),1,.5,1.5)));
 
-        hName  = "h1DXcellEfficiencyFirstHit_"                  + planeName;
-        hTitle = "1D Cell efficiency - X coordinate first hit " + planeName;
-        h1DXcellEfficiencyFirstHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf)));
+        hName  = "h1DXcellEfficiencyFirstHit_"                            + planeName;
+        hTitle = "1D Cell efficiency - X coordinate first hit "           + planeName;
+        h1DXcellEfficiencyFirstHit_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),
+                                                                 (int)xPitch/binSize - removedBins,
+                                                                 -(xPitch/2) + removeHalf,
+                                                                   xPitch/2  - removeHalf)
+                                                            ));
         //h1DXcellEfficiencyFirstHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/2,-(xPitch/2),xPitch/2)));
 
-        hName  = "h1DXcellEfficiencySecondHit_"                  + planeName;
-        hTitle = "1D cell Efficiency - X coordinate second hit " + planeName;
+        hName  = "h1DXcellEfficiencySecondHit_"                           + planeName;
+        hTitle = "1D cell Efficiency - X coordinate second hit "          + planeName;
         h1DXcellEfficiencySecondHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf)));
         //h1DXcellEfficiencySecondHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/2,-(xPitch/2),xPitch/2)));
 
-        hName  = "h1DXcellEfficiencyNorm_"                          + planeName;
-        hTitle = "1D cell Efficiency - X coordinate normalization " + planeName;
-        h1DXcellEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf)));
+        hName  = "h1DXcellEfficiencyNorm_"                                + planeName;
+        hTitle = "1D cell Efficiency - X coordinate normalization "       + planeName;
+        h1DXcellEfficiencyNorm_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf)));
         //h1DXcellEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/2,-(xPitch/2),xPitch/2)));
 
-        hName  = "h1DYcellEfficiencyFirstHit_"                 + planeName;
-        hTitle = "1D cell Efficiency - Y coordinate first hit " + planeName;
-        h1DYcellEfficiencyFirstHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
+        hName  = "h1DYcellEfficiencyFirstHit_"                            + planeName;
+        hTitle = "1D cell Efficiency - Y coordinate first hit "           + planeName;
+        h1DYcellEfficiencyFirstHit_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
         //h1DYcellEfficiencyFirstHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/2 - 1,-(yPitch/2) + 1.,yPitch/2 - 1.)));
 
-        hName  = "h1DYcellEfficiencySecondHit_"                  + planeName;
-        hTitle = "1D cell Efficiency - Y coordinate second hit " + planeName;
+        hName  = "h1DYcellEfficiencySecondHit_"                           + planeName;
+        hTitle = "1D cell Efficiency - Y coordinate second hit "          + planeName;
         h1DYcellEfficiencySecondHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
         // h1DYcellEfficiencySecondHit_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/2 - 1,-(yPitch/2) + 1.,yPitch/2 - 1.)));
 
-        hName  = "h1DYcellEfficiencyNorm_"                          + planeName;
-        hTitle = "1D cell Efficiency - Y coordinate normalization " + planeName;
-        h1DYcellEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
+        hName  = "h1DYcellEfficiencyNorm_"                                + planeName;
+        hTitle = "1D cell Efficiency - Y coordinate normalization "       + planeName;
+        h1DYcellEfficiencyNorm_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
         //h1DYcellEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/2 - 1,-(yPitch/2) + 1.,yPitch/2 - 1.)));
 
         hName  = "h1DYcellEfficiency4RowsNorm_"                           + planeName;
         hTitle = "1D cell Efficiency 4 Rows- Y coordinate normalization " + planeName;
         h1DYcellEfficiency4RowsNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), (int)4*(yPitch/5. - removedBins), -4*((yPitch/2) + removeHalf), 4*(yPitch/2 - removeHalf))));
 
-        hName  = "h1DYcellEfficiency4Rows_"                 + planeName;
-        hTitle = "1D cell Efficiency 4 Rows- Y coordinate " + planeName;
-        h1DYcellEfficiency4Rows_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), (int)4*(yPitch/5. - removedBins), -4*((yPitch/2) + removeHalf), 4*(yPitch/2 - removeHalf))));
+        hName  = "h1DYcellEfficiency4Rows_"                               + planeName;
+        hTitle = "1D cell Efficiency 4 Rows- Y coordinate "               + planeName;
+        h1DYcellEfficiency4Rows_.push_back    (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), (int)4*(yPitch/5. - removedBins), -4*((yPitch/2) + removeHalf), 4*(yPitch/2 - removeHalf))));
 
-        hName  = "hXCellEfficiencyRestricted_"                  + planeName;
+        hName  = "hXCellEfficiencyRestricted_"                            + planeName;
         hTitle = "1D cell Efficiency - X coordinate, restricted to (-30, +30), " + planeName;
-        hXCellEfficiencyRestricted_.push_back(new TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf));
+        hXCellEfficiencyRestricted_.push_back(          new TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf));
 
         lowerCol  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerCol ()).c_str());
         higherCol = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherCol()).c_str());
@@ -1865,7 +1867,6 @@ void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int t
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
-
     if(!pass)
         return;
 
