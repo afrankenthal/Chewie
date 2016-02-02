@@ -184,13 +184,15 @@ header.depends       = ../Monicelli/include/EventHeader.h                       
 
 header.target        = tmp/EventHeaderDict.C
 
-ROOTVER              = $(ROOTVER)
+ROOTVERSION          = $$(ROOTVER)
 
-contains(ROOTVER, FIVE) {
+contains(ROOTVERSION, "FIVE") {
+ message("Setting up Makefile for ROOT5")  
  header.commands     = @echo "------ ROOT5 header ----------"                  && \
                        rootcint -f tmp/EventHeaderDict.C                          \
                                 -c ../Monicelli/include/EventHeader.h+
 } else {
+ message("Setting up Makefile for ROOT6")  
  header.commands     = @echo "------ ROOT6 header ----------"                  && \
                        rootcint -f tmp/EventHeaderDict.C                          \
                                 -c ../Monicelli/include/EventHeader.h+         && \
@@ -204,7 +206,7 @@ trees.depends        = ../Monicelli/include/Event.h                             
 
 trees.target         = tmp/EventDict.C
 
-contains(ROOTVER, FIVE) {
+contains(ROOTVERSION, "FIVE") {
  trees.commands      = @echo "------ ROOT5 commands --------"                  && \
                        rootcint -f tmp/EventDict.C                                \
                                 -c ../Monicelli/include/Event.h+                  \
