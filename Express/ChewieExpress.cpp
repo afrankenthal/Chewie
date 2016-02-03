@@ -90,8 +90,8 @@ private:
 int main(int argc, char** argv)
 {
   stringstream ss;
-  TApplication tApp("App",&argc,argv);
-  QApplication app(argc, argv);
+//  TApplication tApp("App",&argc,argv);
+//  QApplication app(argc, argv);
   ExpressXmlParser theExpressXmlParser;
   std::string configFileName = "./xml/ExpressConfiguration.xml";
 //  std::cout << argc << " " << argv[1] << std::endl;
