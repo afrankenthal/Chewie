@@ -80,4 +80,4 @@ endif
 
 #===== Final PATH definitions
 setenv PATH		${ROOTSYS}/bin:${QTDIR}/bin:${QTCREATORDIR}/bin:${PATH}
-setenv LD_LIBRARY_PATH  ${ROOTLIB}:${BOOSTLIB}:${QTDIR}/lib:${QTCREATORDIR}/${XERCESCLIB}/:${MonicelliDir}/plugins/libs/:${MonicelliDir}/test/customWidgets/libs:${LD_LIBRARY_PATH}
+setenv LD_LIBRARY_PATH  ${ROOTLIB}:${BOOSTLIB}:${QTDIR}/lib:${QTCREATORDIR}/${XERCESCLIB}/:${MonicelliDir}/plugins/libs/:${MonicelliDir}/test/customWidgets/libs:../${MonicelliDir}/plugins/libs/:../${MonicelliDir}/test/customWidgets/libs:${LD_LIBRARY_PATH}
