@@ -39,9 +39,6 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
    setenv BASEDATADIR /raid2/data1/user/gr1/e831/dinardo/TestBeamData2015
   endif
 
-  setenv MonicelliDir              ../Monicelli/
-  setenv Monicelli_CalSample_Dir   ${BASEDATADIR}/Calibrations  
-
   #===== Local directories
   setenv CHEWIEDIR		   `pwd`
   setenv CHEWIEDATADIR		   ${BASEDATADIR}/MonicelliOutput
@@ -49,6 +46,9 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   setenv CHEWIEOUTPUTDIR           ${BASEDATADIR}/ChewieOutput
   setenv CHEWIEXMLDIR              ${CHEWIEDIR}/xml
   
+  setenv MonicelliDir             `cd ../Monicelli/; pwd; cd $CHEWIEDIR`
+  setenv Monicelli_CalSample_Dir  ${BASEDATADIR}/Calibrations  
+
   #===== Location of the ROOT components
   setenv ROOTVER                   'FIVE'
   setenv ROOTSYS		   /user/service/root-5.28.00g/
@@ -79,5 +79,3 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
 #===== Final PATH definitions
 setenv PATH		${ROOTSYS}/bin:${QTDIR}/bin:${QTCREATORDIR}/bin:$PATH
 setenv LD_LIBRARY_PATH  ${ROOTLIB}:${BOOSTLIB}:${QTDIR}/lib:${QTCREATORDIR}/lib:${XERCESCLIB}/:${CHEWIEDIR}/../Monicelli/plugins/libs/:${LD_LIBRARY_PATH}
-
-#----------------------------------------------------------------------------------------------------
