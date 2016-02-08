@@ -93,9 +93,9 @@ void Efficiency::destroy(void)
     for(it2=h2DEfficiencyRef_                .begin(); it2!=h2DEfficiencyRef_	      	     .end(); it2++) delete *it2; h2DEfficiencyRef_	              .clear();
     for(it2=h2DEfficiencyRefNorm_            .begin(); it2!=h2DEfficiencyRefNorm_	         .end(); it2++) delete *it2; h2DEfficiencyRefNorm_ 	          .clear();
     for(it2=h2D4cellEfficiency_              .begin(); it2!=h2D4cellEfficiency_	      	     .end(); it2++) delete *it2; h2D4cellEfficiency_	          .clear();
-    for(it2=h2D4cellEfficiencyNorm_          .begin(); it2!=h2D4cellEfficiencyNorm_     	 .end(); it2++) delete *it2; h2D4cellEfficiencyNorm_	      .clear();
+    for(it2=h2D4cellEfficiencyNorm_          .begin(); it2!=h2D4cellEfficiencyNorm_          .end(); it2++) delete *it2; h2D4cellEfficiencyNorm_	  .clear();
     for(it2=h2DInefficiency_                 .begin(); it2!=h2DInefficiency_	      	     .end(); it2++) delete *it2; h2DInefficiency_		          .clear();
-    for(it2=hCellEfficiency_                 .begin(); it2!=hCellEfficiency_	      	     .end(); it2++) delete *it2; hCellEfficiency_		          .clear();
+    for(it2=hCellEfficiency_                 .begin(); it2!=hCellEfficiency_	      	     .end(); it2++) delete *it2; hCellEfficiency_	          .clear();
     for(it2=hCellEfficiencyEvenColumns_      .begin(); it2!=hCellEfficiencyEvenColumns_      .end(); it2++) delete *it2; hCellEfficiencyEvenColumns_      .clear();
     for(it2=hCellEfficiencyOddColumns_       .begin(); it2!=hCellEfficiencyOddColumns_       .end(); it2++) delete *it2; hCellEfficiencyOddColumns_       .clear();
     for(it2=hCellEfficiencyNorm_             .begin(); it2!=hCellEfficiencyNorm_             .end(); it2++) delete *it2; hCellEfficiencyNorm_             .clear();
@@ -780,37 +780,43 @@ void Efficiency::book(void)
         theAnalysisManager_->cd("Efficiency/" + planeName);
         theAnalysisManager_->mkdir("CellEfficiency");
 
-        hName  =  "CellEfficiencyNorm_"            + planeName;
-        hTitle =  "Cell efficiency normalization " + planeName;
-        hCellEfficiencyNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
 
-        hName  =  "CellEfficiencyEvenColumnsNorm_"            + planeName;
-        hTitle =  "Cell efficiency normalization even columns" + planeName;
-        hCellEfficiencyEvenColumnsNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
 
-        hName  =  "CellEfficiencyOddColumnsNorm_"            + planeName;
-        hTitle =  "Cell efficiency normalization odd columns" + planeName;
-        hCellEfficiencyOddColumnsNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
-
-        hName  = "CellEfficiency_"  + planeName;
+	// @@@ Please do not modify this code @@@
+        hName  = "hCellEfficiency_" + planeName;
         hTitle = "Cell efficiency " + planeName;
-        hCellEfficiency_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
+        hCellEfficiency_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
 
-        hName  = "CellEfficiencyEvenColumns_"  + planeName;
+        hName  =  "hCellEfficiencyNorm_"           + planeName;
+        hTitle =  "Cell efficiency normalization " + planeName;
+        hCellEfficiencyNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
+
+        hName  = "hCellEfficiencyEvenColumns_"  + planeName;
         hTitle = "Cell efficiency even columns" + planeName;
-        hCellEfficiencyEvenColumns_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
+        hCellEfficiencyEvenColumns_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
 
-        hName  = "CellEfficiencyOddColumns_"  + planeName;
+        hName  =  "hCellEfficiencyEvenColumnsNorm_"            + planeName;
+        hTitle =  "Cell efficiency normalization even columns" + planeName;
+        hCellEfficiencyEvenColumnsNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
+
+        hName  = "hCellEfficiencyOddColumns_"  + planeName;
         hTitle = "Cell efficiency odd columns" + planeName;
-        hCellEfficiencyOddColumns_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
+        hCellEfficiencyOddColumns_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
 
-        hName  = "4cellEfficiency_"  + planeName;
-        hTitle = "4 Cell efficiency " + planeName;
-        h2D4cellEfficiency_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
+        hName  =  "hCellEfficiencyOddColumnsNorm_"            + planeName;
+        hTitle =  "Cell efficiency normalization odd columns" + planeName;
+        hCellEfficiencyOddColumnsNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
 
-        hName  = "4cellEfficiencyNorm_"  + planeName;
+        hName  = "h2D4cellEfficiency_" + planeName;
+        hTitle = "4 Cell efficiency "  + planeName;
+        h2D4cellEfficiency_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
+
+        hName  = "h2D4cellEfficiencyNorm_"          + planeName;
         hTitle = "4 Cell efficiency normalization " + planeName;
-        h2D4cellEfficiencyNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize - removedBins,-(xPitch/2) + removeHalf,xPitch/2 - removeHalf,(int)yPitch/binSize - removedBins,-(yPitch/2) + removeHalf,yPitch/2 - removeHalf)));
+        h2D4cellEfficiencyNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-(xPitch/2),xPitch/2,(int)yPitch/binSize,-(yPitch/2),yPitch/2)));
+	// ======================================
+
+
 
         hName  = "CellInefficiency_"  + planeName;
         hTitle = "Cell inefficiency " + planeName;
@@ -1363,7 +1369,6 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
     float          yRes      = data.getYPixelResidualLocal(planeID)  ;
     float          row       = data.getRowPredicted(planeID)         ;
     float          col       = data.getColPredicted(planeID)         ;
-    //int            event     = data.getEventChewieNumber()           ;
     int            run       = data.getRunNumber()                   ;
     float          maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
     float          maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
@@ -1704,48 +1709,40 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
     float xRes2 = 0;
     float yRes2 = 0;
 
-    if( data.getXPixelResidualLocal(planeID) > 0 )
-        xRes2 = -data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
-    else if( data.getXPixelResidualLocal(planeID) <= 0 )
-        xRes2 = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
+    if (data.getXPixelResidualLocal(planeID) > 0)
+      xRes2 = -data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
+    else if (data.getXPixelResidualLocal(planeID) <= 0)
+      xRes2 = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
 
-    if( data.getYPixelResidualLocal(planeID) > 0 )
-        yRes2 = -data.getYPitchLocal(planeID)/2 + data.getYPixelResidualLocal(planeID);
-    else if( data.getYPixelResidualLocal(planeID) <= 0 )
-        yRes2 = (data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
+    if (data.getYPixelResidualLocal(planeID) > 0)
+      yRes2 = -data.getYPitchLocal(planeID)/2 + data.getYPixelResidualLocal(planeID);
+    else if (data.getYPixelResidualLocal(planeID) <= 0)
+      yRes2 = (data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
 
 
-    //if(theWindow->checkWindowAbout(col,row,run) && theWindow->checkTimeWindowAbout(col,event,run) && data.getXPitchLocal(planeID)<=maxPitchX && data.getYPitchLocal(planeID)<=maxPitchY)
-    if(theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) && data.getXPitchLocal(planeID)<=maxPitchX && data.getYPitchLocal(planeID)<=maxPitchY)
-        //if(planeID == 22 && theWindow->checkWindow(col,row,run) && data.getXPitchLocal(planeID)<=maxPitchX && data.getYPitchLocal(planeID)<=maxPitchY)
-    {
-        THREADED(hCellEfficiencyNorm_[planeID])->Fill(xRes,yRes);
-        //        THREADED(hCellEfficiency4RowsNorm_[planeID])->Fill(xRes,yRes+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
-
-        if(((int)col)%2 == 0)
-            THREADED(hCellEfficiencyEvenColumnsNorm_[planeID])->Fill(xRes,yRes);
-        else
-            THREADED(hCellEfficiencyOddColumnsNorm_[planeID])->Fill(xRes,yRes);
-
+    if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) && data.getXPitchLocal(planeID) <= maxPitchX && data.getYPitchLocal(planeID) <= maxPitchY)
+      {
+        THREADED(hCellEfficiencyNorm_   [planeID])->Fill(xRes,yRes);
         THREADED(h2D4cellEfficiencyNorm_[planeID])->Fill(xRes2,yRes2);
 
-        if(data.getHasHit(planeID))
-        {
-            THREADED(hCellEfficiency_[planeID])->Fill(xRes,yRes);
-            //            THREADED(hCellEfficiency4Rows_[planeID])->Fill(xRes,yRes+((float)((row-50)%4)-1.5)*data.getYPitchLocal(planeID));
-
-            if(((int)col)%2 == 0)
-                THREADED(hCellEfficiencyEvenColumns_[planeID])->Fill(xRes,yRes);
-            else
-                THREADED(hCellEfficiencyOddColumns_[planeID])->Fill(xRes,yRes);
-
-            THREADED(h2D4cellEfficiency_[planeID])->Fill(xRes2,yRes2);
-        }
-
+        if (((int)col)%2 == 0)
+	  THREADED(hCellEfficiencyEvenColumnsNorm_[planeID])->Fill(xRes,yRes);
         else
-            THREADED(hCellInefficiency_[planeID])->Fill(xRes,yRes);
-    }
+	  THREADED(hCellEfficiencyOddColumnsNorm_[planeID])->Fill(xRes,yRes);
 
+        if (data.getHasHit(planeID))
+	  {
+            THREADED(hCellEfficiency_   [planeID])->Fill(xRes,yRes);
+	    THREADED(h2D4cellEfficiency_[planeID])->Fill(xRes2,yRes2);
+	    
+            if (((int)col)%2 == 0)
+	      THREADED(hCellEfficiencyEvenColumns_[planeID])->Fill(xRes,yRes);
+            else
+	      THREADED(hCellEfficiencyOddColumns_[planeID])->Fill(xRes,yRes);
+	  }
+        else
+	  THREADED(hCellInefficiency_[planeID])->Fill(xRes,yRes);
+      }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
