@@ -379,7 +379,7 @@ private:
     std::vector<TH1F*>    hYAsimmetry_                                           ;
     std::vector<TH1F*>    hYAsimmetry0_                                          ;
     std::vector<TH2F*>    h2DYAsimmetryLandau_                                   ;
-    std::vector<TH2F*>    h2DYCellChargeAsimmetry_                               ;
+    std::vector<TH2F*>    h2DYcellChargeAsimmetry_                               ;
     std::vector<TH2F*>    h2DYcellChargeAsimmetryInv_                            ;
     std::vector<TH2F*>    h2DYcellChargeAsimmetryInvCutOnEntries_                ; //introduced in order to have a better TProfile
     std::vector<TH2F*>    h2DYcellChargeAsimmetryUnconstrained_                  ;
