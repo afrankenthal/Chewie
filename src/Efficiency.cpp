@@ -753,8 +753,8 @@ void Efficiency::book(void)
         lowerRow  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerRow ()).c_str());
         higherRow = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherRow()).c_str());
 
-        nBinsX = abs(lowerCol-higherCol);//theWindow->getNbins().first;
-        nBinsY = abs(lowerRow -higherRow);//theWindow->getNbins().second;
+        nBinsX = abs(lowerCol - higherCol); // theWindow->getNbins().first;
+        nBinsY = abs(lowerRow - higherRow); // theWindow->getNbins().second;
 
         hName  = "2DEfficiency_"               + planeName;
         hTitle = "2D efficiency distribution " + planeName;
