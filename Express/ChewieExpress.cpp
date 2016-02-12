@@ -7,7 +7,8 @@
 //#include "trackFinder.h"
 //#include "HManager.h"
 #include <TApplication.h>
-#include <QApplication>
+ #include <QCoreApplication>
+//#include <QApplication>
 
 #include <cstdlib>
 #include <string>
@@ -87,12 +88,18 @@ private:
     QDomNode    thisNode_;
 };
 
+//===================================================================================
 int main(int argc, char** argv)
 {
   stringstream ss;
- TApplication tApp("App",&argc,argv);
- QApplication app(argc, argv);
+
+//  TApplication     tApp("App",&argc, argv);
+    QCoreApplication app (       argc, argv);
+    STDLINE("=== Using a QCoreApplication only =========" ,ACRed);
+//  QApplication app (       argc, argv);
+
   ExpressXmlParser theExpressXmlParser;
+
   std::string configFileName = "./xml/ExpressConfiguration.xml";
 //  std::cout << argc << " " << argv[1] << std::endl;
 //  return 1;
@@ -111,21 +118,22 @@ int main(int argc, char** argv)
   
   theExpressXmlParser.parseDocument(configFileName.c_str());
 
-  const string filesPath = theExpressXmlParser.getDefaults()->filesPath_     ;
-  bool   convert         = theExpressXmlParser.getDefaults()->convert_       ;
-  bool   runAnalysis     = theExpressXmlParser.getDefaults()->runAnalysis_   ;
-  int    numberOfEvents  = theExpressXmlParser.getDefaults()->numberOfEvents_;
-  XmlParser* theChewieXmlParser     = new XmlParser();    
-  string chewieXmlDir    = getenv("CHEWIEXMLDIR");
-  string chewieDataDir   = getenv("CHEWIEDATADIR");
-  string chewieOutputDir = getenv("CHEWIEOUTPUTDIR");
-  string chewieInputDir  = getenv("CHEWIEINPUTDIR" );
+  XmlParser* theChewieXmlParser = new XmlParser();    
+  const string filesPath 	= theExpressXmlParser.getDefaults()->filesPath_     ;
+  bool   convert         	= theExpressXmlParser.getDefaults()->convert_	    ;
+  bool   runAnalysis     	= theExpressXmlParser.getDefaults()->runAnalysis_   ;
+  int    numberOfEvents  	= theExpressXmlParser.getDefaults()->numberOfEvents_;
+  string chewieXmlDir    	= getenv("CHEWIEXMLDIR"   );
+  string chewieDataDir   	= getenv("CHEWIEDATADIR"  );
+  string chewieOutputDir 	= getenv("CHEWIEOUTPUTDIR");
+  string chewieInputDir  	= getenv("CHEWIEINPUTDIR" );
+
   if(chewieInputDir[chewieInputDir.size()-1] != '/')
     chewieInputDir += '/';
 
   for(unsigned int fs=0; fs<theExpressXmlParser.getFilesList().size(); fs++)
   {
-    string configurationName = chewieXmlDir + "/" + theExpressXmlParser.getFilesList()[fs]->configurationName_;
+    string configurationName = chewieXmlDir    + "/" + theExpressXmlParser.getFilesList()[fs]->configurationName_;
     string outFileName       = chewieOutputDir + "/" + theExpressXmlParser.getFilesList()[fs]->outFileName_;
     theChewieXmlParser->parseDocument(QString(configurationName.c_str()));
     EventManager*    theEventManager    = new EventManager();
@@ -153,7 +161,7 @@ int main(int argc, char** argv)
     for(unsigned int f=0;f<theExpressXmlParser.getFilesList()[fs]->fileNames_.size();f++)
     {
       std::string fileToAnalyze = theExpressXmlParser.getFilesList()[fs]->fileNames_[f]->fileName_;
-      std::string fileName = filesPath + fileToAnalyze;
+      std::string fileName      = filesPath + fileToAnalyze;
       STDLINE(fileName,ACRed);
       monicelliFileList.push_back(fileName);
       tmp = fileName.substr(fileName.find_last_of("/"), fileName.size());
@@ -177,6 +185,9 @@ int main(int argc, char** argv)
     delete theEventManager   ;
   }
   delete theChewieXmlParser;
+  
+  app.exec();
+  
   return EXIT_SUCCESS;
 }
 

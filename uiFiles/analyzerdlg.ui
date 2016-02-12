@@ -496,7 +496,7 @@
     </palette>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="converterT">
     <attribute name="title">
@@ -569,6 +569,43 @@
         <width>913</width>
         <height>505</height>
        </rect>
+      </property>
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>140</red>
+            <green>70</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>140</red>
+            <green>70</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>99</red>
+            <green>100</green>
+            <blue>127</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
       </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
@@ -2222,10 +2259,14 @@ p, li { white-space: pre-wrap; }
         <family>Sans Serif</family>
         <weight>75</weight>
         <bold>true</bold>
+        <kerning>false</kerning>
        </font>
       </property>
       <property name="text">
        <string>Convert</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="convertMaxThreadsLB">
@@ -16148,18 +16189,18 @@ p, li { white-space: pre-wrap; }
       <colorrole role="WindowText">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>255</red>
+         <red>0</red>
          <green>0</green>
-         <blue>0</blue>
+         <blue>255</blue>
         </color>
        </brush>
       </colorrole>
       <colorrole role="Text">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>255</red>
+         <red>0</red>
          <green>0</green>
-         <blue>0</blue>
+         <blue>255</blue>
         </color>
        </brush>
       </colorrole>
@@ -16168,18 +16209,18 @@ p, li { white-space: pre-wrap; }
       <colorrole role="WindowText">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>255</red>
+         <red>0</red>
          <green>0</green>
-         <blue>0</blue>
+         <blue>255</blue>
         </color>
        </brush>
       </colorrole>
       <colorrole role="Text">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>255</red>
+         <red>0</red>
          <green>0</green>
-         <blue>0</blue>
+         <blue>255</blue>
         </color>
        </brush>
       </colorrole>

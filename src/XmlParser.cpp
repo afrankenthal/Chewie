@@ -129,7 +129,6 @@ bool XmlParser::parseDocument(QString fileName)
 
     QDomNode converter = document_->elementsByTagName("Converter").at(0);
     theConverter_ = new XmlConverter(converter);
-
     QDomNode general = document_->elementsByTagName("General").at(0);
     theGeneral_ = new XmlGeneral(general);
 
@@ -149,6 +148,7 @@ bool XmlParser::parseDocument(QString fileName)
         QDomNode analysisNode = analyses.at(a);
         std::string type      = analysisNode.toElement().attribute("Type").toStdString();
         XmlAnalysis* analysis = new XmlAnalysis(analysisNode);
+
         int priority          = analysis->getPriority();
         if(theAnalyses_.find(priority) != theAnalyses_.end())
         {
@@ -159,8 +159,8 @@ bool XmlParser::parseDocument(QString fileName)
             return false;
         }
         theAnalyses_[priority] = std::make_pair(type, analysis);
-    }
 
+    }
     QDomNode scan = document_->elementsByTagName("Scan").at(0);
     theScan_ = new XmlScan(scan);
     file.close();

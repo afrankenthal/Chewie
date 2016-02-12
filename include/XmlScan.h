@@ -36,9 +36,9 @@
 #include <map>
 #include <string>
 
-class XmlScan : public QWidget
+class XmlScan /*: public QWidget */
 {
-    Q_OBJECT
+/*    Q_OBJECT */
 public:
     XmlScan (QDomNode & node);
     ~XmlScan(void           ){;}

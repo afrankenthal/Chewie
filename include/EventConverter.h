@@ -50,19 +50,20 @@ class PlanesMapping;
 class EventConverter : public Threader
 {
 public:
-    EventConverter  (EventManager* eventManager,
-                     int nOfThreads);
-    ~EventConverter (void          ){;}
+                EventConverter (EventManager* eventManager,
+                                int           nOfThreads   );
+               ~EventConverter (void                       ){;}
 
-    void        convert        (Event& event, int e);
-    void        beginJob       (void               );
-    void        endJob         (void               );
-    int         runConverter   (void               );
+    void        convert        (Event&        event,
+                                int           e            );
+    void        beginJob       (void                       );
+    void        endJob         (void                       );
+    int         runConverter   (void                       );
 
-    void        setRunNumber   (int r              ) {runNumber_ = r;}
+    void        setRunNumber   (int           r            ) {runNumber_ = r;}
 
 private:
-    int          execute       (int threadNumber);
+    int          execute       (int           threadNumber );
 
     EventManager*       theEventManager_ ;
     EventHeader*        theHeader_       ;

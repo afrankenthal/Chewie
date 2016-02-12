@@ -37,7 +37,8 @@
 #include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-Analysis::Analysis(AnalysisManager* analysisManager, int nOfThreads) : Threader(nOfThreads)
+Analysis::Analysis(AnalysisManager* analysisManager, 
+                   int              nOfThreads) : Threader(nOfThreads)
   , theAnalysisManager_(analysisManager)
   , fDoNotDelete_(false)
 {

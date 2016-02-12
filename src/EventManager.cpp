@@ -45,36 +45,36 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 EventManager::EventManager(void) :
-   geoFile_              (0 )
-  ,outFile_              (0 )
-  ,calibPlotsFile_       (0 )
-  ,theEventsTree_        (0 )
-  ,inputGeometryTree_    (0 )
-  ,inputEventHeader_     (0 )
-  ,theEventBranch_       (0 )
-  ,theEvent_             (0 )
-  ,theEventHeader_       (0 )
-  ,theConverter_         (0 )
-  ,theCalibrationManager_(0 )
-  ,theGeometry_          (0 )
-  ,inRootFileName_       ("")
-  ,inGeoFileName_        ("")
-  ,outFileName_          ("")
-  ,calibPlotsFileName_   ("")
-  ,totalEvents_          (0 )
-  ,totalEventsToProcess_ (0 )
-  ,totalProcessedEvents_ (0 )
-  ,eventsToProcess_      (0 )
-  ,maxEvents_            (-1)
-  ,nOfThreads_           (0 )
-  ,theXmlParser_         (0 )
-  ,currentOperation_     ("")
+   geoFile_              (0    )
+  ,outFile_              (0    )
+  ,calibPlotsFile_       (0    )
+  ,theEventsTree_        (0    )
+  ,inputGeometryTree_    (0    )
+  ,inputEventHeader_     (0    )
+  ,theEventBranch_       (0    )
+  ,theEvent_             (0    )
+  ,theEventHeader_       (0    )
+  ,theConverter_         (0    )
+  ,theCalibrationManager_(0    )
+  ,theGeometry_          (0    )
+  ,inRootFileName_       (""   )
+  ,inGeoFileName_        (""   )
+  ,outFileName_          (""   )
+  ,calibPlotsFileName_   (""   )
+  ,totalEvents_          (0    )
+  ,totalEventsToProcess_ (0    )
+  ,totalProcessedEvents_ (0    )
+  ,eventsToProcess_      (0    )
+  ,maxEvents_            (-1   )
+  ,nOfThreads_           (0    )
+  ,theXmlParser_         (0    )
+  ,currentOperation_     (""   )
   ,abort_                (false)
-  ,isFinished_           (true)
-  ,currentEntry_         (0)
-  ,completionStatus_     (0)
-  ,completionStatusBegin_(0)
-  ,completionStatusEnd_  (0)
+  ,isFinished_           (true )
+  ,currentEntry_         (0    )
+  ,completionStatus_     (0    )
+  ,completionStatusBegin_(0    )
+  ,completionStatusEnd_  (0    )
 {
 }
 
@@ -232,11 +232,11 @@ void EventManager::startConverter(void)
     if(inFilesList_.size()==0 || (theXmlParser_->getDocument())==0)
         return;
     currentOperation_ = "Starting conversion";
-    STDLINE(currentOperation_,ACRed);
     abort_            = false;
     isFinished_       = false;
     completionStatus_ = 0;
     currentEntry_     = 0;
+    STDLINE(currentOperation_,ACRed);
 
     if(abort_) return;
     setNumberOfThreads(atoi(theXmlParser_->getConverter()->getNumberOfThreads().c_str()));

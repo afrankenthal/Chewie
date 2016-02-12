@@ -67,9 +67,9 @@ void Threader::setNumberOfThreads(int numberOfThreads)
 void* Threader::thread0(void* arg)
 {
     ThreadArgs* threadArgs = (ThreadArgs*) arg;
-    Threader* inst = threadArgs->getThreader();
+    Threader  * instance   = threadArgs->getThreader();
     threadArgs->setFuncRunning(true);
-    while(inst->getThreadsRun() && inst->execute(threadArgs->getThreadNumber()) >= 0){}
+    while(instance->getThreadsRun() && instance->execute(threadArgs->getThreadNumber()) >= 0){}
     threadArgs->setFuncRunning(false);
     return 0;
 }
@@ -101,9 +101,9 @@ int Threader::startThreads()
             pThreadArgs_[t] = new ThreadArgs(this,t);
             pThreads_   [t] = new TThread(threadName.str().c_str(), thread0, (void*) pThreadArgs_[t]);
             if(pThreads_[t])
-                pThreads_[t]->Run();
+               pThreads_[t]->Run();
             else
-                return -1;
+               return -1;
             STDLINE(threadName.str()+" is running...",ACWhite);
         }
     }

@@ -38,8 +38,8 @@ class TTree;
 class Data
 {
 public:
-    Data  (void );
-    ~Data (void );
+                 Data                               (void                  );
+                ~Data                               (void                  );
 
     void         branch                             (TTree*        tree    );
     void         setBranchAddress                   (TTree*        tree    );

@@ -82,8 +82,8 @@ public:
     void         stopConverter           (void                      );
 
     void         setConfiguration        (XmlParser*  xmlParser     ){theXmlParser_ = xmlParser          ;}
-    void         setNumberOfThreads      (int         nOfThreads    ){nOfThreads_ = nOfThreads           ;}
-    void         setMaxEvents            (int         maxEvents     ){maxEvents_  = maxEvents            ;}
+    void         setNumberOfThreads      (int         nOfThreads    ){nOfThreads_   = nOfThreads     	 ;}
+    void         setMaxEvents            (int         maxEvents     ){maxEvents_    = maxEvents      	 ;}
 
     XmlParser*   getXmlParser            (void                      ){return theXmlParser_               ;}
     std::string  getInRootFileName       (void                      ){return inRootFileName_             ;}

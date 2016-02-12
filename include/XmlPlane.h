@@ -37,9 +37,9 @@
 
 class XmlWindow;
 
-class XmlPlane : public QWidget
+class XmlPlane /*: public QWidget */
 {
-    Q_OBJECT
+/*    Q_OBJECT */
 public:
     XmlPlane (QDomNode& node);
     ~XmlPlane(void          );

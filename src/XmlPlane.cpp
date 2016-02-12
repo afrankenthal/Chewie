@@ -30,13 +30,16 @@
 #include "XmlPlane.h"
 #include "XmlWindow.h"
 #include <utility>
+#include "MessageTools.h"
 //#include <iostream>
 //////////////////////////////////////////////////////////////////////////////////////
 XmlPlane::XmlPlane(QDomNode& node)
 {
     thisNode_ = node;
     QDomNode window = node.toElement().elementsByTagName("Window").at(0);
+STDLINE("================== GDB ==========================",ACRed) ;
     theWindow_ = new XmlWindow(window);
+STDLINE("================== GDB ==========================",ACRed) ;
     calibNode_ = thisNode_.toElement().elementsByTagName("Calibrations").at(0);
 }
 

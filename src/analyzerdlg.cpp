@@ -371,7 +371,10 @@ void AnalyzerDlg::on_openRootFilePB_clicked(void)
     QString dataDir = this->getEnvPath("CHEWIEDATADIR");
     QStringList fileNames = QFileDialog::getOpenFileNames(this,"Root ntuple files",dataDir,"Root Ntuple Files(*.root)");
     if(fileNames.isEmpty())
+    {
+        STDLINE("No files have been selected. Ignoring.",ACYellow) ;
         return;
+    }
 
     fileNames.sort();
     ui->runConverterPB->setEnabled(true);
@@ -383,14 +386,16 @@ void AnalyzerDlg::on_openRootFilePB_clicked(void)
         ui->convertFileListTV->setModel(model);
     }
     else
+    {
         model->clear();
+    }
 
     std::vector<std::string> stdFileList;
     for(int f=0; f<fileNames.size(); f++)
     {
-        QString fileName = fileNames.at(f);
+        QString fileName                     = fileNames.at(f);
         QStandardItem* directoryItem         = new QStandardItem(fileName.section('/',0,-2));
-        fileName = fileName.section('/',-1);
+        fileName                             = fileName.section('/',-1);
         QStandardItem* fileNameItem          = new QStandardItem(fileName);
         QStandardItem* geoFileNameItem       = new QStandardItem(fileName.replace(fileName.lastIndexOf(".root"),5,".geo"));
         QStandardItem* convertedFileNameItem = new QStandardItem(fileName.replace(fileName.lastIndexOf(".geo"),4,"_Converted.root"));

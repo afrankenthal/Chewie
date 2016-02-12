@@ -37,9 +37,9 @@
 #include <map>
 #include <string>
 
-class XmlWindow : public QWidget
+class XmlWindow /*: public QWidget */
 {
-    Q_OBJECT
+/*    Q_OBJECT */
 public:
     XmlWindow (QDomNode & node);
     ~XmlWindow(void){;}

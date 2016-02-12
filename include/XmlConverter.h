@@ -33,9 +33,9 @@
 #include <QWidget>
 #include <QDomNode>
 
-class XmlConverter : public QWidget
+class XmlConverter /*: public QWidget*/
 {
-    Q_OBJECT
+/*    Q_OBJECT */
 public:
     XmlConverter (QDomNode & node);
     ~XmlConverter(void){;}

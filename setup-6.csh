@@ -34,7 +34,7 @@ setenv BASEDATADIR ../data/2015_10_October
 if(${HOSTNAME} == "hal9000.mib.infn.it") then
 
   if	  ( ${USER} == "menasce" ) then
-   setenv BASEDATADIR ../data/2015_10_October
+   setenv BASEDATADIR /user/gr1/e831/menasce/MonicelliNew/data/2015_10_October
   else if ( ${USER} == "dinardo" ) then
    setenv BASEDATADIR /raid2/data1/user/gr1/e831/dinardo/TestBeamData2015
   endif
@@ -46,7 +46,7 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   setenv CHEWIEOUTPUTDIR	  ${BASEDATADIR}/ChewieOutput
   setenv CHEWIEXMLDIR		  ${CHEWIEDIR}/xml
 
-  setenv MonicelliDir             `cd ../Monicelli/; pwd; cd $CHEWIEDIR`
+  setenv MonicelliDir             /user/gr1/e831/menasce/MonicelliNew/Monicelli
   setenv Monicelli_CalSample_Dir  ${BASEDATADIR}/Calibrations  
 
   #===== Location of the ROOT components

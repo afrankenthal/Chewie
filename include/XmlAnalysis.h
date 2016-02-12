@@ -38,9 +38,9 @@
 #include <string>
 #include <map>
 
-class XmlAnalysis : public QWidget
+class XmlAnalysis /*: public QWidget */
 {
-    Q_OBJECT
+/*    Q_OBJECT */
 public:
     XmlAnalysis (QDomNode&  node);
     ~XmlAnalysis(void           ){;}

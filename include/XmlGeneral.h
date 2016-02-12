@@ -33,9 +33,9 @@
 #include <QWidget>
 #include <QDomNode>
 
-class XmlGeneral : public QWidget
+class XmlGeneral /*: public QWidget */
 {
-    Q_OBJECT
+/*    Q_OBJECT */
 public:
     XmlGeneral (QDomNode & node);
     ~XmlGeneral(void           ){;}

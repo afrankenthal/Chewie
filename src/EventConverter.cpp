@@ -1,12 +1,12 @@
 /*===============================================================================
  * Chewie: the FERMILAB MTEST telescope and DUT anaysis tool
- * 
- * Copyright (C) 2014 
+ *
+ * Copyright (C) 2014
  *
  * Authors:
  *
- * Mauro Dinardo      (Universita' Bicocca) 
- * Dario Menasce      (INFN) 
+ * Mauro Dinardo      (Universita' Bicocca)
+ * Dario Menasce      (INFN)
  * Jennifer Ngadiuba  (INFN)
  * Lorenzo Uplegger   (FNAL)
  * Luigi Vigani       (INFN)
@@ -42,6 +42,9 @@
 #include <vector>
 #include <list>
 #include <math.h>
+#include <map>
+
+using namespace std ;
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 EventConverter::EventConverter(EventManager* eventManager, int nOfThreads) :
@@ -89,43 +92,54 @@ void EventConverter::beginJob()
 ///////////////////////////////////////////////////////////////////////////////////////////
 void EventConverter::convert(Event& event,int e)
 {
-    Event::plaqMapDef  	                          & theRawData	                        = event.getRawData                            ();
-    Event::clustersMapDef	                      & clusters  	                        = event.getClusters                           ();
-    Event::clustersHitsMapDef                     & clustersHits	                    = event.getClustersHits                       ();
-    Event::residualsMapDef	                      & fittedTrackResiduals                = event.getFittedTrackResiduals               ();
-    Event::trackCandidatesDef                     & trackCandidates	                    = event.getTrackCandidates                    ();
+    Event::plaqMapDef                             & theRawData                          = event.getRawData                            ();
+    Event::clustersMapDef                         & clusters                            = event.getClusters                           ();
+    Event::clustersHitsMapDef                     & clustersHits                        = event.getClustersHits                       ();
+    Event::residualsMapDef                        & fittedTrackResiduals                = event.getFittedTrackResiduals               ();
+    Event::trackCandidatesDef                     & trackCandidates                     = event.getTrackCandidates                    ();
     Event::fittedTracksDef                        & fittedTracks                        = event.getFittedTracks                       ();
     Event::fittedTracksCovarianceDef              & fittedTracksCovariance              = event.getFittedTracksCovariance             ();
-    Event::chi2VectorDef	                      & fittedTracksChi2                    = event.getFittedTracksChi2                   ();
+    Event::chi2VectorDef                          & fittedTracksChi2                    = event.getFittedTracksChi2                   ();
     Event::unconstrainedFittedTracksDef           & unconstrainedFittedTracks           = event.getUnconstrainedFittedTracks          ();
     Event::unconstrainedFittedTracksCovarianceDef & unconstrainedFittedTracksCovariance = event.getUnconstrainedFittedTracksCovariance();
-    Event::unconstrainedChi2VectorDef	          & unconstrainedFittedTracksChi2       = event.getUnconstrainedFittedTracksChi2      ();
+    Event::unconstrainedChi2VectorDef             & unconstrainedFittedTracksChi2       = event.getUnconstrainedFittedTracksChi2      ();
 
-    static bool wrong        = false ;
-    std::string dataBlock    = ""    ;
-    static bool alreadyWrong = false ;
-    if( theRawData                         .size() == 0 ) {wrong = true; dataBlock="theRawData"                         ;}
-    if( clusters                           .size() == 0 ) {wrong = true; dataBlock="clusters"                           ;}
-    if( clustersHits                       .size() == 0 ) {wrong = true; dataBlock="clustersHits"                       ;}
-    if( fittedTrackResiduals               .size() == 0 ) {wrong = true; dataBlock="fittedTrackResiduals"               ;}
-    if( trackCandidates                    .size() == 0 ) {wrong = true; dataBlock="trackCandidates"                    ;}
-    if( fittedTracks                       .size() == 0 ) {wrong = true; dataBlock="fittedTracks"                       ;}
-    if( fittedTracksCovariance             .size() == 0 ) {wrong = true; dataBlock="fittedTracksCovariance"             ;}
-    if( fittedTracksChi2                   .size() == 0 ) {wrong = true; dataBlock="fittedTracksChi2"                   ;}
-    if( unconstrainedFittedTracks          .size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracks"          ;}
-    if( unconstrainedFittedTracksCovariance.size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracksCovariance";}
-    if( unconstrainedFittedTracksChi2      .size() == 0 ) {wrong = true; dataBlock="unconstrainedFittedTracksChi2"      ;}
-    if( wrong && !alreadyWrong )
+    static map<string, bool> dataBlock;
+    static bool alreadyWrong = false  ;
+    if( theRawData                         .size() == 0 ) {dataBlock["theRawData"                         ] = true;} else {dataBlock["theRawData"                         ] = false;}
+    if( clusters                           .size() == 0 ) {dataBlock["clusters"                           ] = true;} else {dataBlock["clusters"                           ] = false;}
+    if( clustersHits                       .size() == 0 ) {dataBlock["clustersHits"                       ] = true;} else {dataBlock["clustersHits"                       ] = false;}
+    if( fittedTrackResiduals               .size() == 0 ) {dataBlock["fittedTrackResiduals"               ] = true;} else {dataBlock["fittedTrackResiduals"               ] = false;}
+    if( trackCandidates                    .size() == 0 ) {dataBlock["trackCandidates"                    ] = true;} else {dataBlock["trackCandidates"                    ] = false;}
+    if( fittedTracks                       .size() == 0 ) {dataBlock["fittedTracks"                       ] = true;} else {dataBlock["fittedTracks"                       ] = false;}
+    if( fittedTracksCovariance             .size() == 0 ) {dataBlock["fittedTracksCovariance"             ] = true;} else {dataBlock["fittedTracksCovariance"             ] = false;}
+    if( fittedTracksChi2                   .size() == 0 ) {dataBlock["fittedTracksChi2"                   ] = true;} else {dataBlock["fittedTracksChi2"                   ] = false;}
+    if( unconstrainedFittedTracks          .size() == 0 ) {dataBlock["unconstrainedFittedTracks"          ] = true;} else {dataBlock["unconstrainedFittedTracks"          ] = false;}
+    if( unconstrainedFittedTracksCovariance.size() == 0 ) {dataBlock["unconstrainedFittedTracksCovariance"] = true;} else {dataBlock["unconstrainedFittedTracksCovariance"] = false;}
+    if( unconstrainedFittedTracksChi2      .size() == 0 ) {dataBlock["unconstrainedFittedTracksChi2"      ] = true;} else {dataBlock["unconstrainedFittedTracksChi2"      ] = false;}
+    for(map<string, bool>::iterator it = dataBlock.begin();
+        it!= dataBlock.end()  ;
+        ++it )
     {
-        ss_.str("") ; ss_ << "WARNING: block missing in input (not produced by Monicelli): "
-                          << dataBlock ;
-        STDLINE(ss_.str().c_str(),ACRed) ;
-        STDLINE("The above message is only printed once...",ACYellow) ;
+        if( it->second && !alreadyWrong )
+        {
+            ss_.str("") ; ss_ << "WARNING: block "
+                              << it->first
+                              << " missing in input (not produced by Monicelli)" ;
+            STDLINE(ss_.str().c_str(),ACRed) ;
+            STDLINE("As a consequence the CaptanTrack TTree has not been populated",ACYellow) ;
+            STDLINE("[The above message is only printed once..",ACWhite) ;
+            alreadyWrong = true ;
+        }
+    }
+    
+    if(trackCandidates.size() != fittedTracks.size())
+    {
+        STDLINE("Track candidates number does not match number of fitted tracks!!!", ACRed);
         alreadyWrong = true ;
     }
 
-    if( trackCandidates.size() == 0 )
-        return ;
+    if( trackCandidates.size() == 0 ) return ;
 
     bool                     isGood          = false ;
     int                      clusterID       =     0 ;
@@ -151,413 +165,416 @@ void EventConverter::convert(Event& event,int e)
     std::string              planeName               ;
     std::stringstream        ss                      ;
     Data                     dataVector[trackCandidates.size()];
-
-    if(trackCandidates.size() != fittedTracks.size())
-        STDLINE("There is something very wrong in the track sizes", ACRed);
     
-    for(unsigned int t=0; t<trackCandidates.size(); t++)
+//    if( !alreadyWrong )
+    if( true )
     {
-        dataVector[t].setEventNumber      (e);
-        dataVector[t].setRunNumber        (runNumber_); //it is a private variable because it's not taken from Monicelli output, but it is passed before beginJob in method startConverter of EventManager.cpp
-        dataVector[t].setNumberOfTracks   (trackCandidates.size());
-        dataVector[t].setTrackNumber      (t);
-        dataVector[t].setNdof             (2*(trackCandidates[t].size()-2));
-        dataVector[t].setChi2             (fittedTracksChi2[t]);
-        dataVector[t].setXIntercept       (fittedTracks[t][1]*10);
-        dataVector[t].setXSigmaIntercept  (sqrt(fittedTracksCovariance[t](1,1))*10);
-        dataVector[t].setYIntercept       (fittedTracks[t][3]*10);
-        dataVector[t].setYSigmaIntercept  (sqrt(fittedTracksCovariance[t](3,3))*10);
-        dataVector[t].setXSlope           (fittedTracks[t][0]);
-        dataVector[t].setXSigmaSlope      (sqrt(fittedTracksCovariance[t](0,0)));
-        dataVector[t].setYSlope           (fittedTracks[t][2]);
-        dataVector[t].setYSigmaSlope      (sqrt(fittedTracksCovariance[t](2,2)));
-
-        int nTelescopeHits  = 0;
-        int clustersSizeLE2 = 0 ;
-        for(unsigned int p=0; p<thePlanesMapping_.getNumberOfPlanes(); p++)
+        for(unsigned int t=0; t<trackCandidates.size(); t++)
         {
-//            ss_.str(""); ss_<<"Plane: " << p;  STDLINE(ss_.str().c_str(),ACWhite) ;
-            nRow.clear();
-            nCol.clear();
-            row       = 0;
-            col       = 0;
-            planeName = thePlanesMapping_.getMonicelliPlaneName(p);
-            detector  = theGeometry_->getDetector(thePlanesMapping_.getStation(p), thePlanesMapping_.getPlaquette(p));
+            dataVector[t].setEventNumber    (e                                       );
+            dataVector[t].setRunNumber      (runNumber_                              ); //it is a private variable because it's not taken from Monicelli output, but it is sed before beginJob in method startConverter of EventManager.cpp
+            dataVector[t].setNumberOfTracks (trackCandidates.size()                  );
+            dataVector[t].setTrackNumber    (t                                       );
+            dataVector[t].setNdof           (2*(trackCandidates         [t].size()-2));
+            dataVector[t].setChi2           (fittedTracksChi2           [t]          );
+            dataVector[t].setXIntercept     (fittedTracks               [t][1]*10    );
+            dataVector[t].setXSigmaIntercept(sqrt(fittedTracksCovariance[t](1,1))*10 );
+            dataVector[t].setYIntercept     (fittedTracks               [t][3]*10    );
+            dataVector[t].setYSigmaIntercept(sqrt(fittedTracksCovariance[t](3,3))*10 );
+            dataVector[t].setXSlope         (fittedTracks               [t][0]       );
+            dataVector[t].setXSigmaSlope    (sqrt(fittedTracksCovariance[t](0,0))    );
+            dataVector[t].setYSlope         (fittedTracks               [t][2]       );
+            dataVector[t].setYSigmaSlope    (sqrt(fittedTracksCovariance[t](2,2))    );
 
-            if(detector == 0)
-                continue;
-
-            dataVector[t].setChi2Unconstrained           (unconstrainedFittedTracksChi2[t][planeName]                    ,p);
-            dataVector[t].setXInterceptUnconstrained     (unconstrainedFittedTracks[t][planeName][1]*10                  ,p);
-            dataVector[t].setXSigmaInterceptUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](1,1))*10,p);
-            dataVector[t].setYInterceptUnconstrained     (unconstrainedFittedTracks[t][planeName][3]*10                  ,p);
-            dataVector[t].setYSigmaInterceptUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](3,3))*10,p);
-            dataVector[t].setXSlopeUnconstrained         (unconstrainedFittedTracks[t][planeName][0]                     ,p);
-            dataVector[t].setXSigmaSlopeUnconstrained    (sqrt(unconstrainedFittedTracksCovariance[t][planeName](0,0))   ,p);
-            dataVector[t].setYSlopeUnconstrained         (unconstrainedFittedTracks[t][planeName][2]                     ,p);
-            dataVector[t].setYSigmaSlopeUnconstrained    (sqrt(unconstrainedFittedTracksCovariance[t][planeName](2,2))   ,p);
-            if(trackCandidates[t].find(planeName) != trackCandidates[t].end())
+            int nTelescopeHits  = 0;
+            int clustersSizeLE2 = 0 ;
+            for(unsigned int p=0; p<thePlanesMapping_.getNumberOfPlanes(); p++)
             {
+                nRow.clear();
+                nCol.clear();
+                row         = 0;
+                col         = 0;
+                planeName = thePlanesMapping_.getMonicelliPlaneName(p);
+                detector  = theGeometry_->getDetector(thePlanesMapping_.getStation(p), thePlanesMapping_.getPlaquette(p));
 
-                clusterID = (int)trackCandidates[t][planeName]["cluster ID"];
+                if(detector == 0)
+                    continue;
 
-                if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                dataVector[t].setChi2Unconstrained           (     unconstrainedFittedTracksChi2      [t][planeName]         , p);
+                dataVector[t].setXInterceptUnconstrained     (     unconstrainedFittedTracks          [t][planeName][1]*10   , p);
+                dataVector[t].setXSigmaInterceptUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](1,1))*10, p);
+                dataVector[t].setYInterceptUnconstrained     (     unconstrainedFittedTracks          [t][planeName][3]*10   , p);
+                dataVector[t].setYSigmaInterceptUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](3,3))*10, p);
+                dataVector[t].setXSlopeUnconstrained         (     unconstrainedFittedTracks          [t][planeName][0]      , p);
+                dataVector[t].setXSigmaSlopeUnconstrained    (sqrt(unconstrainedFittedTracksCovariance[t][planeName](0,0))   , p);
+                dataVector[t].setYSlopeUnconstrained         (     unconstrainedFittedTracks          [t][planeName][2]      , p);
+                dataVector[t].setYSigmaSlopeUnconstrained    (sqrt(unconstrainedFittedTracksCovariance[t][planeName](2,2))   , p);
+                if(trackCandidates[t].find(planeName) != trackCandidates[t].end())
                 {
-                    dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-2),p);
-                    xyErr = detector->getTrackErrorsOnPlane(fittedTracks[t],fittedTracksCovariance[t]);
-                    dataVector[t].setXErrorPredictedGlobal(sqrt(xyErr.first )*10,p);
-                    dataVector[t].setYErrorPredictedGlobal(sqrt(xyErr.second)*10,p);
-                    detector->flipBackDistance(&xyErr.first,&xyErr.second);
-                    dataVector[t].setXErrorPredictedLocal(sqrt(fabs(xyErr.first ))*10,p);
-                    dataVector[t].setYErrorPredictedLocal(sqrt(fabs(xyErr.second))*10,p);
+                   clusterID = (int)trackCandidates[t][planeName]["cluster ID"];
+                   if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                   {
+                       dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-2),p);
+                       xyErr = detector->getTrackErrorsOnPlane(fittedTracks[t],fittedTracksCovariance[t]);
+                       dataVector[t].setXErrorPredictedGlobal(sqrt(xyErr.first )*10,p);
+                       dataVector[t].setYErrorPredictedGlobal(sqrt(xyErr.second)*10,p);
+                       detector->flipBackDistance(&xyErr.first,&xyErr.second);
+                       dataVector[t].setXErrorPredictedLocal(sqrt(fabs(xyErr.first ))*10,p);
+                       dataVector[t].setYErrorPredictedLocal(sqrt(fabs(xyErr.second))*10,p);
+                   }
+                   else
+                   {
+                       dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-1-2),p);
+                       dataVector[t].setXErrorPredictedGlobal(-1,p);
+                       dataVector[t].setYErrorPredictedGlobal(-1,p);
+                       dataVector[t].setXErrorPredictedLocal (-1,p);
+                       dataVector[t].setYErrorPredictedLocal (-1,p);
+                       ++nTelescopeHits;
+                       if     (trackCandidates[t][planeName]["size"] == 1)
+                       ++clustersSizeLE2;
+                       else if(
+                       trackCandidates[t][planeName]["size"] == 2 &&
+                       (
+                       clustersHits[planeName][clusterID][0]["row"] == clustersHits[planeName][clusterID][1]["row"] ||
+                       clustersHits[planeName][clusterID][0]["col"] == clustersHits[planeName][clusterID][1]["col"]
+                       )
+                       )
+                       ++clustersSizeLE2;
+                   }
+
+                   dataVector[t].setHasHit	  (true 					  , p);
+                   dataVector[t].setDataType	  ((int)clusters[planeName][clusterID]["dataType"], p);
+                   dataVector[t].setBelongsToTrack(true 					  , p);
+                   dataVector[t].setClusterSize   ((int)trackCandidates[t][planeName]["size"]	  , p);
+                   dataVector[t].setClusterCharge ((int)clusters[planeName][clusterID]["charge"]  , p);
+
+                   size = (unsigned int)clustersHits[planeName][clusterID].size();
+                   for(unsigned int h=0; h<size; h++)
+                   {
+
+                       pixelRow = clustersHits[planeName][clusterID][h]["row"];
+                       pixelCol = clustersHits[planeName][clusterID][h]["col"];
+
+                       row += (float)pixelRow;
+                       col += (float)pixelCol;
+                       nRow.push_back(pixelRow);
+                       nCol.push_back(pixelCol);
+                       if(size<=4)
+                       {
+                   	   xPixelCenter = detector->getPixelCenterLocalX(pixelCol					    );
+                   	   yPixelCenter = detector->getPixelCenterLocalY(pixelRow					    );
+                   	   dataVector[t].setClusterPixelRow		(pixelRow,h,p					    );
+                   	   dataVector[t].setClusterPixelCol		(pixelCol,h,p					    );
+                   	   dataVector[t].setClusterPixelCharge  	(clustersHits[planeName][clusterID][h]["charge"],h,p);
+                   	   dataVector[t].setXClusterPixelCenterLocal	(xPixelCenter*10,h,p				    );
+                   	   dataVector[t].setYClusterPixelCenterLocal	(yPixelCenter*10,h,p				    );
+                   	   detector->fromLocalToGlobal  		(&xPixelCenter,&yPixelCenter,&zPixelCenter	    );
+                   	   dataVector[t].setXClusterPixelCenterGlobal	(xPixelCenter*10,h,p				    );
+                   	   dataVector[t].setYClusterPixelCenterGlobal	(yPixelCenter*10,h,p				    );
+                   	   ROC = detector->convertPixelToROC		(&pixelRow,&pixelCol				    );
+                   	   dataVector[t].setIsPixelCalibrated		(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p      );
+
+                   	   if(!ROC->isPixelCalibrated(pixelRow,pixelCol) && thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                   	   {
+                   	       ss.str("");
+                   	       ss << "WARNING: fit failed for detector " << planeName;
+                   	       ss << " at row " << pixelRow << "," << " col " << pixelCol;
+                   	       ss << " of chip " << ROC->getID();
+                   	       STDLINE(ss.str(),ACRed);
+                   	   }
+
+                       }
+                   }
+
+                   nRow.sort();
+                   nCol.sort();
+
+                   nRow.unique();
+                   nCol.unique();
+                   dataVector[t].setMeanCol	      (col/size,p);
+                   if((int)clusters[planeName][clusterID]["dataType"] == 1)//Strip case
+                   dataVector[t].setMeanRow(0,p);
+                   else
+                   dataVector[t].setMeanRow(row/size,p);
+                   dataVector[t].setNumberOfCols   (nCol.size(),p);
+                   dataVector[t].setNumberOfRows   (nRow.size(),p);
+                   dataVector[t].setXMeasuredLocal (clusters[planeName][clusterID]["x"]*10,p);
+                   dataVector[t].setYMeasuredLocal (clusters[planeName][clusterID]["y"]*10,p);
+                   dataVector[t].setXMeasuredGlobal(trackCandidates[t][planeName]["x"]*10,p);
+                   dataVector[t].setYMeasuredGlobal(trackCandidates[t][planeName]["y"]*10,p);
+
+                   dataVector[t].setXErrorMeasuredLocal (clusters[planeName][clusterID]["xErr"]*10,p);
+                   dataVector[t].setYErrorMeasuredLocal (clusters[planeName][clusterID]["yErr"]*10,p);
+                   dataVector[t].setXErrorMeasuredGlobal(trackCandidates[t][planeName]["xErr"]*10,p);
+                   dataVector[t].setYErrorMeasuredGlobal(trackCandidates[t][planeName]["yErr"]*10,p);
+
+                   xRes = fittedTrackResiduals[t][planeName].first*10;
+                   yRes = fittedTrackResiduals[t][planeName].second*10;
+                   dataVector[t].setXTrackResidualGlobal(xRes,p);
+                   dataVector[t].setYTrackResidualGlobal(yRes,p);
+                   detector->flipBackDistance(&xRes,&yRes);
+                   dataVector[t].setXTrackResidualLocal (xRes,p);
+                   dataVector[t].setYTrackResidualLocal (yRes,p);
+
+                   detector->getPredictedGlobal(fittedTracks[t],xp,yp,zp);
+                   dataVector[t].setXPredictedGlobal(xp*10,p);
+                   dataVector[t].setYPredictedGlobal(yp*10,p);
+
+                   detector->fromGlobalToLocal(&xp,&yp,&zp);
+                   dataVector[t].setXPredictedLocal(xp*10,p);
+                   dataVector[t].setYPredictedLocal(yp*10,p);
+
+                   rc = detector->getPixelCellFromLocal(xp,yp);
+                   rowPredicted = rc.first;
+                   colPredicted = rc.second;
+
+                   dataVector[t].setColPredicted(colPredicted,p);
+                   dataVector[t].setRowPredicted(rowPredicted,p);
+
+                   if(colPredicted == -1 || rowPredicted == -1)
+                   {
+                       dataVector[t].setIsInDetector(false,p);
+                       //continue;
+                   }
+                   else
+                   {
+                       dataVector[t].setIsInDetector(true,p);
+
+                       xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
+                       yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
+
+                       dataVector[t].setXPitchLocal(xPixelPitch,p);
+                       dataVector[t].setYPitchLocal(yPixelPitch,p);
+                       detector->flipDistance(&xPixelPitch,&yPixelPitch);
+                       dataVector[t].setXPitchGlobal(fabs(xPixelPitch),p);
+                       dataVector[t].setYPitchGlobal(fabs(yPixelPitch),p);
+
+                       xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
+                       yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
+
+                       detector->getPredictedLocal(fittedTracks[t],xp,yp);
+                       xRes = (xp - xPixelCenter)*10;
+                       yRes = (yp - yPixelCenter)*10;
+                       dataVector[t].setXPixelResidualLocal(xRes,p);
+                       dataVector[t].setYPixelResidualLocal(yRes,p);
+
+                       detector->flipDistance(&xRes,&yRes);
+                       dataVector[t].setXPixelResidualGlobal(xRes,p);
+                       dataVector[t].setYPixelResidualGlobal(yRes,p);
+                   }
+
+                   detector->getPredictedLocal(unconstrainedFittedTracks[t][planeName],xp,yp);
+                   rc = detector->getPixelCellFromLocal(xp,yp);
+                   rowPredicted = rc.first;
+                   colPredicted = rc.second;
+
+                   if(colPredicted == -1 || rowPredicted == -1)
+                   {
+                       dataVector[t].setIsInDetectorUnconstrained(false,p);
+                       //continue;
+                   }
+                   else
+                   {
+                       xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
+                       yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
+                       dataVector[t].setXPixelPitchLocalUnconstrained(xPixelPitch,p);
+                       dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
+                       xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
+                       yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
+                       xRes = (xp - xPixelCenter)*10;
+                       yRes = (yp - yPixelCenter)*10;
+                       dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
+                       dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
+                   }
                 }
                 else
                 {
-                    dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-1-2),p);
-                    dataVector[t].setXErrorPredictedGlobal(-1,p);
-                    dataVector[t].setYErrorPredictedGlobal(-1,p);
-                    dataVector[t].setXErrorPredictedLocal (-1,p);
-                    dataVector[t].setYErrorPredictedLocal (-1,p);
-                    ++nTelescopeHits;
-                    if(trackCandidates[t][planeName]["size"] == 1)
-                        ++clustersSizeLE2;
-                    else if(trackCandidates[t][planeName]["size"] == 2
-                            && (clustersHits[planeName][clusterID][0]["row"] == clustersHits[planeName][clusterID][1]["row"]
-                                || clustersHits[planeName][clusterID][0]["col"] == clustersHits[planeName][clusterID][1]["col"]))
-                        ++clustersSizeLE2;
+                   dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-2),p);
+                   if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                   {
+                       xyErr = detector->getTrackErrorsOnPlane(fittedTracks[t],fittedTracksCovariance[t]);
+                       dataVector[t].setXErrorPredictedGlobal(sqrt(xyErr.first)*10 ,p);
+                       dataVector[t].setYErrorPredictedGlobal(sqrt(xyErr.second)*10,p);
+                       detector->flipBackDistance(&xyErr.first,&xyErr.second);
+                       dataVector[t].setXErrorPredictedLocal(sqrt(fabs(xyErr.first ))*10,p);
+                       dataVector[t].setYErrorPredictedLocal(sqrt(fabs(xyErr.second))*10,p);
+                   }
+                   else
+                   {
+                       dataVector[t].setXErrorPredictedGlobal(-1,p);
+                       dataVector[t].setYErrorPredictedGlobal(-1,p);
+                       dataVector[t].setXErrorPredictedLocal (-1,p);
+                       dataVector[t].setYErrorPredictedLocal (-1,p);
+                   }
+
+                   dataVector[t].setHasHit	    (false,p);
+                   //std::cout<<"datatype 2 "<<      clusters[planeName][clusterID]["dataType"] <<" plane "<<p<<" name "<<planeName<<std::endl;
+                   dataVector[t].setDataType((int)-1,p);
+                   dataVector[t].setBelongsToTrack(false,p);
+
+                   detector->getPredictedGlobal(fittedTracks[t],xp,yp,zp);
+                   dataVector[t].setXPredictedGlobal(xp*10,p);
+                   dataVector[t].setYPredictedGlobal(yp*10,p);
+                   detector->fromGlobalToLocal(&xp,&yp,&zp);
+                   dataVector[t].setXPredictedLocal(xp*10,p);
+                   dataVector[t].setYPredictedLocal(yp*10,p);
+
+                   rc = detector->getPixelCellFromLocal(xp,yp);
+                   rowPredicted = rc.first;
+                   colPredicted = rc.second;
+
+                   dataVector[t].setMeanCol (colPredicted,p);
+                   dataVector[t].setMeanRow (rowPredicted,p);
+
+                   dataVector[t].setColPredicted(colPredicted,p);
+                   dataVector[t].setRowPredicted(rowPredicted,p);
+
+                   if(colPredicted == -1 || rowPredicted == -1)
+                   {
+                       dataVector[t].setIsInDetector(false,p);
+                       //			continue;
+                   }
+                   else
+                   {
+                       dataVector[t].setIsInDetector(true,p);
+
+                       xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
+                       yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
+
+                       dataVector[t].setXPitchLocal(xPixelPitch,p);
+                       dataVector[t].setYPitchLocal(yPixelPitch,p);
+                       detector->flipDistance(&xPixelPitch,&yPixelPitch);
+                       dataVector[t].setXPitchGlobal(fabs(xPixelPitch),p);
+                       dataVector[t].setYPitchGlobal(fabs(yPixelPitch),p);
+
+                       xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
+                       yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
+
+                       detector->getPredictedLocal(fittedTracks[t],xp,yp);
+                       xRes = (xp - xPixelCenter)*10;
+                       yRes = (yp - yPixelCenter)*10;
+                       dataVector[t].setXPixelResidualLocal(xRes,p);
+                       dataVector[t].setYPixelResidualLocal(yRes,p);
+
+                       detector->flipDistance(&xRes,&yRes);
+                       dataVector[t].setXPixelResidualGlobal(xRes,p);
+                       dataVector[t].setYPixelResidualGlobal(yRes,p);
+
+                       isGood = false;
+                       for(std::vector<std::map<std::string,int> >::iterator hits  = theRawData[planeName].begin();
+                       hits != theRawData[planeName].end();
+                       hits++)
+                       {
+                   	   if((abs(colPredicted - (*hits)["col"]) <= 1) && (abs(rowPredicted - (*hits)["row"]) <= 1))
+                   	   {
+                   	       clusterID = -1;
+
+                   	       for(Event::aClusterHitsMapDef::iterator itC  = clustersHits[planeName].begin();
+                   	       itC != clustersHits[planeName].end() && clusterID == -1;
+                   	       itC++ )
+                   	       {
+                   		   if(isGood)
+                   		   break;
+
+                   		   for(Event::hitsDef::iterator itH  = itC->second.begin();
+                   		   itH != itC->second.end() && clusterID == -1;
+                   		   itH++)
+                   		   {
+                   		       if((*hits)["col"] == (*itH)["col"] && (*hits)["row"] == (*itH)["row"])
+                   		       {
+                   			   clusterID = itC->first;
+                   			   dataVector[t].setHasHit(true,p);
+                   			   //dataVector[t].setDataType((int)clusters[planeName][clusterID]["dataType"],p);
+                   			   isGood = true;
+                   			   break;
+                   		       }
+                   		   }
+                   	       }
+
+                   	       size = (unsigned int)clustersHits[planeName][clusterID].size();
+
+                   	       dataVector[t].setClusterSize  (size,p);
+                   	       dataVector[t].setClusterCharge((int)clusters[planeName][clusterID]["charge"],p);
+
+                   	       row = 0;
+                   	       col = 0;
+                   	       nRow.clear();
+                   	       nCol.clear();
+
+                   	       for(unsigned int h=0; h<size; h++)
+                   	       {
+                   		   pixelRow = clustersHits[planeName][clusterID][h]["row"];
+                   		   pixelCol = clustersHits[planeName][clusterID][h]["col"];
+                   		   row += (float)pixelRow;
+                   		   col += (float)pixelCol;
+                   		   nRow.push_back(pixelRow);
+                   		   nCol.push_back(pixelCol);
+                   		   if(size<=4)
+                   		   {
+                   		       dataVector[t].setClusterPixelRow(pixelRow,h,p);
+                   		       dataVector[t].setClusterPixelCol(pixelCol,h,p);
+                   		       dataVector[t].setClusterPixelCharge(clustersHits[planeName][clusterID][h]["charge"],h,p);
+                   		       xPixelCenter = detector->getPixelCenterLocalX(pixelCol);
+                   		       yPixelCenter = detector->getPixelCenterLocalY(pixelRow);
+                   		       dataVector[t].setXClusterPixelCenterLocal(xPixelCenter*10,h,p);
+                   		       dataVector[t].setYClusterPixelCenterLocal(yPixelCenter*10,h,p);
+                   		       detector->fromLocalToGlobal(&xPixelCenter,&yPixelCenter,&zPixelCenter);
+                   		       dataVector[t].setXClusterPixelCenterGlobal(xPixelCenter*10,h,p);
+                   		       dataVector[t].setYClusterPixelCenterGlobal(yPixelCenter*10,h,p);
+                   		       ROC = detector->convertPixelToROC(&pixelRow,&pixelCol);
+                   		       dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);
+                   		   }
+                   	       }
+
+                   	       nRow.sort();
+                   	       nCol.sort();
+
+                   	       nRow.unique();
+                   	       nCol.unique();
+
+                   	       dataVector[t].setMeanCol (col/size,p);
+                   	       if((int)clusters[planeName][clusterID]["dataType"] == 1)//Strip case
+                   	       dataVector[t].setMeanRow(0,p);
+                   	       else
+                   	       dataVector[t].setMeanRow(row/size,p);
+                   	       //dataVector[t].setMeanRow (row/size,p);
+                   	       dataVector[t].setNumberOfCols(nCol.size(),p);
+                   	       dataVector[t].setNumberOfRows(nRow.size(),p);
+                   	       break;
+                   	   }
+                       }
+                   }
+
+                   detector->getPredictedLocal(unconstrainedFittedTracks[t][planeName],xp,yp);
+                   rc = detector->getPixelCellFromLocal(xp,yp);
+                   rowPredicted = rc.first;
+                   colPredicted = rc.second;
+
+                   if(colPredicted == -1 || rowPredicted == -1)
+                   {
+                       dataVector[t].setIsInDetectorUnconstrained(false,p);
+                       //continue;
+                   }
+                   else
+                   {
+                       xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
+                       yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
+                       dataVector[t].setXPixelPitchLocalUnconstrained(xPixelPitch,p);
+                       dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
+                       xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
+                       yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
+                       xRes = (xp - xPixelCenter)*10;
+                       yRes = (yp - yPixelCenter)*10;
+                       dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
+                       dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
+                   }
                 }
-
-
-
-
-                dataVector[t].setHasHit        (true,p);
-                //std::cout<<"datatype 1 "<<      clusters[planeName][clusterID]["dataType"] <<" plane "<<p<<" name "<<planeName<<std::endl;
-                dataVector[t].setDataType((int)clusters[planeName][clusterID]["dataType"],p);
-                dataVector[t].setBelongsToTrack(true,p);
-                dataVector[t].setClusterSize   ((int)trackCandidates[t][planeName]["size"], p);
-                dataVector[t].setClusterCharge ((int)clusters[planeName][clusterID]["charge"], p);
-
-                size = (unsigned int)clustersHits[planeName][clusterID].size();
-                for(unsigned int h=0; h<size; h++)
-                {
-
-                    pixelRow = clustersHits[planeName][clusterID][h]["row"];
-                    pixelCol = clustersHits[planeName][clusterID][h]["col"];
-
-                    row += (float)pixelRow;
-                    col += (float)pixelCol;
-                    nRow.push_back(pixelRow);
-                    nCol.push_back(pixelCol);
-                    if(size<=4)
-                    {
-                        dataVector[t].setClusterPixelRow(pixelRow,h,p);
-                        dataVector[t].setClusterPixelCol(pixelCol,h,p);
-                        dataVector[t].setClusterPixelCharge(clustersHits[planeName][clusterID][h]["charge"],h,p);
-                        xPixelCenter = detector->getPixelCenterLocalX(pixelCol);
-                        yPixelCenter = detector->getPixelCenterLocalY(pixelRow);
-                        dataVector[t].setXClusterPixelCenterLocal(xPixelCenter*10,h,p);
-                        dataVector[t].setYClusterPixelCenterLocal(yPixelCenter*10,h,p);
-                        detector->fromLocalToGlobal(&xPixelCenter,&yPixelCenter,&zPixelCenter);
-                        dataVector[t].setXClusterPixelCenterGlobal(xPixelCenter*10,h,p);
-                        dataVector[t].setYClusterPixelCenterGlobal(yPixelCenter*10,h,p);
-                        ROC = detector->convertPixelToROC(&pixelRow,&pixelCol);
-                        dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);
-
-                        if(!ROC->isPixelCalibrated(pixelRow,pixelCol) && thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
-                        {
-                            ss.str("");
-                            ss << "WARNING: fit failed for detector " << planeName;
-                            ss << " at row " << pixelRow << "," << " col " << pixelCol;
-                            ss << " of chip " << ROC->getID();
-                            STDLINE(ss.str(),ACRed);
-                        }
-
-                    }
-                }
-
-                nRow.sort();
-                nCol.sort();
-
-                nRow.unique();
-                nCol.unique();
-                dataVector[t].setMeanCol        (col/size,p);
-                if((int)clusters[planeName][clusterID]["dataType"] == 1)//Strip case
-                    dataVector[t].setMeanRow(0,p);
-                 else
-                    dataVector[t].setMeanRow(row/size,p);
-                dataVector[t].setNumberOfCols   (nCol.size(),p);
-                dataVector[t].setNumberOfRows   (nRow.size(),p);
-                dataVector[t].setXMeasuredLocal (clusters[planeName][clusterID]["x"]*10,p);
-                dataVector[t].setYMeasuredLocal (clusters[planeName][clusterID]["y"]*10,p);
-                dataVector[t].setXMeasuredGlobal(trackCandidates[t][planeName]["x"]*10,p);
-                dataVector[t].setYMeasuredGlobal(trackCandidates[t][planeName]["y"]*10,p);
-
-                dataVector[t].setXErrorMeasuredLocal (clusters[planeName][clusterID]["xErr"]*10,p);
-                dataVector[t].setYErrorMeasuredLocal (clusters[planeName][clusterID]["yErr"]*10,p);
-                dataVector[t].setXErrorMeasuredGlobal(trackCandidates[t][planeName]["xErr"]*10,p);
-                dataVector[t].setYErrorMeasuredGlobal(trackCandidates[t][planeName]["yErr"]*10,p);
-
-                xRes = fittedTrackResiduals[t][planeName].first*10;
-                yRes = fittedTrackResiduals[t][planeName].second*10;
-                dataVector[t].setXTrackResidualGlobal(xRes,p);
-                dataVector[t].setYTrackResidualGlobal(yRes,p);
-                detector->flipBackDistance(&xRes,&yRes);
-                dataVector[t].setXTrackResidualLocal (xRes,p);
-                dataVector[t].setYTrackResidualLocal (yRes,p);
-
-                detector->getPredictedGlobal(fittedTracks[t],xp,yp,zp);
-                dataVector[t].setXPredictedGlobal(xp*10,p);
-                dataVector[t].setYPredictedGlobal(yp*10,p);
-
-                detector->fromGlobalToLocal(&xp,&yp,&zp);
-                dataVector[t].setXPredictedLocal(xp*10,p);
-                dataVector[t].setYPredictedLocal(yp*10,p);
-
-                rc = detector->getPixelCellFromLocal(xp,yp);
-                rowPredicted = rc.first;
-                colPredicted = rc.second;
-
-                dataVector[t].setColPredicted(colPredicted,p);
-                dataVector[t].setRowPredicted(rowPredicted,p);
-
-                if(colPredicted == -1 || rowPredicted == -1)
-                {
-                    dataVector[t].setIsInDetector(false,p);
-                    //continue;
-                }
-                else
-                {
-                    dataVector[t].setIsInDetector(true,p);
-
-                    xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
-                    yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
-
-                    dataVector[t].setXPitchLocal(xPixelPitch,p);
-                    dataVector[t].setYPitchLocal(yPixelPitch,p);
-                    detector->flipDistance(&xPixelPitch,&yPixelPitch);
-                    dataVector[t].setXPitchGlobal(fabs(xPixelPitch),p);
-                    dataVector[t].setYPitchGlobal(fabs(yPixelPitch),p);
-
-                    xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
-                    yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
-
-                    detector->getPredictedLocal(fittedTracks[t],xp,yp);
-                    xRes = (xp - xPixelCenter)*10;
-                    yRes = (yp - yPixelCenter)*10;
-                    dataVector[t].setXPixelResidualLocal(xRes,p);
-                    dataVector[t].setYPixelResidualLocal(yRes,p);
-
-                    detector->flipDistance(&xRes,&yRes);
-                    dataVector[t].setXPixelResidualGlobal(xRes,p);
-                    dataVector[t].setYPixelResidualGlobal(yRes,p);
-                }
-
-                detector->getPredictedLocal(unconstrainedFittedTracks[t][planeName],xp,yp);
-                rc = detector->getPixelCellFromLocal(xp,yp);
-                rowPredicted = rc.first;
-                colPredicted = rc.second;
-
-                if(colPredicted == -1 || rowPredicted == -1)
-                {
-                    dataVector[t].setIsInDetectorUnconstrained(false,p);
-                    //continue;
-                }
-                else
-                {
-                    xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
-                    yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
-                    dataVector[t].setXPixelPitchLocalUnconstrained(xPixelPitch,p);
-                    dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
-                    xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
-                    yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
-                    xRes = (xp - xPixelCenter)*10;
-                    yRes = (yp - yPixelCenter)*10;
-                    dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
-                    dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
-                }
-
             }
-            else
-            {
-                dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-2),p);
-                if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
-                {
-                    xyErr = detector->getTrackErrorsOnPlane(fittedTracks[t],fittedTracksCovariance[t]);
-                    dataVector[t].setXErrorPredictedGlobal(sqrt(xyErr.first)*10 ,p);
-                    dataVector[t].setYErrorPredictedGlobal(sqrt(xyErr.second)*10,p);
-                    detector->flipBackDistance(&xyErr.first,&xyErr.second);
-                    dataVector[t].setXErrorPredictedLocal(sqrt(fabs(xyErr.first ))*10,p);
-                    dataVector[t].setYErrorPredictedLocal(sqrt(fabs(xyErr.second))*10,p);
-                }
-                else
-                {
-                    dataVector[t].setXErrorPredictedGlobal(-1,p);
-                    dataVector[t].setYErrorPredictedGlobal(-1,p);
-                    dataVector[t].setXErrorPredictedLocal (-1,p);
-                    dataVector[t].setYErrorPredictedLocal (-1,p);
-                }
-
-                dataVector[t].setHasHit        (false,p);
-                //std::cout<<"datatype 2 "<<      clusters[planeName][clusterID]["dataType"] <<" plane "<<p<<" name "<<planeName<<std::endl;
-                dataVector[t].setDataType((int)-1,p);
-                dataVector[t].setBelongsToTrack(false,p);
-
-                detector->getPredictedGlobal(fittedTracks[t],xp,yp,zp);
-                dataVector[t].setXPredictedGlobal(xp*10,p);
-                dataVector[t].setYPredictedGlobal(yp*10,p);
-                detector->fromGlobalToLocal(&xp,&yp,&zp);
-                dataVector[t].setXPredictedLocal(xp*10,p);
-                dataVector[t].setYPredictedLocal(yp*10,p);
-
-                rc = detector->getPixelCellFromLocal(xp,yp);
-                rowPredicted = rc.first;
-                colPredicted = rc.second;
-
-                dataVector[t].setMeanCol (colPredicted,p);
-                dataVector[t].setMeanRow (rowPredicted,p);
-
-                dataVector[t].setColPredicted(colPredicted,p);
-                dataVector[t].setRowPredicted(rowPredicted,p);
-
-                if(colPredicted == -1 || rowPredicted == -1)
-                {
-                    dataVector[t].setIsInDetector(false,p);
-//                    continue;
-                }
-                else
-                {
-                    dataVector[t].setIsInDetector(true,p);
-
-                    xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
-                    yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
-
-                    dataVector[t].setXPitchLocal(xPixelPitch,p);
-                    dataVector[t].setYPitchLocal(yPixelPitch,p);
-                    detector->flipDistance(&xPixelPitch,&yPixelPitch);
-                    dataVector[t].setXPitchGlobal(fabs(xPixelPitch),p);
-                    dataVector[t].setYPitchGlobal(fabs(yPixelPitch),p);
-
-                    xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
-                    yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
-
-                    detector->getPredictedLocal(fittedTracks[t],xp,yp);
-                    xRes = (xp - xPixelCenter)*10;
-                    yRes = (yp - yPixelCenter)*10;
-                    dataVector[t].setXPixelResidualLocal(xRes,p);
-                    dataVector[t].setYPixelResidualLocal(yRes,p);
-
-                    detector->flipDistance(&xRes,&yRes);
-                    dataVector[t].setXPixelResidualGlobal(xRes,p);
-                    dataVector[t].setYPixelResidualGlobal(yRes,p);
-
-                    isGood = false;
-                    for(std::vector<std::map<std::string,int> >::iterator hits = theRawData[planeName].begin(); hits != theRawData[planeName].end(); hits++)
-                    {
-                        if((abs(colPredicted - (*hits)["col"]) <= 1) && (abs(rowPredicted - (*hits)["row"]) <= 1))
-                        {
-                            clusterID = -1;
-
-                            for(Event::aClusterHitsMapDef::iterator itC = clustersHits[planeName].begin(); itC != clustersHits[planeName].end() && clusterID == -1; itC++)
-                            {
-                                if(isGood)
-                                    break;
-
-                                for(Event::hitsDef::iterator itH = itC->second.begin(); itH != itC->second.end() && clusterID == -1; itH++)
-                                {
-                                    if((*hits)["col"] == (*itH)["col"] && (*hits)["row"] == (*itH)["row"])
-                                    {
-                                        clusterID = itC->first;
-                                        dataVector[t].setHasHit(true,p);
-                                        //dataVector[t].setDataType((int)clusters[planeName][clusterID]["dataType"],p);
-                                        isGood = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            size = (unsigned int)clustersHits[planeName][clusterID].size();
-
-                            dataVector[t].setClusterSize  (size,p);
-                            dataVector[t].setClusterCharge((int)clusters[planeName][clusterID]["charge"],p);
-
-                            row = 0;
-                            col = 0;
-                            nRow.clear();
-                            nCol.clear();
-
-                            for(unsigned int h=0; h<size; h++)
-                            {
-                                pixelRow = clustersHits[planeName][clusterID][h]["row"];
-                                pixelCol = clustersHits[planeName][clusterID][h]["col"];
-                                row += (float)pixelRow;
-                                col += (float)pixelCol;
-                                nRow.push_back(pixelRow);
-                                nCol.push_back(pixelCol);
-                                if(size<=4)
-                                {
-                                    dataVector[t].setClusterPixelRow(pixelRow,h,p);
-                                    dataVector[t].setClusterPixelCol(pixelCol,h,p);
-                                    dataVector[t].setClusterPixelCharge(clustersHits[planeName][clusterID][h]["charge"],h,p);
-                                    xPixelCenter = detector->getPixelCenterLocalX(pixelCol);
-                                    yPixelCenter = detector->getPixelCenterLocalY(pixelRow);
-                                    dataVector[t].setXClusterPixelCenterLocal(xPixelCenter*10,h,p);
-                                    dataVector[t].setYClusterPixelCenterLocal(yPixelCenter*10,h,p);
-                                    detector->fromLocalToGlobal(&xPixelCenter,&yPixelCenter,&zPixelCenter);
-                                    dataVector[t].setXClusterPixelCenterGlobal(xPixelCenter*10,h,p);
-                                    dataVector[t].setYClusterPixelCenterGlobal(yPixelCenter*10,h,p);
-                                    ROC = detector->convertPixelToROC(&pixelRow,&pixelCol);
-                                    dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);
-                                }
-                            }
-
-                            nRow.sort();
-                            nCol.sort();
-
-                            nRow.unique();
-                            nCol.unique();
-
-                            dataVector[t].setMeanCol (col/size,p);
-                            if((int)clusters[planeName][clusterID]["dataType"] == 1)//Strip case
-                                dataVector[t].setMeanRow(0,p);
-                            else
-                                dataVector[t].setMeanRow(row/size,p);
-                            //dataVector[t].setMeanRow (row/size,p);
-                            dataVector[t].setNumberOfCols(nCol.size(),p);
-                            dataVector[t].setNumberOfRows(nRow.size(),p);
-                            break;
-                        }
-                    }
-                }
-
-                detector->getPredictedLocal(unconstrainedFittedTracks[t][planeName],xp,yp);
-                rc = detector->getPixelCellFromLocal(xp,yp);
-                rowPredicted = rc.first;
-                colPredicted = rc.second;
-
-                if(colPredicted == -1 || rowPredicted == -1)
-                {
-                    dataVector[t].setIsInDetectorUnconstrained(false,p);
-                    //continue;
-                }
-                else
-                {
-                    xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
-                    yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
-                    dataVector[t].setXPixelPitchLocalUnconstrained(xPixelPitch,p);
-                    dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
-                    xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
-                    yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
-                    xRes = (xp - xPixelCenter)*10;
-                    yRes = (yp - yPixelCenter)*10;
-                    dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
-                    dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
-                }
-            }
+            dataVector[t].setNumberOfTelescopeHits(nTelescopeHits);
+            dataVector[t].setNumberOfTelescopeClustersSizeLE2(clustersSizeLE2);
         }
-        dataVector[t].setNumberOfTelescopeHits(nTelescopeHits);
-        dataVector[t].setNumberOfTelescopeClustersSizeLE2(clustersSizeLE2);
     }
-
+    
     for(unsigned int t=0; t<trackCandidates.size(); t++)
     {
         TThread::Lock();

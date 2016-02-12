@@ -239,7 +239,8 @@ QT                  *= xml
 
 DEPENDPATH          += . src include ../Monicelli/plugins/customTableWidget
 
-extraclean.commands  = rm -rf tmp/*                                             
+extraclean.commands  = rm -rf tmp/*                                               \
+                       MakefileExpress                                            
 
 clean.depends        = extraclean
 QMAKE_EXTRA_TARGETS += clean extraclean

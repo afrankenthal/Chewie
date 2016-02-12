@@ -65,16 +65,16 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Charge::Charge(AnalysisManager* analysisManager, int nOfThreads) :
-    Analysis                       (analysisManager, nOfThreads)
-  , thePlaneMapping_               (0)
-  , langaus_                       (0)
-  , linear_                        (0)
-  , theWindowsManager_             (0)
-  , theXmlParser_                  (analysisManager->getXmlParser())
-  , standardCutsPixelMinimumCharge_         (0)
-  , standardCutsPixelMaximumCharge_     (0)
-  , standardCutsClusterMinimumCharge_(0)
-  , standardCutsClusterMaximumCharge_(0)
+    Analysis                         (analysisManager, nOfThreads    )
+  , thePlaneMapping_                 (0 			     )
+  , langaus_                         (0 			     )
+  , linear_                          (0 			     )
+  , theWindowsManager_               (0 			     )
+  , theXmlParser_                    (analysisManager->getXmlParser())
+  , standardCutsPixelMinimumCharge_  (0 			     )
+  , standardCutsPixelMaximumCharge_  (0 			     )
+  , standardCutsClusterMinimumCharge_(0 			     )
+  , standardCutsClusterMaximumCharge_(0 			     )
 {
     thePlaneMapping_ = new PlanesMapping();
 
@@ -3098,7 +3098,7 @@ void Charge::normalizeEtaDistribution (int p)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Charge::normalizeEtaInverse (int p)
+void Charge::normalizeEtaInverse (int /* p */)
 {
     // int ip;
     // double xp;
