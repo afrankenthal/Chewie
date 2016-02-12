@@ -182,7 +182,7 @@
     <Plane ZPosition="6" YPitch="100" Calibration="dut_PLT532A_LC500_cal_2_0" XPitch="150" Id="Dut0" Name="Station: 4 - Plaq: 0" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>2</LowerCol>
-        <HigherCol>48</HigherCol>
+        <HigherCol>50</HigherCol>
         <LowerRow>2</LowerRow>
         <HigherRow>78</HigherRow>
       </Window>
@@ -193,7 +193,7 @@
     <Plane ZPosition="5" YPitch="100" Calibration="dut_PLT532A_LC500_cal_2_0" XPitch="150" Id="Dut1" Name="Station: 4 - Plaq: 1" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>2</LowerCol>
-        <HigherCol>48</HigherCol>
+        <HigherCol>50</HigherCol>
         <LowerRow>2</LowerRow>
         <HigherRow>78</HigherRow>
       </Window>
