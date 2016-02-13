@@ -4,22 +4,17 @@
 #include "XmlConverter.h"
 #include "EventManager.h"
 #include "AnalysisManager.h"
-//#include "trackFinder.h"
-//#include "HManager.h"
-#include <TApplication.h>
- #include <QCoreApplication>
-//#include <QApplication>
+
+#include <QCoreApplication>
+#include <QDomDocument>
+#include <QFile>
+#include <QString>
+#include <QDomNode>
 
 #include <cstdlib>
 #include <string>
 #include <sstream>
 #include <vector>
-#include <QDomDocument>
-//#include <QDomImplementation>
-//#include <QDomDocumentType>
-#include <QFile>
-#include <QString>
-#include <QDomNode>
 
 using namespace std;
 
@@ -30,8 +25,8 @@ class XmlFile;
 class ExpressXmlParser
 {
 public:
-    ExpressXmlParser (void);
-    ~ExpressXmlParser(void);
+  ExpressXmlParser (void);
+  ~ExpressXmlParser(void);
 
     void parseDocument(std::string fileName);
 
@@ -92,32 +87,27 @@ private:
 int main(int argc, char** argv)
 {
   stringstream ss;
-
-//  TApplication     tApp("App",&argc, argv);
-    QCoreApplication app (       argc, argv);
-    STDLINE("=== Using a QCoreApplication only =========" ,ACRed);
-//  QApplication app (       argc, argv);
-
+  
+  QCoreApplication app (       argc, argv);
+  STDLINE("=== Using a QCoreApplication only =========" ,ACRed);
+  
   ExpressXmlParser theExpressXmlParser;
-
+  
   std::string configFileName = "./xml/ExpressConfiguration.xml";
-//  std::cout << argc << " " << argv[1] << std::endl;
-//  return 1;
-  if(argc == 2)
-    configFileName = std::string("./xml/") + argv[1];
+  if (argc == 2) configFileName = std::string("./xml/") + argv[1];
   else if(argc > 2)
-  {
-    ss.str("");
-    ss << "Usage: ./ChewieExpress optional(configuration file)";
-    STDLINE(ss.str(),ACRed);
-    exit(EXIT_SUCCESS);
-  }
+    {
+      ss.str("");
+      ss << "Usage: ./ChewieExpress optional(configuration file)";
+      STDLINE(ss.str(),ACRed);
+      exit(EXIT_SUCCESS);
+    }
   ss.str("");
   ss << "Using: " << configFileName << " configuration.";
   STDLINE(ss.str(),ACGreen);
   
   theExpressXmlParser.parseDocument(configFileName.c_str());
-
+  
   XmlParser* theChewieXmlParser = new XmlParser();    
   const string filesPath 	= theExpressXmlParser.getDefaults()->filesPath_     ;
   bool   convert         	= theExpressXmlParser.getDefaults()->convert_	    ;
@@ -127,66 +117,64 @@ int main(int argc, char** argv)
   string chewieDataDir   	= getenv("CHEWIEDATADIR"  );
   string chewieOutputDir 	= getenv("CHEWIEOUTPUTDIR");
   string chewieInputDir  	= getenv("CHEWIEINPUTDIR" );
-
+  
   if(chewieInputDir[chewieInputDir.size()-1] != '/')
     chewieInputDir += '/';
 
   for(unsigned int fs=0; fs<theExpressXmlParser.getFilesList().size(); fs++)
-  {
-    string configurationName = chewieXmlDir    + "/" + theExpressXmlParser.getFilesList()[fs]->configurationName_;
-    string outFileName       = chewieOutputDir + "/" + theExpressXmlParser.getFilesList()[fs]->outFileName_;
-    theChewieXmlParser->parseDocument(QString(configurationName.c_str()));
-    EventManager*    theEventManager    = new EventManager();
-    AnalysisManager* theAnalysisManager = new AnalysisManager;
-    theEventManager   ->setConfiguration(theChewieXmlParser);
-    theAnalysisManager->setConfiguration(theChewieXmlParser);
-    
-    //Setting the number of events
-    if(numberOfEvents != -1)
     {
-      QDomAttr maxEvents = theChewieXmlParser->getDocument()->createAttribute("maxEvents");
-      std::stringstream ss; ss.str("");
-      ss << numberOfEvents;
-      maxEvents.setValue(ss.str().c_str());
-      theChewieXmlParser->getConverter()->getNode().toElement().setAttributeNode(maxEvents);
-      //theEventManager->setEventsLimit();it is done in startConverter
-    }
-    
-    //////////////////////////////////////////
-    //Open Monicelli File
-    std::vector<std::string> monicelliFileList;
-    std::vector<std::string> convertedFileList;
-    QStringList convertedFileNames;
-    string tmp;
-    for(unsigned int f=0;f<theExpressXmlParser.getFilesList()[fs]->fileNames_.size();f++)
-    {
-      std::string fileToAnalyze = theExpressXmlParser.getFilesList()[fs]->fileNames_[f]->fileName_;
-      std::string fileName      = filesPath + fileToAnalyze;
-      STDLINE(fileName,ACRed);
-      monicelliFileList.push_back(fileName);
-      tmp = fileName.substr(fileName.find_last_of("/"), fileName.size());
-      tmp = chewieInputDir + tmp;
-      STDLINE(tmp.substr(0,tmp.length()-5) + "_Converted.root", ACWhite);
-      convertedFileList.push_back(tmp.substr(0,tmp.length()-5) + "_Converted.root");
-    }
-    theEventManager   ->setInFilesList(monicelliFileList);
-    theAnalysisManager->setInFilesList(convertedFileList);
-    
-    if(convert)
+      string configurationName = chewieXmlDir    + "/" + theExpressXmlParser.getFilesList()[fs]->configurationName_;
+      string outFileName       = chewieOutputDir + "/" + theExpressXmlParser.getFilesList()[fs]->outFileName_;
+      theChewieXmlParser->parseDocument(QString(configurationName.c_str()));
+      EventManager*    theEventManager    = new EventManager();
+      AnalysisManager* theAnalysisManager = new AnalysisManager;
+      theEventManager   ->setConfiguration(theChewieXmlParser);
+      theAnalysisManager->setConfiguration(theChewieXmlParser);
+      
+      //Setting the number of events
+      if(numberOfEvents != -1)
+	{
+	  QDomAttr maxEvents = theChewieXmlParser->getDocument()->createAttribute("maxEvents");
+	  std::stringstream ss; ss.str("");
+	  ss << numberOfEvents;
+	  maxEvents.setValue(ss.str().c_str());
+	  theChewieXmlParser->getConverter()->getNode().toElement().setAttributeNode(maxEvents);
+	  //theEventManager->setEventsLimit();it is done in startConverter
+	}
+      
+      //////////////////////////////////////////
+      //Open Monicelli File
+      std::vector<std::string> monicelliFileList;
+      std::vector<std::string> convertedFileList;
+      QStringList convertedFileNames;
+      string tmp;
+      for(unsigned int f=0;f<theExpressXmlParser.getFilesList()[fs]->fileNames_.size();f++)
+	{
+	  std::string fileToAnalyze = theExpressXmlParser.getFilesList()[fs]->fileNames_[f]->fileName_;
+	  std::string fileName      = filesPath + fileToAnalyze;
+	  STDLINE(fileName,ACRed);
+	  monicelliFileList.push_back(fileName);
+	  tmp = fileName.substr(fileName.find_last_of("/"), fileName.size());
+	  tmp = chewieInputDir + tmp;
+	  STDLINE(tmp.substr(0,tmp.length()-5) + "_Converted.root", ACWhite);
+	  convertedFileList.push_back(tmp.substr(0,tmp.length()-5) + "_Converted.root");
+	}
+      theEventManager   ->setInFilesList(monicelliFileList);
+      theAnalysisManager->setInFilesList(convertedFileList);
+      
+      if(convert)
       theEventManager->startConverter();
-
-    if(runAnalysis)
-    {
-      theAnalysisManager->setOutputFileName(outFileName);
-      theAnalysisManager->startSequence();
+      
+      if(runAnalysis)
+	{
+	  theAnalysisManager->setOutputFileName(outFileName);
+	  theAnalysisManager->startSequence();
+	}
+      
+      delete theAnalysisManager;
+      delete theEventManager   ;
     }
-
-    delete theAnalysisManager;
-    delete theEventManager   ;
-  }
   delete theChewieXmlParser;
-  
-  app.exec();
   
   return EXIT_SUCCESS;
 }
