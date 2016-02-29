@@ -84,17 +84,17 @@ void Efficiency::destroy(void)
 
     std::vector<TH1F*>::iterator it1;
     std::vector<TH2F*>::iterator it2;
-    for(it1=hEfficiency_                     .begin(); it1!=hEfficiency_  	      	         .end(); it1++) delete *it1; hEfficiency_		              .clear();
-    for(it1=hEfficiencyNorm_                 .begin(); it1!=hEfficiencyNorm_	      	     .end(); it1++) delete *it1; hEfficiencyNorm_		          .clear();
-    for(it2=h2DEfficiency_                   .begin(); it2!=h2DEfficiency_	      	         .end(); it2++) delete *it2; h2DEfficiency_		              .clear();
+    for(it1=hEfficiency_                     .begin(); it1!=hEfficiency_  	      	     .end(); it1++) delete *it1; hEfficiency_		          .clear();
+    for(it1=hEfficiencyNorm_                 .begin(); it1!=hEfficiencyNorm_	      	     .end(); it1++) delete *it1; hEfficiencyNorm_		  .clear();
+    for(it2=h2DEfficiency_                   .begin(); it2!=h2DEfficiency_	      	     .end(); it2++) delete *it2; h2DEfficiency_		          .clear();
     for(it2=h2DEfficiencyNorm_               .begin(); it2!=h2DEfficiencyNorm_	      	     .end(); it2++) delete *it2; h2DEfficiencyNorm_ 	          .clear();
-    for(it1=hEfficiencyRef_                  .begin(); it1!=hEfficiencyRef_  	      	     .end(); it1++) delete *it1; hEfficiencyRef_	              .clear();
+    for(it1=hEfficiencyRef_                  .begin(); it1!=hEfficiencyRef_  	      	     .end(); it1++) delete *it1; hEfficiencyRef_	          .clear();
     for(it1=hEfficiencyRefNorm_              .begin(); it1!=hEfficiencyRefNorm_	      	     .end(); it1++) delete *it1; hEfficiencyRefNorm_	          .clear();
-    for(it2=h2DEfficiencyRef_                .begin(); it2!=h2DEfficiencyRef_	      	     .end(); it2++) delete *it2; h2DEfficiencyRef_	              .clear();
-    for(it2=h2DEfficiencyRefNorm_            .begin(); it2!=h2DEfficiencyRefNorm_	         .end(); it2++) delete *it2; h2DEfficiencyRefNorm_ 	          .clear();
+    for(it2=h2DEfficiencyRef_                .begin(); it2!=h2DEfficiencyRef_	      	     .end(); it2++) delete *it2; h2DEfficiencyRef                 .clear();
+    for(it2=h2DEfficiencyRefNorm_            .begin(); it2!=h2DEfficiencyRefNorm_	     .end(); it2++) delete *it2; h2DEfficiencyRefNorm_ 	          .clear();
     for(it2=h2D4cellEfficiency_              .begin(); it2!=h2D4cellEfficiency_	      	     .end(); it2++) delete *it2; h2D4cellEfficiency_	          .clear();
     for(it2=h2D4cellEfficiencyNorm_          .begin(); it2!=h2D4cellEfficiencyNorm_          .end(); it2++) delete *it2; h2D4cellEfficiencyNorm_	  .clear();
-    for(it2=h2DInefficiency_                 .begin(); it2!=h2DInefficiency_	      	     .end(); it2++) delete *it2; h2DInefficiency_		          .clear();
+    for(it2=h2DInefficiency_                 .begin(); it2!=h2DInefficiency_	      	     .end(); it2++) delete *it2; h2DInefficiency_		  .clear();
     for(it2=hCellEfficiency_                 .begin(); it2!=hCellEfficiency_	      	     .end(); it2++) delete *it2; hCellEfficiency_	          .clear();
     for(it2=hCellEfficiencyEvenColumns_      .begin(); it2!=hCellEfficiencyEvenColumns_      .end(); it2++) delete *it2; hCellEfficiencyEvenColumns_      .clear();
     for(it2=hCellEfficiencyOddColumns_       .begin(); it2!=hCellEfficiencyOddColumns_       .end(); it2++) delete *it2; hCellEfficiencyOddColumns_       .clear();
@@ -443,6 +443,8 @@ void Efficiency::endJob(void)
 
             h2DEfficiency_                  [p]->GetXaxis()->SetTitle("column"    );
             h2DEfficiency_                  [p]->GetYaxis()->SetTitle("row"       );
+            h2DEfficiencyRef_               [p]->GetXaxis()->SetTitle("column"    );
+            h2DEfficiencyRef_               [p]->GetYaxis()->SetTitle("row"       );
             h2DInefficiency_                [p]->GetXaxis()->SetTitle("column"    );
             h2DInefficiency_                [p]->GetYaxis()->SetTitle("row"       );
             hCellEfficiency_                [p]->GetXaxis()->SetTitle("x (um)"    );
