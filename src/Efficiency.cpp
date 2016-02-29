@@ -90,7 +90,7 @@ void Efficiency::destroy(void)
     for(it2=h2DEfficiencyNorm_               .begin(); it2!=h2DEfficiencyNorm_	      	     .end(); it2++) delete *it2; h2DEfficiencyNorm_ 	          .clear();
     for(it1=hEfficiencyRef_                  .begin(); it1!=hEfficiencyRef_  	      	     .end(); it1++) delete *it1; hEfficiencyRef_	          .clear();
     for(it1=hEfficiencyRefNorm_              .begin(); it1!=hEfficiencyRefNorm_	      	     .end(); it1++) delete *it1; hEfficiencyRefNorm_	          .clear();
-    for(it2=h2DEfficiencyRef_                .begin(); it2!=h2DEfficiencyRef_	      	     .end(); it2++) delete *it2; h2DEfficiencyRef                 .clear();
+    for(it2=h2DEfficiencyRef_                .begin(); it2!=h2DEfficiencyRef_	      	     .end(); it2++) delete *it2; h2DEfficiencyRef_                .clear();
     for(it2=h2DEfficiencyRefNorm_            .begin(); it2!=h2DEfficiencyRefNorm_	     .end(); it2++) delete *it2; h2DEfficiencyRefNorm_ 	          .clear();
     for(it2=h2D4cellEfficiency_              .begin(); it2!=h2D4cellEfficiency_	      	     .end(); it2++) delete *it2; h2D4cellEfficiency_	          .clear();
     for(it2=h2D4cellEfficiencyNorm_          .begin(); it2!=h2D4cellEfficiencyNorm_          .end(); it2++) delete *it2; h2D4cellEfficiencyNorm_	  .clear();
