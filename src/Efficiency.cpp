@@ -233,7 +233,15 @@ void Efficiency::analyze(const Data& data, int threadNumber)//WARNING: You can't
         {
             if(!passStandardCuts(p,data))
                 continue;
-            //std::cout << __PRETTY_FUNCTION__ << p << " plane " << thePlaneMapping_->getPlaneType(p) << std::endl;
+
+
+	    // ##############################################################
+	    // # Mauro : require all telescope planes with cluster size = 2 #
+	    // ##############################################################
+	    // for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+	    //   if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
+
+
             planeEfficiency (passMainCut           ,p,data,threadNumber);
             cellEfficiency  (passCellEfficiencyCut ,p,data,threadNumber);
             xCellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
