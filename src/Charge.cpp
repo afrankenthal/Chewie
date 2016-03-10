@@ -2036,12 +2036,12 @@ void Charge::xChargeDivision(bool pass, int planeID, const Data& data, int threa
     float maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str())                                   ;
 
     // Mauro : what does it mean ? Probably useful for different pitch sensors
-    if( data.getXPitchLocal(planeID) > maxPitchX || data.getYPitchLocal(planeID) > maxPitchY )
-        return;
-    // Mauro : wredundant cut since it's already applied with "pass"
+    if (data.getXPitchLocal(planeID) > maxPitchX || data.getYPitchLocal(planeID) > maxPitchY)
+      return;
+    // Mauro : redundant cut since it's already applied with "pass"
     // if (data.getYPixelResidualLocal(planeID) > 20 || data.getYPixelResidualLocal(planeID) < -20)
     //     return;
-
+    
     float xRes = 0;
     float yRes = 0;
 
@@ -2435,12 +2435,12 @@ void Charge::yChargeDivision(bool pass, int planeID, const Data& data, int threa
     float maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str())                                   ;
 
     // Mauro : what does it mean ? Probably useful for different pitch sensors
-    if( data.getXPitchLocal(planeID) > maxPitchX || data.getYPitchLocal(planeID) > maxPitchY )
-        return;
-    // Mauro : wredundant cut since it's already applied with "pass"
+    if (data.getXPitchLocal(planeID) > maxPitchX || data.getYPitchLocal(planeID) > maxPitchY)
+      return;
+    // Mauro : redundant cut since it's already applied with "pass"
     // if (data.getXPixelResidualLocal(planeID) > 55 || data.getXPixelResidualLocal(planeID) < -55)
     //     return;
-
+    
     float xRes = 0;
     float yRes = 0;
 
@@ -3265,8 +3265,6 @@ void Charge::analyze(const Data& data, int threadNumber)//WARNING: You can't cha
     if(cutsFormulas_.find("main cut") != cutsFormulas_.end() && !cutsFormulas_["main cut"][threadNumber]->EvalInstance())
         return;
 
-
-
     for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
         clusterSize(p,data,threadNumber);
 
@@ -3288,42 +3286,45 @@ void Charge::analyze(const Data& data, int threadNumber)//WARNING: You can't cha
 
     bool cellChargeYCut = true;
     if(cutsFormulas_.find("cell charge Y") != cutsFormulas_.end())
-        cellChargeYCut = cutsFormulas_["cell charge Y"][threadNumber]->EvalInstance();
-
+      cellChargeYCut = cutsFormulas_["cell charge Y"][threadNumber]->EvalInstance();
+    
     for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
-    {
+      {
         if(!passStandardCuts(p,data))
-            continue;
-
+	  continue;
+	
         if(thePlaneMapping_->getPlaneName(p).find("Dut") != std::string::npos)
-        {
+	  {
             if(!passCalibrationsCut(p,data))
-            {
+	      {
                 std::cout << __PRETTY_FUNCTION__ << "no pass calib" << std::endl;
                 return;
-            }
-        }
-        //        STDLINE("STAMPA 2", ACYellow);
-        //        std::stringstream ss;
-        //        ss << "Plane: " << p << ", row: " << data.getRowPredicted(p) << ", col: " << data.getColPredicted(p);
-        //        if (p == 8 || p == 9) STDLINE(ss.str(), ACWhite);
+	      }
+	  }
+
+
+	// ##############################################################
+	// # Mauro : require all telescope planes with cluster size = 2 #
+	// ##############################################################
+	// for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+	//   if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
+
 
         clusterLandau        (clusterLandauCut,p,data,threadNumber);
         cellLandau           (cellLandauCut   ,p,data,threadNumber);
         cellCharge           (cellChargeCut   ,p,data,threadNumber);
         meanChargePositionRN (cellChargeCut   ,p,data,threadNumber);
-
+	
         xLandau              (cellChargeXCut  ,p,data,threadNumber);
         xChargeDivision      (cellChargeXCut  ,p,data,threadNumber);
         xAsimmetry           (cellChargeXCut  ,p,data,threadNumber);
         xAsimmetryUnconstr   (cellChargeXCut  ,p,data,threadNumber);
-
+	
         yLandau              (cellChargeYCut  ,p,data,threadNumber);
         yChargeDivision      (cellChargeYCut  ,p,data,threadNumber);
         yAsimmetry           (cellChargeYCut  ,p,data,threadNumber);
         yAsimmetryUnconstr   (cellChargeYCut  ,p,data,threadNumber);
-
-    }
+      }
 }
 
 
@@ -3711,7 +3712,7 @@ void Charge::endJob(void)
         }
         STDLINE("normalizeEtaDistributionSize2",ACWhite) ;
         normalizeEtaDistributionSize2 (p);
-        //        NormalizeEtaDistribution      (p);
+
         STDLINE("normalizeEtaInverse",ACWhite) ;
         normalizeEtaInverse(p);
 
