@@ -749,7 +749,7 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
     {
         //        xMeasured = slope*asimmetry + intercept;
 
-        toGet = "Charge/" + planeName +  "/YAsimmetry/h1DYcellChargeAsimmetryInv_" + planeName;
+        toGet = "Charge/" + planeName +  "/XAsimmetry/h1DXcellChargeAsimmetryInv_" + planeName;
         if((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()) ){
             if((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit") != NULL){
 
@@ -1397,17 +1397,25 @@ void Resolution::analyze(const Data& data, int threadNumber)//WARNING: You can't
         yResolutionCut = mainCut;
 
     for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
-    {
+      {
         if(!passStandardCuts(p,data))
-            continue;
-        \
+	  continue;
+	
+	
+	// ##############################################################
+	// # Mauro : require all telescope planes with cluster size = 2 #
+	// ##############################################################
+	// for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+	//   if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
+	
+	
         calculateXresiduals(xResolutionCut,p,data,threadNumber);
         calculateYresiduals(yResolutionCut,p,data,threadNumber);
         xResolution(xResolutionCut,p,data,threadNumber);
         yResolution(yResolutionCut,p,data,threadNumber);
 
         if(thePlaneMapping_->getPlaneName(p).find("Dut") != std::string::npos)
-            predictedErrors(errorsCut,p,data,threadNumber);
+	  predictedErrors(errorsCut,p,data,threadNumber);
     }
 }
 
