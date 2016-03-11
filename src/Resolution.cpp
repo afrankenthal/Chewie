@@ -51,6 +51,12 @@
 
 #include <iostream>
 
+
+// @@@ Hard coded parameters @@@
+#define ONYdoubleHITS false // Process only clusters of size 2
+// ============================
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Resolution::Resolution(AnalysisManager* analysisManager, int nOfThreads) :
     Analysis          (analysisManager,
@@ -1402,11 +1408,12 @@ void Resolution::analyze(const Data& data, int threadNumber)//WARNING: You can't
 	  continue;
 	
 	
-	// ##############################################################
-	// # Mauro : require all telescope planes with cluster size = 2 #
-	// ##############################################################
-	// for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
-	//   if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
+	// ######################################################
+	// # Require all telescope planes with cluster size = 2 #
+	// ######################################################
+	if (ONYdoubleHITS == true)
+	  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+	    if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
 	
 	
         calculateXresiduals(xResolutionCut,p,data,threadNumber);

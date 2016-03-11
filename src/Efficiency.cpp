@@ -56,6 +56,12 @@
 #include <iomanip>
 #include <fstream>
 
+
+// @@@ Hard coded parameters @@@
+#define ONYdoubleHITS false // Process only clusters of size 2
+// ============================
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Efficiency::Efficiency(AnalysisManager* analysisManager, int nOfThreads) :
     Analysis          (analysisManager, nOfThreads)
@@ -235,11 +241,12 @@ void Efficiency::analyze(const Data& data, int threadNumber)//WARNING: You can't
                 continue;
 
 
-	    // ##############################################################
-	    // # Mauro : require all telescope planes with cluster size = 2 #
-	    // ##############################################################
-	    // for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
-	    //   if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
+	    // ######################################################
+	    // # Require all telescope planes with cluster size = 2 #
+	    // ######################################################
+	    if (ONYdoubleHITS == true)
+	      for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+		if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
 
 
             planeEfficiency (passMainCut           ,p,data,threadNumber);
