@@ -575,27 +575,25 @@ void Resolution::fitResolution(int planeID)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, int threadNumber)
 {
-    if( !pass || !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ) || data.getClusterSize( planeID ) > 4  )
-        return;
+    if (!pass || !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ) || data.getClusterSize( planeID ) > 4) return;
 
-    //track selection
-    if(data.getNumberOfTelescopeClustersSizeLE2()!=8)
-        return;
+    // Track selection
+    if (data.getNumberOfTelescopeClustersSizeLE2() != 8) return;
 
-    //checking telescope
+
+    // ############################################################################################
+    // # These residuals are computed only if thracks have sluster size 2 on each telescope plane #
+    // ############################################################################################
     int counter = 0;
-    for(int p=8; p<16; p++)
-    {
-        if(data.getClusterSize(p)==2)
-            counter++;
-    }
+    for (int p = 8; p < 16; p++)
+      {
+        if (data.getClusterSize(p) == 2) counter++;
+      }
+    if (counter != 8) return;
 
-    if(counter != 8)
-        return;
 
     std::string planeName;
     std::string toGet;
-    //    std::stringstream ss;
 
     planeName = thePlaneMapping_->getPlaneName(planeID);
 
@@ -785,27 +783,25 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, int threadNumber)
 {
-    if( !pass || !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ) || data.getClusterSize( planeID ) > 4 )
-        return;
+    if (!pass || !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ) || data.getClusterSize( planeID ) > 4) return;
 
-    //track selection
-    if(data.getNumberOfTelescopeClustersSizeLE2()!=8)
-        return;
+    // Track selection
+    if (data.getNumberOfTelescopeClustersSizeLE2() != 8) return;
 
-    //checking telescope
+
+    // ############################################################################################
+    // # These residuals are computed only if thracks have sluster size 2 on each telescope plane #
+    // ############################################################################################
     int counter = 0;
-    for(int p=8; p<16; p++)
-    {
-        if(data.getClusterSize(p)==2)
-            counter++;
-    }
+    for (int p = 8; p < 16; p++)
+      {
+        if (data.getClusterSize(p) == 2) counter++;
+      }
+    if (counter != 8) return;
 
-    if(counter != 8)
-        return;
 
     std::string planeName;
     std::string toGet;
-    std::stringstream ss;
 
     planeName = thePlaneMapping_->getPlaneName(planeID);
 
