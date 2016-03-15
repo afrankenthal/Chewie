@@ -4270,11 +4270,11 @@ void Charge::endJob(void)
         STDLINE("Fitting phase",ACWhite) ;
 
         STDLINE("fXAsimmetryFit",ACWhite) ;
-        TF1* fXAsimmetryFit = new TF1("fXAsimmetryFit","pol1",-0.8,0.8);
+        TF1* fXAsimmetryFit = new TF1("fXAsimmetryFit","pol1",-0.5,0.5);
         if(h1DXcellChargeAsimmetryInv_[p]->GetEntries()!=0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"QR");
 
-        STDLINE("fXAsimmetryFit",ACWhite) ;
-        TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-0.8,0.8);
+        STDLINE("fYAsimmetryFit",ACWhite) ;
+        TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-0.5,0.5);
         if(h1DYcellChargeAsimmetryInv_[p]->GetEntries()!=0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"QR");
         if(p==22)
         {
