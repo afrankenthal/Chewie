@@ -53,7 +53,7 @@
 
 
 // @@@ Hard coded parameters @@@
-#define ONYdoubleHITS false // Process only clusters of size 2
+#define ONLYdoubleHITS false // Process only clusters of size 2
 // ============================
 
 
@@ -599,7 +599,7 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 
     planeName = thePlaneMapping_->getPlaneName(planeID);
 
-    float maxPitchX = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());//Irene changed it. Before it was 150.
+    float maxPitchX = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
 
     if( data.getXPitchLocal( planeID ) > maxPitchX )
         return;
@@ -631,10 +631,6 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
             return;
     }
 
-    //    std::string planeName;
-    //    std::string toGet;
-
-    //    planeName = thePlaneMapping_->getPlaneName(planeID);
 
     int   hitID       =     -1 ;
     int   totalCharge =      0 ;
@@ -644,7 +640,7 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 
     for(int h=0; h<size; ++h)
     {
-        if(data.getClusterPixelCol(h,planeID) == col)//mi assicuro che ci sia la cella predetta in uno dei due hit
+        if(data.getClusterPixelCol(h,planeID) == col)
         {
             hitID   = h   ;
             break;
@@ -687,8 +683,6 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
                     chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                     break;
                 }
-                //else
-                //    return;
                 else if(xPixelResidual  > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
                 {
                     chargeRight = data.getClusterPixelCharge(hitID,planeID);
@@ -724,8 +718,6 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
                 chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                 break;
             }
-            //else
-            //    return;
             else if(xPixelResidual  > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
             {
                 chargeRight = data.getClusterPixelCharge(hitID,planeID);
@@ -743,28 +735,26 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
         }
     }
 
-    //    float slope       =  -25  ;
-    //    float intercept   = -1.50223 ;
 
     totalCharge = chargeLeft + chargeRight;
     asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
 
 
     float xMeasured;
-    if(asimmetry >= -1. && asimmetry <= 1.)
-    {
-        //        xMeasured = slope*asimmetry + intercept;
-
+    if (asimmetry >= -1. && asimmetry <= 1.)
+      {
         toGet = "Charge/" + planeName +  "/XAsimmetry/h1DXcellChargeAsimmetryInv_" + planeName;
-        if((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()) ){
-            if((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit") != NULL){
-
+        if ((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()) )
+	  {
+	    // #########################
+	    // # Correct for asimmetry #
+	    // #########################
+            if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit") != NULL)
+	      {
                 xMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit"))->Eval(asimmetry);
-            }
-        }
-
-
-
+	      }
+	  }
+	
         THREADED(hXResidualCalculated_   [planeID])->Fill( xMeasured - xPixelEdgeResidual );
 
         if(size == 2)
@@ -776,8 +766,6 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
         }
         else if(size == 3)
         {
-            //            STDLINE("Filling Cluster Size 3 ",ACWhite);
-            //            STDLINE("",ACWhite);
             THREADED(hXResidualCalculatedSize3_   [planeID])->Fill( xMeasured - xPixelEdgeResidual );
             THREADED(hX2DResidualCalculatedSize3_ [planeID])->Fill( xPixelEdgeResidual, xMeasured - xPixelEdgeResidual );
         }
@@ -854,10 +842,6 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
             return;
     }
 
-    //    std::string planeName;
-    //    std::string toGet;
-
-    //    planeName = thePlaneMapping_->getPlaneName(planeID);
 
     int   hitID       =      -1 ;
     int   totalCharge =       0 ;
@@ -867,7 +851,7 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
 
     for(int h=0; h<size; ++h)
     {
-        if(data.getClusterPixelRow(h,planeID) == row)//mi assicuro che ci sia la cella predetta in uno dei due hit
+        if(data.getClusterPixelRow(h,planeID) == row)
         {
             hitID   = h   ;
             break;
@@ -910,8 +894,6 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
                     chargeDown  = data.getClusterPixelCharge(h    ,planeID);
                     break;
                 }
-                //else
-                //    return;
                 else if( yPixelResidual  > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
                 {
                     chargeUp    = data.getClusterPixelCharge(hitID,planeID);
@@ -965,25 +947,25 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
         }
     }
 
-    //        float slope       =  -12  ;
-    //        float intercept   = -1.50223 ;
 
     totalCharge = chargeDown + chargeUp;
     asimmetry  = (float)(chargeDown - chargeUp)/totalCharge;
 
-    float yMeasured;                      ;
-    if(asimmetry >= -1. && asimmetry <= 1.)
-    {
-        //        yMeasured = slope*asimmetry + intercept;
-
+    float yMeasured;
+    if (asimmetry >= -1. && asimmetry <= 1.)
+      {
         toGet = "Charge/" + planeName +  "/YAsimmetry/h1DYcellChargeAsimmetryInv_" + planeName;
-        if((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()) ){
-            if((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit") != NULL){
-
-                yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit"))->Eval(asimmetry);
-            }
-        }
-
+        if ((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()) )
+	  {
+	    // #########################
+	    // # Correct for asimmetry #
+	    // #########################
+	    if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit") != NULL)
+	      {
+		yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit"))->Eval(asimmetry);
+	      }
+	  }
+	
         THREADED(hYResidualCalculated_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
 
         if(size == 2)
@@ -992,17 +974,10 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
             THREADED(hY2DResidualCalculatedSize2_ [planeID])->Fill( yPixelEdgeResidual, yMeasured - yPixelEdgeResidual );
             //THREADED(h2DCorrelationsResidualYvsY_[planeID])->Fill(Yall,yMeasured - yPixelEdgeResidual);
             //THREADED(h2DCorrelationsResidualYvsX_[planeID])->Fill(Xall,yMeasured - yPixelEdgeResidual);
-
-
-            //2Rows
             if((row-20)%2==0)
                 THREADED(hYResidualCalculatedSize2Row1of2Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
             if((row-20)%2==1)
                 THREADED(hYResidualCalculatedSize2Row2of2Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-
-            //4Rows
-            //Landau:
-            //per Row 1: Charge down, per Row 2: solo charge Up perche' voglio correlazioni tra 1 e 2. Discorso speculare per 3 e 4
             if((row-50)%4==0){
                 THREADED(hYResidualCalculatedSize2Row1of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
                 if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 0 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 1)
@@ -1411,15 +1386,15 @@ void Resolution::analyze(const Data& data, int threadNumber)//WARNING: You can't
 	// ######################################################
 	// # Require all telescope planes with cluster size = 2 #
 	// ######################################################
-	if (ONYdoubleHITS == true)
+	if (ONLYdoubleHITS == true)
 	  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
 	    if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
 	
 	
-        calculateXresiduals(xResolutionCut,p,data,threadNumber);
-        calculateYresiduals(yResolutionCut,p,data,threadNumber);
-        xResolution(xResolutionCut,p,data,threadNumber);
-        yResolution(yResolutionCut,p,data,threadNumber);
+        calculateXresiduals (xResolutionCut,p,data,threadNumber);
+        calculateYresiduals (yResolutionCut,p,data,threadNumber);
+        xResolution         (xResolutionCut,p,data,threadNumber);
+        yResolution         (yResolutionCut,p,data,threadNumber);
 
         if(thePlaneMapping_->getPlaneName(p).find("Dut") != std::string::npos)
 	  predictedErrors(errorsCut,p,data,threadNumber);
