@@ -2291,36 +2291,6 @@ void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
             THREADED(hXAsimmetry0_                           [planeID])->Fill(asimmetry0);
 	  }
       }
-
-    //    if( data.getHasHit(planeID) && size == 1 )
-    //    {
-    //        float Asimmetry   = 0;
-    //        int   totalCharge = 0;
-
-    //        if(data.getClusterPixelCol(0,planeID) == col)//la cella colpita coincide con la predetta
-    //        {
-    //            if(data.getXPixelResidualLocal(planeID) > 0)//la traccia ha colpito a sx
-    //                Asimmetry = 1;
-    //            else if(data.getXPixelResidualLocal(planeID) <= 0)//la traccia ha colpito a dx
-    //                Asimmetry = -1;
-    //        }
-    //        else if(data.getXPixelResidualLocal(planeID) >  0 && (col - data.getClusterPixelCol(0,planeID)) ==  -1)//la cella colpita e' a DX della predetta
-    //        {
-    //            Asimmetry = 1;
-    //            xRes =  data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
-    //        }
-    //        else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(0,planeID)) == 1)//la cella colpita e' a SX della predetta
-    //        {
-    //            Asimmetry = -1;
-    //            xRes = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
-    //        }
-    //        else
-    //            return;
-
-    //        totalCharge = data.getClusterPixelCharge(0,planeID);
-
-    //        THREADED(h2DXCellChargeAsimmetrySizeLE2_[planeID])->Fill(xRes, Asimmetry);
-    //    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4267,22 +4237,23 @@ void Charge::endJob(void)
         h2DYCellChargeAsimmetryCell_                           [p]->GetXaxis()->SetTitle("long pitch (um)"   );
         h2DYCellChargeAsimmetryCell_                           [p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
-        STDLINE("Fitting phase",ACWhite) ;
+        STDLINE("Fitting phase",ACWhite);
 
-        STDLINE("fXAsimmetryFit",ACWhite) ;
-        TF1* fXAsimmetryFit = new TF1("fXAsimmetryFit","pol1",-0.5,0.5);
+        STDLINE("fXAsimmetryFit",ACWhite);
+        TF1* fXAsimmetryFit = new TF1("fXAsimmetryFit","pol1",-0.8,0.8);
         if(h1DXcellChargeAsimmetryInv_[p]->GetEntries()!=0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"QR");
 
-        STDLINE("fYAsimmetryFit",ACWhite) ;
-        TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-0.5,0.5);
+        STDLINE("fYAsimmetryFit",ACWhite);
+        TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-0.8,0.8);
         if(h1DYcellChargeAsimmetryInv_[p]->GetEntries()!=0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"QR");
-        if(p==22)
-        {
+
+        if (p==22)
+	  {
             ss << "Fit h1DYcellChargeAsimmetryInv_:   "
                << "intercept: " << fYAsimmetryFit->GetParameter(0)
                << "slope: "     << fYAsimmetryFit->GetParameter(1) ;
             STDLINE(ss.str().c_str(),ACWhite) ;
-        }
+	  }
 
         if(h1DYcellChargeAsimmetryInvRows1And2Of4Rows_[p]->GetEntries()!=0) h1DYcellChargeAsimmetryInvRows1And2Of4Rows_[p]->Fit(fYAsimmetryFit,"QR");
         if(p==22)
