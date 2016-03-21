@@ -599,149 +599,146 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 
     float maxPitchX = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
 
-    if( data.getXPitchLocal( planeID ) > maxPitchX )
-        return;
+    if (data.getXPitchLocal( planeID ) > maxPitchX) return;
 
     float xPixelResidual = data.getXPixelResidualLocal(planeID);
-    float xPixelEdgeResidual = 0;//Residual from the edge of the pixel (the divide between 2 pixels)
+    float xPixelEdgeResidual = 0;// Residual from the edge of the pixel (the divide between 2 pixels)
 
-
-    if(xPixelResidual  > 0)
-        xPixelEdgeResidual = -data.getXPitchLocal( planeID )/2 + xPixelResidual ;
-    else if(xPixelResidual  <= 0)
-        xPixelEdgeResidual = (xPixelResidual  + data.getXPitchLocal( planeID )/2);
+    
+    if (xPixelResidual > 0)
+      xPixelEdgeResidual = -data.getXPitchLocal(planeID)/2 + xPixelResidual;
+    else if (xPixelResidual <= 0)
+      xPixelEdgeResidual = (xPixelResidual + data.getXPitchLocal(planeID)/2);
 
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
     int           row       = data.getRowPredicted   ( planeID)     ;
     int           col       = data.getColPredicted   ( planeID )    ;
     int           run       = data.getRunNumber()                   ;
-
-    if( !theWindow->checkWindow(col,row,run) )
-        return;
+    
+    if (!theWindow->checkWindow(col,row,run)) return;
 
     int size = data.getClusterSize(planeID);
 
-    for(int h=0; h<size; h++)
-    {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
-               || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
-               ||  data.getClusterPixelRow  (h,planeID) != row )                                                 //hits are on the same row (sharing is along the row - x direction)
-            return;
-    }
+    for (int h = 0; h < size; h++)
+      {
+        if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // hits are in the window
+	    || !data.getIsPixelCalibrated(h,planeID)                                                           // pixels are calibrated
+	    ||  data.getClusterPixelRow  (h,planeID) != row)                                                   // hits are on the same row (sharing is along the row - x direction)
+	  return;
+      }
+    
 
+    int   hitID       = -1;
+    int   totalCharge =  0;
+    int   chargeLeft  =  0;
+    int   chargeRight =  0;
+    float asimmetry   =  0;
 
-    int   hitID       =     -1 ;
-    int   totalCharge =      0 ;
-    int   chargeLeft  =      0 ;
-    int   chargeRight =      0 ;
-    float asimmetry   =      0 ;
-
-    for(int h=0; h<size; ++h)
-    {
-        if(data.getClusterPixelCol(h,planeID) == col)
-        {
-            hitID   = h   ;
+    for (int h = 0; h < size; ++h)
+      {
+        if (data.getClusterPixelCol(h,planeID) == col)
+	  {
+            hitID = h;
             break;
-        }
-    }
-    if( hitID == -1 )
-        return;
+	  }
+      }
+    if (hitID == -1) return;
 
-    if(size == 3 || size ==4 )
-    {
+    if (size == 3 || size ==4)
+      {
         int secondHigh = 0;
         int firstHigh  = 0;
 
-
-        for(int h=0; h<size; ++h)
-        {
-            if(data.getClusterPixelCharge(h,planeID)>firstHigh)
-            {
+        for (int h = 0; h < size; ++h)
+	  {
+            if (data.getClusterPixelCharge(h,planeID)>firstHigh)
+	      {
                 secondHigh = firstHigh;
                 firstHigh  = data.getClusterPixelCharge(h,planeID);
-            }
-            else if(data.getClusterPixelCharge(h,planeID)>secondHigh)
-            {
+	      }
+            else if (data.getClusterPixelCharge(h,planeID)>secondHigh)
+	      {
                 secondHigh = data.getClusterPixelCharge(h,planeID);
-            }
-            if(   (data.getClusterPixelCharge(h,planeID) != firstHigh || data.getClusterPixelCharge(h,planeID) != secondHigh)
-                  && data.getClusterPixelCol(h,planeID)    == col )
-                return;
-            else if(data.getClusterPixelCharge(h,planeID) == firstHigh || data.getClusterPixelCharge(h,planeID) == secondHigh)
-            {
-                if(xPixelResidual  > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)//il secondo hit e' a DX della predetta
-                {
+	      }
+            if((data.getClusterPixelCharge(h,planeID) != firstHigh || data.getClusterPixelCharge(h,planeID) != secondHigh)
+	       && data.getClusterPixelCol(h,planeID) == col)
+	      return;
+            else if (data.getClusterPixelCharge(h,planeID) == firstHigh || data.getClusterPixelCharge(h,planeID) == secondHigh)
+	      {
+                if (xPixelResidual > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1) // Il secondo hit e' a DX della predetta
+		  {
                     chargeRight = data.getClusterPixelCharge(h    ,planeID);
                     chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
                     break;
-                }
-                else if(xPixelResidual  <= 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)//il secondo hit e' a SX della predetta
-                {
+		  }
+                else if (xPixelResidual <= 0 && (col - data.getClusterPixelCol(h,planeID)) == 1) // Il secondo hit e' a SX della predetta
+		  {
                     chargeRight = data.getClusterPixelCharge(hitID,planeID);
                     chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                     break;
-                }
-                else if(xPixelResidual  > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
-                {
+		  }
+                else if (xPixelResidual > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
+		  {
                     chargeRight = data.getClusterPixelCharge(hitID,planeID);
                     chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                     xPixelEdgeResidual =  xPixelResidual  + data.getXPitchLocal(planeID)/2;
                     break;
-                }
-                else if(xPixelResidual  < 0 && (col - data.getClusterPixelCol(h,planeID)) ==  -1)
-                {
+		  }
+                else if (xPixelResidual  < 0 && (col - data.getClusterPixelCol(h,planeID)) ==  -1)
+		  {
                     chargeRight = data.getClusterPixelCharge(h    ,planeID);
                     chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
                     xPixelEdgeResidual = (xPixelResidual  - data.getXPitchLocal(planeID)/2);
                     break;
-                }
-            }
-
-        }
-    }
-
-    if(size == 2)//it is if, not else if because there could be clusters of size 1 and we are not studying them in this way.
-    {
-        for(int h=0; h<size; ++h)
-        {
-            if(xPixelResidual  > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)//il secondo hit e' a DX della predetta
-            {
+		  }
+	      }
+	    
+	  }
+      }
+    
+    if (size == 2) // It is if, not else if because there could be clusters of size 1 and we are not studying them in this way
+      {
+        for (int h = 0; h < size; ++h)
+	  {
+            if (xPixelResidual > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1) // Il secondo hit e' a DX della predetta
+	      {
                 chargeRight = data.getClusterPixelCharge(h    ,planeID);
                 chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
                 break;
-            }
-            else if(xPixelResidual  <= 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)//il secondo hit e' a SX della predetta
-            {
+	      }
+            else if (xPixelResidual  <= 0 && (col - data.getClusterPixelCol(h,planeID)) == 1) // Il secondo hit e' a SX della predetta
+	      {
                 chargeRight = data.getClusterPixelCharge(hitID,planeID);
                 chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                 break;
-            }
-            else if(xPixelResidual  > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
-            {
+	      }
+            else if (xPixelResidual  > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
+	      {
                 chargeRight = data.getClusterPixelCharge(hitID,planeID);
                 chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                 xPixelEdgeResidual =  xPixelResidual  + data.getXPitchLocal(planeID)/2;
                 break;
-            }
-            else if(xPixelResidual  < 0 && (col - data.getClusterPixelCol(h,planeID)) ==  -1)
-            {
+	      }
+            else if (xPixelResidual  < 0 && (col - data.getClusterPixelCol(h,planeID)) ==  -1)
+	      {
                 chargeRight = data.getClusterPixelCharge(h    ,planeID);
                 chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
                 xPixelEdgeResidual = (xPixelResidual  - data.getXPitchLocal(planeID)/2);
                 break;
-            }
-        }
-    }
-
-
+	      }
+	  }
+      }
+    
+    
     totalCharge = chargeLeft + chargeRight;
     asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
-
-
+    
+    
     float xMeasured;
     if (asimmetry >= -1. && asimmetry <= 1.)
       {
         toGet = "Charge/" + planeName +  "/XAsimmetry/h1DXcellChargeAsimmetryInv_" + planeName;
+	
         if ((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()) )
 	  {
 	    // #########################
@@ -753,31 +750,24 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 	      }
 	  }
 	
-        THREADED(hXResidualCalculated_   [planeID])->Fill( xMeasured - xPixelEdgeResidual );
-
-        if(size == 2)
-        {
-            THREADED(hXResidualCalculatedSize2_   [planeID])->Fill( xMeasured - xPixelEdgeResidual );
-            THREADED(hX2DResidualCalculatedSize2_ [planeID])->Fill( xPixelEdgeResidual, xMeasured - xPixelEdgeResidual );
-            //THREADED(h2DCorrelationsResidualXvsX_[planeID])->Fill(Xall,xMeasured - xPixelEdgeResidual);
-            //THREADED(h2DCorrelationsResidualXvsY_[planeID])->Fill(Yall,xMeasured - xPixelEdgeResidual);
-        }
-        else if(size == 3)
-        {
-            THREADED(hXResidualCalculatedSize3_   [planeID])->Fill( xMeasured - xPixelEdgeResidual );
-            THREADED(hX2DResidualCalculatedSize3_ [planeID])->Fill( xPixelEdgeResidual, xMeasured - xPixelEdgeResidual );
-        }
-        else if(size == 4)
-        {
-            THREADED(hXResidualCalculatedSize4_   [planeID])->Fill( xMeasured - xPixelEdgeResidual );
-            THREADED(hX2DResidualCalculatedSize4_ [planeID])->Fill( xPixelEdgeResidual, xMeasured - xPixelEdgeResidual );
-        }
-    }
-
-    //    ss.str(""); ss<<"Times excluded hitted pixel in cluster size 3: " << counter3;
-    //    STDLINE(ss.str(),ACGreen);
-    //    ss.str(""); ss<<"Times excluded hitted pixel in cluster size 4: " << counter4;
-    //    STDLINE(ss.str(),ACGreen);
+        THREADED(hXResidualCalculated_[planeID])->Fill( xMeasured - xPixelEdgeResidual);
+	
+        if (size == 2)
+	  {
+	    THREADED(hXResidualCalculatedSize2_   [planeID])->Fill(xMeasured - xPixelEdgeResidual);
+	    THREADED(hX2DResidualCalculatedSize2_ [planeID])->Fill(xPixelEdgeResidual, xMeasured - xPixelEdgeResidual);
+	  }
+        else if (size == 3)
+	  {
+            THREADED(hXResidualCalculatedSize3_   [planeID])->Fill(xMeasured - xPixelEdgeResidual);
+            THREADED(hX2DResidualCalculatedSize3_ [planeID])->Fill(xPixelEdgeResidual, xMeasured - xPixelEdgeResidual);
+	  }
+        else if (size == 4)
+	  {
+            THREADED(hXResidualCalculatedSize4_   [planeID])->Fill(xMeasured - xPixelEdgeResidual);
+            THREADED(hX2DResidualCalculatedSize4_ [planeID])->Fill(xPixelEdgeResidual, xMeasured - xPixelEdgeResidual);
+	  }
+      }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -798,159 +788,154 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
         if (data.getClusterSize(p) == 2) counter++;
       }
     if (counter != 8) return;
-
+    
 
     std::string planeName;
     std::string toGet;
 
     planeName = thePlaneMapping_->getPlaneName(planeID);
 
+    float yPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
 
-    float yPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());//Irene changed it. Before it was 100.
-
-    if( data.getYPitchLocal( planeID ) > yPitch )
-        return;
+    if (data.getYPitchLocal( planeID ) > yPitch) return;
 
     float yPixelResidual = data.getYPixelResidualLocal(planeID);
-    float yPixelEdgeResidual = 0; //Residual from the edge of the pixel (the divide between 2 pixels)
+    float yPixelEdgeResidual = 0; // Residual from the edge of the pixel (the divide between 2 pixels)
 
 
-    if( yPixelResidual > 0 )
-        yPixelEdgeResidual = -data.getYPitchLocal(planeID)/2 + yPixelResidual;
-    else if( yPixelResidual <= 0 )
-        yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
-
+    if (yPixelResidual > 0)
+      yPixelEdgeResidual = -data.getYPitchLocal(planeID)/2 + yPixelResidual;
+    else if (yPixelResidual <= 0)
+      yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
+    
     const Window* theWindow = theWindowsManager_->getWindow(planeID);
-    int           row       = data.getRowPredicted   ( planeID );
-    int           col       = data.getColPredicted   ( planeID );
-    int           run       = data.getRunNumber()               ;
-
-    if( !theWindow->checkWindow(col,row,run) )
-        return;
+    int           row       = data.getRowPredicted   ( planeID )    ;
+    int           col       = data.getColPredicted   ( planeID )    ;
+    int           run       = data.getRunNumber()                   ;
+    
+    if (!theWindow->checkWindow(col,row,run)) return;
 
     int size = data.getClusterSize(planeID);
 
-    for(int h=0; h<size; ++h)
-    {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // hits are in the window
-               || !data.getIsPixelCalibrated(h,planeID)                                                            //pixels are calibrated
-               ||  data.getClusterPixelCol    (h,planeID) !=  col )                                            //hits are on the same column (sharing is along the column - y direction)
-            return;
-    }
+    for (int h = 0; h < size; ++h)
+      {
+        if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // hits are in the window
+	    || !data.getIsPixelCalibrated(h,planeID)                                                           // pixels are calibrated
+	    ||  data.getClusterPixelCol  (h,planeID) != col)                                                   // hits are on the same column (sharing is along the column - y direction)
+	  return;
+      }
 
 
-    int   hitID       =      -1 ;
-    int   totalCharge =       0 ;
-    int   chargeDown  =       0 ;
-    int   chargeUp    =       0 ;
-    float asimmetry   =       0 ;
+    int   hitID       = -1;
+    int   totalCharge =  0;
+    int   chargeDown  =  0;
+    int   chargeUp    =  0;
+    float asimmetry   =  0;
 
-    for(int h=0; h<size; ++h)
-    {
-        if(data.getClusterPixelRow(h,planeID) == row)
-        {
-            hitID   = h   ;
+    for (int h =0 ; h < size; ++h)
+      {
+        if (data.getClusterPixelRow(h,planeID) == row)
+	  {
+            hitID = h;
             break;
-        }
-    }
-    if( hitID == -1)
-        return;
+	  }
+      }
+    if (hitID == -1) return;
 
-    if(size == 3 || size ==4 )
-    {
+    if (size == 3 || size ==4)
+      {
         int secondHigh = 0;
         int firstHigh  = 0;
 
-
-        for(int h=0; h<size; ++h)
-        {
-            if(data.getClusterPixelCharge(h,planeID)>firstHigh)
-            {
+        for (int h = 0; h < size; ++h)
+	  {
+            if (data.getClusterPixelCharge(h,planeID)>firstHigh)
+	      {
                 secondHigh = firstHigh;
                 firstHigh  = data.getClusterPixelCharge(h,planeID);
-            }
-            else if(data.getClusterPixelCharge(h,planeID)>secondHigh)
-            {
+	      }
+            else if (data.getClusterPixelCharge(h,planeID)>secondHigh)
+	      {
                 secondHigh = data.getClusterPixelCharge(h,planeID);
-            }
-            if(   (data.getClusterPixelCharge(h,planeID) != firstHigh || data.getClusterPixelCharge(h,planeID) != secondHigh)
-                  && (data.getClusterPixelRow(h,planeID)    == row) )
-                return;
-            else if(data.getClusterPixelCharge(h,planeID) == firstHigh || data.getClusterPixelCharge(h,planeID) == secondHigh)
-            {
-                if( yPixelResidual  > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1 )//il secondo hit e' sopra la predetta
+	      }
+            if((data.getClusterPixelCharge(h,planeID) != firstHigh || data.getClusterPixelCharge(h,planeID) != secondHigh)
+	       && (data.getClusterPixelRow(h,planeID) == row))
+	      return;
+            else if (data.getClusterPixelCharge(h,planeID) == firstHigh || data.getClusterPixelCharge(h,planeID) == secondHigh)
+	      {
+                if(yPixelResidual > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1 ) // Il secondo hit e' sopra la predetta
+		  {
+                    chargeUp   = data.getClusterPixelCharge(h    ,planeID);
+                    chargeDown = data.getClusterPixelCharge(hitID,planeID);
+                    break;
+		  }
+                else if (yPixelResidual <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1) // Il secondo hit e' sotto la predetta
                 {
-                    chargeUp    = data.getClusterPixelCharge(h    ,planeID);
-                    chargeDown  = data.getClusterPixelCharge(hitID,planeID);
+                    chargeUp   = data.getClusterPixelCharge(hitID,planeID);
+                    chargeDown = data.getClusterPixelCharge(h    ,planeID);
                     break;
                 }
-                else if( yPixelResidual  <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1 )//il secondo hit e' sotto la predetta
+                else if (yPixelResidual > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
                 {
-                    chargeUp    = data.getClusterPixelCharge(hitID,planeID);
-                    chargeDown  = data.getClusterPixelCharge(h    ,planeID);
-                    break;
+		  chargeUp   = data.getClusterPixelCharge(hitID,planeID);
+		  chargeDown = data.getClusterPixelCharge(h    ,planeID);
+		  yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
+		  break;
                 }
-                else if( yPixelResidual  > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
-                {
-                    chargeUp    = data.getClusterPixelCharge(hitID,planeID);
-                    chargeDown  = data.getClusterPixelCharge(h    ,planeID);
-                    yPixelEdgeResidual =  yPixelResidual  + data.getYPitchLocal(planeID)/2;
-                    break;
-                }
-                else if( yPixelResidual  < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
-                {
+                else if (yPixelResidual  < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
+		  {
                     chargeUp    = data.getClusterPixelCharge(h    ,planeID);
                     chargeDown  = data.getClusterPixelCharge(hitID,planeID);
                     yPixelEdgeResidual = yPixelResidual  - data.getYPitchLocal(planeID)/2;
                     break;
-                }
-            }
-        }
-    }
-
-    if(size == 2)//it is if, not else if because there could be clusters of size 1 and we are not studying them in this way.
+		  }
+	      }
+	  }
+      }
+    
+    if (size == 2) // It is if, not else if because there could be clusters of size 1 and we are not studying them in this way
     {
-        for(int h=0; h<size; ++h)
+      for (int h = 0; h < size; ++h)
         {
-            if(yPixelResidual  > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1) //il secondo hit e' sopra la predetta
+	  if (yPixelResidual > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1) // Il secondo hit e' sopra la predetta
             {
-                chargeUp    = data.getClusterPixelCharge(h    ,planeID);
-                chargeDown  = data.getClusterPixelCharge(hitID,planeID);
-                break;
+	      chargeUp   = data.getClusterPixelCharge(h    ,planeID);
+	      chargeDown = data.getClusterPixelCharge(hitID,planeID);
+	      break;
             }
-            else if(yPixelResidual  <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)//il secondo hit e' a sotto la predetta
+	  else if (yPixelResidual  <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1) // Il secondo hit e' a sotto la predetta
             {
-                chargeUp    = data.getClusterPixelCharge(hitID,planeID);
-                chargeDown  = data.getClusterPixelCharge(h    ,planeID);
-                break;
+	      chargeUp   = data.getClusterPixelCharge(hitID,planeID);
+	      chargeDown = data.getClusterPixelCharge(h    ,planeID);
+	      break;
             }
-            //else
-            //    return;
-            else if(yPixelResidual  > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
+	  else if (yPixelResidual  > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
             {
-                chargeUp    = data.getClusterPixelCharge(hitID,planeID);
-                chargeDown  = data.getClusterPixelCharge(h    ,planeID);
-                yPixelEdgeResidual =  yPixelResidual  + data.getYPitchLocal(planeID)/2;
-                break;
+	      chargeUp   = data.getClusterPixelCharge(hitID,planeID);
+	      chargeDown = data.getClusterPixelCharge(h    ,planeID);
+	      yPixelEdgeResidual =  yPixelResidual + data.getYPitchLocal(planeID)/2;
+	      break;
             }
-            else if(yPixelResidual  < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
+	  else if (yPixelResidual  < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
             {
-                chargeUp    = data.getClusterPixelCharge(h    ,planeID);
-                chargeDown  = data.getClusterPixelCharge(hitID,planeID);
-                yPixelEdgeResidual = yPixelResidual  - data.getYPitchLocal(planeID)/2;
-                break;
+	      chargeUp   = data.getClusterPixelCharge(h    ,planeID);
+	      chargeDown = data.getClusterPixelCharge(hitID,planeID);
+	      yPixelEdgeResidual = yPixelResidual - data.getYPitchLocal(planeID)/2;
+	      break;
             }
         }
     }
-
-
+    
+    
     totalCharge = chargeDown + chargeUp;
     asimmetry  = (float)(chargeDown - chargeUp)/totalCharge;
+
 
     float yMeasured;
     if (asimmetry >= -1. && asimmetry <= 1.)
       {
         toGet = "Charge/" + planeName +  "/YAsimmetry/h1DYcellChargeAsimmetryInv_" + planeName;
+
         if ((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()) )
 	  {
 	    // #########################
@@ -961,53 +946,50 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
 		yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit"))->Eval(asimmetry);
 	      }
 	  }
-	
-        THREADED(hYResidualCalculated_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
 
-        if(size == 2)
-        {
-            THREADED(hYResidualCalculatedSize2_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-            THREADED(hY2DResidualCalculatedSize2_ [planeID])->Fill( yPixelEdgeResidual, yMeasured - yPixelEdgeResidual );
-            //THREADED(h2DCorrelationsResidualYvsY_[planeID])->Fill(Yall,yMeasured - yPixelEdgeResidual);
-            //THREADED(h2DCorrelationsResidualYvsX_[planeID])->Fill(Xall,yMeasured - yPixelEdgeResidual);
-            if((row-20)%2==0)
-                THREADED(hYResidualCalculatedSize2Row1of2Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-            if((row-20)%2==1)
-                THREADED(hYResidualCalculatedSize2Row2of2Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-            if((row-50)%4==0){
-                THREADED(hYResidualCalculatedSize2Row1of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-                if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 0 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 1)
-                    THREADED(hLandauChargeDownSize2Row1of4Rows_           [planeID])->Fill( chargeDown );
-            }
-            else if((row-50)%4==1){
-                THREADED(hYResidualCalculatedSize2Row2of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-                if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 0 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 1)
-                    THREADED(hLandauChargeUpSize2Row2of4Rows_           [planeID])->Fill( chargeUp );
-            }
-            else if((row-50)%4==2){
-                THREADED(hYResidualCalculatedSize2Row3of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-                if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 2 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 3)
-                    THREADED(hLandauChargeDownSize2Row3of4Rows_           [planeID])->Fill( chargeDown );
-            }
-            else if((row-50)%4==3){
-                THREADED(hYResidualCalculatedSize2Row4of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-                if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 2 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 3)
-                    THREADED(hLandauChargeUpSize2Row4of4Rows_           [planeID])->Fill( chargeUp );
-            }
-        }
-        else if(size == 3)
-        {
-            THREADED(hYResidualCalculatedSize3_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-            THREADED(hY2DResidualCalculatedSize3_ [planeID])->Fill( yPixelEdgeResidual, yMeasured - yPixelEdgeResidual );
-        }
+        THREADED(hYResidualCalculated_[planeID])->Fill( yMeasured - yPixelEdgeResidual);
+
+        if (size == 2)
+	  {
+	    THREADED(hYResidualCalculatedSize2_   [planeID])->Fill(yMeasured - yPixelEdgeResidual);
+	    THREADED(hY2DResidualCalculatedSize2_ [planeID])->Fill(yPixelEdgeResidual, yMeasured - yPixelEdgeResidual);
+	    
+	    if((row-20)%2==0)
+	      THREADED(hYResidualCalculatedSize2Row1of2Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
+	    if((row-20)%2==1)
+	      THREADED(hYResidualCalculatedSize2Row2of2Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
+	    if((row-50)%4==0){
+	      THREADED(hYResidualCalculatedSize2Row1of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
+	      if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 0 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 1)
+		THREADED(hLandauChargeDownSize2Row1of4Rows_           [planeID])->Fill( chargeDown );
+	    }
+	    else if((row-50)%4==1){
+	      THREADED(hYResidualCalculatedSize2Row2of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
+	      if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 0 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 1)
+		THREADED(hLandauChargeUpSize2Row2of4Rows_           [planeID])->Fill( chargeUp );
+	    }
+	    else if((row-50)%4==2){
+	      THREADED(hYResidualCalculatedSize2Row3of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
+	      if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 2 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 3)
+		THREADED(hLandauChargeDownSize2Row3of4Rows_           [planeID])->Fill( chargeDown );
+	    }
+	    else if((row-50)%4==3){
+	      THREADED(hYResidualCalculatedSize2Row4of4Rows_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
+	      if((data.getClusterPixelRow(hitID,planeID)-50)%4 == 2 || (data.getClusterPixelRow(hitID,planeID)-50)%4 == 3)
+		THREADED(hLandauChargeUpSize2Row4of4Rows_           [planeID])->Fill( chargeUp );
+	    }
+	  }
+        else if (size == 3)
+	  {
+            THREADED(hYResidualCalculatedSize3_   [planeID])->Fill(yMeasured - yPixelEdgeResidual);
+            THREADED(hY2DResidualCalculatedSize3_ [planeID])->Fill(yPixelEdgeResidual, yMeasured - yPixelEdgeResidual);
+	  }
         else if(size == 4)
-        {
-            THREADED(hYResidualCalculatedSize4_   [planeID])->Fill( yMeasured - yPixelEdgeResidual );
-            THREADED(hY2DResidualCalculatedSize4_ [planeID])->Fill( yPixelEdgeResidual, yMeasured - yPixelEdgeResidual );
-        }
-
-    }
-
+	  {
+            THREADED(hYResidualCalculatedSize4_   [planeID])->Fill(yMeasured - yPixelEdgeResidual);
+            THREADED(hY2DResidualCalculatedSize4_ [planeID])->Fill(yPixelEdgeResidual, yMeasured - yPixelEdgeResidual);
+	  }
+      }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
