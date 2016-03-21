@@ -16,86 +16,95 @@
 #include <sstream>
 #include <vector>
 
+
 using namespace std;
+
 
 class XmlDefaults;
 class XmlFiles;
 class XmlFile;
+
 
 class ExpressXmlParser
 {
 public:
   ExpressXmlParser (void);
   ~ExpressXmlParser(void);
-
-    void parseDocument(std::string fileName);
-
-    XmlDefaults*           getDefaults (void){return theDefaults_ ;}
-    std::vector<XmlFiles*> getFilesList(void){return theFilesList_;}
-
+  
+  void parseDocument(std::string fileName);
+  
+  XmlDefaults*           getDefaults (void) {return theDefaults_ ;}
+  std::vector<XmlFiles*> getFilesList(void) {return theFilesList_;}
+  
 private:
-    QDomDocument*  document_;
-    QDomNode       rootNode_;
-
-    XmlDefaults*           theDefaults_;
-    std::vector<XmlFiles*> theFilesList_;
-    stringstream ss_;
+  QDomDocument* document_;
+  QDomNode      rootNode_;
+  
+  XmlDefaults*           theDefaults_;
+  std::vector<XmlFiles*> theFilesList_;
+  stringstream ss_;
 };
 
 class XmlDefaults
 {
 public:
-    XmlDefaults (QDomNode& node);
-    ~XmlDefaults(void){;}
-    QDomNode&   getNode(void){return thisNode_;}
-    std::string filesPath_;
-    bool        convert_;
-    bool        runAnalysis_;
-    int         numberOfEvents_;     
+  XmlDefaults (QDomNode& node);
+  ~XmlDefaults(void) {;}
+
+  QDomNode&   getNode(void) {return thisNode_;}
+
+  std::string filesPath_;
+  bool        convert_;
+  bool        runAnalysis_;
+  int         numberOfEvents_;     
 
 private:
-    QDomNode    thisNode_;
+  QDomNode    thisNode_;
 };
 
 class XmlFiles
 {
 public:
-    XmlFiles (QDomNode& node);
-    ~XmlFiles(void){;}
-    QDomNode&   getNode(void){return thisNode_;}
-    vector<XmlFile*> fileNames_;
-    std::string configurationName_;
-    std::string outFileName_;
+  XmlFiles (QDomNode& node);
+  ~XmlFiles(void) {;}
 
+  QDomNode& getNode(void) {return thisNode_;}
+
+  vector<XmlFile*> fileNames_;
+  std::string configurationName_;
+  std::string outFileName_;
+  
 private:
-    QDomNode    thisNode_;
+  QDomNode thisNode_;
 };
 
 class XmlFile
 {
 public:
-    XmlFile (QDomNode& node);
-    ~XmlFile(void){;}
-    QDomNode&   getNode(void){return thisNode_;}
-    std::string fileName_;
+  XmlFile (QDomNode& node);
+  ~XmlFile(void) {;}
 
+  QDomNode& getNode(void) {return thisNode_;}
+
+  std::string fileName_;
+  
 private:
-    QDomNode    thisNode_;
+  QDomNode thisNode_;
 };
 
 //===================================================================================
-int main(int argc, char** argv)
+int main (int argc, char** argv)
 {
   stringstream ss;
   
-  QCoreApplication app (       argc, argv);
+  QCoreApplication app (argc, argv);
   STDLINE("=== Using a QCoreApplication only =========" ,ACRed);
   
   ExpressXmlParser theExpressXmlParser;
   
   std::string configFileName = "./xml/ExpressConfiguration.xml";
   if (argc == 2) configFileName = std::string("./xml/") + argv[1];
-  else if(argc > 2)
+  else if (argc > 2)
     {
       ss.str("");
       ss << "Usage: ./ChewieExpress optional(configuration file)";
@@ -118,10 +127,10 @@ int main(int argc, char** argv)
   string chewieOutputDir 	= getenv("CHEWIEOUTPUTDIR");
   string chewieInputDir  	= getenv("CHEWIEINPUTDIR" );
   
-  if(chewieInputDir[chewieInputDir.size()-1] != '/')
+  if (chewieInputDir[chewieInputDir.size()-1] != '/')
     chewieInputDir += '/';
-
-  for(unsigned int fs=0; fs<theExpressXmlParser.getFilesList().size(); fs++)
+  
+  for (unsigned int fs=0; fs<theExpressXmlParser.getFilesList().size(); fs++)
     {
       string configurationName = chewieXmlDir    + "/" + theExpressXmlParser.getFilesList()[fs]->configurationName_;
       string outFileName       = chewieOutputDir + "/" + theExpressXmlParser.getFilesList()[fs]->outFileName_;
@@ -148,7 +157,7 @@ int main(int argc, char** argv)
       std::vector<std::string> convertedFileList;
       QStringList convertedFileNames;
       string tmp;
-      for(unsigned int f=0;f<theExpressXmlParser.getFilesList()[fs]->fileNames_.size();f++)
+      for (unsigned int f=0;f<theExpressXmlParser.getFilesList()[fs]->fileNames_.size();f++)
 	{
 	  std::string fileToAnalyze = theExpressXmlParser.getFilesList()[fs]->fileNames_[f]->fileName_;
 	  std::string fileName      = filesPath + fileToAnalyze;
@@ -162,25 +171,23 @@ int main(int argc, char** argv)
       theEventManager   ->setInFilesList(monicelliFileList);
       theAnalysisManager->setInFilesList(convertedFileList);
       
-      if(convert)
-      theEventManager->startConverter();
+      if (convert)
+	theEventManager->startConverter();
       
-      if(runAnalysis)
+      if (runAnalysis)
 	{
 	  theAnalysisManager->setOutputFileName(outFileName);
 	  theAnalysisManager->startSequence();
 	}
       
       delete theAnalysisManager;
-      delete theEventManager   ;
+      delete theEventManager;
     }
   delete theChewieXmlParser;
   
   return EXIT_SUCCESS;
 }
 
-//================================================================================
-//================================================================================
 //================================================================================
 ExpressXmlParser::ExpressXmlParser(void) : document_(0)
 {
@@ -189,96 +196,90 @@ ExpressXmlParser::ExpressXmlParser(void) : document_(0)
 //================================================================================
 ExpressXmlParser::~ExpressXmlParser()
 {
-    if(document_)
-        delete document_ ;
+  if (document_) delete document_ ;
 }
 
 //================================================================================
 void ExpressXmlParser::parseDocument(std::string xmlFileName)
 {
-    if(document_)
-        delete document_;
-
-//    QDomImplementation implementation;
-//    QDomDocumentType type = implementation.createDocumentType("ConfigurationFile","MonicelliExpressConfiguration","/home/uplegger/Programming/Monicelli/Express/xml/dtd/ExpressConfiguration.dtd");
-    document_ = new QDomDocument( "ConfigurationFile" );
-    QFile xmlFile(xmlFileName.c_str());
-    if (!xmlFile.open(QIODevice::ReadOnly | QIODevice::Text ))
+  if (document_) delete document_;
+  
+  document_ = new QDomDocument( "ConfigurationFile" );
+  QFile xmlFile(xmlFileName.c_str());
+  if (!xmlFile.open(QIODevice::ReadOnly | QIODevice::Text ))
     {
-        STDLINE(std::string("Could not open ") + xmlFile.fileName().toStdString(),ACRed);
-        return;
+      STDLINE(std::string("Could not open ") + xmlFile.fileName().toStdString(),ACRed);
+      return;
     }
-
-    QString errMsg = "";
-    int line;
-    int col;
-    if (!document_->setContent( &xmlFile, true , &errMsg, &line, &col))
+  
+  QString errMsg = "";
+  int line;
+  int col;
+  if (!document_->setContent( &xmlFile, true , &errMsg, &line, &col))
     {
-        STDLINE(std::string("Could not access ") + xmlFile.fileName().toStdString(),ACRed);
-        ss_ << "Error: " << errMsg.toStdString() << " line: " << line << " col: " << col;
-        STDLINE(ss_.str(),ACGreen);
-        xmlFile.close();
-        return;
+      STDLINE(std::string("Could not access ") + xmlFile.fileName().toStdString(),ACRed);
+      ss_ << "Error: " << errMsg.toStdString() << " line: " << line << " col: " << col;
+      STDLINE(ss_.str(),ACGreen);
+      xmlFile.close();
+      return;
     }
+  
+  STDLINE(std::string("Parsing ") + xmlFile.fileName().toStdString(),ACGreen);
+  
+  rootNode_ = document_->elementsByTagName("ChewieExpressConfiguration").at(0);
+  
+  QDomNode defaults = document_->elementsByTagName("Defaults").at(0);
+  theDefaults_ = new XmlDefaults(defaults);
 
-    STDLINE(std::string("Parsing ") + xmlFile.fileName().toStdString(),ACGreen);
+  QDomNodeList filesList = document_->elementsByTagName("Files");
 
-    rootNode_ = document_->elementsByTagName("ChewieExpressConfiguration").at(0);
-
-    QDomNode defaults = document_->elementsByTagName("Defaults").at(0);
-    theDefaults_ = new XmlDefaults(defaults);
-
-    QDomNodeList filesList = document_->elementsByTagName("Files");
-
-    for(int fs=0; fs<filesList.size(); ++fs)
+  for (int fs = 0; fs < filesList.size(); ++fs)
     {
       QDomNode filesNode = filesList.at(fs);
       theFilesList_.push_back(new XmlFiles(filesNode));
     }
-
-    xmlFile.close();
+  
+  xmlFile.close();
 }
 
-//================================================================================
-//================================================================================
 //================================================================================
 XmlDefaults::XmlDefaults(QDomNode& node)
 {
-    thisNode_       	   = node;
-    filesPath_      	   = node.toElement().attribute("FilesPath")		.toStdString();
-    convert_ = true;
-    if(node.toElement().attribute("Convert") == "no" || node.toElement().attribute("Convert") == "No" || node.toElement().attribute("Convert") == "NO")
-      convert_ = false;
-    runAnalysis_ = true;
-    if(node.toElement().attribute("RunAnalysis") == "no" || node.toElement().attribute("RunAnalysis") == "No" || node.toElement().attribute("RunAnalysis") == "NO")
-      runAnalysis_ = false;
-    numberOfEvents_        = node.toElement().attribute("NumberOfEvents") 	.toInt();
+  thisNode_ = node;
+  filesPath_ = node.toElement().attribute("FilesPath").toStdString();
+  convert_ = true;
+  
+  if (node.toElement().attribute("Convert") == "no" || node.toElement().attribute("Convert") == "No" || node.toElement().attribute("Convert") == "NO")
+    convert_ = false;
+  runAnalysis_ = true;
 
+  if (node.toElement().attribute("RunAnalysis") == "no" || node.toElement().attribute("RunAnalysis") == "No" || node.toElement().attribute("RunAnalysis") == "NO")
+    runAnalysis_ = false;
+  numberOfEvents_ = node.toElement().attribute("NumberOfEvents").toInt();
 }
 
 //================================================================================
-//================================================================================
-//================================================================================
 XmlFiles::XmlFiles(QDomNode& node)
 {
-    thisNode_           = node;
-    configurationName_  = node.toElement().attribute("Configuration").toStdString();
-    outFileName_        = node.toElement().attribute("OutFileName").toStdString();
-    QDomNodeList fileList = node.childNodes();
-    for(int f=0; f<fileList.size(); ++f)
+  thisNode_          = node;
+  configurationName_ = node.toElement().attribute("Configuration").toStdString();
+  outFileName_       = node.toElement().attribute("OutFileName").toStdString();
+
+  QDomNodeList fileList = node.childNodes();
+
+  for (int f = 0; f < fileList.size(); ++f)
     {
       QDomNode fileNode = fileList.at(f);
-      if(!fileNode.isComment())
+
+      if (!fileNode.isComment())
         fileNames_.push_back(new XmlFile(fileNode));
     }
 }
 
 //================================================================================
-//================================================================================
-//================================================================================
 XmlFile::XmlFile(QDomNode& node)
 {
-    thisNode_       = node;
-    fileName_       = node.toElement().attribute("Name").toStdString();
-    STDLINE(fileName_,ACGreen);
+  thisNode_ = node;
+  fileName_ = node.toElement().attribute("Name").toStdString();
+  STDLINE(fileName_,ACGreen);
 }
