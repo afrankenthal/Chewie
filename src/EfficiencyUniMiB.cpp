@@ -766,13 +766,13 @@ bool Efficiency::passBadPlanesCut (int planeID, const Data &data)
   int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
 
   int maxNumberOfEvents = 0;
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++)
+  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
     {
       HistogramWindow * aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
       if (aWindow->getNumberOfEvents() > maxNumberOfEvents) maxNumberOfEvents = aWindow->getNumberOfEvents();
     }
   
-  int minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str())-1;
+  int minHits   = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str())-1;
   int excludeMe = 0;
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits += 1;
   else if(data.getHasHit(planeID))
@@ -782,7 +782,7 @@ bool Efficiency::passBadPlanesCut (int planeID, const Data &data)
 	excludeMe = 1;
     }
   
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++)
+  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
     {
       HistogramWindow * aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
       if (!data.getHasHit(p) && (float)aWindow->getNumberOfEvents() < (float)maxNumberOfEvents * badPlanesCut / 100) excludeMe += 1;

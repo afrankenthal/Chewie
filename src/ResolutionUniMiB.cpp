@@ -82,10 +82,7 @@ void Resolution::destroy(void)
   std::vector<TH2F*>::iterator it2;
   
   for (it1=hXResiduals_                .begin(); it1!=hXResiduals_                .end(); it1++) delete *it1; hXResiduals_                .clear();
-  for (it1=hXResidualCalculated_       .begin(); it1!=hXResidualCalculated_       .end(); it1++) delete *it1; hXResidualCalculated_       .clear();
-  
   for (it1=hYResiduals_                .begin(); it1!=hYResiduals_                .end(); it1++) delete *it1; hYResiduals_                .clear();
-  for (it1=hYResidualCalculated_       .begin(); it1!=hYResidualCalculated_       .end(); it1++) delete *it1; hYResidualCalculated_       .clear();
   
   for (it1=hXResidualCalculatedSize2_  .begin(); it1!=hXResidualCalculatedSize2_  .end(); it1++) delete *it1; hXResidualCalculatedSize2_  .clear();
   for (it1=hYResidualCalculatedSize2_  .begin(); it1!=hYResidualCalculatedSize2_  .end(); it1++) delete *it1; hYResidualCalculatedSize2_  .clear();
@@ -143,10 +140,10 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
   xPixelResidual = data.getXPixelResidualLocal(planeID);
 
   if (data.getXPitchLocal(planeID) > maxPitchX) return;
-    
 
-  if (xPixelResidual > 0) xPixelEdgeResidual = -data.getXPitchLocal(planeID)/2 + xPixelResidual;
-  else                    xPixelEdgeResidual = (xPixelResidual + data.getXPitchLocal(planeID)/2);
+
+  if (xPixelResidual > 0) xPixelEdgeResidual = xPixelResidual - data.getXPitchLocal(planeID)/2;
+  else                    xPixelEdgeResidual = xPixelResidual + data.getXPitchLocal(planeID)/2;
 
 
   const Window* theWindow = theWindowsManager_->getWindow(planeID);
@@ -176,7 +173,7 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 
 
   // ############################################
-  // # Require cluster aligned along the column #
+  // # Require cluster with col = predicted col #
   // ############################################
   for (int h = 0; h < size; h++)
     {
@@ -235,11 +232,11 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 	  // # Correct for asimmetry #
 	  // #########################
 	  if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit") != NULL)
-	    xMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit"))->Eval(asimmetry);
+	    {
+	      xMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit"))->Eval(asimmetry);
+	      if (size == 2) THREADED(hXResidualCalculatedSize2_[planeID])->Fill(xMeasured - xPixelEdgeResidual);
+	    }
 	}
-
-      THREADED(hXResidualCalculated_[planeID])->Fill(xMeasured - xPixelEdgeResidual);
-      if (size == 2) THREADED(hXResidualCalculatedSize2_[planeID])->Fill(xMeasured - xPixelEdgeResidual);
     }
 }
 
@@ -270,7 +267,7 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
   if (data.getYPitchLocal(planeID) > maxPitchY) return;
 
 
-  if (yPixelResidual > 0) yPixelEdgeResidual = -data.getYPitchLocal(planeID)/2 + yPixelResidual;
+  if (yPixelResidual > 0) yPixelEdgeResidual = yPixelResidual - data.getYPitchLocal(planeID)/2;
   else                    yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
 
 
@@ -299,10 +296,10 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
   float asimmetry   =  0;
   float yMeasured;
 
-  // #########################################
-  // # Require cluster aligned along the row #
-  // #########################################
-  for (int h =0 ; h < size; h++)
+  // ############################################
+  // # Require cluster with raw = predicted raw #
+  // ############################################
+  for (int h = 0 ; h < size; h++)
     {
       if (data.getClusterPixelRow(h,planeID) == row)
 	{
@@ -359,11 +356,11 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
 	  // # Correct for asimmetry #
 	  // #########################
 	  if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit") != NULL)
-	    yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit"))->Eval(asimmetry);
+	    {
+	      yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit"))->Eval(asimmetry);
+	      if (size == 2) THREADED(hYResidualCalculatedSize2_[planeID])->Fill(yMeasured - yPixelEdgeResidual);
+	    }
 	}
-      
-      THREADED(hYResidualCalculated_[planeID])->Fill(yMeasured - yPixelEdgeResidual);
-      if (size == 2) THREADED(hYResidualCalculatedSize2_[planeID])->Fill(yMeasured - yPixelEdgeResidual);
     }
 }
 
@@ -496,16 +493,15 @@ bool Resolution::passBadPlanesCut (int planeID, const Data &data)
   int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
 
   int maxNumberOfEvents = 0;
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++)
+  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
     {
       HistogramWindow * aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
       if (aWindow->getNumberOfEvents() > maxNumberOfEvents) maxNumberOfEvents = aWindow->getNumberOfEvents();
     }
 
-  int minHits = 7;
+  int minHits   = 7;
   int excludeMe = 0;
-  if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)
-    minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
+  if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
   else if(data.getHasHit(planeID))
     {
       if ((data.getClusterSize(planeID) == 1) || (data.getClusterSize(planeID) == 2 && (data.getClusterPixelRow(0,planeID) == data.getClusterPixelRow(1,planeID)
@@ -513,7 +509,7 @@ bool Resolution::passBadPlanesCut (int planeID, const Data &data)
 	excludeMe = 1;
     }
 
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++)
+  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
     {
       HistogramWindow * aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
       if (!data.getHasHit(p) && (float)aWindow->getNumberOfEvents() < (float)maxNumberOfEvents * badPlanesCut / 100) excludeMe += 1;
@@ -581,10 +577,7 @@ void Resolution::endJob(void)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       ADD_THREADED(hXResiduals_                 [p]);
-      ADD_THREADED(hXResidualCalculated_        [p]);
-
       ADD_THREADED(hYResiduals_                 [p]);
-      ADD_THREADED(hYResidualCalculated_        [p]);
 
       ADD_THREADED(hXResidualCalculatedSize2_   [p]);
       ADD_THREADED(hYResidualCalculatedSize2_   [p]);
@@ -604,10 +597,7 @@ void Resolution::endJob(void)
 
 
       hXResiduals_                 [p]->GetXaxis()->SetTitle("x residual (um)");
-      hXResidualCalculated_        [p]->GetXaxis()->SetTitle("x residual (um)");
-
       hYResiduals_                 [p]->GetXaxis()->SetTitle("y residual (um)");
-      hYResidualCalculated_        [p]->GetXaxis()->SetTitle("y residual (um)");
 
       hXResidualCalculatedSize2_   [p]->GetXaxis()->SetTitle("x residual (um)");
       hYResidualCalculatedSize2_   [p]->GetXaxis()->SetTitle("y residual (um)");
@@ -723,11 +713,7 @@ void Resolution::book(void)
       hName  = "hXResiduals_"                               + planeName;
       hTitle = "X residuals  "                              + planeName;
       hXResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 125, -500, 500)));
-      
-      hName  = "hXResidualCalculated_"                      + planeName;
-      hTitle = "X residuals calculated from asimmetry fit " + planeName;
-      hXResidualCalculated_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 125, -500, 500)));
-      
+
       hName  = "hXResidualCalculatedSize2_"                                   + planeName;
       hTitle = "X residuals calculated from asimmetry fit (Clusters Size 2) " + planeName;
       hXResidualCalculatedSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 125, -500, 500)));
@@ -743,10 +729,6 @@ void Resolution::book(void)
       hName  = "hYResiduals_"                               + planeName;
       hTitle = "Y residuals "                               + planeName;
       hYResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 200, -400, 400)));
-
-      hName  = "hYResidualCalculated_"                      + planeName;
-      hTitle = "Y residuals calculated from asimmetry fit " + planeName;
-      hYResidualCalculated_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -400, 400)));
 
       hName  = "hYResidualCalculatedSize2_"                                  + planeName;
       hTitle = "Y residuals calculated from asimmetry fit (Cluster Size 2) " + planeName;
