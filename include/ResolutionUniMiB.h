@@ -60,9 +60,6 @@ class Resolution : public Analysis
   void setCutsFormula   (std::map<std::string,std::string> cutsList, std::vector<TTree*> tree);
   bool passStandardCuts (int planeID, const Data& data);
   bool passBadPlanesCut (int planeID, const Data& data);
-  
-  /* void getInFile        (TFile*){}; */
-  /* void fitResolution    (int planeID); */
 
  private:
   void book                (void);
