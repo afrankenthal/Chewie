@@ -367,10 +367,10 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
 //=======================================================================
 void Resolution::xResolution(bool pass, int planeID, const Data& data, int threadNumber)
 {
-  // ##################################
-  // # At most accept size 4 clusters #
-  // ##################################
-  int maxSize = 4;
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
 
 
   if (!pass || !data.getBelongsToTrack(planeID)) return;
@@ -386,7 +386,7 @@ void Resolution::xResolution(bool pass, int planeID, const Data& data, int threa
 
   const Window* theWindow = theWindowsManager_->getWindow(planeID);
   int           size      = data.getClusterSize(planeID);
-  if (size > maxSize) return;
+  if (size > maxClusterSize) return;
 
 
   for (int h = 0; h < size; h++)
@@ -412,10 +412,10 @@ void Resolution::xResolution(bool pass, int planeID, const Data& data, int threa
 //=======================================================================
 void Resolution::yResolution(bool pass, int planeID, const Data& data, int threadNumber)
 {
-  // ##################################
-  // # At most accept size 4 clusters #
-  // ##################################
-  int maxSize = 4;
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
   
   
   if (!pass || !data.getBelongsToTrack(planeID)) return;
@@ -430,7 +430,7 @@ void Resolution::yResolution(bool pass, int planeID, const Data& data, int threa
   
   const Window* theWindow = theWindowsManager_->getWindow(planeID);
   int           size      = data.getClusterSize(planeID);
-  if (size > maxSize) return;
+  if (size > maxClusterSize) return;
 
 
   for (int h = 0; h < size; h++)

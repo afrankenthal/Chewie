@@ -546,16 +546,16 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
 {
   if (!pass || !data.getIsInDetector(planeID)) return;
 
-  const  Window* theWindow  = theWindowsManager_->getWindow(planeID);
-  float          xRes       = data.getXPixelResidualLocal(planeID);
-  float          yRes       = data.getYPixelResidualLocal(planeID);
-  float          xRes4Cells = 0;
-  float          yRes4Cells = 0;
-  float          row        = data.getRowPredicted(planeID);
-  float          col        = data.getColPredicted(planeID);
-  int            run        = data.getRunNumber();
-  float          maxPitchX  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
-  float          maxPitchY  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+  const Window* theWindow  = theWindowsManager_->getWindow(planeID);
+  float         xRes       = data.getXPixelResidualLocal(planeID);
+  float         yRes       = data.getYPixelResidualLocal(planeID);
+  float         xRes4Cells = 0;
+  float         yRes4Cells = 0;
+  float         row        = data.getRowPredicted(planeID);
+  float         col        = data.getColPredicted(planeID);
+  int           run        = data.getRunNumber();
+  float         maxPitchX  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+  float         maxPitchY  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
 
 
   if (data.getXPixelResidualLocal(planeID) > 0)       xRes4Cells = -data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
@@ -588,15 +588,21 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
 //=======================================================================
 void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
+
+
   if (!pass || !data.getIsInDetector(planeID)) return;
 
-  const Window* theWindow       = theWindowsManager_->getWindow(planeID);
-  int           row             = data.getRowPredicted(planeID);
-  int           col             = data.getColPredicted(planeID);
-  int           event           = data.getEventChewieNumber();
-  int           run             = data.getRunNumber();
-  float         maxPitchX       = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
-  float         xRes            = 0.;
+  const Window* theWindow = theWindowsManager_->getWindow(planeID);
+  int           row       = data.getRowPredicted(planeID);
+  int           col       = data.getColPredicted(planeID);
+  int           event     = data.getEventChewieNumber();
+  int           run       = data.getRunNumber();
+  float         maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+  float         xRes      = 0.;
   
   if (data.getXPitchLocal(planeID) == maxPitchX)
     {
@@ -612,7 +618,7 @@ void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int t
       
       if (data.getHasHit(planeID))
 	{
-	  if (data.getClusterSize(planeID) > 4)
+	  if (data.getClusterSize(planeID) > maxClusterSize)
 	    {
 	      THREADED(h1DXcellEfficiencyFirstHit_ [planeID])->Fill(xRes);
 	      THREADED(h1DXcellEfficiencySecondHit_[planeID])->Fill(xRes);
@@ -658,6 +664,12 @@ void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int t
 //=======================================================================
 void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
+
+
   if (!pass || !data.getIsInDetector(planeID)) return;
 
   const Window* theWindow = theWindowsManager_->getWindow(planeID);
@@ -682,7 +694,7 @@ void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int t
 	
       if (data.getHasHit(planeID))
 	{
-	  if (data.getClusterSize(planeID) > 4)
+	  if (data.getClusterSize(planeID) > maxClusterSize)
 	    {
 	      THREADED(h1DYcellEfficiencyFirstHit_ [planeID])->Fill(yRes);
 	      THREADED(h1DYcellEfficiencySecondHit_[planeID])->Fill(yRes);
