@@ -73,25 +73,14 @@ class Charge : public Analysis
   void destroy             (void);
 
   void clusterSize         (           int planeID, const Data& data, int threadNumber);
-  void clusterLandau       (bool pass, int planeID, const Data& data, int threadNumber);
   void cellLandau          (bool pass, int planeID, const Data& data, int threadNumber);
   void cellCharge          (bool pass, int planeID, const Data& data, int threadNumber);
-  void xLandau             (bool pass, int planeID, const Data& data, int threadNumber);
+
   void xChargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
   void xAsimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
-  void xAsimmetryUnconstr  (bool pass, int planeID, const Data& data, int threadNumber);
-  void yLandau             (bool pass, int planeID, const Data& data, int threadNumber);
+
   void yChargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
   void yAsimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
-  void yAsimmetryUnconstr  (bool pass, int planeID, const Data& data, int threadNumber);
-  void meanChargePositionRN(bool pass, int planeID, const Data& data, int threadNumber);
-  void graphChargeClusterSize4(        int planeID, const Data& data                  );
-
-  void normalizeEtaDistributionSize2 (int p);
-  void normalizeEtaDistribution      (int p);
-  void normalizeEtaInverse           (int p);
-  void calculateEtaDerivative        (int p);
-  void calculateMeanCharge           (     );
 
   void setParsLimits       (void                                                      );
   bool passCalibrationsCut (int  planeID, const Data& data                            );
@@ -162,8 +151,6 @@ class Charge : public Analysis
   std::vector<TH1F*>    h1DYcellChargeAsimmetry_;
   std::vector<TH2F*>    h2DYcellChargeAsimmetryInv_;
   std::vector<TH1F*>    h1DYcellChargeAsimmetryInv_;
-
-  int totEventsControl_;
 };
 
 #endif
