@@ -41,6 +41,7 @@
 class TH1F;
 class TH2F;
 class TTreeFormula;
+
 class AnalysisManager;
 class WindowsManager;
 class PlanesMapping;

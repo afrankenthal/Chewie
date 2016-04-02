@@ -33,10 +33,6 @@
 #include "Analysis.h"
 
 #include <TTreeFormula.h>
-#include <TH1D.h>
-#include <TGraph.h>
-#include <TGraphErrors.h>
-#include <TMap.h>
 
 #include <vector>
 #include <iostream>
@@ -44,15 +40,14 @@
 
 class TH1F;
 class TH2F;
-class TH1;
-class TF1;
 class TTreeFormula;
-class TFile;
+
 class AnalysisManager;
 class WindowsManager;
-class CalibrationsManager;
 class PlanesMapping;
 class XmlParser;
+
+class CalibrationsManager;
 
 class Charge : public Analysis
 {
@@ -72,7 +67,7 @@ class Charge : public Analysis
   void book                (void);
   void destroy             (void);
 
-  void clusterSize         (           int planeID, const Data& data, int threadNumber);
+  void clusterSize         (int planeID, const Data& data, int threadNumber);
   void cellLandau          (bool pass, int planeID, const Data& data, int threadNumber);
   void cellCharge          (bool pass, int planeID, const Data& data, int threadNumber);
 
@@ -82,29 +77,20 @@ class Charge : public Analysis
   void yChargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
   void yAsimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
 
-  void setParsLimits       (void                                                      );
-  bool passCalibrationsCut (int  planeID, const Data& data                            );
-  void setErrorsBar        (int  planeID                                              );
-  int  linearFit           (TH1* histo  , double* fitParameters                       );
+  bool passCalibrationsCut (int  planeID, const Data& data);
+  void setErrorsBar        (int  planeID);
 
   PlanesMapping*                                     thePlaneMapping_;
   std::map< std::string,std::vector<TTreeFormula*> > cutsFormulas_;
-  TF1*                                               linear_;
   const WindowsManager*                              theWindowsManager_;
-  CalibrationsManager*                               theCalibrationsManager_;
   XmlParser*                                         theXmlParser_;
 
-  double parMin_      [4];
-  double parMax_      [4];
-  bool   isMinToLimit_[4];
-  bool   isMaxToLimit_[4]x;
+  CalibrationsManager*                               theCalibrationsManager_;
 
-  int    standardCutsPixelMinimumCharge_;
-  int    standardCutsPixelMaximumCharge_;
-  int    standardCutsClusterMinimumCharge_;
-  int    standardCutsClusterMaximumCharge_;
-  TH2F*  h2DparsPlots_[4];
-  bool   cannotBeDestroyed_;
+  int standardCutsPixelMinimumCharge_;
+  int standardCutsPixelMaximumCharge_;
+  int standardCutsClusterMinimumCharge_;
+  int  standardCutsClusterMaximumCharge_;
 
 
   // ##############
