@@ -427,7 +427,8 @@ void Resolution::yResolution(bool pass, int planeID, const Data& data, int threa
   int counter = 0;
   for (int p = 8; p < 16; p++) if (data.getClusterSize(p) == 2) counter++;
   if (counter != 8) return;
-  
+
+
   const Window* theWindow = theWindowsManager_->getWindow(planeID);
   int           size      = data.getClusterSize(planeID);
   if (size > maxClusterSize) return;

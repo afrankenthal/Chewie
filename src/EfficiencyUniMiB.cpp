@@ -314,7 +314,7 @@ void Efficiency::book(void)
 
   float       xPitch;
   float       yPitch;
-  float       binSize = 5;
+  float       binSize = 5; // [um]
 
   int         lowerCol;
   int         higherCol;
