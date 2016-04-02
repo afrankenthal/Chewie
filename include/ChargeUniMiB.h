@@ -90,7 +90,7 @@ class Charge : public Analysis
   int standardCutsPixelMinimumCharge_;
   int standardCutsPixelMaximumCharge_;
   int standardCutsClusterMinimumCharge_;
-  int  standardCutsClusterMaximumCharge_;
+  int standardCutsClusterMaximumCharge_;
 
 
   // ##############
