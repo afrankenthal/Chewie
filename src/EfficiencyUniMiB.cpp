@@ -43,9 +43,7 @@
 #include "XmlWindow.h"
 #include "XmlScan.h"
 
-#include <TH1F.h>
 #include <TH2F.h>
-#include <TFile.h>
 
 #include <iostream>
 

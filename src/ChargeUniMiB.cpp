@@ -43,20 +43,8 @@
 #include "Utilities.h"
 #include "CalibrationsManager.h"
 
-#include <TH1F.h>
 #include <TH2F.h>
-#include <TH1D.h>
 #include <TF1.h>
-#include <TFile.h>
-#include <TThread.h>
-#include <TMath.h>
-#include <TROOT.h>
-
-#include <TTreeFormula.h>
-#include <Rtypes.h>
-#include <TVectorT.h>
-#include <TMap.h>
-#include <map>
 
 #include <iostream>
 
