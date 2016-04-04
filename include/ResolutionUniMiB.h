@@ -27,8 +27,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#ifndef RESOLUTION_H
-#define RESOLUTION_H
+#ifndef RESOLUTIONUNIMIB_H
+#define RESOLUTIONUNIMIB_H
 
 #include "Analysis.h"
 
@@ -48,12 +48,12 @@ class PlanesMapping;
 class XmlParser;
 
 
-class Resolution : public Analysis
+class ResolutionUniMiB : public Analysis
 {
  public:
-  Resolution  (AnalysisManager* analysisManager = 0, int nOfThreads = 1);
-  ~Resolution (void);
-  
+   ResolutionUniMiB     (AnalysisManager* analysisManager = 0, int nOfThreads = 1);
+  ~ResolutionUniMiB     (void);
+
   void beginJob         (void);
   void analyze          (const Data& data, int threadNumber);
   void endJob           (void);

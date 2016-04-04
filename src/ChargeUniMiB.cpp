@@ -27,35 +27,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#include "Charge.h"
+#include "ChargeUniMiB.h"
+
 #include "AnalysisManager.h"
+#include "WindowsManager.h"
+#include "Window.h"
 #include "ThreadUtilities.h"
 #include "PlanesMapping.h"
-#include "WindowsManager.h"
-#include "CalibrationsManager.h"
-#include "Window.h"
 #include "MessageTools.h"
-#include "Utilities.h"
 #include "XmlParser.h"
 #include "XmlPlane.h"
 #include "XmlAnalysis.h"
 #include "HistogramWindow.h"
 
+#include "Utilities.h"
+#include "CalibrationsManager.h"
+
 #include <TH1F.h>
-#include <TH1D.h>
 #include <TH2F.h>
-#include <TThread.h>
-#include <TFile.h>
-#include <TTreeFormula.h>
-#include <TMath.h>
+#include <TH1D.h>
 #include <TF1.h>
-#include <Rtypes.h>
+#include <TFile.h>
+#include <TThread.h>
+#include <TMath.h>
 #include <TROOT.h>
+
+#include <TTreeFormula.h>
+#include <Rtypes.h>
 #include <TVectorT.h>
 #include <TMap.h>
+#include <map>
 
 #include <iostream>
-#include <map>
 
 
 // @@@ Hard coded parameters @@@
@@ -66,7 +69,7 @@
 
 
 //=======================================================================
-Charge::Charge(AnalysisManager* analysisManager, int nOfThreads) :
+ChargeUniMiB::ChargeUniMiB(AnalysisManager* analysisManager, int nOfThreads) :
   Analysis(analysisManager, nOfThreads),
   thePlaneMapping_(0),
   theWindowsManager_(0),
@@ -80,7 +83,7 @@ Charge::Charge(AnalysisManager* analysisManager, int nOfThreads) :
 }
 
 //=======================================================================
-Charge::~Charge(void)
+ChargeUniMiB::~ChargeUniMiB(void)
 {
   if (thePlaneMapping_) delete thePlaneMapping_;
   
@@ -88,7 +91,7 @@ Charge::~Charge(void)
 }
 
 //=======================================================================
-void Charge::destroy()
+void ChargeUniMiB::destroy()
 {
   if (Analysis::fDoNotDelete_) return;
 
@@ -137,7 +140,7 @@ void Charge::destroy()
 }
 
 //=======================================================================
-void Charge::setErrorsBar(int planeID)
+void ChargeUniMiB::setErrorsBar(int planeID)
 {
   std::string       planeName = thePlaneMapping_->getPlaneName(planeID);
   std::stringstream hName;
@@ -234,13 +237,13 @@ void Charge::setErrorsBar(int planeID)
 }
 
 //=======================================================================
-void Charge::clusterSize(int planeID, const Data& data, int threadNumber)
+void ChargeUniMiB::clusterSize(int planeID, const Data& data, int threadNumber)
 {
   if (data.getHasHit(planeID)) THREADED(hClusterSize_[planeID])->Fill(data.getClusterSize(planeID));
 }
 
 //=======================================================================
-void Charge::cellLandau(bool pass, int planeID, const Data& data, int threadNumber)
+void ChargeUniMiB::cellLandau(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -259,7 +262,7 @@ void Charge::cellLandau(bool pass, int planeID, const Data& data, int threadNumb
 }
 
 //=======================================================================
-void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumber)
+void ChargeUniMiB::cellCharge(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -318,7 +321,7 @@ void Charge::cellCharge(bool pass, int planeID, const Data& data, int threadNumb
 }
 
 //=======================================================================
-void Charge::xChargeDivision(bool pass, int planeID, const Data& data, int threadNumber)
+void ChargeUniMiB::xChargeDivision(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -401,7 +404,7 @@ void Charge::xChargeDivision(bool pass, int planeID, const Data& data, int threa
 }
 
 //=======================================================================
-void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumber)
+void ChargeUniMiB::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -477,7 +480,7 @@ void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
 }
 
 //=======================================================================
-  void Charge::yChargeDivision(bool pass, int planeID, const Data& data, int threadNumber)
+  void ChargeUniMiB::yChargeDivision(bool pass, int planeID, const Data& data, int threadNumber)
   {
   // #####################
   // # Internal constant #
@@ -560,7 +563,7 @@ void Charge::xAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
 }
 
 //=======================================================================
-void Charge::yAsimmetry(bool pass, int planeID, const Data& data, int threadNumber)
+void ChargeUniMiB::yAsimmetry(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -635,7 +638,7 @@ void Charge::yAsimmetry(bool pass, int planeID, const Data& data, int threadNumb
 }
 
 //=======================================================================
-void Charge::setCutsFormula(std::map<std::string,std::string> cutsList,std::vector<TTree*> tree)
+void ChargeUniMiB::setCutsFormula(std::map<std::string,std::string> cutsList,std::vector<TTree*> tree)
 {
   std::vector<TTreeFormula*> formulasVector;
   
@@ -655,7 +658,7 @@ void Charge::setCutsFormula(std::map<std::string,std::string> cutsList,std::vect
 }
 
 //=======================================================================
-bool Charge::passCalibrationsCut(int planeID, const Data &data)
+bool ChargeUniMiB::passCalibrationsCut(int planeID, const Data &data)
 {
   // #####################
   // # Internal constant #
@@ -670,7 +673,7 @@ bool Charge::passCalibrationsCut(int planeID, const Data &data)
 }
 
 //=======================================================================
-bool Charge::passBadPlanesCut(int planeID, const Data &data)
+bool ChargeUniMiB::passBadPlanesCut(int planeID, const Data &data)
 {
   int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
 
@@ -704,7 +707,7 @@ bool Charge::passBadPlanesCut(int planeID, const Data &data)
 }
 
 //=======================================================================
-bool Charge::passStandardCuts(int planeID, const Data &data)
+bool ChargeUniMiB::passStandardCuts(int planeID, const Data &data)
 {
   if (!theXmlParser_->getAnalysesFromString("Charge")->applyStandardCuts()) return true;
   if (theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes())   return passBadPlanesCut(planeID, data);
@@ -726,7 +729,7 @@ bool Charge::passStandardCuts(int planeID, const Data &data)
 }
 
 //=======================================================================
-void Charge::beginJob(void)
+void ChargeUniMiB::beginJob(void)
 {
   standardCutsPixelMinimumCharge_   = theXmlParser_->getAnalysesFromString("Charge")->getPixelMinimumCharge();
   standardCutsPixelMaximumCharge_   = theXmlParser_->getAnalysesFromString("Charge")->getPixelMaximumCharge();
@@ -740,7 +743,7 @@ void Charge::beginJob(void)
 }
 
 //=======================================================================
-void Charge::analyze(const Data& data, int threadNumber)
+void ChargeUniMiB::analyze(const Data& data, int threadNumber)
 {
   if (cutsFormulas_.find("main cut") != cutsFormulas_.end() && !cutsFormulas_["main cut"][threadNumber]->EvalInstance()) return;
 
@@ -793,7 +796,7 @@ void Charge::analyze(const Data& data, int threadNumber)
 }
 
 //=======================================================================
-void Charge::endJob(void)
+void ChargeUniMiB::endJob(void)
 {
   std::stringstream ss;
 
@@ -996,7 +999,7 @@ void Charge::endJob(void)
 }
 
 //=======================================================================
-void Charge::book(void)
+void ChargeUniMiB::book(void)
 {
   destroy();
 

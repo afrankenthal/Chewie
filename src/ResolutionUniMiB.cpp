@@ -27,7 +27,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#include "Resolution.h"
+#include "ResolutionUniMiB.h"
+
 #include "AnalysisManager.h"
 #include "WindowsManager.h"
 #include "Window.h"
@@ -39,12 +40,13 @@
 #include "XmlPlane.h"
 #include "XmlWindow.h"
 #include "HistogramWindow.h"
+
 #include "Utilities.h"
 
 #include <TH1F.h>
 #include <TH2F.h>
-#include <TFile.h>
 #include <TF1.h>
+#include <TFile.h>
 
 #include <iostream>
 
@@ -55,7 +57,7 @@
 
 
 //=======================================================================
-Resolution::Resolution(AnalysisManager* analysisManager, int nOfThreads) :
+ResolutionUniMiB::ResolutionUniMiB(AnalysisManager* analysisManager, int nOfThreads) :
   Analysis(analysisManager,nOfThreads),
   thePlaneMapping_(0),
   theWindowsManager_(0),
@@ -66,7 +68,7 @@ Resolution::Resolution(AnalysisManager* analysisManager, int nOfThreads) :
 }
 
 //=======================================================================
-Resolution::~Resolution(void)
+ResolutionUniMiB::~ResolutionUniMiB(void)
 {
   if (thePlaneMapping_) delete thePlaneMapping_;
 
@@ -74,7 +76,7 @@ Resolution::~Resolution(void)
 }
 
 //=======================================================================
-void Resolution::destroy(void)
+void ResolutionUniMiB::destroy(void)
 {
   if (Analysis::fDoNotDelete_) return;
   
@@ -105,7 +107,7 @@ void Resolution::destroy(void)
 }
 
 //=======================================================================
-void Resolution::predictedErrors(bool pass, int planeID, const Data& data, int threadNumber)
+void ResolutionUniMiB::predictedErrors(bool pass, int planeID, const Data& data, int threadNumber)
 {
     if (!pass) return;
 
@@ -116,7 +118,7 @@ void Resolution::predictedErrors(bool pass, int planeID, const Data& data, int t
 
 
 //=======================================================================
-void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, int threadNumber)
+void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &data, int threadNumber)
 {
   if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > 4) return;
 
@@ -241,7 +243,7 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 }
 
 //=======================================================================
-void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, int threadNumber)
+void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &data, int threadNumber)
 {
   if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > 4) return;
   
@@ -365,7 +367,7 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
 }
 
 //=======================================================================
-void Resolution::xResolution(bool pass, int planeID, const Data& data, int threadNumber)
+void ResolutionUniMiB::xResolution(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -410,7 +412,7 @@ void Resolution::xResolution(bool pass, int planeID, const Data& data, int threa
 }
 
 //=======================================================================
-void Resolution::yResolution(bool pass, int planeID, const Data& data, int threadNumber)
+void ResolutionUniMiB::yResolution(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -455,7 +457,7 @@ void Resolution::yResolution(bool pass, int planeID, const Data& data, int threa
 }
 
 //=======================================================================
-void Resolution::setCutsFormula(std::map<std::string,std::string> cutsList, std::vector<TTree*> tree)
+void ResolutionUniMiB::setCutsFormula(std::map<std::string,std::string> cutsList, std::vector<TTree*> tree)
 {
   std::vector<TTreeFormula*> formulasVector;
   
@@ -475,7 +477,7 @@ void Resolution::setCutsFormula(std::map<std::string,std::string> cutsList, std:
 }
 
 //=======================================================================
-bool Resolution::passStandardCuts(int planeID, const Data &data)
+bool ResolutionUniMiB::passStandardCuts(int planeID, const Data &data)
 {
   if (!theXmlParser_->getAnalysesFromString("Charge")->applyStandardCuts()) return true;
   if (theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes())   return passBadPlanesCut(planeID, data);
@@ -489,7 +491,7 @@ bool Resolution::passStandardCuts(int planeID, const Data &data)
 }
 
 //=======================================================================
-bool Resolution::passBadPlanesCut (int planeID, const Data &data)
+bool ResolutionUniMiB::passBadPlanesCut (int planeID, const Data &data)
 {
   int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
 
@@ -521,14 +523,14 @@ bool Resolution::passBadPlanesCut (int planeID, const Data &data)
 }
 
 //=======================================================================
-void Resolution::beginJob(void)
+void ResolutionUniMiB::beginJob(void)
 {
   theWindowsManager_ = theAnalysisManager_->getWindowsManager();
   book();
 }
 
 //=======================================================================
-void Resolution::analyze(const Data& data, int threadNumber)
+void ResolutionUniMiB::analyze(const Data& data, int threadNumber)
 {   
   bool mainCut = true;
   if (cutsFormulas_.find("main cut") != cutsFormulas_.end())
@@ -573,7 +575,7 @@ void Resolution::analyze(const Data& data, int threadNumber)
 }
 
 //=======================================================================
-void Resolution::endJob(void)
+void ResolutionUniMiB::endJob(void)
 {
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
@@ -669,7 +671,7 @@ void Resolution::endJob(void)
 }
 
 //=======================================================================
-void Resolution::book(void)
+void ResolutionUniMiB::book(void)
 {
   destroy();
   

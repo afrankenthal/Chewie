@@ -27,7 +27,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#include "Efficiency.h"
+#include "EfficiencyUniMiB.h"
+
 #include "AnalysisManager.h"
 #include "WindowsManager.h"
 #include "Window.h"
@@ -37,8 +38,9 @@
 #include "XmlParser.h"
 #include "XmlAnalysis.h"
 #include "XmlPlane.h"
-#include "XmlWindow.h"
 #include "HistogramWindow.h"
+
+#include "XmlWindow.h"
 #include "XmlScan.h"
 
 #include <TH1F.h>
@@ -54,7 +56,7 @@
 
 
 //=======================================================================
-Efficiency::Efficiency(AnalysisManager* analysisManager, int nOfThreads) :
+EfficiencyUniMiB::EfficiencyUniMiB(AnalysisManager* analysisManager, int nOfThreads) :
   Analysis(analysisManager, nOfThreads),
   thePlaneMapping_(0),
   theWindowsManager_(0),
@@ -64,7 +66,7 @@ Efficiency::Efficiency(AnalysisManager* analysisManager, int nOfThreads) :
 }
 
 //=======================================================================
-Efficiency::~Efficiency(void)
+EfficiencyUniMiB::~EfficiencyUniMiB(void)
 {
   if (thePlaneMapping_) delete thePlaneMapping_;
   
@@ -72,7 +74,7 @@ Efficiency::~Efficiency(void)
 }
 
 //=======================================================================
-void Efficiency::destroy(void)
+void EfficiencyUniMiB::destroy(void)
 {
   if (Analysis::fDoNotDelete_) return;
 
@@ -113,7 +115,7 @@ void Efficiency::destroy(void)
 }
 
 //=======================================================================
-void Efficiency::beginJob(void)
+void EfficiencyUniMiB::beginJob(void)
 {
   theWindowsManager_ = theAnalysisManager_->getWindowsManager();
   
@@ -126,7 +128,7 @@ void Efficiency::beginJob(void)
 }
 
 //=======================================================================
-void Efficiency::analyze(const Data& data, int threadNumber)
+void EfficiencyUniMiB::analyze(const Data& data, int threadNumber)
 {
   bool passMainCut = true;
   if (cutsFormulas_.find("main cut") != cutsFormulas_.end())
@@ -168,7 +170,7 @@ void Efficiency::analyze(const Data& data, int threadNumber)
 }
 
 //=======================================================================
-void Efficiency::endJob(void)
+void EfficiencyUniMiB::endJob(void)
 {
   std::stringstream ss;
 
@@ -301,7 +303,7 @@ void Efficiency::endJob(void)
 }
 
 //=======================================================================
-void Efficiency::book(void)
+void EfficiencyUniMiB::book(void)
 {
   destroy();
 
@@ -463,7 +465,7 @@ void Efficiency::book(void)
 }
 
 //=======================================================================
-void Efficiency::setErrorsBar(int planeID)
+void EfficiencyUniMiB::setErrorsBar(int planeID)
 {
     double efficiency;
     double Ntrack;
@@ -500,7 +502,7 @@ void Efficiency::setErrorsBar(int planeID)
 }
 
 //=======================================================================
-void Efficiency::planeEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+void EfficiencyUniMiB::planeEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
   if (!pass || !data.getIsInDetector(planeID)) return;
 
@@ -542,7 +544,7 @@ void Efficiency::planeEfficiency(bool pass, int planeID, const Data& data, int t
 }
 
 //=======================================================================
-void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+void EfficiencyUniMiB::cellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
   if (!pass || !data.getIsInDetector(planeID)) return;
 
@@ -586,7 +588,7 @@ void Efficiency::cellEfficiency(bool pass, int planeID, const Data& data, int th
 }
 
 //=======================================================================
-void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -662,7 +664,7 @@ void Efficiency::xCellEfficiency(bool pass, int planeID, const Data& data, int t
 }
 
 //=======================================================================
-void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
 {
   // #####################
   // # Internal constant #
@@ -738,7 +740,7 @@ void Efficiency::yCellEfficiency(bool pass, int planeID, const Data& data, int t
 }
 
 //=======================================================================
-void Efficiency::setCutsFormula(std::map<std::string,std::string> cutsList, std::vector<TTree*> tree)
+void EfficiencyUniMiB::setCutsFormula(std::map<std::string,std::string> cutsList, std::vector<TTree*> tree)
 {
   std::vector<TTreeFormula*> formulasVector;
 
@@ -758,7 +760,7 @@ void Efficiency::setCutsFormula(std::map<std::string,std::string> cutsList, std:
 }
 
 //=======================================================================
-bool Efficiency::passStandardCuts(int planeID, const Data &data)
+bool EfficiencyUniMiB::passStandardCuts(int planeID, const Data &data)
 {
   if (!theXmlParser_->getAnalysesFromString("Efficiency")->applyStandardCuts()) return true;
   if (theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes())       return passBadPlanesCut(planeID, data);
@@ -773,7 +775,7 @@ bool Efficiency::passStandardCuts(int planeID, const Data &data)
 }
 
 //=======================================================================
-bool Efficiency::passBadPlanesCut (int planeID, const Data &data)
+bool EfficiencyUniMiB::passBadPlanesCut (int planeID, const Data &data)
 {
   int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
 

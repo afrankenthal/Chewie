@@ -27,8 +27,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#ifndef CHARGE_H
-#define CHARGE_H
+#ifndef CHARGEUNIMIB_H
+#define CHARGEUNIMIB_H
 
 #include "Analysis.h"
 
@@ -49,11 +49,11 @@ class XmlParser;
 
 class CalibrationsManager;
 
-class Charge : public Analysis
+class ChargeUniMiB : public Analysis
 {
  public:
-  Charge  (AnalysisManager* analysisManager = 0, int nOfThreads = 1);
-  ~Charge (void);
+   ChargeUniMiB            (AnalysisManager* analysisManager = 0, int nOfThreads = 1);
+  ~ChargeUniMiB            (void);
 
   void beginJob            (void);
   void analyze             (const Data& data, int threadNumber);

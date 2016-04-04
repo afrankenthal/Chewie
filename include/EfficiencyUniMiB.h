@@ -27,8 +27,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#ifndef EFFICIENCY_H
-#define EFFICIENCY_H
+#ifndef EFFICIENCYUNIMIB_H
+#define EFFICIENCYUNIMIB_H
 
 #include "Analysis.h"
 
@@ -48,11 +48,11 @@ class PlanesMapping;
 class XmlParser;
 
 
-class Efficiency : public Analysis
+class EfficiencyUniMiB : public Analysis
 {
  public:
-  Efficiency  (AnalysisManager* analysisManager = 0, int nOfThreads = 1);
-  ~Efficiency (void);
+   EfficiencyUniMiB     (AnalysisManager* analysisManager = 0, int nOfThreads = 1);
+  ~EfficiencyUniMiB     (void);
 
   void beginJob         (void);
   void analyze          (const Data& data, int threadNumber);
