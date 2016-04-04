@@ -202,6 +202,12 @@ int XmlAnalysis::getPriority(void)
     return thisNode_.toElement().attribute("Priority").toInt();
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////
+std::string XmlAnalysis::getModule(void)
+{
+    return thisNode_.toElement().attribute("Module").toStdString();
+}
 //////////////////////////////////////////////////////////////////////////////////////////
 bool XmlAnalysis::excludeBadPlanes(void)
 {

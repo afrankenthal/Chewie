@@ -37,9 +37,7 @@ XmlPlane::XmlPlane(QDomNode& node)
 {
     thisNode_ = node;
     QDomNode window = node.toElement().elementsByTagName("Window").at(0);
-STDLINE("================== GDB ==========================",ACRed) ;
     theWindow_ = new XmlWindow(window);
-STDLINE("================== GDB ==========================",ACRed) ;
     calibNode_ = thisNode_.toElement().elementsByTagName("Calibrations").at(0);
 }
 
@@ -55,7 +53,6 @@ std::pair<std::string,std::string> XmlPlane::getChipsNumber(void)
 {
     std::string xChipsNumber = thisNode_.toElement().attribute("XRocs").toStdString();
     std::string yChipsNumber = thisNode_.toElement().attribute("YRocs").toStdString();
-    //std::cout << __PRETTY_FUNCTION__ << "X: " << xChipsNumber << " Y: " << yChipsNumber << std::endl;
     return std::make_pair(xChipsNumber,yChipsNumber);
 }
 
@@ -64,7 +61,6 @@ std::pair<std::string,std::string> XmlPlane::getCellPitches(void)
 {
     std::string xCellPitch = thisNode_.toElement().attribute("XPitch").toStdString();
     std::string yCellPitch = thisNode_.toElement().attribute("YPitch").toStdString();
-    //std::cout << __PRETTY_FUNCTION__ << "X: " << xCellPitch << " Y: " << yCellPitch << std::endl;
     return std::make_pair(xCellPitch,yCellPitch);
 }
 

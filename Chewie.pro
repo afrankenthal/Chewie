@@ -36,105 +36,112 @@ QMAKE_CXXFLAGS_RELEASE = -g  $(CPLUSPLUSFLAGS)
 target.path   	     = ./
 sources.path  	     = ./
 
-HEADERS       	     = include/mainwindow.h					  \
-              	       include/MessageTools.h					  \
-              	       include/ANSIColors.h					  \
-              	       include/AnalysisManager.h				  \
-              	       include/Data.h						  \
-              	       include/Analysis.h					  \
-              	       include/Threader.h					  \
-              	       include/Efficiency.h					  \
-              	       include/EventManager.h					  \
-              	       include/EventConverter.h 				  \
-              	       include/HistogramWindow.h				  \
-              	       include/Window.h 					  \
-              	       include/ThreadUtilities.h				  \
-              	       include/CutsUtilities.h  				  \
-              	       include/CutsUtilities.h  				  \
-              	       include/Charge.h 					  \
-              	       include/XmlParser.h					  \
-              	       include/analyzerdlg.h					  \
-              	       include/hnavigator.h					  \
-              	       include/PlanesMapping.h  				  \
-              	       include/XmlAnalysis.h					  \
-              	       include/XmlGeneral.h					  \
-              	       include/WindowsManager.h 				  \
-              	       include/XmlWindow.h					  \
-              	       include/XmlPlane.h					  \
-              	       include/Resolution.h					  \
-              	       include/XmlConverter.h					  \
-              	       include/Utilities.h					  \
-              	       include/XmlScan.h					  \
-              	       include/CanvasWidget.h					  \
-              	       include/Tracks.h 					  \
-              	       include/CalibrationsManager.h				  \
-              	       ../Monicelli/include/EventHeader.h			  \
-              	       ../Monicelli/include/Event.h				  \
-              	       ../Monicelli/include/Geometry.h  			  \
-              	       ../Monicelli/include/Detector.h  			  \
-              	       ../Monicelli/include/ROC.h				  \
-              	       ../Monicelli/include/mdisubwindow.h			  \
-              	       ../Monicelli/plugins/customTextEdit/customTextEdit.h	  \
-              	       ../Monicelli/plugins/customLineEdit/customLineEdit.h	  \
-              	       ../Monicelli/plugins/customCheckBox/customCheckBox.h	  \
-              	       ../Monicelli/plugins/customSpinBox/customSpinBox.h	  \
-              	       ../Monicelli/plugins/customTableWidget/customTableWidget.h \
-    		       include/PixelMatrix.h					  \
-    		       include/TracksAfter.h					  \
-    		       include/fitParamManagerWidget.h  			  \
-    		       include/PixelMatrixCut.h 				  \
-    		       include/PixelMatrixCutButton.h				  \
-    		       include/HanSoloFitter.h  				  \
-    		       include/HanSoloTreeBrowser.h				  \
+HEADERS       	     = include/analyzerdlg.h					  \
+                       include/AnalysisManager.h				  \
+                       include/Analysis.h					  \
+                       include/ANSIColors.h					  \
+                       include/CalibrationsManager.h				  \
+                       include/CanvasWidget.h					  \
+                       include/Charge.h 					  \
+                       include/ChargeUniMiB.h 					  \
+                       include/CutsUtilities.h  				  \
+                       include/CutsUtilities.h  				  \
+                       include/Data.h						  \
+                       include/Efficiency.h					  \
+                       include/EfficiencyUniMiB.h				  \
+                       include/EventManager.h					  \
+                       include/EventConverter.h 				  \
+                       include/fitParamManagerWidget.h  			  \
+                       include/HanSoloFitter.h  				  \
+                       include/HanSoloTreeBrowser.h				  \
+                       include/HistogramWindow.h				  \
+                       include/hnavigator.h					  \
                        include/hTreeBrowser.h                                     \
-                       include/qrootcanvas.h
+                       include/mainwindow.h					  \
+                       include/MessageTools.h					  \
+                       include/PixelMatrix.h					  \
+                       include/PixelMatrixCut.h 				  \
+                       include/PixelMatrixCutButton.h				  \
+                       include/PlanesMapping.h  				  \
+                       include/qrootcanvas.h                                      \
+                       include/Resolution.h					  \
+                       include/ResolutionUniMiB.h			          \
+                       include/Threader.h					  \
+                       include/ThreadUtilities.h				  \
+                       include/Tracks.h 					  \
+                       include/TracksAfter.h					  \
+                       include/Utilities.h					  \
+                       include/XmlAnalysis.h					  \
+                       include/XmlConverter.h					  \
+                       include/XmlGeneral.h					  \
+                       include/XmlParser.h					  \
+              	       include/XmlPlane.h					  \
+              	       include/XmlScan.h					  \
+                       include/XmlWindow.h					  \
+                       include/Window.h 					  \
+                       include/WindowsManager.h 				  \
+                       ../Monicelli/include/Detector.h  			  \
+                       ../Monicelli/include/Event.h				  \
+                       ../Monicelli/include/EventHeader.h			  \
+              	       ../Monicelli/include/Geometry.h  			  \
+                       ../Monicelli/include/mdisubwindow.h			  \
+                       ../Monicelli/include/ROC.h				  \
+                       ../Monicelli/plugins/customCheckBox/customCheckBox.h	  \
+                       ../Monicelli/plugins/customCheckBox/customComboBox.h	  \
+                       ../Monicelli/plugins/customLineEdit/customLineEdit.h	  \
+                       ../Monicelli/plugins/customSpinBox/customSpinBox.h	  \
+                       ../Monicelli/plugins/customTableWidget/customTableWidget.h \
+                       ../Monicelli/plugins/customTextEdit/customTextEdit.h
 
-SOURCES       	     = src/EventManager.cpp		 			  \
+SOURCES       	     = src/Analysis.cpp 		 			  \
+                       src/AnalysisManager.cpp  	 			  \
+                       src/analyzerdlg.cpp		 			  \
+                       src/CalibrationsManager.cpp	 			  \
+                       src/CanvasWidget.cpp		 			  \
+                       src/Charge.cpp			 			  \
+                       src/ChargeUniMiB.cpp			 		  \
+                       src/Data.cpp			 			  \
+                       src/Efficiency.cpp		 			  \
+                       src/EfficiencyUniMiB.cpp		 			  \
+                       src/EventManager.cpp		 			  \
               	       src/EventConverter.cpp		 			  \
-              	       src/Data.cpp			 			  \
-              	       src/AnalysisManager.cpp  	 			  \
-              	       src/WindowsManager.cpp		 			  \
-              	       src/Window.cpp			 			  \
-              	       src/HistogramWindow.cpp  	 			  \
-              	       src/Analysis.cpp 		 			  \
-              	       src/Efficiency.cpp		 			  \
-              	       src/Charge.cpp			 			  \
-              	       src/Threader.cpp 		 			  \
-              	       src/ThreadUtilities.cpp  	 			  \
-                       src/PlanesMapping.cpp		 	 		  \
-              	       src/XmlAnalysis.cpp		 			  \
-              	       src/XmlGeneral.cpp		 			  \
-              	       src/analyzerdlg.cpp		 			  \
-              	       src/hnavigator.cpp		 			  \
-              	       src/mainwindow.cpp		 			  \
-              	       src/main.cpp			 			  \
-              	       src/XmlWindow.cpp		 			  \
-              	       src/XmlPlane.cpp 		 			  \
-              	       src/XmlParser.cpp		 			  \
-              	       src/Resolution.cpp		 			  \
-              	       src/XmlConverter.cpp		 			  \
-              	       src/Utilities.cpp		 			  \
-              	       src/CanvasWidget.cpp		 			  \
-              	       src/Tracks.cpp			 			  \
-              	       src/CalibrationsManager.cpp	 			  \
-              	       tmp/EventDict.C  		 			  \
-              	       tmp/EventHeaderDict.C		 			  \
-              	       ../Monicelli/src/EventHeader.cpp  			  \
-              	       ../Monicelli/src/Event.cpp	 			  \
-              	       ../Monicelli/src/Geometry.cpp	 			  \
-              	       ../Monicelli/src/Detector.cpp	 			  \
-              	       ../Monicelli/src/ROC.cpp 	 			  \
-              	       ../Monicelli/src/mdisubwindow.cpp 			  \
-              	       src/XmlScan.cpp  		 			  \
-    		       src/PixelMatrix.cpp		 			  \
-    		       src/TracksAfter.cpp		 			  \
-    		       src/fitParamManagerWidget.cpp	 			  \
-    		       src/PixelMatrixCut.cpp		 			  \
-    		       src/PixelMatrixCutButton.cpp	 			  \
-    		       src/HanSoloFitter.cpp		 			  \
-    		       src/HanSoloTreeBrowser.cpp	 			  \
+                       src/fitParamManagerWidget.cpp	 			  \
+                       src/HanSoloFitter.cpp		 			  \
+                       src/HanSoloTreeBrowser.cpp	 			  \
+                       src/HistogramWindow.cpp  	 			  \
+                       src/hnavigator.cpp		 			  \
                        src/hTreeBrowser.cpp                                       \
-                       src/qrootcanvas.cpp
+                       src/mainwindow.cpp		 			  \
+                       src/main.cpp			 			  \
+                       src/Tracks.cpp			 			  \
+                       src/TracksAfter.cpp		 			  \
+                       src/Threader.cpp 		 			  \
+              	       src/ThreadUtilities.cpp  	 			  \
+                       src/PixelMatrix.cpp		 			  \
+                       src/PixelMatrixCut.cpp		 			  \
+                       src/PixelMatrixCutButton.cpp	 			  \
+                       src/PlanesMapping.cpp		 	 		  \
+                       src/qrootcanvas.cpp                                        \
+                       src/Resolution.cpp		 			  \
+                       src/ResolutionUniMiB.cpp		 			  \
+                       src/Utilities.cpp		 			  \
+                       src/XmlAnalysis.cpp		 			  \
+                       src/XmlConverter.cpp		 			  \
+                       src/XmlGeneral.cpp		 			  \
+              	       src/XmlWindow.cpp		 			  \
+                       src/XmlParser.cpp		 			  \
+                       src/XmlPlane.cpp 		 			  \
+                       src/XmlScan.cpp  		 			  \
+                       src/Window.cpp			 			  \
+                       src/WindowsManager.cpp		 			  \
+                       tmp/EventDict.C  		 			  \
+              	       tmp/EventHeaderDict.C		 			  \
+                       ../Monicelli/src/Detector.cpp	 			  \
+                       ../Monicelli/src/Event.cpp	 			  \
+                       ../Monicelli/src/EventHeader.cpp  			  \
+              	       ../Monicelli/src/Geometry.cpp	 			  \
+                       ../Monicelli/src/mdisubwindow.cpp 			  \
+                       ../Monicelli/src/ROC.cpp
 
 RESOURCES    	     = Chewie.qrc
 
@@ -143,9 +150,10 @@ DEFINES      	     = USE_QT
 INCLUDEPATH  	    += ./include						  \
              	       ../Monicelli						  \
              	       ../Monicelli/include					  \
-             	       ../Monicelli/plugins/customLineEdit			  \
+                       ../Monicelli/plugins/customCheckBox			  \
+                       ../Monicelli/plugins/customComboBox			  \
+                       ../Monicelli/plugins/customLineEdit			  \
              	       ../Monicelli/plugins/customTextEdit			  \
-             	       ../Monicelli/plugins/customCheckBox			  \
              	       ../Monicelli/plugins/customSpinBox			  \
              	       ../Monicelli/plugins/customTableWidget			  \
              	       -pthread $(ROOTINC)			                  \
@@ -164,9 +172,10 @@ LIBS         	    += -L$(BOOSTLIB)						  \
 
 
 LIBS         	    += -L../Monicelli/plugins/libs				  \
-             	       -lcustomLineEdit 					  \
+                       -lcustomCheckBox 					  \
+                       -lcustomComboBox 					  \
+                       -lcustomLineEdit 					  \
              	       -lcustomTextEdit 					  \
-             	       -lcustomCheckBox 					  \
              	       -lcustomSpinBox  					  \
              	       -lcustomTableWidget					  \
 

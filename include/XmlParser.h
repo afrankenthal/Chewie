@@ -49,36 +49,37 @@ class XmlScan     ;
 class XmlParser
 {
 public:
-    XmlParser (void);
-    ~XmlParser(void);
+    typedef std::map< int, std::pair<std::string,XmlAnalysis*> > analysesDef_ ;
 
-    void                               destroy       (void            );
-    bool                               parseDocument (QString fileName);
-    void                               save          (QString fileName);
+                                    XmlParser     (void            );
+                                   ~XmlParser     (void            );
 
-    QDomDocument*                                        getDocument   (void            ){return document_        ;}
-    XmlConverter*                                        getConverter  (void            ){return theConverter_    ;}
-    XmlGeneral*                                          getGeneral    (void            ){return theGeneral_      ;}
-    XmlScan*                                             getScan       (void            ){return theScan_         ;}
-    unsigned int                                         getNPlanes    (void            ){return thePlanes_.size();}
-    QDomNodeList&                                        getPlanesNode (void            ){return planes_         ;}
-    std::map<std::string,XmlPlane*>                      getPlanes     (void            ){return thePlanes_       ;}
-    std::map< int, std::pair<std::string,XmlAnalysis*> > getAnalyses   (void            ){return theAnalyses_     ;}
+    void                            destroy       (void            );
+    bool                            parseDocument (QString fileName);
+    void                            save          (QString fileName);
 
-    XmlAnalysis *                                        getAnalysesFromString (std::string analysisName);
+    QDomDocument*                   getDocument   (void            ){return document_        ;}
+    XmlConverter*                   getConverter  (void            ){return theConverter_    ;}
+    XmlGeneral*                     getGeneral    (void            ){return theGeneral_      ;}
+    XmlScan*                        getScan       (void            ){return theScan_         ;}
+    unsigned int                    getNPlanes    (void            ){return thePlanes_.size();}
+    QDomNodeList&                   getPlanesNode (void            ){return planes_          ;}
+    std::map<std::string,XmlPlane*> getPlanes     (void            ){return thePlanes_       ;}
+    analysesDef_                    getAnalyses   (void            ){return theAnalyses_     ;}
+    XmlAnalysis *                   getAnalysesFromString (std::string analysisName);
 
 private:
-    QDomDocument*                                       document_    ;
-    QDomNode                                            rootNode_    ;
-    QDomNodeList                                        planes_      ;
+    QDomDocument*                   document_    ;
+    QDomNode                        rootNode_    ;
+    QDomNodeList                    planes_      ;
 
-    XmlConverter*                                       theConverter_;
-    XmlGeneral*                                         theGeneral_  ;
-    XmlScan*                                            theScan_     ;
-    std::map<std::string,XmlPlane*>                     thePlanes_   ;
-    std::map<int, std::pair<std::string,XmlAnalysis*> > theAnalyses_ ;
+    XmlConverter*                   theConverter_;
+    XmlGeneral*                     theGeneral_  ;
+    XmlScan*                        theScan_     ;
+    std::map<std::string,XmlPlane*> thePlanes_   ;
+    analysesDef_                    theAnalyses_ ;
 
-    std::stringstream                  ss_          ;
+    std::stringstream               ss_          ;
 };
 
 #endif // XMLPARSER_H

@@ -77,6 +77,8 @@ Charge::Charge(AnalysisManager* analysisManager, int nOfThreads) :
   , standardCutsClusterMinimumCharge_(0 			     )
   , standardCutsClusterMaximumCharge_(0 			     )
 {
+    STDLINE("Running Charge analysis",ACCyan) ;
+
     thePlaneMapping_ = new PlanesMapping();
 
     for(int p=0; p<4; p++)

@@ -44,19 +44,24 @@ class Data;
 class Analysis : public Threader
 {
 public:
+    typedef std::map<std::string,std::string> cutsMapDef_ ;
+              
                  Analysis               (AnalysisManager* analysisManager,
                                          int              nOfThreads = 1    );
                 ~Analysis               (void                               );
 
     virtual void beginJob               (void                               ){                     }
-    virtual void analyze                (const Data&, int                   ){                     }
+    virtual void analyze                (const            Data&, 
+                                         int                                ){                     }
     virtual void endJob                 (void                               ){                     }
     virtual int  runAnalysis            (void                               );
 
-    virtual void setCutsFormula         (std::map<std::string,std::string>,
+    virtual void setCutsFormula         (cutsMapDef_,
                                          std::vector<TTree*>                ){                     }
-    virtual bool passStandardCuts       (int , const Data&                  ) = 0;
-    virtual bool passBadPlanesCut       (int , const Data&                  ) = 0;
+    virtual bool passStandardCuts       (int, 
+                                         const            Data&             ) = 0;
+    virtual bool passBadPlanesCut       (int, 
+                                         const            Data&             ) = 0;
             void setDoNotDelete         (bool flag                          ){fDoNotDelete_ = flag;}
     virtual void getInFile              (TFile *                            ){                     }
 

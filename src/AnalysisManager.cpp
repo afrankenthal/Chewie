@@ -29,8 +29,11 @@
 
 #include "AnalysisManager.h"
 #include "Efficiency.h"
+#include "EfficiencyUniMiB.h"
 #include "Charge.h"
+#include "ChargeUniMiB.h"
 #include "Resolution.h"
+#include "ResolutionUniMiB.h"
 #include "Tracks.h"
 #include "TracksAfter.h"
 #include "Data.h"
@@ -115,7 +118,7 @@ int AnalysisManager::initializeTree(std::string fileName)
         threadedTrees_ [threadNumber][treeNumber] = treeFilesList_[fileName];
         if(threadedData_.find(threadNumber) == threadedData_.end()
                 && threadedData_[threadNumber].find(treeNumber) == threadedData_[threadNumber].end())
-            threadedData_  [threadNumber][treeNumber] = Data();
+                 threadedData_  [threadNumber][treeNumber] = Data();
 
         threadedData_  [threadNumber][treeNumber].setBranchAddress(treeFilesList_[fileName]);
         threadedCurrentEntries_[threadNumber][treeNumber] = 0     ;
@@ -353,18 +356,41 @@ void AnalysisManager::setupCalibrations(int dut)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-Analysis* AnalysisManager::addAnalysis(int analysisPriority, std::string analysisName)
+Analysis* AnalysisManager::addAnalysis(int         analysisPriority,
+                                       std::string analysisName,
+                                       std::string module)
 {
     if(analyses_.find(analysisPriority) == analyses_.end())
     {
         analyses_[analysisPriority].first = analysisName;
 
-        if(analysisName == "Charge")
-            analyses_[analysisPriority].second = new Charge      (this,nOfThreads_);
+        if(     analysisName == "Charge")
+            if( module == "UniMiB")
+            {
+                analyses_[analysisPriority].second = new ChargeUniMiB    (this,nOfThreads_);
+            }
+        else
+            {
+                analyses_[analysisPriority].second = new Charge          (this,nOfThreads_);
+            }
         else if(analysisName == "Efficiency")
-            analyses_[analysisPriority].second = new Efficiency  (this,nOfThreads_);
+            if( module == "UniMiB")
+            {
+                analyses_[analysisPriority].second = new EfficiencyUniMiB(this,nOfThreads_);
+            }
+        else
+            {
+                analyses_[analysisPriority].second = new Efficiency      (this,nOfThreads_);
+            }
         else if(analysisName == "Resolution")
-            analyses_[analysisPriority].second = new Resolution  (this,nOfThreads_);
+            if( module == "UniMiB")
+            {
+                analyses_[analysisPriority].second = new ResolutionUniMiB(this,nOfThreads_);
+            }
+        else
+            {
+                analyses_[analysisPriority].second = new Resolution      (this,nOfThreads_);
+            }
         else if(analysisName == "Tracks")
             analyses_[analysisPriority].second = new Tracks      (this,nOfThreads_);
         else if(analysisName == "TracksAfter")
@@ -475,7 +501,7 @@ void AnalysisManager::startSequence(void)
         {
             std::string analName = iy->second.first;
             int it = iy->second.second->getPriority();
-            addAnalysis(it, analName);
+            addAnalysis(it, analName, iy->second.second->getModule());
             analyses[it].second->setCutsList();
             ++totAnalysesToRun;
 
@@ -679,13 +705,13 @@ void AnalysisManager::setThreadEvents(void)
             for(std::map<int, TTree*>::iterator itt=it->second.begin(); itt!=it->second.end(); itt++)
             {
                 if(maxEvents_ <= 0)
-                    threadedMaxEntries_[it->first][itt->first] = itt->second->GetEntries();
+                        threadedMaxEntries_[it->first][itt->first] = itt->second->GetEntries();
                 else
                 {
-                    threadedMaxEntries_[it->first][itt->first] = maxEvents_/inFilesList_.size();
+                        threadedMaxEntries_[it->first][itt->first] = maxEvents_/inFilesList_.size();
                     if(it == threadedTrees_.begin() && itt == it->second.begin())
                         threadedMaxEntries_[it->first][itt->first] += maxEvents_%inFilesList_.size();
-                    if(threadedMaxEntries_[it->first][itt->first] > itt->second->GetEntries())
+                    if( threadedMaxEntries_[it->first][itt->first] > itt->second->GetEntries())
                         threadedMaxEntries_[it->first][itt->first] = itt->second->GetEntries();
                 }
                 totalEventsToProcess_ += threadedMaxEntries_[it->first][itt->first];

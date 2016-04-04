@@ -66,6 +66,8 @@ Resolution::Resolution(AnalysisManager* analysisManager, int nOfThreads) :
   , theXmlParser_     (analysisManager->getXmlParser())
 
 {
+    STDLINE("Running Resolution analysis",ACCyan) ;
+
     thePlaneMapping_ = new PlanesMapping();
     fSmearedSquare_ = new TF1("fSmearedSquare",Utilities::smearedSquare,-100,100,4);
 

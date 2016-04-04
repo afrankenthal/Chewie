@@ -62,6 +62,8 @@ EfficiencyUniMiB::EfficiencyUniMiB(AnalysisManager* analysisManager, int nOfThre
   theWindowsManager_(0),
   theXmlParser_(analysisManager->getXmlParser())
 {
+  STDLINE("Running EfficiencyUniMiB analysis",ACCyan) ;
+
   thePlaneMapping_ = new PlanesMapping();
 }
 

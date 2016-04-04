@@ -51,11 +51,13 @@ class XmlParser          ;
 class AnalysisManager
 {
 public:
-    AnalysisManager ();//TTree* tree = 0);
-    ~AnalysisManager(void);
+    typedef std::map<std::string,std::string> cutListDef_ ;
+
+                          AnalysisManager        (void                             );
+                         ~AnalysisManager        (void                             );
 
     void                  setCutsFormula         (std::string     analysisName,
-                                                  std::map<std::string,std::string> cutsList);
+                                                  cutListDef_     cutsList         );
     void                  setMaxNumberOfThreads  (int             value            );
     void                  setMaxEvents           (int             maxEvents        ){maxEvents_ = maxEvents;}
     void                  setThreadEvents        (void                             );
@@ -83,16 +85,18 @@ public:
     TFile*                getOutFile_            (void                             ){return outFile_                    ;}
 
 
-    int                   initializeTree         (std::string     fileName                  );
-    int                   initializeTrees        (void                                      );
-    void                  setupCalibrations      (int             dut                       );
-    Analysis*             addAnalysis            (int analysisPriority, std::string analysis);
-    void                  removeAnalysis         (std::string     analysis                  );
-    void                  resetAnalyses          (void                                      );
-    void                  startSequence          (void                                      );
-    void                  stopSequence           (void                                      );
-    void                  destroyWindow          (void                                      );
-    void                  setListOfRun           (Analysis *analysis                        );
+    int                   initializeTree         (std::string     fileName         );
+    int                   initializeTrees        (void                             );
+    void                  setupCalibrations      (int             dut              );
+    Analysis*             addAnalysis            (int             analysisPriority,
+                                                  std::string     analysis,
+                                                  std::string     module           );
+    void                  removeAnalysis         (std::string     analysis         );
+    void                  resetAnalyses          (void                             );
+    void                  startSequence          (void                             );
+    void                  stopSequence           (void                             );
+    void                  destroyWindow          (void                             );
+    void                  setListOfRun           (Analysis *analysis               );
 
     void                  setInFilesList         (std::vector<std::string> fileList);
     void                  addInFile              (std::string     fileName         );

@@ -70,6 +70,8 @@ Efficiency::Efficiency(AnalysisManager* analysisManager, int nOfThreads) :
   , theXmlParser_     (analysisManager->getXmlParser())
 
 {
+    STDLINE("Running Efficiency analysis",ACCyan) ;
+
     thePlaneMapping_ = new PlanesMapping();
 }
 

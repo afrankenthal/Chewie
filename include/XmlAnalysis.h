@@ -42,8 +42,8 @@ class XmlAnalysis /*: public QWidget */
 {
 /*    Q_OBJECT */
 public:
-    XmlAnalysis (QDomNode&  node);
-    ~XmlAnalysis(void           ){;}
+                                       XmlAnalysis             (QDomNode&           );
+                                      ~XmlAnalysis             (void                ){;}
 
     QDomNode&                          getNode                 (void                ){return thisNode_;}
     QDomNode&                          getCutNode              (std::string cutType );
@@ -51,9 +51,11 @@ public:
     std::string                        getCut                  (std::string cutType );
     std::map<std::string,std::string>  getCutsList             (void                ){return cutsList_;}
     std::string                        getMinHits              (void                );
+    std::string                        getModule               (void                );
     std::pair<bool,bool>               isParToLimit            (int         parID   );
     std::pair<std::string,std::string> getParLimits            (int         parID   );
-    std::pair<double,double>           getParLimits            (int parID, bool flag);
+    std::pair<double,double>           getParLimits            (int         parID,
+                                                                bool        flag    );
     int                                getPixelMinimumCharge   (void                );
     int                                getPixelMaximumCharge   (void                );
     int                                getClusterMinimumCharge (void                );
@@ -64,7 +66,6 @@ public:
     bool                               doFits                  (void                );
     bool                               applyStandardCuts       (void                );
     bool                               excludeBadPlanes        (void                );
-
     void                               setCutsList             (void                );
 
 private:

@@ -79,6 +79,8 @@ ChargeUniMiB::ChargeUniMiB(AnalysisManager* analysisManager, int nOfThreads) :
   standardCutsClusterMinimumCharge_(0),
   standardCutsClusterMaximumCharge_(0)
 {
+  STDLINE("Running ChargeUniMiB analysis",ACCyan) ;
+
   thePlaneMapping_ = new PlanesMapping();
 }
 

@@ -663,7 +663,7 @@ void AnalyzerDlg::on_openNtupleFilePB_clicked(void)
 //============================================================================================================================================
 void AnalyzerDlg::on_runAnalysisPB_clicked(void)
 {
-    ui->runAnalysisPB->setEnabled(false);
+                                                                                                                                                        ui->runAnalysisPB->setEnabled(false);
     if(ui->runMaxEventsCB->isChecked())
         theAnalysisManager_->setMaxEvents(ui->runMaxEventsSB->value());
     else
@@ -772,110 +772,113 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     theEventManager_   ->setConfiguration(theXmlParser_);
     theAnalysisManager_->setConfiguration(theXmlParser_);
 
-    ui->convertMaxThreadsSB->valueIsAttribute     (true                                                                                 );
-    ui->convertMaxThreadsSB->setValue             ("Threads",theXmlParser_->getConverter()->getNumberOfThreads()                        );
-    ui->convertMaxThreadsSB->assignXmlElement     (theXmlParser_->getConverter()->getNode()                                             );
+    ui->convertMaxThreadsSB->valueIsAttribute         (true										    	                                            );
+    ui->convertMaxThreadsSB->setValue                 ("Threads",theXmlParser_->getConverter()->getNumberOfThreads()			    	            );
+    ui->convertMaxThreadsSB->assignXmlElement         (theXmlParser_->getConverter()->getNode() 					    	                        );
 
-    ui->convertMaxEventsCB->setChecked            ("IsToLimit",theXmlParser_->getConverter()->isToLimit()                               );
-    ui->convertMaxEventsCB->assignXmlElement      (theXmlParser_->getConverter()->getNode()                                             );
+    ui->convertMaxEventsCB->setChecked                ("IsToLimit",theXmlParser_->getConverter()->isToLimit()				    	                );
+    ui->convertMaxEventsCB->assignXmlElement          (theXmlParser_->getConverter()->getNode() 					    	                        );
 
-    ui->convertMaxEventsSB->setEnabled(ui->convertMaxEventsCB->isChecked());
-    ui->convertMaxEventsSB->valueIsAttribute      (true                                                                                 );
-    ui->convertMaxEventsSB->setValue              ("MaxEvents",theXmlParser_->getConverter()->getMaxEvents()                            );
-    ui->convertMaxEventsSB->assignXmlElement      (theXmlParser_->getConverter()->getNode()                                             );
+    XmlParser::analysesDef_ theAnalyses = theXmlParser_->getAnalyses() ;
+    for(XmlParser::analysesDef_::iterator it=theAnalyses.begin(); it!=theAnalyses.end(); ++it)
+    {
+        if( it->second.first == "Charge"    ) ui->chargeModuleLE    ->setText(QString(it->second.second->getModule().c_str())) ;
+        if( it->second.first == "Efficiency") ui->efficiencyModuleLE->setText(QString(it->second.second->getModule().c_str())) ;
+        if( it->second.first == "Resolution") ui->resolutionModuleLE->setText(QString(it->second.second->getModule().c_str())) ;
+    }
 
-    ui->runMaxThreadsSB->valueIsAttribute         (true                                                                                 );
-    ui->runMaxThreadsSB->setValue                 ("Threads",theXmlParser_->getGeneral()->getNumberOfThreads()                          );
-    ui->runMaxThreadsSB->assignXmlElement         (theXmlParser_->getGeneral()->getNode()                                               );
+    ui->convertMaxEventsSB->setEnabled                (ui->convertMaxEventsCB->isChecked()                                                          );
+    ui->convertMaxEventsSB->valueIsAttribute          (true										    	                                            );
+    ui->convertMaxEventsSB->setValue                  ("MaxEvents",theXmlParser_->getConverter()->getMaxEvents()			    	                );
+    ui->convertMaxEventsSB->assignXmlElement          (theXmlParser_->getConverter()->getNode() 					    	                        );
 
-    ui->runMaxEventsCB->setChecked                ("IsToLimit",theXmlParser_->getGeneral()->isToLimit()                                 );
-    ui->runMaxEventsCB->assignXmlElement          (theXmlParser_->getGeneral()->getNode()                                               );
+    ui->runMaxThreadsSB->valueIsAttribute             (true										    	                                            );
+    ui->runMaxThreadsSB->setValue                     ("Threads",theXmlParser_->getGeneral()->getNumberOfThreads()			    	                );
+    ui->runMaxThreadsSB->assignXmlElement             (theXmlParser_->getGeneral()->getNode()						    	                        );
 
-    ui->runMaxEventsSB->setEnabled(ui->runMaxEventsCB->isChecked());
-    ui->runMaxEventsSB->valueIsAttribute          (true                                                                                 );
-    ui->runMaxEventsSB->setValue                  ("AnalysesMaxEvents",theXmlParser_->getGeneral()->getAnalysesMaxEvents()              );
-    ui->runMaxEventsSB->assignXmlElement          (theXmlParser_->getGeneral()->getNode()                                               );
+    ui->runMaxEventsCB->setChecked                    ("IsToLimit",theXmlParser_->getGeneral()->isToLimit()				    	                    );
+    ui->runMaxEventsCB->assignXmlElement              (theXmlParser_->getGeneral()->getNode()						    	                        );
 
-    ui->maxWindowEventsLE->textIsAttribute        (true                                                                                 );
-    ui->maxWindowEventsLE->setText                ("PreAnalysisMaxEvents",theXmlParser_->getGeneral()->getPreAnalysisMaxEvents()        );
-    ui->maxWindowEventsLE->assignXmlElement       (theXmlParser_->getGeneral()->getNode()                                               );
+    ui->runMaxEventsSB->setEnabled                    (ui->runMaxEventsCB->isChecked()                                                              );
+    ui->runMaxEventsSB->valueIsAttribute              (true										    	                                            );
+    ui->runMaxEventsSB->setValue                      ("AnalysesMaxEvents",theXmlParser_->getGeneral()->getAnalysesMaxEvents()  	    	        );
+    ui->runMaxEventsSB->assignXmlElement              (theXmlParser_->getGeneral()->getNode()						    	                        );
 
-    ui->tracksFitCB->setChecked                   ("DoFits",(theXmlParser_->getAnalysesFromString("Tracks"))->doFits()                  );
-    ui->tracksFitCB->assignXmlElement             ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                          );
-    ui->tracksCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Tracks"))->isToRun()                );
-    ui->tracksCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                          );
+    ui->maxWindowEventsLE->textIsAttribute            (true										    	                                            );
+    ui->maxWindowEventsLE->setText                    ("PreAnalysisMaxEvents",theXmlParser_->getGeneral()->getPreAnalysisMaxEvents()	    	    );
+    ui->maxWindowEventsLE->assignXmlElement           (theXmlParser_->getGeneral()->getNode()						    	                        );
 
-    ui->tracksafterFitCB->setChecked              ("DoFits",(theXmlParser_->getAnalysesFromString("TracksAfter"))->doFits()             );
-    ui->tracksafterFitCB->assignXmlElement        ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                     );
-    ui->tracksafterCB->setChecked                 ("IsToRun",(theXmlParser_->getAnalysesFromString("TracksAfter"))->isToRun()           );
-    ui->tracksafterCB->assignXmlElement           ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                     );
+    ui->tracksFitCB->setChecked                       ("DoFits",(theXmlParser_->getAnalysesFromString("Tracks"))->doFits()		    	            );
+    ui->tracksFitCB->assignXmlElement                 ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()			    	                );
+    ui->tracksCB->setChecked                          ("IsToRun",(theXmlParser_->getAnalysesFromString("Tracks"))->isToRun()		    	        );
+    ui->tracksCB->assignXmlElement                    ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()			    	                );
 
-    ui->efficiencyFitCB->setChecked               ("DoFits",(theXmlParser_->getAnalysesFromString("Efficiency"))->doFits()              );
-    ui->efficiencyFitCB->assignXmlElement         ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                      );
-    ui->efficiencyCB->setChecked                  ("IsToRun",(theXmlParser_->getAnalysesFromString("Efficiency"))->isToRun()            );
-    ui->efficiencyCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                      );
+    ui->tracksafterFitCB->setChecked                  ("DoFits",(theXmlParser_->getAnalysesFromString("TracksAfter"))->doFits() 	    	        );
+    ui->tracksafterFitCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode() 		    	            );
+    ui->tracksafterCB->setChecked                     ("IsToRun",(theXmlParser_->getAnalysesFromString("TracksAfter"))->isToRun()	    	        );
+    ui->tracksafterCB->assignXmlElement               ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode() 		    	            );
 
-    ui->efficiencyStandardCutsCB->setChecked      ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
-    ui->efficiencyStandardCutsCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
+    ui->efficiencyFitCB->setChecked                   ("DoFits",(theXmlParser_->getAnalysesFromString("Efficiency"))->doFits()  	    	        );
+    ui->efficiencyFitCB->assignXmlElement             ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()  		    	            );
+    ui->efficiencyCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Efficiency"))->isToRun()	    	        );
+    ui->efficiencyCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()  		    	            );
 
-    ui->chargeFitCB->setChecked                   ("DoFits",(theXmlParser_->getAnalysesFromString("Charge"))->doFits()                        );
-    ui->chargeFitCB->assignXmlElement             ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
-    ui->chargeCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Charge"))->isToRun()                        );
-    ui->chargeCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
+    ui->efficiencyStandardCutsCB->setChecked          ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Efficiency"))->applyStandardCuts());
+    ui->efficiencyStandardCutsCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                              );
 
-    ui->chargeStandardCutsCB->setChecked          ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Charge"))->applyStandardCuts()); //Irene
-    ui->chargeStandardCutsCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
+    ui->chargeFitCB->setChecked                       ("DoFits",(theXmlParser_->getAnalysesFromString("Charge"))->doFits()			                );
+    ui->chargeFitCB->assignXmlElement                 ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()				                    );
+    ui->chargeCB->setChecked                          ("IsToRun",(theXmlParser_->getAnalysesFromString("Charge"))->isToRun()			            );
+    ui->chargeCB->assignXmlElement                    ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()				                    );
 
-    ui->resolutionFitCB->setChecked                  ("DoFits",(theXmlParser_->getAnalysesFromString("Resolution"))->doFits()                    );
-    ui->resolutionFitCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
-    ui->resolutionCB->setChecked                  ("IsToRun",(theXmlParser_->getAnalysesFromString("Resolution"))->isToRun()                    );
-    ui->resolutionCB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
+    ui->chargeStandardCutsCB->setChecked              ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Charge"))->applyStandardCuts()    ); //Irene
+    ui->chargeStandardCutsCB->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
 
-    ui->resolutionStandardCutsCB->setChecked      ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Resolution"))->applyStandardCuts());
-    ui->resolutionStandardCutsCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Resolution"))->getNode());
+    ui->resolutionFitCB->setChecked                   ("DoFits",(theXmlParser_->getAnalysesFromString("Resolution"))->doFits()  		            );
+    ui->resolutionFitCB->assignXmlElement             ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()  			                );
+    ui->resolutionCB->setChecked                      ("IsToRun",(theXmlParser_->getAnalysesFromString("Resolution"))->isToRun()		            );
+    ui->resolutionCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()  			                );
 
-    ui->windowsFitCB->setChecked                     ("DoFits",(theXmlParser_->getAnalysesFromString("Windows"))->doFits()                       );
-    ui->windowsFitCB->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()                                 );
-    ui->windowsCB->setChecked                     ("IsToRun",(theXmlParser_->getAnalysesFromString("Windows"))->isToRun()                       );
-    ui->windowsCB->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()                                 );
+    ui->resolutionStandardCutsCB->setChecked          ("ApplyStandardCuts",(theXmlParser_->getAnalysesFromString("Resolution"))->applyStandardCuts());
+    ui->resolutionStandardCutsCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
 
-    ui->priorityWindowsSB->valueIsAttribute       (true                                                                                         );
-    ui->priorityWindowsSB->setValue               ("Priority", (theXmlParser_->getAnalysesFromString("Windows"))->getPriority()                 );
-    ui->priorityWindowsSB->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()                                 );
+    ui->windowsFitCB->setChecked                      ("DoFits",(theXmlParser_->getAnalysesFromString("Windows"))->doFits()			                );
+    ui->windowsFitCB->assignXmlElement                ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()				                    );
+    ui->windowsCB->setChecked                         ("IsToRun",(theXmlParser_->getAnalysesFromString("Windows"))->isToRun()			            );
+    ui->windowsCB->assignXmlElement                   ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()				                    );
 
+    ui->priorityWindowsSB->valueIsAttribute           (true											                                                );
+    ui->priorityWindowsSB->setValue                   ("Priority", (theXmlParser_->getAnalysesFromString("Windows"))->getPriority()		            );
+    ui->priorityWindowsSB->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Windows"))->getNode()				                    );
 
-    ui->priorityChargeSB->valueIsAttribute        (true                                                                                         );
-    ui->priorityChargeSB->setValue                ("Priority", (theXmlParser_->getAnalysesFromString("Charge"))->getPriority()                  );
-    ui->priorityChargeSB->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
+    ui->priorityChargeSB->valueIsAttribute            (true											                                                );
+    ui->priorityChargeSB->setValue                    ("Priority", (theXmlParser_->getAnalysesFromString("Charge"))->getPriority()		            );
+    ui->priorityChargeSB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()				                    );
 
+    ui->priorityEfficiencySB->valueIsAttribute        (true											                                                );
+    ui->priorityEfficiencySB->setValue                ("Priority", (theXmlParser_->getAnalysesFromString("Efficiency"))->getPriority()  	        );
+    ui->priorityEfficiencySB->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()  			                );
 
-    ui->priorityEfficiencySB->valueIsAttribute    (true                                                                                         );
-    ui->priorityEfficiencySB->setValue            ("Priority", (theXmlParser_->getAnalysesFromString("Efficiency"))->getPriority()              );
-    ui->priorityEfficiencySB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                              );
+    ui->priorityResolutionSB->valueIsAttribute        (true											                                                );
+    ui->priorityResolutionSB->setValue                ("Priority", (theXmlParser_->getAnalysesFromString("Resolution"))->getPriority()  	        );
+    ui->priorityResolutionSB->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()  			                );
 
+    ui->priorityTracksSB->valueIsAttribute            (true											                                                );
+    ui->priorityTracksSB->setValue                    ("Priority", (theXmlParser_->getAnalysesFromString("Tracks"))->getPriority()		            );
+    ui->priorityTracksSB->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()				                    );
 
-    ui->priorityResolutionSB->valueIsAttribute    (true                                                                                         );
-    ui->priorityResolutionSB->setValue            ("Priority", (theXmlParser_->getAnalysesFromString("Resolution"))->getPriority()              );
-    ui->priorityResolutionSB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
-
-
-    ui->priorityTracksSB->valueIsAttribute        (true                                                                                         );
-    ui->priorityTracksSB->setValue                ("Priority", (theXmlParser_->getAnalysesFromString("Tracks"))->getPriority()                  );
-    ui->priorityTracksSB->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Tracks"))->getNode()                                  );
-
-
-    ui->priorityTracksAfterSB->valueIsAttribute   (true                                                                                         );
-    ui->priorityTracksAfterSB->setValue           ("Priority", (theXmlParser_->getAnalysesFromString("TracksAfter"))->getPriority()             );
-    ui->priorityTracksAfterSB->assignXmlElement   ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode()                             );
+    ui->priorityTracksAfterSB->valueIsAttribute       (true											                                                );
+    ui->priorityTracksAfterSB->setValue               ("Priority", (theXmlParser_->getAnalysesFromString("TracksAfter"))->getPriority() 	        );
+    ui->priorityTracksAfterSB->assignXmlElement       ((theXmlParser_->getAnalysesFromString("TracksAfter"))->getNode() 			                );
 
     ui->chargeExcludeBadPlanesCB->setChecked          ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Charge"))->excludeBadPlanes()      );
     ui->chargeExcludeBadPlanesCB->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Charge"))->getNode()                                  );
 
-    ui->efficiencyExcludeBadPlanesCB->setChecked      ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Efficiency"))->excludeBadPlanes()      );
-    ui->efficiencyExcludeBadPlanesCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                                  );
+    ui->efficiencyExcludeBadPlanesCB->setChecked      ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Efficiency"))->excludeBadPlanes()  );
+    ui->efficiencyExcludeBadPlanesCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode()                              );
 
-    ui->resolutionExcludeBadPlanesCB->setChecked      ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Resolution"))->excludeBadPlanes()      );
-    ui->resolutionExcludeBadPlanesCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                                  );
+    ui->resolutionExcludeBadPlanesCB->setChecked      ("ExcludeBadPlanes",(theXmlParser_->getAnalysesFromString("Resolution"))->excludeBadPlanes()  );
+    ui->resolutionExcludeBadPlanesCB->assignXmlElement((theXmlParser_->getAnalysesFromString("Resolution"))->getNode()                              );
 
     ui->chargeBadPlanesHitsSB->valueIsAttribute       (true                                                                                         );
     ui->chargeBadPlanesHitsSB->setValue               ("BadPlanesHits", (theXmlParser_->getAnalysesFromString("Charge"))->getBadPlanesCut()         );
@@ -901,105 +904,105 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     ui->chargeMainCutsLE->setText                     ("cutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("main cut")             );
     ui->chargeMainCutsLE->assignXmlElement            ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("main cut")                     );
 
-    ui->chargeCuts2LE->textIsAttribute            (true                                                                                         );
-    ui->chargeCuts2LE->setText                    ("cutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell charge")          );
-    ui->chargeCuts2LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell charge")                  );
+    ui->chargeCuts2LE->textIsAttribute                (true											                                                );
+    ui->chargeCuts2LE->setText                        ("cutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell charge")	        );
+    ui->chargeCuts2LE->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell charge")		            );
 
-    ui->chargeCuts3LE->textIsAttribute            (true                                                                                         );
-    ui->chargeCuts3LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell charge X")        );
-    ui->chargeCuts3LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell charge X")                );
+    ui->chargeCuts3LE->textIsAttribute                (true											                                                );
+    ui->chargeCuts3LE->setText                        ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell charge X")	    );
+    ui->chargeCuts3LE->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell charge X")		        );
 
-    ui->chargeCuts4LE->textIsAttribute            (true                                                                                         );
-    ui->chargeCuts4LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell charge Y")        );
-    ui->chargeCuts4LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell charge Y")                );
+    ui->chargeCuts4LE->textIsAttribute                (true											                                                );
+    ui->chargeCuts4LE->setText                        ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell charge Y")	    );
+    ui->chargeCuts4LE->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell charge Y")		        );
 
-    ui->chargeCuts5LE->textIsAttribute            (true                                                                                         );
-    ui->chargeCuts5LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cluster Landau")       );
-    ui->chargeCuts5LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cluster Landau")               );
+    ui->chargeCuts5LE->textIsAttribute                (true											                                                );
+    ui->chargeCuts5LE->setText                        ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cluster Landau")	    );
+    ui->chargeCuts5LE->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cluster Landau")		        );
 
-    ui->chargeCuts6LE->textIsAttribute            (true                                                                                         );
-    ui->chargeCuts6LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell Landau")          );
-    ui->chargeCuts6LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell Landau")                  );
+    ui->chargeCuts6LE->textIsAttribute                (true											                                                );
+    ui->chargeCuts6LE->setText                        ("CutString",(theXmlParser_->getAnalysesFromString("Charge"))->getCut("cell Landau")	        );
+    ui->chargeCuts6LE->assignXmlElement               ((theXmlParser_->getAnalysesFromString("Charge"))->getCutNode("cell Landau")		            );
 
-    ui->resolutionMainCutsLE->textIsAttribute     (true                                                                                         );
-    ui->resolutionMainCutsLE->setText             ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("main cut")         );
-    ui->resolutionMainCutsLE->assignXmlElement    ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("main cut")                 );
+    ui->resolutionMainCutsLE->textIsAttribute         (true											                                                );
+    ui->resolutionMainCutsLE->setText                 ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("main cut")	        );
+    ui->resolutionMainCutsLE->assignXmlElement        ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("main cut")		            );
 
-    ui->resolutionCuts2LE->textIsAttribute        (true                                                                                         );
-    ui->resolutionCuts2LE->setText                ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("X resolution")     );
-    ui->resolutionCuts2LE->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("X resolution")             );
+    ui->resolutionCuts2LE->textIsAttribute            (true											                                                );
+    ui->resolutionCuts2LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("X resolution")     );
+    ui->resolutionCuts2LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("X resolution") 	        );
 
-    ui->resolutionCuts3LE->textIsAttribute        (true                                                                                         );
-    ui->resolutionCuts3LE->setText                ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("Y resolution")     );
-    ui->resolutionCuts3LE->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("Y resolution")             );
+    ui->resolutionCuts3LE->textIsAttribute            (true											                                                );
+    ui->resolutionCuts3LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("Y resolution")     );
+    ui->resolutionCuts3LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("Y resolution") 	        );
 
-    ui->resolutionCuts4LE->textIsAttribute        (true                                                                                         );
-    ui->resolutionCuts4LE->setText                ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("errors")           );
-    ui->resolutionCuts4LE->assignXmlElement       ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("errors")                   );
+    ui->resolutionCuts4LE->textIsAttribute            (true											                                                );
+    ui->resolutionCuts4LE->setText                    ("CutString",(theXmlParser_->getAnalysesFromString("Resolution"))->getCut("errors")	        );
+    ui->resolutionCuts4LE->assignXmlElement           ((theXmlParser_->getAnalysesFromString("Resolution"))->getCutNode("errors")		            );
 
-    ui->lowerColDUT0LE->textIsAttribute           (false                                                                                        );
-    ui->lowerColDUT0LE->setText                   ("LowerCol",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getLowerCol()                  );
-    ui->lowerColDUT0LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()                                 );
+    ui->lowerColDUT0LE->textIsAttribute               (false											                                            );
+    ui->lowerColDUT0LE->setText                       ("LowerCol",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getLowerCol()		            );
+    ui->lowerColDUT0LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()				                    );
 
-    ui->higherColDUT0LE->textIsAttribute          (false                                                                                        );
-    ui->higherColDUT0LE->setText                  ("HigherCol",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getHigherCol()                );
-    ui->higherColDUT0LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()                                 );
+    ui->higherColDUT0LE->textIsAttribute              (false											                                            );
+    ui->higherColDUT0LE->setText                      ("HigherCol",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getHigherCol()		        );
+    ui->higherColDUT0LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()				                    );
 
-    ui->lowerRowDUT0LE->textIsAttribute           (false                                                                                        );
-    ui->lowerRowDUT0LE->setText                   ("LowerRow",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getLowerRow()                  );
-    ui->lowerRowDUT0LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()                                 );
+    ui->lowerRowDUT0LE->textIsAttribute               (false											                                            );
+    ui->lowerRowDUT0LE->setText                       ("LowerRow",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getLowerRow()		            );
+    ui->lowerRowDUT0LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()				                    );
 
-    ui->higherRowDUT0LE->textIsAttribute          (false                                                                                        );
-    ui->higherRowDUT0LE->setText                  ("HigherRow",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getHigherRow()                );
-    ui->higherRowDUT0LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()                                 );
+    ui->higherRowDUT0LE->textIsAttribute              (false											                                            );
+    ui->higherRowDUT0LE->setText                      ("HigherRow",(theXmlParser_->getPlanes())["Dut0"]->getWindow()->getHigherRow()		        );
+    ui->higherRowDUT0LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut0"]->getWindow()->getNode()				                    );
 
-    ui->lowerColDUT1LE->textIsAttribute           (false                                                                                        );
-    ui->lowerColDUT1LE->setText                   ("LowerCol",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getLowerCol()                  );
-    ui->lowerColDUT1LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()                                 );
+    ui->lowerColDUT1LE->textIsAttribute               (false											                                            );
+    ui->lowerColDUT1LE->setText                       ("LowerCol",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getLowerCol()		            );
+    ui->lowerColDUT1LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()				                    );
 
-    ui->higherColDUT1LE->textIsAttribute          (false                                                                                        );
-    ui->higherColDUT1LE->setText                  ("HigherCol",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getHigherCol()                );
-    ui->higherColDUT1LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()                                 );
+    ui->higherColDUT1LE->textIsAttribute              (false											                                            );
+    ui->higherColDUT1LE->setText                      ("HigherCol",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getHigherCol()		        );
+    ui->higherColDUT1LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()				                    );
 
-    ui->lowerRowDUT1LE->textIsAttribute           (false                                                                                        );
-    ui->lowerRowDUT1LE->setText                   ("LowerRow",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getLowerRow()                  );
-    ui->lowerRowDUT1LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()                                 );
+    ui->lowerRowDUT1LE->textIsAttribute               (false											                                            );
+    ui->lowerRowDUT1LE->setText                       ("LowerRow",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getLowerRow()		            );
+    ui->lowerRowDUT1LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()				                    );
 
-    ui->higherRowDUT1LE->textIsAttribute          (false                                                                                        );
-    ui->higherRowDUT1LE->setText                  ("HigherRow",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getHigherRow()                );
-    ui->higherRowDUT1LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()                                 );
+    ui->higherRowDUT1LE->textIsAttribute              (false											                                            );
+    ui->higherRowDUT1LE->setText                      ("HigherRow",(theXmlParser_->getPlanes())["Dut1"]->getWindow()->getHigherRow()		        );
+    ui->higherRowDUT1LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut1"]->getWindow()->getNode()				                    );
 
-    ui->lowerColDUT2LE->textIsAttribute           (false                                                                                        );
-    ui->lowerColDUT2LE->setText                   ("LowerCol",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getLowerCol()                  );
-    ui->lowerColDUT2LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
+    ui->lowerColDUT2LE->textIsAttribute               (false											                                            );
+    ui->lowerColDUT2LE->setText                       ("LowerCol",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getLowerCol()		            );
+    ui->lowerColDUT2LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()				                    );
 
-    ui->higherColDUT2LE->textIsAttribute          (false                                                                                        );
-    ui->higherColDUT2LE->setText                  ("HigherCol",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getHigherCol()                );
-    ui->higherColDUT2LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
+    ui->higherColDUT2LE->textIsAttribute              (false											                                            );
+    ui->higherColDUT2LE->setText                      ("HigherCol",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getHigherCol()		        );
+    ui->higherColDUT2LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()				                    );
 
-    ui->lowerRowDUT2LE->textIsAttribute           (false                                                                                        );
-    ui->lowerRowDUT2LE->setText                   ("LowerRow",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getLowerRow()                  );
-    ui->lowerRowDUT2LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
+    ui->lowerRowDUT2LE->textIsAttribute               (false											                                            );
+    ui->lowerRowDUT2LE->setText                       ("LowerRow",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getLowerRow()		            );
+    ui->lowerRowDUT2LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()				                    );
 
-    ui->higherRowDUT2LE->textIsAttribute          (false                                                                                        );
-    ui->higherRowDUT2LE->setText                  ("HigherRow",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getHigherRow()                );
-    ui->higherRowDUT2LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()                                 );
+    ui->higherRowDUT2LE->textIsAttribute              (false											                                            );
+    ui->higherRowDUT2LE->setText                      ("HigherRow",(theXmlParser_->getPlanes())["Dut2"]->getWindow()->getHigherRow()		        );
+    ui->higherRowDUT2LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut2"]->getWindow()->getNode()				                    );
 
-    ui->lowerColDUT3LE->textIsAttribute           (false                                                                                        );
-    ui->lowerColDUT3LE->setText                   ("LowerCol",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getLowerCol()                  );
-    ui->lowerColDUT3LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
+    ui->lowerColDUT3LE->textIsAttribute               (false											                                            );
+    ui->lowerColDUT3LE->setText                       ("LowerCol",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getLowerCol()		            );
+    ui->lowerColDUT3LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()				                    );
 
-    ui->higherColDUT3LE->textIsAttribute          (false                                                                                        );
-    ui->higherColDUT3LE->setText                  ("HigherCol",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getHigherCol()                );
-    ui->higherColDUT3LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
+    ui->higherColDUT3LE->textIsAttribute              (false											                                            );
+    ui->higherColDUT3LE->setText                      ("HigherCol",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getHigherCol()		        );
+    ui->higherColDUT3LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()				                    );
 
-    ui->lowerRowDUT3LE->textIsAttribute           (false                                                                                        );
-    ui->lowerRowDUT3LE->setText                   ("LowerRow",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getLowerRow()                  );
-    ui->lowerRowDUT3LE->assignXmlElement          ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
+    ui->lowerRowDUT3LE->textIsAttribute               (false											                                            );
+    ui->lowerRowDUT3LE->setText                       ("LowerRow",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getLowerRow()		            );
+    ui->lowerRowDUT3LE->assignXmlElement              ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()				                    );
 
-    ui->higherRowDUT3LE->textIsAttribute          (false                                                                                        );
-    ui->higherRowDUT3LE->setText                  ("HigherRow",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getHigherRow()                );
-    ui->higherRowDUT3LE->assignXmlElement         ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()                                 );
+    ui->higherRowDUT3LE->textIsAttribute              (false											                                            );
+    ui->higherRowDUT3LE->setText                      ("HigherRow",(theXmlParser_->getPlanes())["Dut3"]->getWindow()->getHigherRow()		        );
+    ui->higherRowDUT3LE->assignXmlElement             ((theXmlParser_->getPlanes())["Dut3"]->getWindow()->getNode()				                    );
 
 
     std::string whichDut = "";

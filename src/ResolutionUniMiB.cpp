@@ -64,6 +64,8 @@ ResolutionUniMiB::ResolutionUniMiB(AnalysisManager* analysisManager, int nOfThre
   theXmlParser_(analysisManager->getXmlParser())
   
 {
+  STDLINE("Running ResolutionUniMiB analysis",ACCyan) ;
+
   thePlaneMapping_ = new PlanesMapping();
 }
 

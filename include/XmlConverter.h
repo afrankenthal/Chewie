@@ -32,18 +32,19 @@
 
 #include <QWidget>
 #include <QDomNode>
+#include <MessageTools.h>
 
 class XmlConverter /*: public QWidget*/
 {
 /*    Q_OBJECT */
 public:
-    XmlConverter (QDomNode & node);
-    ~XmlConverter(void){;}
+                XmlConverter       (QDomNode &);
+               ~XmlConverter       (void      ){;}
 
-    bool        isToLimit          (void);
-    std::string getMaxEvents       (void){return thisNode_.toElement().attribute("MaxEvents").toStdString();}
-    std::string getNumberOfThreads (void){return thisNode_.toElement().attribute("Threads").toStdString()  ;}
-    QDomNode&   getNode            (void){return thisNode_                                                 ;}
+    bool        isToLimit          (void      );
+    std::string getMaxEvents       (void      ){return thisNode_.toElement().attribute("MaxEvents").toStdString();}
+    std::string getNumberOfThreads (void      ){return thisNode_.toElement().attribute("Threads"  ).toStdString();}
+    QDomNode&   getNode            (void      ){return thisNode_                                                 ;}
 
 private:
     QDomNode thisNode_;

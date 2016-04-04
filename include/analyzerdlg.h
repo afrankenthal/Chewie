@@ -55,25 +55,26 @@ class AnalyzerDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit AnalyzerDlg (QWidget *parent = 0);
-            ~AnalyzerDlg (void               );
+    typedef std::map<std::string,TFile*> openFilesDef_ ;
 
-    std::map<std::string,TFile*> getOpenFiles (void        );
+    explicit          AnalyzerDlg        (QWidget * parent = 0     );
+                     ~AnalyzerDlg        (void                     );
 
-    AnalysisManager * getAnalysisManager () {return theAnalysisManager_;}
+    openFilesDef_     getOpenFiles       (void                     );
 
-    static QString      getEnvPath      (QString environmentName);
+    AnalysisManager * getAnalysisManager (void                     ) {return theAnalysisManager_;}
+
+    static QString    getEnvPath         (QString   environmentName);
 
 private:
-    void         setInnerGeometry(void                   );
-    void         openGeoFile     (QString fileName       );
-    void         initXml         (void                   );
-    static void* threaderMethod  (void* myClass,
-                                  void* whatToRun,
-                                  int   arg0=0           );
-    void checkBoxHandler         (void                   );
-
-    void         setPrioritiesFromUi ();
+    void              setInnerGeometry   (void                    );
+    void              openGeoFile        (QString   fileName      );
+    void              initXml            (void                    );
+    static void     * threaderMethod     (void    * myClass,
+                                          void    * whatToRun,
+                                          int       arg0=0        );
+    void              checkBoxHandler    (void                    );
+    void              setPrioritiesFromUi(void                    );
 
     Ui::AnalyzerDlg             *ui                     ;
     QTimer                      *theTimer_              ;

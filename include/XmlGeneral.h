@@ -32,19 +32,20 @@
 
 #include <QWidget>
 #include <QDomNode>
+#include <MessageTools.h>
 
 class XmlGeneral /*: public QWidget */
 {
 /*    Q_OBJECT */
 public:
-    XmlGeneral (QDomNode & node);
-    ~XmlGeneral(void           ){;}
+                XmlGeneral              (QDomNode &);
+               ~XmlGeneral              (void      ){;}
 
-    bool        isToLimit               (void);
-    std::string getAnalysesMaxEvents    (void){return thisNode_.toElement().attribute("AnalysesMaxEvents").toStdString()   ;}
-    std::string getNumberOfThreads      (void){return thisNode_.toElement().attribute("Threads").toStdString()             ;}
-    std::string getPreAnalysisMaxEvents (void){return thisNode_.toElement().attribute("PreAnalysisMaxEvents").toStdString();}
-    QDomNode&   getNode                 (void){return thisNode_                                                            ;}
+    bool        isToLimit               (void      );
+    std::string getAnalysesMaxEvents    (void      ){return thisNode_.toElement().attribute("AnalysesMaxEvents"   ).toStdString();}
+    std::string getNumberOfThreads      (void      ){return thisNode_.toElement().attribute("Threads"             ).toStdString();}
+    std::string getPreAnalysisMaxEvents (void      ){return thisNode_.toElement().attribute("PreAnalysisMaxEvents").toStdString();}
+    QDomNode&   getNode                 (void      ){return thisNode_                                                            ;}
 
 private:
     QDomNode thisNode_;
