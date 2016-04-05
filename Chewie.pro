@@ -87,7 +87,7 @@ HEADERS       	     = include/analyzerdlg.h					  \
                        ../Monicelli/include/mdisubwindow.h			  \
                        ../Monicelli/include/ROC.h				  \
                        ../Monicelli/plugins/customCheckBox/customCheckBox.h	  \
-                       ../Monicelli/plugins/customCheckBox/customComboBox.h	  \
+                       ../Monicelli/plugins/customComboBox/customComboBox.h	  \
                        ../Monicelli/plugins/customLineEdit/customLineEdit.h	  \
                        ../Monicelli/plugins/customSpinBox/customSpinBox.h	  \
                        ../Monicelli/plugins/customTableWidget/customTableWidget.h \
