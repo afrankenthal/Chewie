@@ -578,8 +578,14 @@ void ResolutionUniMiB::analyze(const Data& data, int threadNumber)
 //=======================================================================
 void ResolutionUniMiB::endJob(void)
 {
+  std::stringstream ss;
+
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
+      std::string planeName = thePlaneMapping_->getPlaneName(p);
+      ss.str("") ; ss << "Adding threads for plane " << p ;
+      STDLINE(ss.str().c_str(),ACYellow) ;
+
       ADD_THREADED(hXResiduals_                 [p]);
       ADD_THREADED(hYResiduals_                 [p]);
 
@@ -598,6 +604,23 @@ void ResolutionUniMiB::endJob(void)
       ADD_THREADED(hCorrelationsResidualXvsY_   [p]);
       ADD_THREADED(hCorrelationsResidualYvsY_   [p]);
       ADD_THREADED(hCorrelationsResidualYvsX_   [p]);
+
+      STDLINE("Threading phase completed",ACGreen);
+
+
+      STDLINE("Setting styles...",ACWhite);
+
+      hCorrelationsResidualXvsX_   [p]->SetMarkerStyle(20);
+      hCorrelationsResidualXvsX_   [p]->SetMarkerSize(0.6);
+
+      hCorrelationsResidualXvsY_   [p]->SetMarkerStyle(20);
+      hCorrelationsResidualXvsY_   [p]->SetMarkerSize(0.6);
+
+      hCorrelationsResidualYvsY_   [p]->SetMarkerStyle(20);
+      hCorrelationsResidualYvsY_   [p]->SetMarkerSize(0.6);
+
+      hCorrelationsResidualYvsX_   [p]->SetMarkerStyle(20);
+      hCorrelationsResidualYvsX_   [p]->SetMarkerSize(0.6);
 
 
       hXResiduals_                 [p]->GetXaxis()->SetTitle("x residual (um)");
@@ -620,6 +643,7 @@ void ResolutionUniMiB::endJob(void)
 
       h2DCorrelationsResidualYvsX_ [p]->GetXaxis()->SetTitle("x (um)");
       h2DCorrelationsResidualYvsX_ [p]->GetYaxis()->SetTitle("y residual (um)");
+
 
       hCorrelationsResidualXvsX_   [p]->GetXaxis()->SetTitle("x (um)");
       hCorrelationsResidualXvsX_   [p]->GetYaxis()->SetTitle("x residual (um)");
@@ -649,7 +673,6 @@ void ResolutionUniMiB::endJob(void)
 
       std::string hName;
       std::string hTitle;
-      std::string planeName = thePlaneMapping_->getPlaneName(p);
 
       theAnalysisManager_->cd("Resolution/" + planeName + "/Correlations");
 

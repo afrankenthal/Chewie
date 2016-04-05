@@ -795,8 +795,6 @@ void ChargeUniMiB::endJob(void)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       std::string planeName = thePlaneMapping_->getPlaneName(p);
-
-
       ss.str("") ; ss << "Adding threads for plane " << p ;
       STDLINE(ss.str().c_str(),ACYellow) ;
 
@@ -852,10 +850,7 @@ void ChargeUniMiB::endJob(void)
       h4CellsCharge_                [p]->Divide(h4CellsChargeNorm_           [p]);
 
 
-      setErrorsBar(p);
-
-
-      STDLINE("Setting styles...",ACWhite) ;
+      STDLINE("Setting styles...",ACWhite);
 
       float xPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
       float yPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
@@ -882,23 +877,15 @@ void ChargeUniMiB::endJob(void)
 
       h1DXcellCharge_            [p]->SetMarkerStyle(20);
       h1DXcellCharge_            [p]->SetMarkerSize(0.6);
-      h1DXcellCharge_            [p]->SetMarkerColor(kBlack);
-      h1DXcellCharge_            [p]->SetLineColor(kBlack);
 
       h1DYcellCharge_            [p]->SetMarkerStyle(20);
       h1DYcellCharge_            [p]->SetMarkerSize(0.6);
-      h1DYcellCharge_            [p]->SetMarkerColor(kBlack);
-      h1DYcellCharge_            [p]->SetLineColor(kBlack);
 
       h1DXcellChargeSecondHit_   [p]->SetMarkerStyle(20);
       h1DXcellChargeSecondHit_   [p]->SetMarkerSize(0.6);
-      h1DXcellChargeSecondHit_   [p]->SetMarkerColor(kBlack);
-      h1DXcellChargeSecondHit_   [p]->SetLineColor(kBlack);
 
       h1DYcellChargeSecondHit_   [p]->SetMarkerStyle(20);
       h1DYcellChargeSecondHit_   [p]->SetMarkerSize(0.6);
-      h1DYcellChargeSecondHit_   [p]->SetMarkerColor(kBlack);
-      h1DYcellChargeSecondHit_   [p]->SetLineColor(kBlack);
 
 
       hClusterSize_              [p]->GetXaxis()->SetTitle("cluster size"      );
@@ -974,6 +961,8 @@ void ChargeUniMiB::endJob(void)
 
       h1DYcellChargeAsimmetryInv_[p]->GetXaxis()->SetTitle("Asimmetry"         );
       h1DYcellChargeAsimmetryInv_[p]->GetYaxis()->SetTitle("short pitch (um)"  );
+
+      setErrorsBar(p);
 
 
       STDLINE("Fitting phase",ACWhite);

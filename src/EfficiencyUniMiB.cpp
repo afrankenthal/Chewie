@@ -180,6 +180,10 @@ void EfficiencyUniMiB::endJob(void)
 
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
+      std::string planeName = thePlaneMapping_->getPlaneName(p);
+      ss.str("") ; ss << "Adding threads for plane " << p ;
+      STDLINE(ss.str().c_str(),ACYellow) ;
+
       ADD_THREADED(hEfficiency_                	      [p]);
       ADD_THREADED(hEfficiencyNorm_            	      [p]);
 
@@ -212,6 +216,10 @@ void EfficiencyUniMiB::endJob(void)
       ADD_THREADED(h1DYcellEfficiencySecondHit_	      [p]);
       ADD_THREADED(h1DYcellEfficiencyNorm_     	      [p]);
 
+      STDLINE("Threading phase completed",ACGreen);
+
+
+      STDLINE("Filling phase...",ACWhite);
 
       hEfficiency_                 [p]->Divide(hEfficiencyNorm_                 [p]);
 
@@ -236,6 +244,21 @@ void EfficiencyUniMiB::endJob(void)
       h1DYcellEfficiencyFirstHit_  [p]->Divide(h1DYcellEfficiencyNorm_	        [p]);
 
       h1DYcellEfficiencySecondHit_ [p]->Divide(h1DYcellEfficiencyNorm_	        [p]);
+
+
+      STDLINE("Setting styles...",ACWhite);
+
+      h1DXcellEfficiencyFirstHit_     [p]->SetMarkerStyle(20);
+      h1DXcellEfficiencyFirstHit_     [p]->SetMarkerSize(0.6);
+
+      h1DXcellEfficiencySecondHit_    [p]->SetMarkerStyle(20);
+      h1DXcellEfficiencySecondHit_    [p]->SetMarkerSize(0.6);
+
+      h1DYcellEfficiencyFirstHit_     [p]->SetMarkerStyle(20);
+      h1DYcellEfficiencyFirstHit_     [p]->SetMarkerSize(0.6);
+
+      h1DYcellEfficiencySecondHit_    [p]->SetMarkerStyle(20);
+      h1DYcellEfficiencySecondHit_    [p]->SetMarkerSize(0.6);
 
 
       h2DEfficiency_                  [p]->GetXaxis()->SetTitle("column");
@@ -281,7 +304,6 @@ void EfficiencyUniMiB::endJob(void)
       h1DYcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("y (um)");
       h1DYcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("y (um)");
       h1DYcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("y (um)");
-
 
       setErrorsBar(p);
 
