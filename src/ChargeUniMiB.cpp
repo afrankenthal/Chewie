@@ -850,6 +850,12 @@ void ChargeUniMiB::endJob(void)
       h4CellsCharge_                [p]->Divide(h4CellsChargeNorm_           [p]);
 
 
+      // ######################
+      // # Setting error bars #
+      // ######################
+      setErrorsBar(p);
+
+
       STDLINE("Setting styles...",ACWhite);
 
       float xPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
@@ -961,8 +967,6 @@ void ChargeUniMiB::endJob(void)
 
       h1DYcellChargeAsimmetryInv_[p]->GetXaxis()->SetTitle("Asimmetry"         );
       h1DYcellChargeAsimmetryInv_[p]->GetYaxis()->SetTitle("short pitch (um)"  );
-
-      setErrorsBar(p);
 
 
       STDLINE("Fitting phase",ACWhite);

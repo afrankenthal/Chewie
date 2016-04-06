@@ -246,6 +246,12 @@ void EfficiencyUniMiB::endJob(void)
       h1DYcellEfficiencySecondHit_ [p]->Divide(h1DYcellEfficiencyNorm_	        [p]);
 
 
+      // ######################
+      // # Setting error bars #
+      // ######################
+      setErrorsBar(p);
+
+
       STDLINE("Setting styles...",ACWhite);
 
       h1DXcellEfficiencyFirstHit_     [p]->SetMarkerStyle(20);
@@ -304,8 +310,6 @@ void EfficiencyUniMiB::endJob(void)
       h1DYcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("y (um)");
       h1DYcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("y (um)");
       h1DYcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("y (um)");
-
-      setErrorsBar(p);
 
 
       // ##############################
