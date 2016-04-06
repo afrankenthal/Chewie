@@ -98,7 +98,7 @@ int main (int argc, char** argv)
   stringstream ss;
   
   QCoreApplication app (argc, argv);
-  STDLINE("=== Using a QCoreApplication only =========" ,ACRed);
+  STDLINE("=== Using a QCoreApplication only ===" ,ACRed);
   
   ExpressXmlParser theExpressXmlParser;
   
