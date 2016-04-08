@@ -121,7 +121,13 @@ void ResolutionUniMiB::predictedErrors(bool pass, int planeID, const Data& data,
 //=======================================================================
 void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &data, int threadNumber)
 {
-  if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > 4) return;
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
+  
+
+  if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
 
 
   // ############################################################################################
@@ -246,7 +252,13 @@ void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &d
 //=======================================================================
 void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &data, int threadNumber)
 {
-  if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > 4) return;
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
+
+
+  if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
   
   
   // ############################################################################################
