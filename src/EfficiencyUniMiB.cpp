@@ -457,8 +457,8 @@ void EfficiencyUniMiB::book(void)
       hTitle = "Cell efficiency "                                       + planeName;
       hCellEfficiency_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch/2,xPitch/2,(int)yPitch/binSize,-yPitch/2,yPitch/2)));
 
-      hName  =  "hCellEfficiencyNorm_"                                  + planeName;
-      hTitle =  "Cell efficiency normalization "                        + planeName;
+      hName  = "hCellEfficiencyNorm_"                                   + planeName;
+      hTitle = "Cell efficiency normalization "                         + planeName;
       hCellEfficiencyNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch/2,xPitch/2,(int)yPitch/binSize,-yPitch/2,yPitch/2)));
 
 
@@ -466,8 +466,8 @@ void EfficiencyUniMiB::book(void)
       hTitle = "Cell efficiency even columns "                          + planeName;
       hCellEfficiencyEvenColumns_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch/2,xPitch/2,(int)yPitch/binSize,-yPitch/2,yPitch/2)));
 
-      hName  =  "hCellEfficiencyEvenColumnsNorm_"                       + planeName;
-      hTitle =  "Cell efficiency normalization even columns "           + planeName;
+      hName  = "hCellEfficiencyEvenColumnsNorm_"                        + planeName;
+      hTitle = "Cell efficiency normalization even columns "            + planeName;
       hCellEfficiencyEvenColumnsNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch/2,xPitch/2,(int)yPitch/binSize,-yPitch/2,yPitch/2)));
 
 
@@ -475,8 +475,8 @@ void EfficiencyUniMiB::book(void)
       hTitle = "Cell efficiency odd columns "                           + planeName;
       hCellEfficiencyOddColumns_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch/2,xPitch/2,(int)yPitch/binSize,-yPitch/2,yPitch/2)));
 
-      hName  =  "hCellEfficiencyOddColumnsNorm_"                        + planeName;
-      hTitle =  "Cell efficiency normalization odd columns "            + planeName;
+      hName  = "hCellEfficiencyOddColumnsNorm_"                         + planeName;
+      hTitle = "Cell efficiency normalization odd columns "             + planeName;
       hCellEfficiencyOddColumnsNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch/2,xPitch/2,(int)yPitch/binSize,-yPitch/2,yPitch/2)));
 
 
@@ -586,11 +586,11 @@ void EfficiencyUniMiB::cellEfficiency(bool pass, int planeID, const Data& data, 
   float         maxPitchY  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
 
 
-  if (data.getXPixelResidualLocal(planeID) > 0)       xRes4Cells = -data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
-  else if (data.getXPixelResidualLocal(planeID) <= 0) xRes4Cells = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
+  if (data.getXPixelResidualLocal(planeID) > 0)       xRes4Cells = data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
+  else if (data.getXPixelResidualLocal(planeID) <= 0) xRes4Cells = data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
 
-  if (data.getYPixelResidualLocal(planeID) > 0)       yRes4Cells = -data.getYPitchLocal(planeID)/2 + data.getYPixelResidualLocal(planeID);
-  else if (data.getYPixelResidualLocal(planeID) <= 0) yRes4Cells = (data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
+  if (data.getYPixelResidualLocal(planeID) > 0)       yRes4Cells = data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
+  else if (data.getYPixelResidualLocal(planeID) <= 0) yRes4Cells = data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
 
   if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) &&
       data.getXPitchLocal(planeID) <= maxPitchX &&
@@ -600,7 +600,7 @@ void EfficiencyUniMiB::cellEfficiency(bool pass, int planeID, const Data& data, 
       THREADED(h2D4cellEfficiencyNorm_[planeID])->Fill(xRes4Cells,yRes4Cells);
 
       if (((int)col)%2 == 0) THREADED(hCellEfficiencyEvenColumnsNorm_[planeID])->Fill(xRes,yRes);
-      else                   THREADED(hCellEfficiencyOddColumnsNorm_[planeID])->Fill(xRes,yRes);
+      else                   THREADED(hCellEfficiencyOddColumnsNorm_ [planeID])->Fill(xRes,yRes);
 
       if (data.getHasHit(planeID))
 	{
@@ -608,7 +608,7 @@ void EfficiencyUniMiB::cellEfficiency(bool pass, int planeID, const Data& data, 
 	  THREADED(h2D4cellEfficiency_[planeID])->Fill(xRes4Cells,yRes4Cells);
 	    
 	  if (((int)col)%2 == 0) THREADED(hCellEfficiencyEvenColumns_[planeID])->Fill(xRes,yRes);
-	  else                   THREADED(hCellEfficiencyOddColumns_[planeID])->Fill(xRes,yRes);
+	  else                   THREADED(hCellEfficiencyOddColumns_ [planeID])->Fill(xRes,yRes);
 	}
     }
 }
@@ -634,8 +634,8 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
   
   if (data.getXPitchLocal(planeID) == maxPitchX)
     {
-      if (data.getXPixelResidualLocal(planeID) > 0)       xRes =-data.getXPitchLocal(planeID)/2 + data.getXPixelResidualLocal(planeID);
-      else if (data.getXPixelResidualLocal(planeID) <= 0) xRes = (data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2);
+      if (data.getXPixelResidualLocal(planeID) > 0)       xRes = data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
+      else if (data.getXPixelResidualLocal(planeID) <= 0) xRes = data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
     }
   else return;
 
@@ -710,8 +710,8 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
 
   if (data.getYPitchLocal(planeID) == maxPitchY)
     {
-      if (data.getYPixelResidualLocal(planeID) > 0)       yRes = -data.getYPitchLocal(planeID)/2 + data.getYPixelResidualLocal(planeID);
-      else if (data.getYPixelResidualLocal(planeID) <= 0) yRes = (data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2);
+      if (data.getYPixelResidualLocal(planeID) > 0)       yRes = data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
+      else if (data.getYPixelResidualLocal(planeID) <= 0) yRes = data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
     }
   else return;
   
@@ -828,6 +828,6 @@ bool EfficiencyUniMiB::passBadPlanesCut (int planeID, const Data &data)
       if (!data.getHasHit(p) && (float)aWindow->getNumberOfEvents() < (float)maxNumberOfEvents * badPlanesCut / 100) excludeMe += 1;
     }
   
-  if (data.getNumberOfTelescopeHits() - excludeMe >= minHits)  return true;
-  else                                                         return false;
+  if (data.getNumberOfTelescopeHits() - excludeMe >= minHits) return true;
+  else                                                        return false;
 }

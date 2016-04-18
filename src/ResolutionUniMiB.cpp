@@ -345,10 +345,10 @@ void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &d
             {
 	      chargeUp   = data.getClusterPixelCharge(hitID,planeID);
 	      chargeDown = data.getClusterPixelCharge(h    ,planeID);
-	      yPixelEdgeResidual =  yPixelResidual + data.getYPitchLocal(planeID)/2;
+	      yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
 	      break;
             }
-	  else if (yPixelResidual < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
+	  else if (yPixelResidual < 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)
             {
 	      chargeUp   = data.getClusterPixelCharge(h    ,planeID);
 	      chargeDown = data.getClusterPixelCharge(hitID,planeID);
