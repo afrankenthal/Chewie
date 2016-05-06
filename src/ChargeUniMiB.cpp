@@ -45,6 +45,7 @@
 
 #include <TH2F.h>
 #include <TF1.h>
+#include <TStyle.h>
 
 #include <iostream>
 
@@ -970,14 +971,15 @@ void ChargeUniMiB::endJob(void)
 
 
       STDLINE("Fitting phase",ACWhite);
+      gStyle->SetOptFit(1111);
 
       STDLINE("fXAsimmetryFit",ACWhite);
       TF1* fXAsimmetryFit = new TF1("fXAsimmetryFit","pol1",-ETAhalfRANGE,ETAhalfRANGE);
-      if (h1DXcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"RO");
+      if (h1DXcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"R");
 
       STDLINE("fYAsimmetryFit",ACWhite);
       TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-ETAhalfRANGE,ETAhalfRANGE);
-      if (h1DYcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"RO");
+      if (h1DYcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"R");
     }
 }
 

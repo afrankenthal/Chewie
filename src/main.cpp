@@ -35,6 +35,7 @@
 #include "mainwindow.h"
 
 #include <TApplication.h>
+#include <TROOT.h>
 
 int main(int argc, char *argv[])
 {
@@ -113,5 +114,6 @@ int main(int argc, char *argv[])
     STDLINE("+--------------------------------------------------+",color);
     STDLINE("",color);
 
+    gROOT->SetBatch(true);
     return app.exec();
 }
