@@ -973,11 +973,11 @@ void ChargeUniMiB::endJob(void)
 
       STDLINE("fXAsimmetryFit",ACWhite);
       TF1* fXAsimmetryFit = new TF1("fXAsimmetryFit","pol1",-ETAhalfRANGE,ETAhalfRANGE);
-      if (h1DXcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"QR");
+      if (h1DXcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DXcellChargeAsimmetryInv_[p]->Fit(fXAsimmetryFit,"RO");
 
       STDLINE("fYAsimmetryFit",ACWhite);
       TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-ETAhalfRANGE,ETAhalfRANGE);
-      if (h1DYcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"QR");
+      if (h1DYcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"RO");
     }
 }
 
