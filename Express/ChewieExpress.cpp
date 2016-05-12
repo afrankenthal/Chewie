@@ -5,7 +5,12 @@
 #include "EventManager.h"
 #include "AnalysisManager.h"
 
+// For ROOT 5.X
+#include <TApplication.h>
+#include <QApplication>
+// For ROOT 6.X
 #include <QCoreApplication>
+
 #include <QDomDocument>
 #include <QFile>
 #include <QString>
@@ -96,8 +101,13 @@ private:
 int main (int argc, char** argv)
 {
   stringstream ss;
-  
-  QCoreApplication app (argc, argv);
+
+  // For ROOT 5.X
+  TApplication tApp("App",&argc,argv);
+  QApplication app(argc, argv);
+  // For ROOT 6.X
+  // QCoreApplication app (argc, argv);
+
   STDLINE("=== Using a QCoreApplication only ===" ,ACRed);
   
   ExpressXmlParser theExpressXmlParser;
