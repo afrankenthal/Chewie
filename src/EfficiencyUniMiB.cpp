@@ -45,7 +45,10 @@
 
 #include <TH2F.h>
 
+#include <cmath>
 #include <iostream>
+#include <iomanip>
+#include <fstream>
 
 
 // @@@ Hard coded parameters @@@
