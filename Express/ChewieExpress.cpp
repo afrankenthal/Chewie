@@ -5,11 +5,8 @@
 #include "EventManager.h"
 #include "AnalysisManager.h"
 
-// For ROOT 5.X
 #include <TApplication.h>
-#include <QApplication>
-// For ROOT 6.X
-#include <QCoreApplication>
+#include <TROOT.h>
 
 #include <QDomDocument>
 #include <QFile>
@@ -102,11 +99,8 @@ int main (int argc, char** argv)
 {
   stringstream ss;
 
-  // For ROOT 5.X
+  gROOT->SetBatch(true);
   TApplication tApp("App",&argc,argv);
-  QApplication app(argc, argv);
-  // For ROOT 6.X
-  // QCoreApplication app (argc, argv);
 
   STDLINE("=== Using a QCoreApplication only ===" ,ACRed);
   
