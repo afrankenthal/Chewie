@@ -235,10 +235,10 @@ contains(ROOTVERSION, "FIVE") {
 QMAKE_EXTRA_TARGETS += trees
 QMAKE_EXTRA_TARGETS += header
 
-FORMS 		    += uiFiles/analyzerdlg.ui   				  \
-                       uiFiles/hnavigator.ui    				  \
-                       uiFiles/canvaswidget.ui  				  \
-                       uiFiles/hanSoloFitter.ui
+FORMS 		    += ui/analyzerdlg.ui				     	  \
+                       ui/hnavigator.ui 				     	  \
+                       ui/canvaswidget.ui				     	  \
+                       ui/hanSoloFitter.ui
 
 MOC_DIR             += mocFiles
 UI_DIR              += uiFiles
