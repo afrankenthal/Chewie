@@ -372,7 +372,8 @@ void EfficiencyUniMiB::book(void)
       nBinsX = abs(lowerCol - higherCol);
       nBinsY = abs(lowerRow - higherRow);
 
-
+      if(nBinsY<=0) nBinsY=1; //Planes which are not in the geometry file have lowerRow =higherRow = 0,
+                              //this produces an unexpected warning
 
       theAnalysisManager_->cd("Efficiency");
       theAnalysisManager_->mkdir(planeName);

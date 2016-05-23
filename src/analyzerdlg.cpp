@@ -649,12 +649,24 @@ void AnalyzerDlg::on_openNtupleFilePB_clicked(void)
             if(lastRun  < currentRun) lastRun  = currentRun;
         }
     }
+
+    QStringList fileNameList = fileNames.at(0).split("_");
+    QString partitionInfo = "";
+    if(fileNameList.size()>2)
+    {
+        for(int i = 2; i<fileNameList.size()-1; i++)
+        {
+            partitionInfo.append("_" + fileNameList.at(i));
+
+        }
+    }
+
     if(firstRun != 0x7fffffff && lastRun != -1)
     {
         if(firstRun == lastRun)
-            outFileName = "Chewie_Run" + QString("%1").arg(firstRun) + ".root";
+            outFileName = "Chewie_Run" + QString("%1").arg(firstRun)                  + partitionInfo + ".root";
         else
-            outFileName = "Chewie_Runs" + QString("%1_%2").arg(firstRun).arg(lastRun) + ".root";
+            outFileName = "Chewie_Runs" + QString("%1_%2").arg(firstRun).arg(lastRun) + partitionInfo + ".root";
     }
     ui->outputFileLE->setText(outputDir + outFileName);
     theAnalysisManager_->setOutputFileName(ui->outputFileLE->text().toStdString());

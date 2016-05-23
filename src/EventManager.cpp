@@ -325,8 +325,12 @@ bool EventManager::readEventsTree(std::string fileName)
 
     std::string treeName = fileName.substr(fileName.rfind("/")+1,fileName.size());
 
-    eventsTreeName   << treeName << "Events";
-    eventsHeaderName << treeName << "Header";
+    QStringList treeNameList = QString(treeName.c_str()).split("_");
+    QString tempTreeName = treeNameList.at(0) + "_" + treeNameList.at(1);
+    tempTreeName.remove(".root");
+
+    eventsTreeName   << tempTreeName.toStdString()<<".root" << "Events";
+    eventsHeaderName << tempTreeName.toStdString()<<".root" << "Header";
 
     bool atLeastOneBranchFound = false ;
 
