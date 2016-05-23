@@ -63,7 +63,7 @@ EfficiencyUniMiB::EfficiencyUniMiB(AnalysisManager* analysisManager, int nOfThre
   theWindowsManager_(0),
   theXmlParser_(analysisManager->getXmlParser())
 {
-  STDLINE("Running EfficiencyUniMiB analysis",ACCyan) ;
+  STDLINE("Running EfficiencyUniMiB analysis",ACCyan);
 
   thePlaneMapping_ = new PlanesMapping();
 }
@@ -184,8 +184,8 @@ void EfficiencyUniMiB::endJob(void)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       std::string planeName = thePlaneMapping_->getPlaneName(p);
-      ss.str("") ; ss << "Adding threads for plane " << p ;
-      STDLINE(ss.str().c_str(),ACYellow) ;
+      ss.str("") ; ss << "Adding threads for plane " << p;
+      STDLINE(ss.str().c_str(),ACYellow);
 
       ADD_THREADED(hEfficiency_                	      [p]);
       ADD_THREADED(hEfficiencyNorm_            	      [p]);
@@ -372,8 +372,8 @@ void EfficiencyUniMiB::book(void)
       nBinsX = abs(lowerCol - higherCol);
       nBinsY = abs(lowerRow - higherRow);
 
-      if(nBinsY<=0) nBinsY=1; //Planes which are not in the geometry file have lowerRow =higherRow = 0,
-                              //this produces an unexpected warning
+      if (nBinsY <= 0) nBinsY = 1; // Planes which are not in the geometry file have lowerRow = higherRow = 0,
+                                   // this produces an unexpected warning
 
       theAnalysisManager_->cd("Efficiency");
       theAnalysisManager_->mkdir(planeName);

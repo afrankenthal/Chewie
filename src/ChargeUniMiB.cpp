@@ -69,7 +69,7 @@ ChargeUniMiB::ChargeUniMiB(AnalysisManager* analysisManager, int nOfThreads) :
   standardCutsClusterMinimumCharge_(0),
   standardCutsClusterMaximumCharge_(0)
 {
-  STDLINE("Running ChargeUniMiB analysis",ACCyan) ;
+  STDLINE("Running ChargeUniMiB analysis",ACCyan);
 
   thePlaneMapping_ = new PlanesMapping();
 }
@@ -797,8 +797,8 @@ void ChargeUniMiB::endJob(void)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       std::string planeName = thePlaneMapping_->getPlaneName(p);
-      ss.str("") ; ss << "Adding threads for plane " << p ;
-      STDLINE(ss.str().c_str(),ACYellow) ;
+      ss.str("") ; ss << "Adding threads for plane " << p;
+      STDLINE(ss.str().c_str(),ACYellow);
 
       ADD_THREADED(hCellLandau_                             [p]);
       ADD_THREADED(hClusterSize_                            [p]);

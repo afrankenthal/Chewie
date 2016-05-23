@@ -63,7 +63,7 @@ ResolutionUniMiB::ResolutionUniMiB(AnalysisManager* analysisManager, int nOfThre
   theXmlParser_(analysisManager->getXmlParser())
   
 {
-  STDLINE("Running ResolutionUniMiB analysis",ACCyan) ;
+  STDLINE("Running ResolutionUniMiB analysis",ACCyan);
 
   thePlaneMapping_ = new PlanesMapping();
 }
@@ -595,8 +595,8 @@ void ResolutionUniMiB::endJob(void)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       std::string planeName = thePlaneMapping_->getPlaneName(p);
-      ss.str("") ; ss << "Adding threads for plane " << p ;
-      STDLINE(ss.str().c_str(),ACYellow) ;
+      ss.str("") ; ss << "Adding threads for plane " << p;
+      STDLINE(ss.str().c_str(),ACYellow);
 
       ADD_THREADED(hXResiduals_                 [p]);
       ADD_THREADED(hYResiduals_                 [p]);
