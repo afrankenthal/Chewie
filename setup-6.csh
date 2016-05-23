@@ -36,7 +36,7 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   if	  ( ${USER} == "menasce" ) then
    setenv BASEDATADIR /user/gr1/e831/menasce/MonicelliNew/data/2015_10_October
   else if ( ${USER} == "dinardo" ) then
-   setenv BASEDATADIR /raid2/data1/user/gr1/e831/dinardo/TestBeamData2015
+   setenv BASEDATADIR /raid2/data1/user/gr1/e831/dinardo/TestBeamFBKPlanarBeforeRad_Batch01
   endif
 
   #===== Local directories
@@ -46,7 +46,7 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   setenv CHEWIEOUTPUTDIR	  ${BASEDATADIR}/ChewieOutput
   setenv CHEWIEXMLDIR		  ${CHEWIEDIR}/xml
 
-  setenv MonicelliDir             /user/gr1/e831/menasce/MonicelliNew/Monicelli
+  setenv MonicelliDir             `cd ../Monicelli/; pwd; cd $CHEWIEDIR`
   setenv Monicelli_CalSample_Dir  ${BASEDATADIR}/Calibrations  
 
   #===== Location of the ROOT components
@@ -56,7 +56,7 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   setenv ROOTLIB		  $ROOTSYS/lib/root
 
   #===== Location of the Qt components
-  setenv QTDIR  		  /usr/local/Trolltech/Qt-4.8.5
+  setenv QTDIR  		  /usr/local/Trolltech/Qt-4.8.5/
   setenv QTCREATORDIR		  /opt/local/qtcreator-2.7.1/bin/
   setenv QTROOTSYSDIR		  `pwd`/qtrootsys
   setenv QTROOT_INCLUDE_PATH	  $ROOTSYS/include
