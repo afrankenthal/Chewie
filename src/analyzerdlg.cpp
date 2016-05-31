@@ -650,7 +650,8 @@ void AnalyzerDlg::on_openNtupleFilePB_clicked(void)
         }
     }
 
-    QStringList fileNameList = fileNames.at(0).split("_");
+    QStringList pathNameList = fileNames.at(0).split("/");
+    QStringList fileNameList = pathNameList.at(0).split("_");
     QString partitionInfo = "";
     if(fileNameList.size()>2)
     {
