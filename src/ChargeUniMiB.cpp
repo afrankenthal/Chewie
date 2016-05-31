@@ -92,7 +92,12 @@ void ChargeUniMiB::destroy()
 
   for(it1=hCellLandau_                   .begin(); it1!=hCellLandau_                   .end(); it1++) delete *it1; hCellLandau_                  .clear();
   for(it1=hClusterSize_                  .begin(); it1!=hClusterSize_                  .end(); it1++) delete *it1; hClusterSize_                 .clear();
-  
+
+  for(it1=hLandauClusterSize1_           .begin(); it1!=hLandauClusterSize1_           .end(); it1++) delete *it1; hLandauClusterSize1_          .clear();
+  for(it1=hLandauClusterSize2_           .begin(); it1!=hLandauClusterSize2_           .end(); it1++) delete *it1; hLandauClusterSize2_          .clear();
+  for(it1=hLandauClusterSize2sameCol_    .begin(); it1!=hLandauClusterSize2sameCol_    .end(); it1++) delete *it1; hLandauClusterSize2sameCol_   .clear();
+  for(it1=hLandauClusterSize2sameRow_    .begin(); it1!=hLandauClusterSize2sameRow_    .end(); it1++) delete *it1; hLandauClusterSize2sameRow_   .clear();
+
   for(it1=h1DXcellCharge_                .begin(); it1!=h1DXcellCharge_                .end(); it1++) delete *it1; h1DXcellCharge_               .clear();
   for(it1=h1DXcellChargeNorm_            .begin(); it1!=h1DXcellChargeNorm_            .end(); it1++) delete *it1; h1DXcellChargeNorm_           .clear();
   
@@ -104,8 +109,8 @@ void ChargeUniMiB::destroy()
   
   for(it1=h1DYcellChargeSecondHit_       .begin(); it1!=h1DYcellChargeSecondHit_       .end(); it1++) delete *it1; h1DYcellChargeSecondHit_      .clear();
   for(it1=h1DYcellChargeSecondHitNorm_   .begin(); it1!=h1DYcellChargeSecondHitNorm_   .end(); it1++) delete *it1; h1DYcellChargeSecondHitNorm_  .clear();
-  
-  
+
+
   for(it2=h2DClusterSize_                .begin(); it2!=h2DClusterSize_                .end(); it2++) delete *it2; h2DClusterSize_               .clear();
   for(it2=h2DCellCharge_                 .begin(); it2!=h2DCellCharge_                 .end(); it2++) delete *it2; h2DCellCharge_                .clear();
   for(it2=h2DCellChargeNorm_             .begin(); it2!=h2DCellChargeNorm_             .end(); it2++) delete *it2; h2DCellChargeNorm_            .clear();
@@ -245,12 +250,54 @@ void ChargeUniMiB::cellLandau(bool pass, int planeID, const Data& data, int thre
 
   if (!pass || !data.getHasHit(planeID) || data.getClusterSize(planeID) != clusterSize) return;
 
+
   const Window* theWindow = theWindowsManager_->getWindow(planeID);
+  int           row       = data.getRowPredicted(planeID);
+  int           col       = data.getColPredicted(planeID);
+  int           run       = data.getRunNumber();
+
+  if (!theWindow->checkWindow(col,row,run)) return;
+
+
   if (theWindow->checkWindow(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber()) &&
       data.getIsPixelCalibrated(0,planeID) &&
       data.getClusterCharge(planeID) > standardCutsPixelMinimumCharge_)
-
+    
     THREADED(hCellLandau_[planeID])->Fill(data.getClusterCharge(planeID));
+}
+
+//=======================================================================
+void ChargeUniMiB::clusterLandau(bool pass, int planeID, const Data& data, int threadNumber)
+{
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
+
+
+  if (!pass || !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
+  int clusterSize = data.getClusterSize(planeID);
+
+
+  const Window* theWindow = theWindowsManager_->getWindow(planeID);
+  int           row       = data.getRowPredicted(planeID);
+  int           col       = data.getColPredicted(planeID);
+  int           run       = data.getRunNumber();
+
+  if (!theWindow->checkWindow(col,row,run)) return;
+
+
+  for (int h = 0; h < clusterSize; h++)
+    {
+      if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
+	  || !data.getIsPixelCalibrated(h,planeID)                                                           // Pixels are calibrated
+	  ||  data.getClusterPixelCharge(h,planeID) < standardCutsPixelMinimumCharge_)                       // Charge is over threshold
+	return;
+    }
+
+
+  if      (clusterSize == 1) THREADED(hLandauClusterSize1_[planeID])->Fill(data.getClusterCharge(planeID));
+  else if (clusterSize == 2) THREADED(hLandauClusterSize2_[planeID])->Fill(data.getClusterCharge(planeID));
 }
 
 //=======================================================================
@@ -310,6 +357,70 @@ void ChargeUniMiB::cellCharge(bool pass, int planeID, const Data& data, int thre
 	  THREADED(h2DClusterSize_   [planeID])->Fill(xPixelResidual,yPixelResidual,data.getClusterSize(planeID));
 	}
     }
+}
+
+//=======================================================================
+void ChargeUniMiB::xLandau(bool pass, int planeID, const Data &data, int threadNumber)
+{
+  // #####################
+  // # Internal constant #
+  // #####################
+  int clusterSize = 2;
+
+
+  if (!pass || !data.getHasHit(planeID) || data.getClusterSize(planeID) != clusterSize) return;
+  
+
+  const Window* theWindow = theWindowsManager_->getWindow(planeID);
+  int           row       = data.getRowPredicted(planeID);
+  int           col       = data.getColPredicted(planeID);
+  int           run       = data.getRunNumber();
+
+  if (!theWindow->checkWindow(col,row,run)) return;
+
+
+  for (int h = 0; h < clusterSize; h++)
+    {
+      if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
+	  || !data.getIsPixelCalibrated (h,planeID)                                                          // Pixels are calibrated
+	  ||  data.getClusterPixelRow   (h,planeID) != row                                                   // Hits are on the same row (sharing is along the row - x direction)
+	  ||  data.getClusterPixelCharge(h,planeID) < standardCutsPixelMinimumCharge_)                       // Charge is over threshold
+	return;
+    }
+  
+  THREADED(hLandauClusterSize2sameRow_[planeID])->Fill(data.getClusterCharge(planeID));
+}
+
+//=======================================================================
+void ChargeUniMiB::yLandau(bool pass, int planeID, const Data &data, int threadNumber)
+{
+  // #####################
+  // # Internal constant #
+  // #####################
+  int clusterSize = 2;
+
+
+  if (!pass || !data.getHasHit(planeID) || data.getClusterSize(planeID) != clusterSize) return;
+  
+
+  const Window* theWindow = theWindowsManager_->getWindow(planeID);
+  int           row       = data.getRowPredicted(planeID);
+  int           col       = data.getColPredicted(planeID);
+  int           run       = data.getRunNumber();
+
+  if (!theWindow->checkWindow(col,row,run)) return;
+
+
+  for (int h = 0; h < clusterSize; h++)
+    {
+      if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
+	  || !data.getIsPixelCalibrated (h,planeID)                                                          // Pixels are calibrated
+	  ||  data.getClusterPixelCol   (h,planeID) != col                                                   // Hits are on the same col (sharing is along the col - y direction)
+	  ||  data.getClusterPixelCharge(h,planeID) < standardCutsPixelMinimumCharge_)                       // Charge is over threshold
+	return;
+    }
+  
+  THREADED(hLandauClusterSize2sameCol_[planeID])->Fill(data.getClusterCharge(planeID));
 }
 
 //=======================================================================
@@ -741,6 +852,10 @@ void ChargeUniMiB::analyze(const Data& data, int threadNumber)
 
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++) clusterSize(p,data,threadNumber);
 
+  bool clusterLandauCut = true;
+  if(cutsFormulas_.find("cluster Landau") != cutsFormulas_.end())
+    clusterLandauCut = cutsFormulas_["cluster Landau"][threadNumber]->EvalInstance();
+  
   bool cellLandauCut = true;
   if(cutsFormulas_.find("cell Landau") != cutsFormulas_.end())
     cellLandauCut = cutsFormulas_["cell Landau"][threadNumber]->EvalInstance();
@@ -760,7 +875,7 @@ void ChargeUniMiB::analyze(const Data& data, int threadNumber)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       if (!passStandardCuts(p,data)) continue;
-      
+
       if ((thePlaneMapping_->getPlaneName(p).find("Dut") != std::string::npos) && (!passCalibrationsCut(p,data)))
 	{
 	  std::cout << __PRETTY_FUNCTION__ << "Calibration check not passed" << std::endl;
@@ -776,14 +891,17 @@ void ChargeUniMiB::analyze(const Data& data, int threadNumber)
 	  if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
 
 
-      cellLandau           (cellLandauCut ,p,data,threadNumber);
-      cellCharge           (cellChargeCut ,p,data,threadNumber);
-      
-      xChargeDivision      (cellChargeXCut,p,data,threadNumber);
-      xAsimmetry           (cellChargeXCut,p,data,threadNumber);
-      
-      yChargeDivision      (cellChargeYCut,p,data,threadNumber);
-      yAsimmetry           (cellChargeYCut,p,data,threadNumber);
+      clusterLandau   (clusterLandauCut,p,data,threadNumber);
+      cellLandau      (cellLandauCut,   p,data,threadNumber);
+      cellCharge      (cellChargeCut,   p,data,threadNumber);
+
+      xLandau         (cellChargeXCut,  p,data,threadNumber);
+      xChargeDivision (cellChargeXCut,  p,data,threadNumber);
+      xAsimmetry      (cellChargeXCut,  p,data,threadNumber);
+
+      yLandau         (cellChargeYCut,  p,data,threadNumber);
+      yChargeDivision (cellChargeYCut,  p,data,threadNumber);
+      yAsimmetry      (cellChargeYCut,  p,data,threadNumber);
     }
 }
 
@@ -802,6 +920,11 @@ void ChargeUniMiB::endJob(void)
 
       ADD_THREADED(hCellLandau_                             [p]);
       ADD_THREADED(hClusterSize_                            [p]);
+
+      ADD_THREADED(hLandauClusterSize1_                     [p]);
+      ADD_THREADED(hLandauClusterSize2_                     [p]);
+      ADD_THREADED(hLandauClusterSize2sameRow_              [p]);
+      ADD_THREADED(hLandauClusterSize2sameCol_              [p]);
 
       ADD_THREADED(h1DXcellCharge_                          [p]);
       ADD_THREADED(h1DXcellChargeNorm_                      [p]);
@@ -898,6 +1021,11 @@ void ChargeUniMiB::endJob(void)
 
       hClusterSize_              [p]->GetXaxis()->SetTitle("cluster size"      );
       hCellLandau_               [p]->GetXaxis()->SetTitle("charge (electrons)");
+
+      hLandauClusterSize1_       [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hLandauClusterSize2_       [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hLandauClusterSize2sameRow_[p]->GetXaxis()->SetTitle("charge (electrons)");
+      hLandauClusterSize2sameCol_[p]->GetXaxis()->SetTitle("charge (electrons)");
 
       h2DClusterSize_            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
       h2DClusterSize_            [p]->GetYaxis()->SetTitle("short pitch (um)"  );
@@ -1025,6 +1153,22 @@ void ChargeUniMiB::book(void)
       hName  = "hCellLandau_"                                              + planeName;
       hTitle = "Charge distribution for single hits in a fiducial window " + planeName;
       hCellLandau_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+
+      hName  = "hLandauClusterSize1_"                                      + planeName;
+      hTitle = "Charge distribution for clusters of size 1 "               + planeName;
+      hLandauClusterSize1_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+
+      hName  = "hLandauClusterSize2_"                                      + planeName;
+      hTitle = "Charge distribution for clusters of size 2 "               + planeName;
+      hLandauClusterSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+
+      hName  = "hLandauClusterSize2sameRow_"                               + planeName;
+      hTitle = "Charge distribution for clusters of size 2 on same row "   + planeName;
+      hLandauClusterSize2sameRow_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+
+      hName  = "hLandauClusterSize2sameCol_"                               + planeName;
+      hTitle = "Charge distribution for clusters of size 2 on same col "   + planeName;
+      hLandauClusterSize2sameCol_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
 
 
       theAnalysisManager_->cd("Charge/" + planeName);

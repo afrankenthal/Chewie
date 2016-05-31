@@ -27,7 +27,7 @@
 # * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ================================================================================*/
 
-# scl enable devtoolset-2 tcsh
+# scl enable devtoolset-2 bash
 
 export BASEDATADIR=../data/2015_10_October
 
