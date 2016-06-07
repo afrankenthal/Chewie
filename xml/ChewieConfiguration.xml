@@ -3,7 +3,7 @@
 <ChewieConfiguration>
   <Converter Threads="4" MaxEvents="9999" IsToLimit="no"/>
   <General PreAnalysisMaxEvents="400000" Threads="4" MaxEvents="5" AnalysesMaxEvents="1000" IsToLimit="no">
-    <Plane YPitch="100" Calibration="upstream_cal_1_0" XPitch="150" Id="Strip_Telescope_Upstream0" Name="Station: 5 - Plaq: 0" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream0" Name="Station: 5 - Plaq: 0" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -11,7 +11,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_10" XPitch="150" Id="Strip_Telescope_Upstream1" Name="Station: 5 - Plaq: 1" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream1" Name="Station: 5 - Plaq: 1" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -19,7 +19,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_20" XPitch="150" Id="Strip_Telescope_Upstream2" Name="Station: 5 - Plaq: 2" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream2" Name="Station: 5 - Plaq: 2" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -27,7 +27,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_again_cal_0_30" XPitch="150" Id="Strip_Telescope_Upstream3" Name="Station: 5 - Plaq: 3" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream3" Name="Station: 5 - Plaq: 3" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -35,7 +35,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_0" XPitch="150" Id="Strip_Telescope_Upstream4" Name="Station: 6 - Plaq: 0" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream4" Name="Station: 6 - Plaq: 0" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -43,7 +43,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_10" XPitch="150" Id="Strip_Telescope_Upstream5" Name="Station: 6 - Plaq: 1" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream5" Name="Station: 6 - Plaq: 1" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -51,7 +51,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_20" XPitch="150" Id="Strip_Telescope_Upstream6" Name="Station: 6 - Plaq: 2" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream6" Name="Station: 6 - Plaq: 2" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -59,7 +59,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_again_cal_0_30" XPitch="150" Id="Strip_Telescope_Upstream7" Name="Station: 6 - Plaq: 3" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Upstream7" Name="Station: 6 - Plaq: 3" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -67,7 +67,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_0" XPitch="150" Id="Telescope_Upstream0" Name="Station: 2 - Plaq: 0" XRocs="3" YRocs="2">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Upstream0" Name="Station: 2 - Plaq: 0" XRocs="3" YRocs="2">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>155</HigherCol>
@@ -75,7 +75,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_10" XPitch="150" Id="Telescope_Upstream1" Name="Station: 2 - Plaq: 1" XRocs="3" YRocs="3">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Upstream1" Name="Station: 2 - Plaq: 1" XRocs="3" YRocs="3">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>155</HigherCol>
@@ -83,7 +83,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_cal_1_20" XPitch="150" Id="Telescope_Upstream2" Name="Station: 2 - Plaq: 2" XRocs="4" YRocs="2">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Upstream2" Name="Station: 2 - Plaq: 2" XRocs="4" YRocs="2">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>207</HigherCol>
@@ -91,7 +91,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="upstream_again_cal_0_30" XPitch="150" Id="Telescope_Upstream3" Name="Station: 2 - Plaq: 3" XRocs="4" YRocs="2">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Upstream3" Name="Station: 2 - Plaq: 3" XRocs="4" YRocs="2">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>207</HigherCol>
@@ -99,7 +99,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_cal_0_0" XPitch="150" Id="Telescope_Downstream0" Name="Station: 0 - Plaq: 0" XRocs="4" YRocs="2">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Downstream0" Name="Station: 0 - Plaq: 0" XRocs="4" YRocs="2">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>207</HigherCol>
@@ -107,7 +107,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_again_cal_2_10" XPitch="150" Id="Telescope_Downstream1" Name="Station: 0 - Plaq: 1" XRocs="4" YRocs="2">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Downstream1" Name="Station: 0 - Plaq: 1" XRocs="4" YRocs="2">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>207</HigherCol>
@@ -115,7 +115,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_cal_0_20" XPitch="150" Id="Telescope_Downstream2" Name="Station: 0 - Plaq: 2" XRocs="3" YRocs="2">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Downstream2" Name="Station: 0 - Plaq: 2" XRocs="3" YRocs="2">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>155</HigherCol>
@@ -123,7 +123,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_cal_0_30" XPitch="150" Id="Telescope_Downstream3" Name="Station: 0 - Plaq: 3" XRocs="3" YRocs="2">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Telescope_Downstream3" Name="Station: 0 - Plaq: 3" XRocs="3" YRocs="2">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>155</HigherCol>
@@ -131,7 +131,7 @@
         <HigherRow>159</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_cal_0_0" XPitch="150" Id="Strip_Telescope_Downstream0" Name="Station: 7 - Plaq: 0" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Downstream0" Name="Station: 7 - Plaq: 0" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -139,7 +139,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_again_cal_2_10" XPitch="150" Id="Strip_Telescope_Downstream1" Name="Station: 7 - Plaq: 1" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Downstream1" Name="Station: 7 - Plaq: 1" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -147,7 +147,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_cal_0_20" XPitch="150" Id="Strip_Telescope_Downstream2" Name="Station: 7 - Plaq: 2" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Downstream2" Name="Station: 7 - Plaq: 2" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -155,7 +155,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_cal_0_30" XPitch="150" Id="Strip_Telescope_Downstream3" Name="Station: 7 - Plaq: 3" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Downstream3" Name="Station: 7 - Plaq: 3" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -163,7 +163,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_cal_0_0" XPitch="150" Id="Strip_Telescope_Downstream4" Name="Station: 7 - Plaq: 4" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Downstream4" Name="Station: 7 - Plaq: 4" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -171,7 +171,7 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane YPitch="100" Calibration="downstream_again_cal_2_10" XPitch="150" Id="Strip_Telescope_Downstream5" Name="Station: 7 - Plaq: 5" XRocs="1" YRocs="1">
+    <Plane YPitch="100" Calibration="N.A." XPitch="150" Id="Strip_Telescope_Downstream5" Name="Station: 7 - Plaq: 5" XRocs="1" YRocs="1">
       <Window>
         <LowerCol>0</LowerCol>
         <HigherCol>639</HigherCol>
@@ -179,48 +179,48 @@
         <HigherRow>0</HigherRow>
       </Window>
     </Plane>
-    <Plane ZPosition="6" YPitch="100" Calibration="dut_PLT532A_LC500_cal_2_0" XPitch="150" Id="Dut0" Name="Station: 4 - Plaq: 0" ZRotation="90" XRocs="1" YRocs="1">
+    <Plane ZPosition="6" YPitch="100" Calibration="N.A." XPitch="150" Id="Dut0" Name="Station: 4 - Plaq: 0" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>2</LowerCol>
-        <HigherCol>50</HigherCol>
-        <LowerRow>2</LowerRow>
-        <HigherRow>78</HigherRow>
+        <LowerCol>0</LowerCol>
+        <HigherCol>51</HigherCol>
+        <LowerRow>0</LowerRow>
+        <HigherRow>79</HigherRow>
       </Window>
       <Calibrations Use="no">
-        <File>/home/ngadiuba/MonicelliOutput/calibrationsPlots.root</File>
+        <File>/path_to_calibration/file_name.root</File>
       </Calibrations>
     </Plane>
-    <Plane ZPosition="5" YPitch="100" Calibration="dut_PLT532A_LC500_cal_2_0" XPitch="150" Id="Dut1" Name="Station: 4 - Plaq: 1" ZRotation="90" XRocs="1" YRocs="1">
+    <Plane ZPosition="5" YPitch="100" Calibration="N.A." XPitch="150" Id="Dut1" Name="Station: 4 - Plaq: 1" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>2</LowerCol>
-        <HigherCol>50</HigherCol>
-        <LowerRow>2</LowerRow>
-        <HigherRow>78</HigherRow>
+        <LowerCol>0</LowerCol>
+        <HigherCol>51</HigherCol>
+        <LowerRow>0</LowerRow>
+        <HigherRow>79</HigherRow>
       </Window>
       <Calibrations Use="no">
-        <File>/home/ngadiuba/MonicelliOutput/calibrationsPlots.root</File>
+        <File>/path_to_calibration/file_name.root</File>
       </Calibrations>
     </Plane>
-    <Plane ZPosition="-5" YPitch="50" Calibration="dut_PLT532A_LC500_cal_2_10" XPitch="300" Id="Dut2" Name="Station: 4 - Plaq: 2" ZRotation="90" XRocs="1" YRocs="1">
+    <Plane ZPosition="-5" YPitch="100" Calibration="N.A." XPitch="150" Id="Dut2" Name="Station: 4 - Plaq: 2" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>1</LowerCol>
-        <HigherCol>50</HigherCol>
-        <LowerRow>20</LowerRow>
-        <HigherRow>49</HigherRow>
+        <LowerCol>0</LowerCol>
+        <HigherCol>51</HigherCol>
+        <LowerRow>0</LowerRow>
+        <HigherRow>79</HigherRow>
       </Window>
       <Calibrations Use="no">
-        <File>/home/ngadiuba/MonicelliOutput/calibrationsPlots.root</File>
+        <File>/path_to_calibration/file_name.root</File>
       </Calibrations>
     </Plane>
-    <Plane ZPosition="-5" YPitch="100" Calibration="dut_PLT532A_LC500_cal_2_10" XPitch="150" Id="Dut3" Name="Station: 4 - Plaq: 3" ZRotation="90" XRocs="1" YRocs="1">
+    <Plane ZPosition="-5" YPitch="100" Calibration="N.A." XPitch="150" Id="Dut3" Name="Station: 4 - Plaq: 3" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>1</LowerCol>
-        <HigherCol>50</HigherCol>
-        <LowerRow>20</LowerRow>
-        <HigherRow>49</HigherRow>
+        <LowerCol>0</LowerCol>
+        <HigherCol>51</HigherCol>
+        <LowerRow>0</LowerRow>
+        <HigherRow>79</HigherRow>
       </Window>
       <Calibrations Use="no">
-        <File>/home/ngadiuba/MonicelliOutput/calibrationsPlots.root</File>
+        <File>/path_to_calibration/file_name.root</File>
       </Calibrations>
     </Plane>
     <Analysis Priority="0" IsToRun="yes" Type="Windows"/>
