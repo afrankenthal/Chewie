@@ -644,7 +644,7 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
   else return;
 
   if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) &&
-      (theWindow->checkTimeWindowAbout(col,event,run)))
+      theWindow->checkTimeWindowAbout(col,event,run))
     {
       THREADED(h1DXcellEfficiencyNorm_[planeID])->Fill(xRes);
       
@@ -720,7 +720,7 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
   else return;
   
   if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) &&
-      (theWindow->checkTimeWindowAbout(col,event,run)))
+      theWindow->checkTimeWindowAbout(col,event,run))
     {
       THREADED(h1DYcellEfficiencyNorm_[planeID])->Fill(yRes);
 	
@@ -762,7 +762,7 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
 		}
 		
 	      if (!isOk) return;
-		
+
 	      THREADED(h1DYcellEfficiencySecondHit_[planeID])->Fill(yRes);
 	    }
 	}

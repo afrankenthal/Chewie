@@ -554,12 +554,12 @@ void ChargeUniMiB::xAsimmetry(bool pass, int planeID, const Data& data, int thre
       float xMeasured   = (data.getXClusterPixelCenterLocal(0, planeID) + data.getXClusterPixelCenterLocal(1, planeID))/2;
       float xResidual   = xPredicted - xMeasured;
       
-      if (data.getXClusterPixelCenterLocal(0, planeID)>data.getXClusterPixelCenterLocal(1, planeID))
+      if (data.getXClusterPixelCenterLocal(0, planeID) > data.getXClusterPixelCenterLocal(1, planeID))
 	{
 	  chargeRight = data.getClusterPixelCharge(0, planeID);
 	  chargeLeft  = data.getClusterPixelCharge(1, planeID);
 	}
-      else if (data.getXClusterPixelCenterLocal(0, planeID)<data.getXClusterPixelCenterLocal(1, planeID))
+      else if (data.getXClusterPixelCenterLocal(0, planeID) < data.getXClusterPixelCenterLocal(1, planeID))
 	{
 	  chargeRight = data.getClusterPixelCharge(1, planeID);
 	  chargeLeft  = data.getClusterPixelCharge(0, planeID);
@@ -708,12 +708,12 @@ void ChargeUniMiB::yAsimmetry(bool pass, int planeID, const Data& data, int thre
       float yMeasured   = (data.getYClusterPixelCenterLocal(0, planeID) + data.getYClusterPixelCenterLocal(1, planeID))/2;
       float yResidual   = yPredicted - yMeasured;
       
-      if (data.getYClusterPixelCenterLocal(0, planeID)>data.getYClusterPixelCenterLocal(1, planeID))
+      if (data.getYClusterPixelCenterLocal(0, planeID) > data.getYClusterPixelCenterLocal(1, planeID))
 	{
 	  chargeUp   = data.getClusterPixelCharge(0, planeID);
 	  chargeDown = data.getClusterPixelCharge(1, planeID);
 	}
-      else if (data.getYClusterPixelCenterLocal(0, planeID)<data.getYClusterPixelCenterLocal(1, planeID))
+      else if (data.getYClusterPixelCenterLocal(0, planeID) < data.getYClusterPixelCenterLocal(1, planeID))
 	{
 	  chargeUp   = data.getClusterPixelCharge(1, planeID);
 	  chargeDown = data.getClusterPixelCharge(0, planeID);
@@ -781,7 +781,7 @@ bool ChargeUniMiB::passBadPlanesCut(int planeID, const Data &data)
       if (aWindow->getNumberOfEvents() > maxNumberOfEvents) maxNumberOfEvents = aWindow->getNumberOfEvents();
     }
 
-  int minHits   = 7;
+  int minHits   = 8;
   int excludeMe = 0;
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)
     minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
@@ -809,7 +809,7 @@ bool ChargeUniMiB::passStandardCuts(int planeID, const Data &data)
   if (!theXmlParser_->getAnalysesFromString("Charge")->applyStandardCuts()) return true;
   if (theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes())   return passBadPlanesCut(planeID, data);
 
-  int minHits   = 7;
+  int minHits   = 8;
   int excludeMe = 0;
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)
     minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
@@ -980,119 +980,119 @@ void ChargeUniMiB::endJob(void)
       float xPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
       float yPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
 
-      h1DXcellChargeAsimmetry_    [p]->SetMinimum(-1);
-      h1DXcellChargeAsimmetry_    [p]->SetMaximum( 1);
-      h1DXcellChargeAsimmetry_    [p]->SetMarkerStyle(20);
-      h1DXcellChargeAsimmetry_    [p]->SetMarkerSize(0.6);
+      h1DXcellChargeAsimmetry_   [p]->SetMinimum(-1);
+      h1DXcellChargeAsimmetry_   [p]->SetMaximum( 1);
+      h1DXcellChargeAsimmetry_   [p]->SetMarkerStyle(20);
+      h1DXcellChargeAsimmetry_   [p]->SetMarkerSize(0.6);
 
-      h1DXcellChargeAsimmetryInv_ [p]->SetMinimum(-xPitch/2);
-      h1DXcellChargeAsimmetryInv_ [p]->SetMaximum(xPitch/2);
-      h1DXcellChargeAsimmetryInv_ [p]->SetMarkerStyle(20);
-      h1DXcellChargeAsimmetryInv_ [p]->SetMarkerSize(0.6);
+      h1DXcellChargeAsimmetryInv_[p]->SetMinimum(-xPitch/2);
+      h1DXcellChargeAsimmetryInv_[p]->SetMaximum(xPitch/2);
+      h1DXcellChargeAsimmetryInv_[p]->SetMarkerStyle(20);
+      h1DXcellChargeAsimmetryInv_[p]->SetMarkerSize(0.6);
 
-      h1DYcellChargeAsimmetry_    [p]->SetMinimum(-1);
-      h1DYcellChargeAsimmetry_    [p]->SetMaximum( 1);
-      h1DYcellChargeAsimmetry_    [p]->SetMarkerStyle(20);
-      h1DYcellChargeAsimmetry_    [p]->SetMarkerSize(0.6);
+      h1DYcellChargeAsimmetry_   [p]->SetMinimum(-1);
+      h1DYcellChargeAsimmetry_   [p]->SetMaximum( 1);
+      h1DYcellChargeAsimmetry_   [p]->SetMarkerStyle(20);
+      h1DYcellChargeAsimmetry_   [p]->SetMarkerSize(0.6);
 
-      h1DYcellChargeAsimmetryInv_ [p]->SetMinimum(-yPitch/2);
-      h1DYcellChargeAsimmetryInv_ [p]->SetMaximum(yPitch/2);
-      h1DYcellChargeAsimmetryInv_ [p]->SetMarkerStyle(20);
-      h1DYcellChargeAsimmetryInv_ [p]->SetMarkerSize(0.6);
+      h1DYcellChargeAsimmetryInv_[p]->SetMinimum(-yPitch/2);
+      h1DYcellChargeAsimmetryInv_[p]->SetMaximum(yPitch/2);
+      h1DYcellChargeAsimmetryInv_[p]->SetMarkerStyle(20);
+      h1DYcellChargeAsimmetryInv_[p]->SetMarkerSize(0.6);
 
-      h1DXcellCharge_             [p]->SetMarkerStyle(20);
-      h1DXcellCharge_             [p]->SetMarkerSize(0.6);
+      h1DXcellCharge_            [p]->SetMarkerStyle(20);
+      h1DXcellCharge_            [p]->SetMarkerSize(0.6);
 
-      h1DYcellCharge_             [p]->SetMarkerStyle(20);
-      h1DYcellCharge_             [p]->SetMarkerSize(0.6);
+      h1DYcellCharge_            [p]->SetMarkerStyle(20);
+      h1DYcellCharge_            [p]->SetMarkerSize(0.6);
 
-      h1DXcellChargeSecondHit_    [p]->SetMarkerStyle(20);
-      h1DXcellChargeSecondHit_    [p]->SetMarkerSize(0.6);
+      h1DXcellChargeSecondHit_   [p]->SetMarkerStyle(20);
+      h1DXcellChargeSecondHit_   [p]->SetMarkerSize(0.6);
 
-      h1DYcellChargeSecondHit_    [p]->SetMarkerStyle(20);
-      h1DYcellChargeSecondHit_    [p]->SetMarkerSize(0.6);
-
-
-      hClusterSize_               [p]->GetXaxis()->SetTitle("cluster size"      );
-      hCellLandau_                [p]->GetXaxis()->SetTitle("charge (electrons)");
-
-      hLandauClusterSize1_        [p]->GetXaxis()->SetTitle("charge (electrons)");
-      hLandauClusterSize2_        [p]->GetXaxis()->SetTitle("charge (electrons)");
-      hLandauClusterSize2sameRow_ [p]->GetXaxis()->SetTitle("charge (electrons)");
-      hLandauClusterSize2sameCol_ [p]->GetXaxis()->SetTitle("charge (electrons)");
-
-      h2DClusterSize_             [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h2DClusterSize_             [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+      h1DYcellChargeSecondHit_   [p]->SetMarkerStyle(20);
+      h1DYcellChargeSecondHit_   [p]->SetMarkerSize(0.6);
 
 
-      h2DCellCharge_              [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h2DCellCharge_              [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+      hClusterSize_              [p]->GetXaxis()->SetTitle("cluster size"      );
+      hCellLandau_               [p]->GetXaxis()->SetTitle("charge (electrons)");
 
-      h2DCellChargeNorm_          [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h2DCellChargeNorm_          [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+      hLandauClusterSize1_       [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hLandauClusterSize2_       [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hLandauClusterSize2sameRow_[p]->GetXaxis()->SetTitle("charge (electrons)");
+      hLandauClusterSize2sameCol_[p]->GetXaxis()->SetTitle("charge (electrons)");
 
-
-      h4CellsCharge_              [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h4CellsCharge_              [p]->GetYaxis()->SetTitle("short pitch (um)"  );
-
-      h4CellsChargeNorm_          [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h4CellsChargeNorm_          [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+      h2DClusterSize_            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h2DClusterSize_            [p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
 
-      h1DXcellCharge_             [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h1DXcellCharge_             [p]->GetYaxis()->SetTitle("charge (electrons)");
-      h1DXcellChargeNorm_         [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h2DCellCharge_             [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h2DCellCharge_             [p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
-      h1DXcellChargeSecondHit_    [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h1DXcellChargeSecondHit_    [p]->GetYaxis()->SetTitle("charge (electrons)");
-      h1DXcellChargeSecondHitNorm_[p]->GetXaxis()->SetTitle("long pitch (um)"   );
-
-      h2DXcellCharge_             [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h2DXcellCharge_             [p]->GetYaxis()->SetTitle("charge (electrons)");
-
-      h2DXcellChargeSecondHit_    [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h2DXcellChargeSecondHit_    [p]->GetYaxis()->SetTitle("charge (electrons)");
+      h2DCellChargeNorm_         [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h2DCellChargeNorm_         [p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
 
-      h1DYcellCharge_             [p]->GetXaxis()->SetTitle("short pitch (um)"  );
-      h1DYcellCharge_             [p]->GetYaxis()->SetTitle("charge (electrons)");
-      h1DYcellChargeNorm_         [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+      h4CellsCharge_             [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h4CellsCharge_             [p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
-      h1DYcellChargeSecondHit_    [p]->GetXaxis()->SetTitle("short pitch (um)"   );
-      h1DYcellChargeSecondHit_    [p]->GetYaxis()->SetTitle("charge (electrons)");
-      h1DYcellChargeSecondHitNorm_[p]->GetXaxis()->SetTitle("short pitch (um)"   );
-
-      h2DYcellCharge_             [p]->GetXaxis()->SetTitle("short pitch (um)"  );
-      h2DYcellCharge_             [p]->GetYaxis()->SetTitle("charge (electrons)");
-
-      h2DYcellChargeSecondHit_    [p]->GetXaxis()->SetTitle("short pitch (um)"  );
-      h2DYcellChargeSecondHit_    [p]->GetYaxis()->SetTitle("charge (electrons)");
+      h4CellsChargeNorm_         [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h4CellsChargeNorm_         [p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
 
-      h2DXcellChargeAsimmetry_    [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h2DXcellChargeAsimmetry_    [p]->GetYaxis()->SetTitle("Asimmetry"         );
+      h1DXcellCharge_            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h1DXcellCharge_            [p]->GetYaxis()->SetTitle("charge (electrons)");
+      h1DXcellChargeNorm_        [p]->GetXaxis()->SetTitle("long pitch (um)"   );
 
-      h1DXcellChargeAsimmetry_    [p]->GetXaxis()->SetTitle("long pitch (um)"   );
-      h1DXcellChargeAsimmetry_    [p]->GetYaxis()->SetTitle("Asimmetry"         );
+      h1DXcellChargeSecondHit_   [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h1DXcellChargeSecondHit_   [p]->GetYaxis()->SetTitle("charge (electrons)");
+      h1DXcellChargeSecondHitNorm_[p]->GetYaxis()->SetTitle("charge (electrons)");
 
-      h2DXcellChargeAsimmetryInv_ [p]->GetXaxis()->SetTitle("Asimmetry"         );
-      h2DXcellChargeAsimmetryInv_ [p]->GetYaxis()->SetTitle("long pitch (um)"   );
+      h2DXcellCharge_            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h2DXcellCharge_            [p]->GetYaxis()->SetTitle("charge (electrons)");
 
-      h1DXcellChargeAsimmetryInv_ [p]->GetXaxis()->SetTitle("Asimmetry"         );
-      h1DXcellChargeAsimmetryInv_ [p]->GetYaxis()->SetTitle("long pitch (um)"   );
+      h2DXcellChargeSecondHit_   [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h2DXcellChargeSecondHit_   [p]->GetYaxis()->SetTitle("charge (electrons)");
 
 
-      h2DYcellChargeAsimmetry_    [p]->GetXaxis()->SetTitle("shot pitch (um)"   );
-      h2DYcellChargeAsimmetry_    [p]->GetYaxis()->SetTitle("Asimmetry"         );
+      h1DYcellCharge_            [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+      h1DYcellCharge_            [p]->GetYaxis()->SetTitle("charge (electrons)");
+      h1DYcellChargeNorm_        [p]->GetXaxis()->SetTitle("short pitch (um)"  );
 
-      h1DYcellChargeAsimmetry_    [p]->GetXaxis()->SetTitle("short pitch (um)"  );
-      h1DYcellChargeAsimmetry_    [p]->GetYaxis()->SetTitle("Asimmetry"         );
+      h1DYcellChargeSecondHit_   [p]->GetXaxis()->SetTitle("short pitch (um)"   );
+      h1DYcellChargeSecondHit_   [p]->GetYaxis()->SetTitle("charge (electrons)");
+      h1DYcellChargeSecondHitNorm_[p]->GetYaxis()->SetTitle("charge (electrons)");
 
-      h2DYcellChargeAsimmetryInv_ [p]->GetXaxis()->SetTitle("Asimmetry"         );
-      h2DYcellChargeAsimmetryInv_ [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+      h2DYcellCharge_            [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+      h2DYcellCharge_            [p]->GetYaxis()->SetTitle("charge (electrons)");
 
-      h1DYcellChargeAsimmetryInv_ [p]->GetXaxis()->SetTitle("Asimmetry"         );
-      h1DYcellChargeAsimmetryInv_ [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+      h2DYcellChargeSecondHit_   [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+      h2DYcellChargeSecondHit_   [p]->GetYaxis()->SetTitle("charge (electrons)");
+
+
+      h2DXcellChargeAsimmetry_   [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h2DXcellChargeAsimmetry_   [p]->GetYaxis()->SetTitle("Asimmetry"         );
+
+      h1DXcellChargeAsimmetry_   [p]->GetXaxis()->SetTitle("long pitch (um)"   );
+      h1DXcellChargeAsimmetry_   [p]->GetYaxis()->SetTitle("Asimmetry"         );
+
+      h2DXcellChargeAsimmetryInv_[p]->GetXaxis()->SetTitle("Asimmetry"         );
+      h2DXcellChargeAsimmetryInv_[p]->GetYaxis()->SetTitle("long pitch (um)"   );
+
+      h1DXcellChargeAsimmetryInv_[p]->GetXaxis()->SetTitle("Asimmetry"         );
+      h1DXcellChargeAsimmetryInv_[p]->GetYaxis()->SetTitle("long pitch (um)"   );
+
+
+      h2DYcellChargeAsimmetry_   [p]->GetXaxis()->SetTitle("shot pitch (um)"   );
+      h2DYcellChargeAsimmetry_   [p]->GetYaxis()->SetTitle("Asimmetry"         );
+
+      h1DYcellChargeAsimmetry_   [p]->GetXaxis()->SetTitle("short pitch (um)"  );
+      h1DYcellChargeAsimmetry_   [p]->GetYaxis()->SetTitle("Asimmetry"         );
+
+      h2DYcellChargeAsimmetryInv_[p]->GetXaxis()->SetTitle("Asimmetry"         );
+      h2DYcellChargeAsimmetryInv_[p]->GetYaxis()->SetTitle("short pitch (um)"  );
+
+      h1DYcellChargeAsimmetryInv_[p]->GetXaxis()->SetTitle("Asimmetry"         );
+      h1DYcellChargeAsimmetryInv_[p]->GetYaxis()->SetTitle("short pitch (um)"  );
 
 
       STDLINE("Fitting phase",ACWhite);
