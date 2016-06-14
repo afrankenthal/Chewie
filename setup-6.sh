@@ -36,7 +36,7 @@ if [ ${HOSTNAME} == "hal9000.mib.infn.it" ]; then
   if [ ${USER} == "menasce" ]; then
       export BASEDATADIR=/user/gr1/e831/menasce/MonicelliNew/data/2015_10_October
   elif [ ${USER} == "dinardo" ]; then
-      export BASEDATADIR=/raid2/data1/user/gr1/e831/dinardo/TestBeamData2015
+      export BASEDATADIR=/raid2/data1/vtx1/dinardo/TestBeamFBKPlanarBeforeRad_Batch01
   fi
 
   #===== Local directories
