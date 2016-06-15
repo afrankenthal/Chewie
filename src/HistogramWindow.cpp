@@ -214,167 +214,192 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
   if (data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol)
     {
       theH2TimeWindow_norm_.find(run)->second->Fill(col,entry);
-      if (data.getHasHit(planeID)) heH2TimeWindow_.find(run)->second->Fill(col,entry);
+      if (data.getHasHit(planeID)) theH2TimeWindow_.find(run)->second->Fill(col,entry);
     }
 
 
   if (data.getHasHit(planeID) && data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol)
     {
-      if(nRow==1 && nCol==1)
+      if (nRow == 1 && nCol == 1)
 	{
 	  theHWindow_.find(run)->second->Fill(col,row);
-	  if(size == 1)
+
+	  if (size == 1)
 	    theHWindowClusterSize1_.find(run)->second->Fill(col,row);
-	  if(size == 2)
+	  if (size == 2)
 	    theHWindowClusterSize2_.find(run)->second->Fill(col,row);
-	  if(size == 3)
+	  if (size == 3)
 	    theHWindowClusterSize3_.find(run)->second->Fill(col,row);
-	  if(size == 4)
+	  if (size == 4)
 	    theHWindowClusterSize4_.find(run)->second->Fill(col,row);
 	}
-      else if(nRow>1 && nCol==1)
+      else if (nRow > 1 && nCol == 1)
 	{
-	  if( ceil(nRow/2.) != nRow/2. ) //nRow odd
+	  if (ceil(nRow/2.) != nRow/2.) // nRow odd
 	    {
 	      theHWindow_.find(run)->second->Fill(col,row);
-	      if(size == 1)
+
+	      if (size == 1)
 		theHWindowClusterSize1_.find(run)->second->Fill(col,row);
-	      if(size == 2)
+	      if (size == 2)
 		theHWindowClusterSize2_.find(run)->second->Fill(col,row);
-	      if(size == 3)
+	      if (size == 3)
 		theHWindowClusterSize3_.find(run)->second->Fill(col,row);
-	      if(size == 4)
+	      if (size == 4)
 		theHWindowClusterSize4_.find(run)->second->Fill(col,row);
-	      for(int r=1; r<nRow; r++)
+
+	      for (int r = 1; r < nRow; r++)
 		{
-		  if( ceil(r/2.) == r/2. )
+		  if (ceil(r/2.) == r/2.)
 		    {
-		      if( (row+r/2.) <= higherRow )
-			{\
+		      if ((row+r/2.) <= higherRow)
+			{
 			  theHWindow_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 1)
+
+			  if (size == 1)
 			    theHWindowClusterSize1_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 2)
+			  if (size == 2)
 			    theHWindowClusterSize2_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 3)
+			  if (size == 3)
 			    theHWindowClusterSize3_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 4)
+			  if (size == 4)
 			    theHWindowClusterSize4_.find(run)->second->Fill(col,row+r/2.);
 			}
-		      if( (row-r/2.) >= lowerRow )
+
+		      if ((row-r/2.) >= lowerRow)
 			{
 			  theHWindow_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 1)
+
+			  if (size == 1)
 			    theHWindowClusterSize1_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 2)
+			  if (size == 2)
 			    theHWindowClusterSize2_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 3)
+			  if (size == 3)
 			    theHWindowClusterSize3_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 4)
+			  if (size == 4)
 			    theHWindowClusterSize4_.find(run)->second->Fill(col,row-r/2.);
 			}
 		    }
 		}
 	    }
-	  else  //nRow even
+	  else // nRow even
 	    {
-	      for(int r=1; r<nRow; r++)
+	      for (int r = 1; r < nRow; r++)
 		{
-		  if( ceil(r/2.) != r/2. )
+		  if (ceil(r/2.) != r/2.)
 		    {
-		      if( (row+r/2.) <= higherRow )
+		      if ((row+r/2.) <= higherRow)
 			{
 			  theHWindow_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 1)
+
+			  if (size == 1)
 			    theHWindowClusterSize1_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 2)
+			  if (size == 2)
 			    theHWindowClusterSize2_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 3)
+			  if (size == 3)
 			    theHWindowClusterSize3_.find(run)->second->Fill(col,row+r/2.);
-			  if(size == 4)
+			  if (size == 4)
 			    theHWindowClusterSize4_.find(run)->second->Fill(col,row+r/2.);
 			}
-		      if( (row-r/2.) >= lowerRow )
+
+		      if ((row-r/2.) >= lowerRow)
 			{
 			  theHWindow_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 1)
+
+			  if (size == 1)
 			    theHWindowClusterSize1_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 2)
+			  if (size == 2)
 			    theHWindowClusterSize2_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 3)
+			  if (size == 3)
 			    theHWindowClusterSize3_.find(run)->second->Fill(col,row-r/2.);
-			  if(size == 4)
+			  if (size == 4)
 			    theHWindowClusterSize4_.find(run)->second->Fill(col,row-r/2.);
 			}
 		    }
 		}
 	    }
 	}
-      else if(nCol>1 && nRow==1)
+      else if (nCol > 1 && nRow == 1)
 	{
-	  if( ceil(nCol/2.) != nCol/2. )//nCol odd
+	  if (ceil(nCol/2.) != nCol/2.) // nCol odd
 	    {
 	      theHWindow_.find(run)->second->Fill(col,row);
-	      if(size == 1)
+
+	      if (size == 1)
 		theHWindowClusterSize1_.find(run)->second->Fill(col,row);
-	      if(size == 2)
+	      if (size == 2)
 		theHWindowClusterSize2_.find(run)->second->Fill(col,row);
-	      if(size == 3)
+	      if (size == 3)
 		theHWindowClusterSize3_.find(run)->second->Fill(col,row);
-	      if(size == 4)
+	      if (size == 4)
 		theHWindowClusterSize4_.find(run)->second->Fill(col,row);
-	      for(int c=1; c<nCol; c++)
+
+	      for (int c=1; c<nCol; c++)
 		{
-		  if( ceil(c/2.) == c/2. )
+		  if (ceil(c/2.) == c/2.)
 		    {
-		      if( (col+c/2.) <= higherCol )
+		      if ((col+c/2.) <= higherCol)
 			{
 			  theHWindow_.find(run)->second->Fill(col+c/2.,row);
-			  if(size == 1)
+
+			  if (size == 1)
 			    theHWindowClusterSize1_.find(run)->second->Fill(col+c/2.,row);
-			  if(size == 2)
+			  if (size == 2)
 			    theHWindowClusterSize2_.find(run)->second->Fill(col+c/2.,row);
-			  if(size == 3)
+			  if (size == 3)
 			    theHWindowClusterSize3_.find(run)->second->Fill(col+c/2.,row);
-			  if(size == 4)
+			  if (size == 4)
 			    theHWindowClusterSize4_.find(run)->second->Fill(col+c/2.,row);
 			}
-		      else if( (col-c/2.) >= lowerCol )
+		      
+		      if((col-c/2.) >= lowerCol)
 			{
 			  theHWindow_.find(run)->second->Fill(col-c/2.,row);
-			  if(size == 1)
+
+			  if (size == 1)
 			    theHWindowClusterSize1_.find(run)->second->Fill(col-c/2.,row);
-			  if(size == 2)
+			  if (size == 2)
 			    theHWindowClusterSize2_.find(run)->second->Fill(col-c/2.,row);
-			  if(size == 3)
+			  if (size == 3)
 			    theHWindowClusterSize3_.find(run)->second->Fill(col-c/2.,row);
-			  if(size == 4)
+			  if (size == 4)
 			    theHWindowClusterSize4_.find(run)->second->Fill(col-c/2.,row);
 			}
 		    }
 		}
 	    }
-	  else//nCol even
+	  else // nCol even
 	    {
-	      for(int c=1; c<nCol; c++)
+	      for (int c = 1; c < nCol; c++)
 		{
-		  if( ceil(c/2.) != c/2. )
+		  if (ceil(c/2.) != c/2.)
 		    {
-		      if( (col+c/2.) <= higherCol )
+		      if ((col+c/2.) <= higherCol)
 			{
 			  theHWindow_.find(run)->second->Fill(col+c/2.,row);
-			  theHWindowClusterSize1_.find(run)->second->Fill(col+c/2.,row);
-			  theHWindowClusterSize2_.find(run)->second->Fill(col+c/2.,row);
-			  theHWindowClusterSize3_.find(run)->second->Fill(col+c/2.,row);
-			  theHWindowClusterSize4_.find(run)->second->Fill(col+c/2.,row);
+
+			  if (size == 1)
+			    theHWindowClusterSize1_.find(run)->second->Fill(col+c/2.,row);
+			  if (size == 2)
+			    theHWindowClusterSize2_.find(run)->second->Fill(col+c/2.,row);
+			  if (size == 3)
+			    theHWindowClusterSize3_.find(run)->second->Fill(col+c/2.,row);
+			  if (size == 4)
+			    theHWindowClusterSize4_.find(run)->second->Fill(col+c/2.,row);
 			}
-		      if( (col-c/2.) >= lowerCol )
+
+		      if ((col-c/2.) >= lowerCol)
 			{
 			  theHWindow_.find(run)->second->Fill(col-c/2.,row);
-			  theHWindowClusterSize1_.find(run)->second->Fill(col-c/2.,row);
-			  theHWindowClusterSize2_.find(run)->second->Fill(col-c/2.,row);
-			  theHWindowClusterSize3_.find(run)->second->Fill(col-c/2.,row);
-			  theHWindowClusterSize4_.find(run)->second->Fill(col-c/2.,row);
+
+			  if (size == 1)
+			    theHWindowClusterSize1_.find(run)->second->Fill(col-c/2.,row);
+			  if (size == 2)
+			    theHWindowClusterSize2_.find(run)->second->Fill(col-c/2.,row);
+			  if (size == 3)
+			    theHWindowClusterSize3_.find(run)->second->Fill(col-c/2.,row);
+			  if (size == 4)
+			    theHWindowClusterSize4_.find(run)->second->Fill(col-c/2.,row);
 			}
 		    }
 		}
