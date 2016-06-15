@@ -536,24 +536,30 @@ void EfficiencyUniMiB::planeEfficiency(bool pass, int planeID, const Data& data,
 {
   if (!pass || !data.getIsInDetector(planeID)) return;
 
-  const Window* theWindow = theWindowsManager_->getWindow(planeID);
-  float         row       = data.getRowPredicted(planeID);
-  float         col       = data.getColPredicted(planeID);
-  int           run       = data.getRunNumber();
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+
+
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
 
 
   // #########################################################################
   // # Compute efficiency only for cells that are surrounded by "good" cells #
   // #########################################################################
-  if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)))
+  if (theWindow->checkWindowAbout(colPredicted,rowPredicted,run,thePlaneMapping_->getPlaneType(planeID)))
     {
       THREADED(hEfficiencyNorm_  [planeID])->Fill(1);
-      THREADED(h2DEfficiencyNorm_[planeID])->Fill(col,row);
+      THREADED(h2DEfficiencyNorm_[planeID])->Fill(colPredicted,rowPredicted);
 
       if (data.getHasHit(planeID))
         {
 	  THREADED(hEfficiency_  [planeID])->Fill(1);
-	  THREADED(h2DEfficiency_[planeID])->Fill(col,row);
+	  THREADED(h2DEfficiency_[planeID])->Fill(colPredicted,rowPredicted);
         }
     }
 
@@ -561,15 +567,13 @@ void EfficiencyUniMiB::planeEfficiency(bool pass, int planeID, const Data& data,
   // ##################################################
   // # Compute efficiency for all cells in acceptance #
   // ##################################################
-  if (!theWindow->checkWindow(col,row,run)) return;
-  
   THREADED(hEfficiencyRefNorm_  [planeID])->Fill(1);
-  THREADED(h2DEfficiencyRefNorm_[planeID])->Fill(col,row);
+  THREADED(h2DEfficiencyRefNorm_[planeID])->Fill(colPredicted,rowPredicted);
   
   if (data.getHasHit(planeID))
     {
       THREADED(hEfficiencyRef_  [planeID])->Fill(1);
-      THREADED(h2DEfficiencyRef_[planeID])->Fill(col,row);
+      THREADED(h2DEfficiencyRef_[planeID])->Fill(colPredicted,rowPredicted);
     }
 }
 
@@ -578,16 +582,22 @@ void EfficiencyUniMiB::cellEfficiency(bool pass, int planeID, const Data& data, 
 {
   if (!pass || !data.getIsInDetector(planeID)) return;
 
-  const Window* theWindow  = theWindowsManager_->getWindow(planeID);
-  float         xRes       = data.getXPixelResidualLocal(planeID);
-  float         yRes       = data.getYPixelResidualLocal(planeID);
-  float         xRes4Cells = 0;
-  float         yRes4Cells = 0;
-  float         row        = data.getRowPredicted(planeID);
-  float         col        = data.getColPredicted(planeID);
-  int           run        = data.getRunNumber();
-  float         maxPitchX  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
-  float         maxPitchY  = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  float         xRes         = data.getXPixelResidualLocal(planeID);
+  float         yRes         = data.getYPixelResidualLocal(planeID);
+  float         xRes4Cells   = 0;
+  float         yRes4Cells   = 0;
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+  float         maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+  float         maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+
+
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
 
 
   if (data.getXPixelResidualLocal(planeID) > 0)       xRes4Cells = data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
@@ -596,23 +606,23 @@ void EfficiencyUniMiB::cellEfficiency(bool pass, int planeID, const Data& data, 
   if (data.getYPixelResidualLocal(planeID) > 0)       yRes4Cells = data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
   else if (data.getYPixelResidualLocal(planeID) <= 0) yRes4Cells = data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
 
-  if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) &&
+  if (theWindow->checkWindowAbout(colPredicted,rowPredicted,run,thePlaneMapping_->getPlaneType(planeID)) &&
       data.getXPitchLocal(planeID) <= maxPitchX &&
       data.getYPitchLocal(planeID) <= maxPitchY)
     {
       THREADED(hCellEfficiencyNorm_   [planeID])->Fill(xRes,yRes);
       THREADED(h2D4cellEfficiencyNorm_[planeID])->Fill(xRes4Cells,yRes4Cells);
 
-      if (((int)col)%2 == 0) THREADED(hCellEfficiencyEvenColumnsNorm_[planeID])->Fill(xRes,yRes);
-      else                   THREADED(hCellEfficiencyOddColumnsNorm_ [planeID])->Fill(xRes,yRes);
+      if (((int)colPredicted)%2 == 0) THREADED(hCellEfficiencyEvenColumnsNorm_[planeID])->Fill(xRes,yRes);
+      else                            THREADED(hCellEfficiencyOddColumnsNorm_ [planeID])->Fill(xRes,yRes);
 
       if (data.getHasHit(planeID))
 	{
 	  THREADED(hCellEfficiency_   [planeID])->Fill(xRes,yRes);
 	  THREADED(h2D4cellEfficiency_[planeID])->Fill(xRes4Cells,yRes4Cells);
 	    
-	  if (((int)col)%2 == 0) THREADED(hCellEfficiencyEvenColumns_[planeID])->Fill(xRes,yRes);
-	  else                   THREADED(hCellEfficiencyOddColumns_ [planeID])->Fill(xRes,yRes);
+	  if (((int)colPredicted)%2 == 0) THREADED(hCellEfficiencyEvenColumns_[planeID])->Fill(xRes,yRes);
+	  else                            THREADED(hCellEfficiencyOddColumns_ [planeID])->Fill(xRes,yRes);
 	}
     }
 }
@@ -628,14 +638,21 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
 
   if (!pass || !data.getIsInDetector(planeID)) return;
 
-  const Window* theWindow = theWindowsManager_->getWindow(planeID);
-  int           row       = data.getRowPredicted(planeID);
-  int           col       = data.getColPredicted(planeID);
-  int           event     = data.getEventChewieNumber();
-  int           run       = data.getRunNumber();
-  float         maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
-  float         xRes      = 0.;
-  
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+  int           event        = data.getEventChewieNumber();
+  float         maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+  float         xRes         = 0.;
+
+
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
+
+
   if (data.getXPitchLocal(planeID) == maxPitchX)
     {
       if (data.getXPixelResidualLocal(planeID) > 0)       xRes = data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
@@ -643,8 +660,8 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
     }
   else return;
 
-  if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) &&
-      theWindow->checkTimeWindowAbout(col,event,run))
+  if (theWindow->checkWindowAbout(colPredicted,rowPredicted,run,thePlaneMapping_->getPlaneType(planeID)) &&
+      theWindow->checkTimeWindowAbout(colPredicted,event,run))
     {
       THREADED(h1DXcellEfficiencyNorm_[planeID])->Fill(xRes);
       
@@ -660,7 +677,7 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
 	  bool isOk = false;
 	  for (int h = 0; h < data.getClusterSize(planeID); h++)
 	    {
-	      if ((data.getClusterPixelCol(h,planeID) == col) && (data.getClusterPixelRow(h,planeID) == row))
+	      if ((data.getClusterPixelCol(h,planeID) == colPredicted) && (data.getClusterPixelRow(h,planeID) == rowPredicted))
 		{
 		  THREADED(h1DXcellEfficiencyFirstHit_ [planeID])->Fill(xRes);
 		  THREADED(h1DXcellEfficiencySecondHit_[planeID])->Fill(xRes);
@@ -675,9 +692,9 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
 	      isOk = false;
 	      for (int h = 0; h < data.getClusterSize(planeID); h++)
 		{
-		  if (data.getClusterPixelRow(h,planeID) == row)
+		  if (data.getClusterPixelRow(h,planeID) == rowPredicted)
 		    {
-		      if (((col-data.getClusterPixelCol(h,planeID)) == 1) || ((col-data.getClusterPixelCol(h,planeID)) == -1))
+		      if (((colPredicted-data.getClusterPixelCol(h,planeID)) == 1) || ((colPredicted-data.getClusterPixelCol(h,planeID)) == -1))
 			{
 			  isOk = true;
 			  break;
@@ -704,13 +721,20 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
 
   if (!pass || !data.getIsInDetector(planeID)) return;
 
-  const Window* theWindow = theWindowsManager_->getWindow(planeID);
-  int           row       = data.getRowPredicted(planeID);
-  int           col       = data.getColPredicted(planeID);
-  int           event     = data.getEventChewieNumber();
-  int           run       = data.getRunNumber();
-  float         maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
-  float         yRes      = 0.;
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+  int           event        = data.getEventChewieNumber();
+  float         maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+  float         yRes         = 0.;
+
+
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
+
 
   if (data.getYPitchLocal(planeID) == maxPitchY)
     {
@@ -719,8 +743,8 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
     }
   else return;
   
-  if (theWindow->checkWindowAbout(col,row,run,thePlaneMapping_->getPlaneType(planeID)) &&
-      theWindow->checkTimeWindowAbout(col,event,run))
+  if (theWindow->checkWindowAbout(colPredicted,rowPredicted,run,thePlaneMapping_->getPlaneType(planeID)) &&
+      theWindow->checkTimeWindowAbout(colPredicted,event,run))
     {
       THREADED(h1DYcellEfficiencyNorm_[planeID])->Fill(yRes);
 	
@@ -736,7 +760,7 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
 	  bool isOk = false;
 	  for (int h = 0; h < data.getClusterSize(planeID); h++)
 	    {
-	      if ((data.getClusterPixelCol(h,planeID) == col) && (data.getClusterPixelRow(h,planeID) == row))
+	      if ((data.getClusterPixelCol(h,planeID) == colPredicted) && (data.getClusterPixelRow(h,planeID) == rowPredicted))
 		{
 		  THREADED(h1DYcellEfficiencyFirstHit_ [planeID])->Fill(yRes);
 		  THREADED(h1DYcellEfficiencySecondHit_[planeID])->Fill(yRes);
@@ -751,9 +775,9 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
 	      isOk = false;
 	      for (int h = 0; h < data.getClusterSize(planeID); h++)
 		{
-		  if (data.getClusterPixelCol(h,planeID) == col)
+		  if (data.getClusterPixelCol(h,planeID) == colPredicted)
 		    {
-		      if (((row-data.getClusterPixelRow(h,planeID)) == 1) || ((row-data.getClusterPixelRow(h,planeID)) == -1))
+		      if (((rowPredicted-data.getClusterPixelRow(h,planeID)) == 1) || ((rowPredicted-data.getClusterPixelRow(h,planeID)) == -1))
 			{
 			  isOk = true;
 			  break;

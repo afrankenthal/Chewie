@@ -155,20 +155,22 @@ void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &d
   else                    xPixelEdgeResidual = xPixelResidual + data.getXPitchLocal(planeID)/2;
 
 
-  const Window* theWindow = theWindowsManager_->getWindow(planeID);
-  int           row       = data.getRowPredicted(planeID);
-  int           col       = data.getColPredicted(planeID);
-  int           run       = data.getRunNumber();
-  int           size      = data.getClusterSize(planeID);
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+  int           size         = data.getClusterSize(planeID);
     
-  if (!theWindow->checkWindow(col,row,run)) return;
-
+  if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
 
   for (int h = 0; h < size; h++)
     {
       if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
 	  || !data.getIsPixelCalibrated(h,planeID)                                                           // Pixels are calibrated
-	  ||  data.getClusterPixelRow  (h,planeID) != row)                                                   // Hits are on the same row (sharing is along the row - x direction)
+	  ||  data.getClusterPixelRow  (h,planeID) != rowPredicted)                                          // Hits are on the same row (sharing is along the row - x direction)
 	return;
     }
 
@@ -186,7 +188,7 @@ void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &d
   // ############################################
   for (int h = 0; h < size; h++)
     {
-      if (data.getClusterPixelCol(h,planeID) == col)
+      if (data.getClusterPixelCol(h,planeID) == colPredicted)
 	{
 	  hitID = h;
 	  break;
@@ -199,26 +201,26 @@ void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &d
     {
       for (int h = 0; h < size; h++)
 	{
-	  if (xPixelResidual > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)
+	  if (xPixelResidual > 0 && (colPredicted - data.getClusterPixelCol(h,planeID)) == -1)
 	    {
 	      chargeRight = data.getClusterPixelCharge(h    ,planeID);
 	      chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
 	      break;
 	    }
-	  else if (xPixelResidual <= 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
+	  else if (xPixelResidual <= 0 && (colPredicted - data.getClusterPixelCol(h,planeID)) == 1)
 	    {
 	      chargeRight = data.getClusterPixelCharge(hitID,planeID);
 	      chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
 	      break;
 	    }
-	  else if (xPixelResidual > 0 && (col - data.getClusterPixelCol(h,planeID)) == 1)
+	  else if (xPixelResidual > 0 && (colPredicted - data.getClusterPixelCol(h,planeID)) == 1)
 	    {
 	      chargeRight = data.getClusterPixelCharge(hitID,planeID);
 	      chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
 	      xPixelEdgeResidual = xPixelResidual + data.getXPitchLocal(planeID)/2;
 	      break;
 	    }
-	  else if (xPixelResidual < 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)
+	  else if (xPixelResidual < 0 && (colPredicted - data.getClusterPixelCol(h,planeID)) == -1)
 	    {
 	      chargeRight = data.getClusterPixelCharge(h    ,planeID);
 	      chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
@@ -286,20 +288,22 @@ void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &d
   else                    yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
 
 
-  const Window* theWindow = theWindowsManager_->getWindow(planeID);
-  int           row       = data.getRowPredicted(planeID);
-  int           col       = data.getColPredicted(planeID);
-  int           run       = data.getRunNumber();
-  int           size      = data.getClusterSize(planeID);
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+  int           size         = data.getClusterSize(planeID);
   
-  if (!theWindow->checkWindow(col,row,run)) return;
+  if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
 
-
-  for (int h = 0; h < data.getClusterSize(planeID); h++)
+  for (int h = 0; h < size; h++)
     {
       if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
 	  || !data.getIsPixelCalibrated(h,planeID)                                                           // Pixels are calibrated
-	  ||  data.getClusterPixelCol  (h,planeID) != col)                                                   // Hits are on the same column (sharing is along the column - y direction)
+	  ||  data.getClusterPixelCol  (h,planeID) != colPredicted)                                          // Hits are on the same column (sharing is along the column - y direction)
 	return;
     }
   
@@ -311,12 +315,13 @@ void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &d
   float asimmetry   =  0;
   float yMeasured;
 
+
   // ############################################
   // # Require cluster with raw = predicted raw #
   // ############################################
   for (int h = 0 ; h < size; h++)
     {
-      if (data.getClusterPixelRow(h,planeID) == row)
+      if (data.getClusterPixelRow(h,planeID) == rowPredicted)
 	{
 	  hitID = h;
 	  break;
@@ -329,26 +334,26 @@ void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &d
     {
       for (int h = 0; h < size; ++h)
         {
-	  if (yPixelResidual > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)
+	  if (yPixelResidual > 0 && (rowPredicted - data.getClusterPixelRow(h,planeID)) == -1)
             {
 	      chargeUp   = data.getClusterPixelCharge(h    ,planeID);
 	      chargeDown = data.getClusterPixelCharge(hitID,planeID);
 	      break;
             }
-	  else if (yPixelResidual <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
+	  else if (yPixelResidual <= 0 && (rowPredicted - data.getClusterPixelRow(h,planeID)) == 1)
             {
 	      chargeUp   = data.getClusterPixelCharge(hitID,planeID);
 	      chargeDown = data.getClusterPixelCharge(h    ,planeID);
 	      break;
             }
-	  else if (yPixelResidual > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
+	  else if (yPixelResidual > 0 && (rowPredicted - data.getClusterPixelRow(h,planeID)) == 1)
             {
 	      chargeUp   = data.getClusterPixelCharge(hitID,planeID);
 	      chargeDown = data.getClusterPixelCharge(h    ,planeID);
 	      yPixelEdgeResidual = yPixelResidual + data.getYPitchLocal(planeID)/2;
 	      break;
             }
-	  else if (yPixelResidual < 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)
+	  else if (yPixelResidual < 0 && (rowPredicted - data.getClusterPixelRow(h,planeID)) == -1)
             {
 	      chargeUp   = data.getClusterPixelCharge(h    ,planeID);
 	      chargeDown = data.getClusterPixelCharge(hitID,planeID);
@@ -418,7 +423,7 @@ void ResolutionUniMiB::xResolution(bool pass, int planeID, const Data& data, int
 
   if (size == 2)
     {
-      if(data.getClusterPixelRow(0,planeID) != data.getClusterPixelRow(1,planeID)) return;
+      if (data.getClusterPixelRow(0,planeID) != data.getClusterPixelRow(1,planeID)) return;
       
       THREADED(hXResidualsClusterSize2_[planeID])->Fill(data.getXTrackResidualLocal(planeID));
     }
@@ -453,7 +458,7 @@ void ResolutionUniMiB::yResolution(bool pass, int planeID, const Data& data, int
     if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),data.getRunNumber())) return;
   
   THREADED(hYResiduals_[planeID])->Fill(data.getYTrackResidualLocal(planeID));
-  
+
   if (theWindow->checkTimeWindowAbout(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber()))
     {
       THREADED(h2DCorrelationsResidualYvsX_[planeID])->Fill(data.getXPredictedLocal(planeID),data.getYTrackResidualLocal(planeID));
@@ -463,7 +468,7 @@ void ResolutionUniMiB::yResolution(bool pass, int planeID, const Data& data, int
   
   if (size == 2)
     {
-      if(data.getClusterPixelCol(0,planeID) != data.getClusterPixelCol(1,planeID)) return;
+      if (data.getClusterPixelCol(0,planeID) != data.getClusterPixelCol(1,planeID)) return;
       
       THREADED(hYResidualsClusterSize2_[planeID])->Fill(data.getYTrackResidualLocal(planeID));
     }
