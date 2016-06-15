@@ -54,7 +54,7 @@
 // @@@ Hard coded parameters @@@
 #define maxChargeDeltaRay 13600. // = 8000 (MPV Landau for 100 um bulk thickness) * 1.7
 #define ONLYdoubleHITS    false  // Process only clusters of size 2
-#define ETAhalfRANGE      0.5    // Eta fit range  = [-ETAhalfRANGE, +ETAhalfRANGE]
+#define ETAhalfRANGE      0.5    // Eta fit range = [-ETAhalfRANGE, +ETAhalfRANGE]
 // ============================
 
 
