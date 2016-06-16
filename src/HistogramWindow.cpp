@@ -139,6 +139,7 @@ bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
     }
     return false;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int type) const
 {
@@ -175,8 +176,9 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
         std::cout << __PRETTY_FUNCTION__ << "I only know 2 types (0, 1) while this is type: " << type << ". IMPOSSIBLE!" << " row: " << row << " col: " << col << std::endl;
         assert(0);
     }
-}////////////////////////////////////////////////////////////////////////////////////
+}
 
+////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber) const
 {
 
@@ -186,6 +188,7 @@ bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber)
         return false;
 
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkTimeWindowAbout(float col, int eventNumber, int runNumber) const
 {
@@ -198,8 +201,8 @@ bool HistogramWindow::checkTimeWindowAbout(float col, int eventNumber, int runNu
         return false;
 
 }
-///////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////////////
 void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCol, int higherCol, int lowerRow, int higherRow)
 {
   float col   = data.getMeanCol(planeID);
@@ -352,7 +355,7 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
 			    theHWindowClusterSize4_.find(run)->second->Fill(col+c/2.,row);
 			}
 		      
-		      if((col-c/2.) >= lowerCol)
+		      if ((col-c/2.) >= lowerCol)
 			{
 			  theHWindow_.find(run)->second->Fill(col-c/2.,row);
 
