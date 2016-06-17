@@ -410,8 +410,8 @@ void ChargeUniMiB::xLandau(bool pass, int planeID, const Data &data, int threadN
   for (int h = 0; h < clusterSize; h++)
     {
       if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
-	  || !data.getIsPixelCalibrated (h,planeID)                                                          // Pixels are calibrated
-	  ||  data.getClusterPixelRow   (h,planeID) != rowPredicted                                          // Hits are on the same row (sharing is along the row - x direction)
+	  || !data.getIsPixelCalibrated  (h,planeID)                                                         // Pixels are calibrated
+	  ||  data.getClusterPixelRow    (h,planeID) != rowPredicted                                         // Hits are on the same row (sharing is along the row - x direction)
 	  ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // Charge is over threshold
 	  ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // Maximum allowed charge for this physics
 	return;
@@ -446,8 +446,8 @@ void ChargeUniMiB::yLandau(bool pass, int planeID, const Data &data, int threadN
   for (int h = 0; h < clusterSize; h++)
     {
       if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
-	  || !data.getIsPixelCalibrated (h,planeID)                                                          // Pixels are calibrated
-	  ||  data.getClusterPixelCol   (h,planeID) != colPredicted                                          // Hits are on the same column (sharing is along the columm - y direction)
+	  || !data.getIsPixelCalibrated  (h,planeID)                                                         // Pixels are calibrated
+	  ||  data.getClusterPixelCol    (h,planeID) != colPredicted                                         // Hits are on the same column (sharing is along the columm - y direction)
 	  ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // Charge is over threshold
 	  ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // Maximum allowed charge for this physics
 	return;
