@@ -949,7 +949,6 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
   int lastCol  = 51;
 
 
-  // if (!pass || !data.getIsInDetector(planeID)) return;
   if (!pass) return;
 
   const Window* theWindow    = theWindowsManager_->getWindow(planeID);
@@ -1006,7 +1005,8 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
 	{
 	  for (int h = 0; h < clusterSize; h++)
 	    {
-	      if ((data.getClusterPixelRow(h,planeID) == rowPredicted))
+	      if ((data.getClusterPixelRow(h,planeID) == rowPredicted) &&
+		  (((xResRight != 0) && (clusterPosition == "last")) || ((xResLeft != 0) && (clusterPosition == "first"))))
 		{
 		  if (xResRight != 0) THREADED(h1DXcellEdgeRightEfficiency_[planeID])->Fill(xResRight);
 		  else                THREADED(h1DXcellEdgeLeftEfficiency_[planeID])->Fill(xResLeft);
@@ -1029,7 +1029,6 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
   int lastCol  = 50;
 
 
-  // if (!pass || !data.getIsInDetector(planeID)) return;
   if (!pass) return;
 
   const Window* theWindow    = theWindowsManager_->getWindow(planeID);
@@ -1085,7 +1084,8 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
 	{
 	  for (int h = 0; h < clusterSize; h++)
 	    {
-	      if ((data.getClusterPixelCol(h,planeID) == colPredicted))
+	      if ((data.getClusterPixelCol(h,planeID) == colPredicted) &&
+		  (((yResUp != 0) && (clusterPosition == "last")) || ((yResDown != 0) && (clusterPosition == "first"))))
 		{
 		  if (yResUp != 0) THREADED(h1DYcellEdgeUpEfficiency_[planeID])->Fill(yResUp);
 		  else             THREADED(h1DYcellEdgeDownEfficiency_[planeID])->Fill(yResDown);
