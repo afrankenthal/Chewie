@@ -115,6 +115,18 @@ void EfficiencyUniMiB::destroy(void)
   for (it1=h1DYcellEfficiencyFirstHit_      .begin(); it1!=h1DYcellEfficiencyFirstHit_       .end(); it1++) delete *it1; h1DYcellEfficiencyFirstHit_      .clear();
   for (it1=h1DYcellEfficiencySecondHit_     .begin(); it1!=h1DYcellEfficiencySecondHit_      .end(); it1++) delete *it1; h1DYcellEfficiencySecondHit_     .clear();
   for (it1=h1DYcellEfficiencyNorm_          .begin(); it1!=h1DYcellEfficiencyNorm_           .end(); it1++) delete *it1; h1DYcellEfficiencyNorm_	  .clear();
+
+  for (it1=h1DXcellEdgeRightEfficiency_     .begin(); it1!=h1DXcellEdgeRightEfficiency_      .end(); it1++) delete *it1; h1DXcellEdgeRightEfficiency_	  .clear();
+  for (it1=h1DXcellEdgeRightEfficiencyNorm_ .begin(); it1!=h1DXcellEdgeRightEfficiencyNorm_  .end(); it1++) delete *it1; h1DXcellEdgeRightEfficiencyNorm_ .clear();
+
+  for (it1=h1DXcellEdgeLeftEfficiency_      .begin(); it1!=h1DXcellEdgeLeftEfficiency_       .end(); it1++) delete *it1; h1DXcellEdgeLeftEfficiency_	  .clear();
+  for (it1=h1DXcellEdgeLeftEfficiencyNorm_  .begin(); it1!=h1DXcellEdgeLeftEfficiencyNorm_   .end(); it1++) delete *it1; h1DXcellEdgeLeftEfficiencyNorm_  .clear();
+
+  for (it1=h1DYcellEdgeUpEfficiency_        .begin(); it1!=h1DYcellEdgeUpEfficiency_         .end(); it1++) delete *it1; h1DYcellEdgeUpEfficiency_	  .clear();
+  for (it1=h1DYcellEdgeUpEfficiencyNorm_    .begin(); it1!=h1DYcellEdgeUpEfficiencyNorm_     .end(); it1++) delete *it1; h1DYcellEdgeUpEfficiencyNorm_    .clear();
+
+  for (it1=h1DYcellEdgeDownEfficiency_      .begin(); it1!=h1DYcellEdgeDownEfficiency_       .end(); it1++) delete *it1; h1DYcellEdgeDownEfficiency_	  .clear();
+  for (it1=h1DYcellEdgeDownEfficiencyNorm_  .begin(); it1!=h1DYcellEdgeDownEfficiencyNorm_   .end(); it1++) delete *it1; h1DYcellEdgeDownEfficiencyNorm_  .clear();
 }
 
 //=======================================================================
@@ -169,6 +181,8 @@ void EfficiencyUniMiB::analyze(const Data& data, int threadNumber)
       cellEfficiency  (passCellEfficiencyCut ,p,data,threadNumber);
       xCellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
       yCellEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
+      xEdgeEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
+      yEdgeEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
     }
 }
 
@@ -219,6 +233,18 @@ void EfficiencyUniMiB::endJob(void)
       ADD_THREADED(h1DYcellEfficiencySecondHit_	      [p]);
       ADD_THREADED(h1DYcellEfficiencyNorm_     	      [p]);
 
+      ADD_THREADED(h1DXcellEdgeRightEfficiency_	      [p]);
+      ADD_THREADED(h1DXcellEdgeRightEfficiencyNorm_   [p]);
+
+      ADD_THREADED(h1DXcellEdgeLeftEfficiency_	      [p]);
+      ADD_THREADED(h1DXcellEdgeLeftEfficiencyNorm_    [p]);
+
+      ADD_THREADED(h1DYcellEdgeUpEfficiency_	      [p]);
+      ADD_THREADED(h1DYcellEdgeUpEfficiencyNorm_      [p]);
+
+      ADD_THREADED(h1DYcellEdgeDownEfficiency_	      [p]);
+      ADD_THREADED(h1DYcellEdgeDownEfficiencyNorm_    [p]);
+
       STDLINE("Threading phase completed",ACGreen);
 
 
@@ -248,6 +274,14 @@ void EfficiencyUniMiB::endJob(void)
 
       h1DYcellEfficiencySecondHit_ [p]->Divide(h1DYcellEfficiencyNorm_	        [p]);
 
+      h1DXcellEdgeRightEfficiency_ [p]->Divide(h1DXcellEdgeRightEfficiencyNorm_ [p]);
+
+      h1DXcellEdgeLeftEfficiency_  [p]->Divide(h1DXcellEdgeLeftEfficiencyNorm_  [p]);
+
+      h1DYcellEdgeUpEfficiency_    [p]->Divide(h1DYcellEdgeUpEfficiencyNorm_    [p]);
+
+      h1DYcellEdgeDownEfficiency_  [p]->Divide(h1DYcellEdgeDownEfficiencyNorm_  [p]);
+
 
       // ######################
       // # Setting error bars #
@@ -268,6 +302,18 @@ void EfficiencyUniMiB::endJob(void)
 
       h1DYcellEfficiencySecondHit_    [p]->SetMarkerStyle(20);
       h1DYcellEfficiencySecondHit_    [p]->SetMarkerSize(0.6);
+
+      h1DXcellEdgeRightEfficiency_    [p]->SetMarkerStyle(20);
+      h1DXcellEdgeRightEfficiency_    [p]->SetMarkerSize(0.6);
+
+      h1DXcellEdgeLeftEfficiency_     [p]->SetMarkerStyle(20);
+      h1DXcellEdgeLeftEfficiency_     [p]->SetMarkerSize(0.6);
+
+      h1DYcellEdgeUpEfficiency_       [p]->SetMarkerStyle(20);
+      h1DYcellEdgeUpEfficiency_       [p]->SetMarkerSize(0.6);
+
+      h1DYcellEdgeDownEfficiency_     [p]->SetMarkerStyle(20);
+      h1DYcellEdgeDownEfficiency_     [p]->SetMarkerSize(0.6);
 
 
       h2DEfficiency_                  [p]->GetXaxis()->SetTitle("column");
@@ -310,9 +356,21 @@ void EfficiencyUniMiB::endJob(void)
       h1DXcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("x (um)");
       h1DXcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("x (um)");
 
+      h1DXcellEdgeRightEfficiency_    [p]->GetXaxis()->SetTitle("x (um)");
+      h1DXcellEdgeRightEfficiencyNorm_[p]->GetXaxis()->SetTitle("x (um)");
+
+      h1DXcellEdgeLeftEfficiency_     [p]->GetXaxis()->SetTitle("x (um)");
+      h1DXcellEdgeLeftEfficiencyNorm_ [p]->GetXaxis()->SetTitle("x (um)");
+
       h1DYcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("y (um)");
       h1DYcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("y (um)");
       h1DYcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("y (um)");
+
+      h1DYcellEdgeUpEfficiency_       [p]->GetXaxis()->SetTitle("y (um)");
+      h1DYcellEdgeUpEfficiencyNorm_   [p]->GetXaxis()->SetTitle("y (um)");
+
+      h1DYcellEdgeDownEfficiency_     [p]->GetXaxis()->SetTitle("y (um)");
+      h1DYcellEdgeDownEfficiencyNorm_ [p]->GetXaxis()->SetTitle("y (um)");
 
 
       // ##############################
@@ -414,6 +472,24 @@ void EfficiencyUniMiB::book(void)
       h1DXcellEfficiencyNorm_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch/2,xPitch/2)));
 
 
+      hName  = "h1DXcellEdgeRightEfficiency_"                           + planeName;
+      hTitle = "1D edge-right Efficiency - X coordinate "               + planeName;
+      h1DXcellEdgeRightEfficiency_.push_back    (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch,xPitch)));
+
+      hName  = "h1DXcellEdgeRightEfficiencyNorm_"                       + planeName;
+      hTitle = "1D edge-right Efficiency - X coordinate normalization " + planeName;
+      h1DXcellEdgeRightEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch,xPitch)));
+
+
+      hName  = "h1DXcellEdgeLeftEfficiency_"                            + planeName;
+      hTitle = "1D edge-left Efficiency - X coordinate "                + planeName;
+      h1DXcellEdgeLeftEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch,xPitch)));
+
+      hName  = "h1DXcellEdgeLeftEfficiencyNorm_"                        + planeName;
+      hTitle = "1D edge-left Efficiency - X coordinate normalization "  + planeName;
+      h1DXcellEdgeLeftEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)xPitch/binSize,-xPitch,xPitch)));
+
+
       hName  = "h1DYcellEfficiencyFirstHit_"                            + planeName;
       hTitle = "1D cell Efficiency - Y coordinate first hit "           + planeName;
       h1DYcellEfficiencyFirstHit_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize,-yPitch/2,yPitch/2)));
@@ -425,6 +501,24 @@ void EfficiencyUniMiB::book(void)
       hName  = "h1DYcellEfficiencyNorm_"                                + planeName;
       hTitle = "1D cell Efficiency - Y coordinate normalization "       + planeName;
       h1DYcellEfficiencyNorm_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize,-yPitch/2,yPitch/2)));
+
+
+      hName  = "h1DYcellEdgeUpEfficiency_"                              + planeName;
+      hTitle = "1D edge-up Efficiency - Y coordinate "                  + planeName;
+      h1DYcellEdgeUpEfficiency_.push_back       (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize,-yPitch,yPitch)));
+
+      hName  = "h1DYcellEdgeUpEfficiencyNorm_"                          + planeName;
+      hTitle = "1D edge-up Efficiency - Y coordinate normalization "    + planeName;
+      h1DYcellEdgeUpEfficiencyNorm_.push_back   (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize,-yPitch,yPitch)));
+
+
+      hName  = "h1DYcellEdgeDownEfficiency_"                            + planeName;
+      hTitle = "1D edge-down Efficiency - Y coordinate "                + planeName;
+      h1DYcellEdgeDownEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize,-yPitch,yPitch)));
+
+      hName  = "h1DYcellEdgeDownEfficiencyNorm_"                        + planeName;
+      hTitle = "1D edge-down Efficiency - Y coordinate normalization "  + planeName;
+      h1DYcellEdgeDownEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)yPitch/binSize,-yPitch,yPitch)));
 
 
       // #################
@@ -516,6 +610,20 @@ void EfficiencyUniMiB::setErrorsBar(int planeID)
         h1DXcellEfficiencySecondHit_[planeID]->SetBinError(b,error);
     }
 
+    nBins = h1DXcellEdgeRightEfficiency_[planeID]->GetNbinsX();
+    for(int b = 1; b <= nBins; b++)
+    {
+        efficiency = h1DXcellEdgeRightEfficiency_[planeID]->GetBinContent(b);
+        Ntrack     = h1DXcellEdgeRightEfficiencyNorm_[planeID]->GetBinContent(b);
+        error      = sqrt(efficiency * (1-efficiency) / Ntrack);
+        h1DXcellEdgeRightEfficiency_[planeID]->SetBinError(b,error);
+
+        efficiency = h1DXcellEdgeLeftEfficiency_[planeID]->GetBinContent(b);
+        Ntrack     = h1DXcellEdgeLeftEfficiencyNorm_[planeID]->GetBinContent(b);
+        error      = sqrt(efficiency * (1-efficiency) / Ntrack);
+        h1DXcellEdgeLeftEfficiency_[planeID]->SetBinError(b,error);
+    }
+
     nBins = h1DYcellEfficiencyFirstHit_[planeID]->GetNbinsX();
     for(int b = 1; b <= nBins; b++)
     {
@@ -528,6 +636,20 @@ void EfficiencyUniMiB::setErrorsBar(int planeID)
         Ntrack     = h1DYcellEfficiencyNorm_[planeID]->GetBinContent(b);
         error      = sqrt(efficiency * (1-efficiency) / Ntrack);
         h1DYcellEfficiencySecondHit_[planeID]->SetBinError(b,error);
+    }
+
+    nBins = h1DYcellEdgeUpEfficiency_[planeID]->GetNbinsX();
+    for(int b = 1; b <= nBins; b++)
+    {
+        efficiency = h1DYcellEdgeUpEfficiency_[planeID]->GetBinContent(b);
+        Ntrack     = h1DYcellEdgeUpEfficiencyNorm_[planeID]->GetBinContent(b);
+        error      = sqrt(efficiency * (1-efficiency) / Ntrack);
+        h1DYcellEdgeUpEfficiency_[planeID]->SetBinError(b,error);
+
+        efficiency = h1DYcellEdgeDownEfficiency_[planeID]->GetBinContent(b);
+        Ntrack     = h1DYcellEdgeDownEfficiencyNorm_[planeID]->GetBinContent(b);
+        error      = sqrt(efficiency * (1-efficiency) / Ntrack);
+        h1DYcellEdgeDownEfficiency_[planeID]->SetBinError(b,error);
     }
 }
 
@@ -633,7 +755,7 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
   // #####################
   // # Internal constant #
   // #####################
-  int maxClusterSize = 4;
+  int maxClusterSize = 2;
 
 
   if (!pass || !data.getIsInDetector(planeID)) return;
@@ -716,7 +838,7 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
   // #####################
   // # Internal constant #
   // #####################
-  int maxClusterSize = 4;
+  int maxClusterSize = 2;
 
 
   if (!pass || !data.getIsInDetector(planeID)) return;
@@ -788,6 +910,137 @@ void EfficiencyUniMiB::yCellEfficiency(bool pass, int planeID, const Data& data,
 	      if (!isOk) return;
 
 	      THREADED(h1DYcellEfficiencySecondHit_[planeID])->Fill(yRes);
+	    }
+	}
+    }
+}
+
+//=======================================================================
+void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+{
+  // #####################
+  // # Internal constant #
+  // #####################
+  int firstRow =  0;
+  int lastRow  = 79;
+
+
+  // if (!pass || !data.getIsInDetector(planeID)) return;
+  if (!pass) return;
+
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+  int           event        = data.getEventChewieNumber();
+  float         maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+  float         xResRight    = 0.;
+  float         xResLeft     = 0.;
+  int           clusterSize  = data.getClusterSize(planeID);
+
+
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  int lowerCol  = atoi(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getWindow()->getLowerCol()).c_str());
+  int higherCol = atoi(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getWindow()->getHigherCol()).c_str());
+
+  for (int h = 0; h < clusterSize; h++)
+    {
+      if (!(((data.getClusterPixelRow(h,planeID) == lastRow) || (data.getClusterPixelRow(h,planeID) == firstRow)) &&
+	    data.getClusterPixelCol(h,planeID) >= lowerCol && data.getClusterPixelCol(h,planeID) <= higherCol)       // Hits are in the window 
+	  || !data.getIsPixelCalibrated(h,planeID))                                                                  // Pixels are calibrated
+	return;
+    }
+  
+
+  if (data.getXPitchLocal(planeID) == maxPitchX)
+    {
+      if (data.getXPixelResidualLocal(planeID) > 0)       xResRight = data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
+      else if (data.getXPixelResidualLocal(planeID) <= 0) xResLeft  = data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
+    }
+  else return;
+  
+  if (theWindow->checkTimeWindowAbout(colPredicted,event,run))
+    {
+      if (xResRight != 0) THREADED(h1DXcellEdgeRightEfficiencyNorm_[planeID])->Fill(xResRight);
+      else 	          THREADED(h1DXcellEdgeLeftEfficiencyNorm_[planeID])->Fill(xResLeft);
+
+      if (data.getHasHit(planeID))
+	{
+	  for (int h = 0; h < clusterSize; h++)
+	    {
+	      if ((data.getClusterPixelRow(h,planeID) == rowPredicted))
+		{
+		  if (xResRight != 0) THREADED(h1DXcellEdgeRightEfficiency_[planeID])->Fill(xResRight);
+		  else                THREADED(h1DXcellEdgeLeftEfficiency_[planeID])->Fill(xResLeft);
+		  break;
+		}
+	    }
+	}
+    }
+}
+
+//=======================================================================
+void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data, int threadNumber)
+{
+  // #####################
+  // # Internal constant #
+  // #####################
+  int firstCol =  0;
+  int lastCol  = 51;
+
+
+  // if (!pass || !data.getIsInDetector(planeID)) return;
+  if (!pass) return;
+
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+  int           event        = data.getEventChewieNumber();
+  float         maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+  float         yResUp       = 0.;
+  float         yResDown     = 0.;
+  int           clusterSize  = data.getClusterSize(planeID);
+
+
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  int lowerRow  = atoi(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getWindow()->getLowerRow()).c_str());
+  int higherRow = atoi(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getWindow()->getHigherRow()).c_str());
+
+  for (int h = 0; h < clusterSize; h++)
+    {
+      if (!(((data.getClusterPixelRow(h,planeID) == lastCol) || (data.getClusterPixelRow(h,planeID) == firstCol)) &&
+	    data.getClusterPixelRow(h,planeID) >= lowerRow && data.getClusterPixelRow(h,planeID) <= higherRow)       // Hits are in the window 
+	  || !data.getIsPixelCalibrated(h,planeID))                                                                  // Pixels are calibrated
+	return;
+    }
+
+
+  if (data.getYPitchLocal(planeID) == maxPitchY)
+    {
+      if (data.getYPixelResidualLocal(planeID) > 0)       yResUp   = data.getYPixelResidualLocal(planeID) - data.getYPitchLocal(planeID)/2;
+      else if (data.getYPixelResidualLocal(planeID) <= 0) yResDown = data.getYPixelResidualLocal(planeID) + data.getYPitchLocal(planeID)/2;
+    }
+  else return;
+  
+  if (theWindow->checkTimeWindowAbout(colPredicted,event,run))
+    {
+      if (yResUp != 0) THREADED(h1DYcellEdgeUpEfficiencyNorm_[planeID])->Fill(yResUp);
+      else 	       THREADED(h1DYcellEdgeDownEfficiencyNorm_[planeID])->Fill(yResDown);
+
+      if (data.getHasHit(planeID))
+	{
+	  for (int h = 0; h < clusterSize; h++)
+	    {
+	      if ((data.getClusterPixelCol(h,planeID) == colPredicted))
+		{
+		  if (yResUp != 0) THREADED(h1DYcellEdgeUpEfficiency_[planeID])->Fill(yResUp);
+		  else             THREADED(h1DYcellEdgeDownEfficiency_[planeID])->Fill(yResDown);
+		  break;
+		}
 	    }
 	}
     }

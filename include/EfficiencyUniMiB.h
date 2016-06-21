@@ -70,6 +70,8 @@ class EfficiencyUniMiB : public Analysis
   void cellEfficiency  (bool pass, int planeID, const Data& data, int threadNumber);
   void xCellEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
   void yCellEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
+  void xEdgeEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
+  void yEdgeEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
 
   void setErrorsBar    (int  planeID);
 
@@ -113,6 +115,18 @@ class EfficiencyUniMiB : public Analysis
   std::vector<TH1F*> h1DYcellEfficiencyFirstHit_;
   std::vector<TH1F*> h1DYcellEfficiencySecondHit_;
   std::vector<TH1F*> h1DYcellEfficiencyNorm_;
+
+  std::vector<TH1F*> h1DXcellEdgeRightEfficiency_;
+  std::vector<TH1F*> h1DXcellEdgeRightEfficiencyNorm_;
+
+  std::vector<TH1F*> h1DXcellEdgeLeftEfficiency_;
+  std::vector<TH1F*> h1DXcellEdgeLeftEfficiencyNorm_;
+
+  std::vector<TH1F*> h1DYcellEdgeUpEfficiency_;
+  std::vector<TH1F*> h1DYcellEdgeUpEfficiencyNorm_;
+
+  std::vector<TH1F*> h1DYcellEdgeDownEfficiency_;
+  std::vector<TH1F*> h1DYcellEdgeDownEfficiencyNorm_;
 };
 
 #endif

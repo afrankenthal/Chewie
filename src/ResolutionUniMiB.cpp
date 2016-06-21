@@ -722,12 +722,14 @@ void ResolutionUniMiB::book(void)
   
   float       xPitch;
   float       yPitch;
+  float       halfWidth = 500;
   
   int         lowerCol;
   int         higherCol;
   int         lowerRow;
   int         higherRow;
-  
+  int         nBins = 250;
+
 
   theAnalysisManager_->cd("/");
   theAnalysisManager_->mkdir("Resolution");
@@ -756,31 +758,31 @@ void ResolutionUniMiB::book(void)
 
       hName  = "hXResiduals_"                               + planeName;
       hTitle = "X residuals  "                              + planeName;
-      hXResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 125, -500, 500)));
+      hXResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), nBins, -halfWidth, halfWidth)));
 
       hName  = "hXResidualCalculatedSize2_"                                   + planeName;
       hTitle = "X residuals calculated from asimmetry fit (Clusters Size 2) " + planeName;
-      hXResidualCalculatedSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 125, -500, 500)));
-
+      hXResidualCalculatedSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBins, -halfWidth, halfWidth)));
+      
       hName  = "hXResidualsClusterSize2_"                   + planeName;
       hTitle = "X residuals cluster size 2 "                + planeName;
-      hXResidualsClusterSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 125, -500, 500)));
-
-
+      hXResidualsClusterSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), nBins, -halfWidth, halfWidth)));
+      
+      
       theAnalysisManager_->cd("Resolution/" + planeName);
       theAnalysisManager_->mkdir("YResiduals");
-
+      
       hName  = "hYResiduals_"                               + planeName;
       hTitle = "Y residuals "                               + planeName;
-      hYResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 200, -400, 400)));
+      hYResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), nBins, -halfWidth, halfWidth)));
 
       hName  = "hYResidualCalculatedSize2_"                                  + planeName;
       hTitle = "Y residuals calculated from asimmetry fit (Cluster Size 2) " + planeName;
-      hYResidualCalculatedSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -400, 400)));
+      hYResidualCalculatedSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBins, -halfWidth, halfWidth)));
 
       hName  = "hYResidualsClusterSize2_"                   + planeName;
       hTitle = "Y residuals cluster size 2 "                + planeName;
-      hYResidualsClusterSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), 200, -400, 400)));
+      hYResidualsClusterSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), nBins, -halfWidth, halfWidth)));
 
 
       if (planeName.find("Dut") != std::string::npos)
@@ -803,19 +805,19 @@ void ResolutionUniMiB::book(void)
 
         hName  = "h2DCorrelationsResidualXvsX_"                        + planeName;
         hTitle = "Correlation X residuals vs X "                       + planeName;
-        h2DCorrelationsResidualXvsX_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfColumns + 2, (float)xPitch*lowerCol, (float)xPitch*(lowerCol+numberOfColumns + 2), 300, -300., 300.)));
-
+	h2DCorrelationsResidualXvsX_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfColumns + 2, (float)xPitch*lowerCol, (float)xPitch*(lowerCol+numberOfColumns + 2), nBins, -halfWidth, halfWidth)));
+	
         hName  = "h2DCorrelationsResidualXvsY_"                        + planeName;
         hTitle = "Correlation X residuals vs Y "                       + planeName;
-        h2DCorrelationsResidualXvsY_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfRows + 1, (float)yPitch*lowerRow, (float)yPitch*(lowerRow + numberOfRows + 1), 300, -300., 300.)));
-
+	h2DCorrelationsResidualXvsY_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfRows + 1, (float)yPitch*lowerRow, (float)yPitch*(lowerRow + numberOfRows + 1), nBins, -halfWidth, halfWidth)));
+	
         hName  = "h2DCorrelationsResidualYvsY_"                        + planeName;
         hTitle = "Correlation Y residuals vs Y "                       + planeName;
-        h2DCorrelationsResidualYvsY_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfRows + 1, (float)yPitch*lowerRow, (float)yPitch*(lowerRow + numberOfRows + 1), 300, -300., 300.)));
+	h2DCorrelationsResidualYvsY_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfRows + 1, (float)yPitch*lowerRow, (float)yPitch*(lowerRow + numberOfRows + 1), nBins, -halfWidth, halfWidth)));
 
         hName  = "h2DCorrelationsResidualYvsX_"                        + planeName;
         hTitle = "Correlation Y residuals vs X "                        + planeName;
-        h2DCorrelationsResidualYvsX_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfColumns + 2, (float)xPitch*lowerCol, (float)xPitch*(lowerCol+numberOfColumns + 2), 300, -300., 300.)));
+        h2DCorrelationsResidualYvsX_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(), numberOfColumns + 2, (float)xPitch*lowerCol, (float)xPitch*(lowerCol+numberOfColumns + 2), nBins, -halfWidth, halfWidth)));
 
         hName  = "hCorrelationsResidualXvsX_"                          + planeName;
         hTitle = "Correlation X residuals vs X "                       + planeName;

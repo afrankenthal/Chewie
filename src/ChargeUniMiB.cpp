@@ -1163,7 +1163,9 @@ void ChargeUniMiB::book(void)
 
   float xPitch;
   float yPitch;
-  float binSize = 5; // [um]
+  float binSize   = 5; // [um]
+  int nBinsCharge = 500;
+  int nBinsCell   = 100;
 
   theAnalysisManager_->cd("/");
   theAnalysisManager_->mkdir("Charge");
@@ -1191,23 +1193,23 @@ void ChargeUniMiB::book(void)
 
       hName  = "hCellLandau_"                                              + planeName;
       hTitle = "Charge distribution for single hits in a fiducial window " + planeName;
-      hCellLandau_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+      hCellLandau_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
       hName  = "hLandauClusterSize1_"                                      + planeName;
       hTitle = "Charge distribution for clusters of size 1 "               + planeName;
-      hLandauClusterSize1_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+      hLandauClusterSize1_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
       hName  = "hLandauClusterSize2_"                                      + planeName;
       hTitle = "Charge distribution for clusters of size 2 "               + planeName;
-      hLandauClusterSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+      hLandauClusterSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
       hName  = "hLandauClusterSize2sameRow_"                               + planeName;
       hTitle = "Charge distribution for clusters of size 2 on same row "   + planeName;
-      hLandauClusterSize2sameRow_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+      hLandauClusterSize2sameRow_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
       hName  = "hLandauClusterSize2sameCol_"                               + planeName;
       hTitle = "Charge distribution for clusters of size 2 on same col "   + planeName;
-      hLandauClusterSize2sameCol_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 200, -10000, 100000)));
+      hLandauClusterSize2sameCol_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
 
       theAnalysisManager_->cd("Charge/" + planeName);
@@ -1239,11 +1241,11 @@ void ChargeUniMiB::book(void)
 
       hName  = "h2DXcellCharge_"                                      + planeName;
       hTitle = "Predicted cell charge vs. X coordinate "              + planeName;
-      h2DXcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2, -(xPitch/2), xPitch/2, 100, -10000, 100000)));
+      h2DXcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2, -(xPitch/2), xPitch/2, nBinsCharge, 0, 50000)));
 
       hName  = "h2DXcellChargeSecondHit_"                             + planeName;
       hTitle = "Predicted cell charge vs. X coordinate "              + planeName;
-      h2DXcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2, -(xPitch/2), xPitch/2, 100, -10000, 100000)));
+      h2DXcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2, -(xPitch/2), xPitch/2, nBinsCharge, 0, 50000)));
 
 
       theAnalysisManager_->cd("Charge/" + planeName);
@@ -1251,11 +1253,11 @@ void ChargeUniMiB::book(void)
 
       hName  = "h2DYcellCharge_"                                      + planeName;
       hTitle = "Predicted cell charge vs. Y coordinate "              + planeName;
-      h2DYcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2, -(yPitch/2), yPitch/2, 100, -10000, 100000)));
+      h2DYcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2, -(yPitch/2), yPitch/2, nBinsCharge, 0, 50000)));
 
       hName  = "h2DYcellChargeSecondHit_"                             + planeName;
       hTitle = "Predicted cell charge vs. Y coordinate "              + planeName;
-      h2DYcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2, -(yPitch/2), yPitch/2, 100, -10000, 100000)));
+      h2DYcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2, -(yPitch/2), yPitch/2, nBinsCharge, 0, 50000)));
 
 
       theAnalysisManager_->cd("Charge/" + planeName);
@@ -1303,11 +1305,11 @@ void ChargeUniMiB::book(void)
 
       hName  = "h2DXcellChargeAsimmetry_"                                         + planeName;
       hTitle = "L/R charge asimmetry - X coordinate "                             + planeName;
-      h2DXcellChargeAsimmetry_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch, -(xPitch/2), xPitch/2, 100, -1.1, 1.1)));
+      h2DXcellChargeAsimmetry_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch, -(xPitch/2), xPitch/2, nBinsCell, -1.1, 1.1)));
 
       hName  = "h2DXcellChargeAsimmetryInv_"                                      + planeName;
       hTitle = "L/R charge asimmetry - X coordinate "                             + planeName;
-      h2DXcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 100, -1.1, 1.1, (int)xPitch, -(xPitch/2), xPitch/2)));
+      h2DXcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), nBinsCell, -1.1, 1.1, (int)xPitch, -(xPitch/2), xPitch/2)));
 
 
       theAnalysisManager_->cd("Charge/" + planeName);
@@ -1315,11 +1317,11 @@ void ChargeUniMiB::book(void)
 
       hName  = "h2DYcellChargeAsimmetry_"                                         + planeName;
       hTitle = "L/R charge asimmetry - Y coordinate "                             + planeName;
-      h2DYcellChargeAsimmetry_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch, -(yPitch/2), yPitch/2 , 100, -1.1, 1.1)));
+      h2DYcellChargeAsimmetry_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch, -(yPitch/2), yPitch/2 , nBinsCell, -1.1, 1.1)));
 
       hName  = "h2DYcellChargeAsimmetryInv_"                                      + planeName;
       hTitle = "L/R charge asimmetry - Y coordinate "                             + planeName;
-      h2DYcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), 100, -1.1, 1.1, (int)yPitch, -(yPitch/2), yPitch/2)));
+      h2DYcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), nBinsCell, -1.1, 1.1, (int)yPitch, -(yPitch/2), yPitch/2)));
     }
 }
 
