@@ -488,20 +488,20 @@ void EfficiencyUniMiB::book(void)
 
       hName  = "h1DXcellEdgeRightEfficiency_"                           + planeName;
       hTitle = "1D edge-right Efficiency - X coordinate "               + planeName;
-      h1DXcellEdgeRightEfficiency_.push_back    (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*lastColPitch/binSize,-2*lastColPitch,2*lastColPitch)));
+      h1DXcellEdgeRightEfficiency_.push_back    (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastColPitch/binSize,-lastColPitch,lastColPitch)));
 
       hName  = "h1DXcellEdgeRightEfficiencyNorm_"                       + planeName;
       hTitle = "1D edge-right Efficiency - X coordinate normalization " + planeName;
-      h1DXcellEdgeRightEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*lastColPitch/binSize,-2*lastColPitch,2*lastColPitch)));
+      h1DXcellEdgeRightEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastColPitch/binSize,-lastColPitch,lastColPitch)));
 
 
       hName  = "h1DXcellEdgeLeftEfficiency_"                            + planeName;
       hTitle = "1D edge-left Efficiency - X coordinate "                + planeName;
-      h1DXcellEdgeLeftEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*firstColPitch/binSize,-2*firstColPitch,2*firstColPitch)));
+      h1DXcellEdgeLeftEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstColPitch/binSize,-firstColPitch,firstColPitch)));
 
       hName  = "h1DXcellEdgeLeftEfficiencyNorm_"                        + planeName;
       hTitle = "1D edge-left Efficiency - X coordinate normalization "  + planeName;
-      h1DXcellEdgeLeftEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*firstColPitch/firstColPitch,-2*firstColPitch,2*firstColPitch)));
+      h1DXcellEdgeLeftEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstColPitch/binSize,-firstColPitch,firstColPitch)));
 
 
       hName  = "h1DYcellEfficiencyFirstHit_"                            + planeName;
@@ -519,20 +519,20 @@ void EfficiencyUniMiB::book(void)
 
       hName  = "h1DYcellEdgeUpEfficiency_"                              + planeName;
       hTitle = "1D edge-up Efficiency - Y coordinate "                  + planeName;
-      h1DYcellEdgeUpEfficiency_.push_back       (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*lastRowPitch/binSize,-2*lastRowPitch,2*lastRowPitch)));
+      h1DYcellEdgeUpEfficiency_.push_back       (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastRowPitch/binSize,-lastRowPitch,lastRowPitch)));
 
       hName  = "h1DYcellEdgeUpEfficiencyNorm_"                          + planeName;
       hTitle = "1D edge-up Efficiency - Y coordinate normalization "    + planeName;
-      h1DYcellEdgeUpEfficiencyNorm_.push_back   (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*lastRowPitch/binSize,-2*lastRowPitch,2*lastRowPitch)));
+      h1DYcellEdgeUpEfficiencyNorm_.push_back   (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastRowPitch/binSize,-lastRowPitch,lastRowPitch)));
 
 
       hName  = "h1DYcellEdgeDownEfficiency_"                            + planeName;
       hTitle = "1D edge-down Efficiency - Y coordinate "                + planeName;
-      h1DYcellEdgeDownEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*firstRowPitch/binSize,-2*firstRowPitch,2*firstRowPitch)));
+      h1DYcellEdgeDownEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstRowPitch/binSize,-firstRowPitch,firstRowPitch)));
 
       hName  = "h1DYcellEdgeDownEfficiencyNorm_"                        + planeName;
       hTitle = "1D edge-down Efficiency - Y coordinate normalization "  + planeName;
-      h1DYcellEdgeDownEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)4*firstRowPitch/binSize,-2*firstRowPitch,2*firstRowPitch)));
+      h1DYcellEdgeDownEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstRowPitch/binSize,-firstRowPitch,firstRowPitch)));
 
 
       // #################
@@ -968,20 +968,18 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
   // # Check if tracks are in window #
   // #################################
   if (((data.getYPredictedLocal(planeID) > firstRow*maxPitchY) && (data.getYPredictedLocal(planeID) < lastRow*maxPitchY)) &&
-      ((data.getXPredictedLocal(planeID) < (firstCol+1)*maxPitchX) || (data.getXPredictedLocal(planeID) > lastCol*maxPitchX)) &&
+      ((data.getXPredictedLocal(planeID) < firstColPitch) || (data.getXPredictedLocal(planeID) > (firstColPitch + (lastCol-1)*maxPitchX))) &&
       (theWindow->checkTimeWindowAbout(colPredicted,event,run)))
     {
-      if (data.getXPredictedLocal(planeID) < (firstCol+1)*maxPitchX)
+      if (data.getXPredictedLocal(planeID) < firstColPitch)
 	{
-	  xResLeft = data.getXTrackResidualLocal(planeID);
-	  // xResLeft = data.getXPredictedLocal(planeID);
+	  xResLeft = data.getXPredictedLocal(planeID);
 
 	  THREADED(h1DXcellEdgeLeftEfficiencyNorm_[planeID])->Fill(xResLeft);
 	}
       else
 	{
-	  xResRight = data.getXTrackResidualLocal(planeID);
-	  // xResRight = data.getXPredictedLocal(planeID);
+	  xResRight = firstColPitch + (lastCol-1)*maxPitchX + lastColPitch - data.getXPredictedLocal(planeID);
 
 	  THREADED(h1DXcellEdgeRightEfficiencyNorm_[planeID])->Fill(xResRight);
 	}
@@ -1049,20 +1047,18 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
   // # Check if tracks are in window #
   // #################################
   if (((data.getXPredictedLocal(planeID) > firstCol*maxPitchX) && (data.getXPredictedLocal(planeID) < lastCol*maxPitchX)) &&
-      ((data.getYPredictedLocal(planeID) < (firstRow+1)*maxPitchY) || (data.getYPredictedLocal(planeID) > lastRow*maxPitchY)) &&
+      ((data.getYPredictedLocal(planeID) < firstRowPitch) || (data.getYPredictedLocal(planeID) > (firstRowPitch + (lastRow-1)*maxPitchY))) &&
       (theWindow->checkTimeWindowAbout(colPredicted,event,run)))
     {
-      if (data.getYPredictedLocal(planeID) < (firstRow+1)*maxPitchY)
+      if (data.getYPredictedLocal(planeID) < firstRowPitch)
 	{
-	  yResDown = data.getYTrackResidualLocal(planeID);
-	  // yResDown = data.getYPredictedLocal(planeID);
+	  yResDown = data.getYPredictedLocal(planeID);
 
 	  THREADED(h1DYcellEdgeDownEfficiencyNorm_[planeID])->Fill(yResDown);
 	}
       else
 	{
-	  yResUp = data.getYTrackResidualLocal(planeID);
-	  // yResUp = data.getYPredictedLocal(planeID);
+	  yResUp = firstRowPitch + (lastRow-1)*maxPitchY + lastRowPitch - data.getYPredictedLocal(planeID);
 
 	  THREADED(h1DYcellEdgeUpEfficiencyNorm_[planeID])->Fill(yResUp);
 	}
@@ -1079,7 +1075,7 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
 	  if ((data.getClusterPixelCol(h,planeID) >= firstCol) && (data.getClusterPixelCol(h,planeID) <= lastCol))
 	    {
 	      if      (data.getClusterPixelRow(h,planeID) == firstRow) clusterPosition = "first";
-	      else if (data.getClusterPixelRow(h,planeID) == lastCol)  clusterPosition = "last";
+	      else if (data.getClusterPixelRow(h,planeID) == lastRow)  clusterPosition = "last";
 	    }
 	}
       if (clusterPosition == "none") return;
