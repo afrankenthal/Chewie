@@ -125,19 +125,11 @@ HistogramWindow::~HistogramWindow(void)
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
 {
-    TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
-    TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
+  TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis();
+  TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis();
 
-    //std::cout << __PRETTY_FUNCTION__ << theHWindow_.find(runNumber)->second << " col:" << col << " find col: " << xAxis->FindBin(col) << " row:" << row << " find row: " << yAxis->FindBin(row) << std::endl;
-
-    //std::cout << __PRETTY_FUNCTION__ << "Col: " << col << " ColBin: " << xAxis->FindBin(col) << std::endl;
-    //WARNING THIS METHOD IS WRONG BECAUSE IT NEEDS TO CHECK THE DATA TYPE!
-    if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0)
-    {
-        //std::cout << __PRETTY_FUNCTION__ << "theHWindow_.find(runNumber)" << std::endl;
-        return true;
-    }
-    return false;
+  if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0) return true;
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
