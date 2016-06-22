@@ -84,6 +84,14 @@ MainWindow::~MainWindow()
 //===========================================================================
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    TObjLink *lnk = TApplication::GetApplications()->FirstLink();
+    while (lnk)
+    {
+     ss_.str(""); ss_ << "Terminating " << lnk->GetObject()->GetName();STDLINE(ss_.str(),ACWhite) ;
+     ((TApplication*)lnk->GetObject())->Terminate() ;
+     lnk = lnk->Next();
+    }
+
     mdiArea_->closeAllSubWindows();
     if (mdiArea_->currentSubWindow())
     {
@@ -93,6 +101,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         writeSettings();
         event->accept();
     }
+    STDLINE("Terminating Chewie",ACWhite) ;
 }
 
 //===========================================================================
@@ -266,7 +275,7 @@ void MainWindow::writeSettings()
 {
     QSettings settings("Trolltech", "Chewie Analyzer");
     settings.setValue("pos",  pos ());
-    cout << __LINE__ << "] " << this->size().width() << " " << this->size().height() << endl ;
+    //cout << __LINE__ << "] " << this->size().width() << " " << this->size().height() << endl ;
     settings.setValue("size", size());
 }
 

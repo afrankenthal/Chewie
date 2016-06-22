@@ -53,8 +53,8 @@ CanvasWidget::CanvasWidget(QWidget * parent) :
 //===========================================================================
 CanvasWidget::~CanvasWidget()
 {
-    //  STDLINE("Dtor",ACRed) ;
-     //delete ui;
+    STDLINE("Dtor",ACRed) ;
+    delete canvas_;
 
 }
 

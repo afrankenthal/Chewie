@@ -117,6 +117,14 @@ hTreeBrowser::hTreeBrowser(QWidget *parent, MainWindow * mainWindow)
 hTreeBrowser::~hTreeBrowser(void)
 {
     STDLINE("Dtor",ACRed) ;
+    for(map<int, CanvasWidget *>::iterator it=serviceCanvas_.begin(); it!=serviceCanvas_.end(); ++it)
+    {
+        ss_.str(""); ss_ << "Deleting service canvas " << it->first ; STDLINE(ss_.str(),ACWhite) ;
+        delete it->second ;
+        STDLINE("Ma va'?...",ACYellow) ;
+    }
+    serviceCanvas_.clear() ;
+    STDLINE("Dtor completed.",ACGreen) ;
 }
 
 //=========================================================================
