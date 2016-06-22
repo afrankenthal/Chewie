@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
         missingEnvVariable = true;
     }
     if(missingEnvVariable)
-        {
+    {
         app.closeAllWindows() ;
         app.quit() ;
         exit(0);
