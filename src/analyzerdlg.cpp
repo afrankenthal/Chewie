@@ -650,8 +650,8 @@ void AnalyzerDlg::on_openNtupleFilePB_clicked(void)
         }
     }
 
-    QStringList pathNameList = fileNames.at(0).split("/");
-    QStringList fileNameList = pathNameList.at(0).split("_");
+    QStringList filePathList = fileNames.at(0).split("/");
+    QStringList fileNameList = filePathList.last().split("_");
     QString partitionInfo = "";
     if(fileNameList.size()>2)
     {
@@ -669,6 +669,7 @@ void AnalyzerDlg::on_openNtupleFilePB_clicked(void)
         else
             outFileName = "Chewie_Runs" + QString("%1_%2").arg(firstRun).arg(lastRun) + partitionInfo + ".root";
     }
+
     ui->outputFileLE->setText(outputDir + outFileName);
     theAnalysisManager_->setOutputFileName(ui->outputFileLE->text().toStdString());
 }
