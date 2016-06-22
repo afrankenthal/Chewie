@@ -31,6 +31,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <TApplication.h>
+#include <TCollection.h>
 #include <sstream>
 
 class HNavigator   ;
