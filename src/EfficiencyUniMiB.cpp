@@ -496,20 +496,20 @@ void EfficiencyUniMiB::book(void)
 
       hName  = "h1DXcellEdgeRightEfficiency_"                           + planeName;
       hTitle = "1D edge-right Efficiency - X coordinate "               + planeName;
-      h1DXcellEdgeRightEfficiency_.push_back    (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastColPitch/binSize,-lastColPitch,lastColPitch)));
+      h1DXcellEdgeRightEfficiency_.push_back    (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*lastColPitch/binSize,-lastColPitch,lastColPitch)));
 
       hName  = "h1DXcellEdgeRightEfficiencyNorm_"                       + planeName;
       hTitle = "1D edge-right Efficiency - X coordinate normalization " + planeName;
-      h1DXcellEdgeRightEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastColPitch/binSize,-lastColPitch,lastColPitch)));
+      h1DXcellEdgeRightEfficiencyNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*lastColPitch/binSize,-lastColPitch,lastColPitch)));
 
 
       hName  = "h1DXcellEdgeLeftEfficiency_"                            + planeName;
       hTitle = "1D edge-left Efficiency - X coordinate "                + planeName;
-      h1DXcellEdgeLeftEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstColPitch/binSize,-firstColPitch,firstColPitch)));
+      h1DXcellEdgeLeftEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*firstColPitch/binSize,-firstColPitch,firstColPitch)));
 
       hName  = "h1DXcellEdgeLeftEfficiencyNorm_"                        + planeName;
       hTitle = "1D edge-left Efficiency - X coordinate normalization "  + planeName;
-      h1DXcellEdgeLeftEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstColPitch/binSize,-firstColPitch,firstColPitch)));
+      h1DXcellEdgeLeftEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*firstColPitch/binSize,-firstColPitch,firstColPitch)));
 
 
       hName  = "h1DYcellEfficiencyFirstHit_"                            + planeName;
@@ -527,20 +527,20 @@ void EfficiencyUniMiB::book(void)
 
       hName  = "h1DYcellEdgeUpEfficiency_"                              + planeName;
       hTitle = "1D edge-up Efficiency - Y coordinate "                  + planeName;
-      h1DYcellEdgeUpEfficiency_.push_back       (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastRowPitch/binSize,-lastRowPitch,lastRowPitch)));
+      h1DYcellEdgeUpEfficiency_.push_back       (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*lastRowPitch/binSize,-lastRowPitch,lastRowPitch)));
 
       hName  = "h1DYcellEdgeUpEfficiencyNorm_"                          + planeName;
       hTitle = "1D edge-up Efficiency - Y coordinate normalization "    + planeName;
-      h1DYcellEdgeUpEfficiencyNorm_.push_back   (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)lastRowPitch/binSize,-lastRowPitch,lastRowPitch)));
+      h1DYcellEdgeUpEfficiencyNorm_.push_back   (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*lastRowPitch/binSize,-lastRowPitch,lastRowPitch)));
 
 
       hName  = "h1DYcellEdgeDownEfficiency_"                            + planeName;
       hTitle = "1D edge-down Efficiency - Y coordinate "                + planeName;
-      h1DYcellEdgeDownEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstRowPitch/binSize,-firstRowPitch,firstRowPitch)));
+      h1DYcellEdgeDownEfficiency_.push_back     (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*firstRowPitch/binSize,-firstRowPitch,firstRowPitch)));
 
       hName  = "h1DYcellEdgeDownEfficiencyNorm_"                        + planeName;
       hTitle = "1D edge-down Efficiency - Y coordinate normalization "  + planeName;
-      h1DYcellEdgeDownEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)firstRowPitch/binSize,-firstRowPitch,firstRowPitch)));
+      h1DYcellEdgeDownEfficiencyNorm_.push_back (NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(),(int)2*firstRowPitch/binSize,-firstRowPitch,firstRowPitch)));
 
 
       // #################
