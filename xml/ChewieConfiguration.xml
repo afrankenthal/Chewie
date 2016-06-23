@@ -181,10 +181,10 @@
     </Plane>
     <Plane ZPosition="6" YPitch="100" Calibration="N.A." XPitch="150" Id="Dut0" Name="Station: 4 - Plaq: 0" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>0</LowerCol>
-        <HigherCol>51</HigherCol>
-        <LowerRow>0</LowerRow>
-        <HigherRow>79</HigherRow>
+        <LowerCol>1</LowerCol>
+        <HigherCol>50</HigherCol>
+        <LowerRow>1</LowerRow>
+        <HigherRow>78</HigherRow>
       </Window>
       <Calibrations Use="no">
         <File>/path_to_calibration/file_name.root</File>
@@ -192,10 +192,10 @@
     </Plane>
     <Plane ZPosition="5" YPitch="100" Calibration="N.A." XPitch="150" Id="Dut1" Name="Station: 4 - Plaq: 1" ZRotation="90" XRocs="1" YRocs="1">
       <Window>
-        <LowerCol>0</LowerCol>
-        <HigherCol>51</HigherCol>
-        <LowerRow>0</LowerRow>
-        <HigherRow>79</HigherRow>
+        <LowerCol>1</LowerCol>
+        <HigherCol>50</HigherCol>
+        <LowerRow>1</LowerRow>
+        <HigherRow>78</HigherRow>
       </Window>
       <Calibrations Use="no">
         <File>/path_to_calibration/file_name.root</File>
