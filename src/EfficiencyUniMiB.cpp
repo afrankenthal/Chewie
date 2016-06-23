@@ -967,8 +967,7 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
   // # Check if tracks are in window #
   // #################################
   if (((data.getYPredictedLocal(planeID) > firstRow*maxPitchY) && (data.getYPredictedLocal(planeID) < lastRow*maxPitchY)) &&
-      ((data.getXPredictedLocal(planeID) < firstColPitch) || (data.getXPredictedLocal(planeID) > (firstColPitch + (lastCol-1)*maxPitchX))) &&
-      (theWindow->checkTimeWindowAbout(colPredicted,event,run)))
+      ((data.getXPredictedLocal(planeID) < firstColPitch) || (data.getXPredictedLocal(planeID) > (firstColPitch + (lastCol-1)*maxPitchX))))
     {
       if (data.getXPredictedLocal(planeID) < firstColPitch)
 	{
@@ -1046,8 +1045,7 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
   // # Check if tracks are in window #
   // #################################
   if (((data.getXPredictedLocal(planeID) > firstCol*maxPitchX) && (data.getXPredictedLocal(planeID) < lastCol*maxPitchX)) &&
-      ((data.getYPredictedLocal(planeID) < firstRowPitch) || (data.getYPredictedLocal(planeID) > (firstRowPitch + (lastRow-1)*maxPitchY))) &&
-      (theWindow->checkTimeWindowAbout(colPredicted,event,run)))
+      ((data.getYPredictedLocal(planeID) < firstRowPitch) || (data.getYPredictedLocal(planeID) > (firstRowPitch + (lastRow-1)*maxPitchY))))
     {
       if (data.getYPredictedLocal(planeID) < firstRowPitch)
 	{
