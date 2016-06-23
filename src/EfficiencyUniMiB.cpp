@@ -342,49 +342,49 @@ void EfficiencyUniMiB::endJob(void)
       h2DEfficiencyRefNorm_           [p]->GetXaxis()->SetTitle("column");
       h2DEfficiencyRefNorm_           [p]->GetYaxis()->SetTitle("row"   );
 
-      h2D4cellEfficiency_             [p]->GetXaxis()->SetTitle("x (um)");
-      h2D4cellEfficiency_             [p]->GetYaxis()->SetTitle("y (um)");
+      h2D4cellEfficiency_             [p]->GetXaxis()->SetTitle("long pitch (um)");
+      h2D4cellEfficiency_             [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      h2D4cellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("x (um)");
-      h2D4cellEfficiencyNorm_         [p]->GetYaxis()->SetTitle("y (um)");
+      h2D4cellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("long pitch (um)");
+      h2D4cellEfficiencyNorm_         [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      hCellEfficiency_                [p]->GetXaxis()->SetTitle("x (um)");
-      hCellEfficiency_                [p]->GetYaxis()->SetTitle("y (um)");
+      hCellEfficiency_                [p]->GetXaxis()->SetTitle("long pitch (um)");
+      hCellEfficiency_                [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      hCellEfficiencyNorm_            [p]->GetXaxis()->SetTitle("x (um)");
-      hCellEfficiencyNorm_            [p]->GetYaxis()->SetTitle("y (um)");
+      hCellEfficiencyNorm_            [p]->GetXaxis()->SetTitle("long pitch (um)");
+      hCellEfficiencyNorm_            [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      hCellEfficiencyEvenColumns_     [p]->GetXaxis()->SetTitle("x (um)");
-      hCellEfficiencyEvenColumns_     [p]->GetYaxis()->SetTitle("y (um)");
+      hCellEfficiencyEvenColumns_     [p]->GetXaxis()->SetTitle("long pitch (um)");
+      hCellEfficiencyEvenColumns_     [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      hCellEfficiencyEvenColumnsNorm_ [p]->GetXaxis()->SetTitle("x (um)");
-      hCellEfficiencyEvenColumnsNorm_ [p]->GetYaxis()->SetTitle("y (um)");
+      hCellEfficiencyEvenColumnsNorm_ [p]->GetXaxis()->SetTitle("long pitch (um)");
+      hCellEfficiencyEvenColumnsNorm_ [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      hCellEfficiencyOddColumns_      [p]->GetXaxis()->SetTitle("x (um)");
-      hCellEfficiencyOddColumns_      [p]->GetYaxis()->SetTitle("y (um)");
+      hCellEfficiencyOddColumns_      [p]->GetXaxis()->SetTitle("long pitch (um)");
+      hCellEfficiencyOddColumns_      [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      hCellEfficiencyOddColumnsNorm_  [p]->GetXaxis()->SetTitle("x (um)");
-      hCellEfficiencyOddColumnsNorm_  [p]->GetYaxis()->SetTitle("y (um)");
+      hCellEfficiencyOddColumnsNorm_  [p]->GetXaxis()->SetTitle("long pitch (um)");
+      hCellEfficiencyOddColumnsNorm_  [p]->GetYaxis()->SetTitle("short pitch (um)");
 
-      h1DXcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("x (um)");
-      h1DXcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("x (um)");
-      h1DXcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("x (um)");
+      h1DXcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("long pitch (um)");
+      h1DXcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("long pitch (um)");
+      h1DXcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("long pitch (um)");
 
-      h1DXcellEdgeRightEfficiency_    [p]->GetXaxis()->SetTitle("x (um)");
-      h1DXcellEdgeRightEfficiencyNorm_[p]->GetXaxis()->SetTitle("x (um)");
+      h1DXcellEdgeRightEfficiency_    [p]->GetXaxis()->SetTitle("long pitch (um)");
+      h1DXcellEdgeRightEfficiencyNorm_[p]->GetXaxis()->SetTitle("long pitch (um)");
 
-      h1DXcellEdgeLeftEfficiency_     [p]->GetXaxis()->SetTitle("x (um)");
-      h1DXcellEdgeLeftEfficiencyNorm_ [p]->GetXaxis()->SetTitle("x (um)");
+      h1DXcellEdgeLeftEfficiency_     [p]->GetXaxis()->SetTitle("long pitch (um)");
+      h1DXcellEdgeLeftEfficiencyNorm_ [p]->GetXaxis()->SetTitle("long pitch (um)");
 
-      h1DYcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("y (um)");
-      h1DYcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("y (um)");
-      h1DYcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("y (um)");
+      h1DYcellEfficiencyFirstHit_     [p]->GetXaxis()->SetTitle("short pitch (um)");
+      h1DYcellEfficiencySecondHit_    [p]->GetXaxis()->SetTitle("short pitch (um)");
+      h1DYcellEfficiencyNorm_         [p]->GetXaxis()->SetTitle("short pitch (um)");
 
-      h1DYcellEdgeUpEfficiency_       [p]->GetXaxis()->SetTitle("y (um)");
-      h1DYcellEdgeUpEfficiencyNorm_   [p]->GetXaxis()->SetTitle("y (um)");
+      h1DYcellEdgeUpEfficiency_       [p]->GetXaxis()->SetTitle("short pitch (um)");
+      h1DYcellEdgeUpEfficiencyNorm_   [p]->GetXaxis()->SetTitle("short pitch (um)");
 
-      h1DYcellEdgeDownEfficiency_     [p]->GetXaxis()->SetTitle("y (um)");
-      h1DYcellEdgeDownEfficiencyNorm_ [p]->GetXaxis()->SetTitle("y (um)");
+      h1DYcellEdgeDownEfficiency_     [p]->GetXaxis()->SetTitle("short pitch (um)");
+      h1DYcellEdgeDownEfficiencyNorm_ [p]->GetXaxis()->SetTitle("short pitch (um)");
 
 
       // ##############################
