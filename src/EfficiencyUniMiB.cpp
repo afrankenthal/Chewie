@@ -959,18 +959,18 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
 
   if (!pass) return;
 
-  int           rowPredicted = data.getRowPredicted(planeID);
-  float         maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
-  float         maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
-  float         xResRight    = 0.;
-  float         xResLeft     = 0.;
-  int           clusterSize  = data.getClusterSize(planeID);
+  int   rowPredicted = data.getRowPredicted(planeID);
+  float maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+  float maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+  float xResRight    = 0.;
+  float xResLeft     = 0.;
+  int   clusterSize  = data.getClusterSize(planeID);
 
 
   // #################################
   // # Check if tracks are in window #
   // #################################
-  if (((data.getYPredictedLocal(planeID) > firstRow*maxPitchY) && (data.getYPredictedLocal(planeID) < lastRow*maxPitchY)) &&
+  if (((data.getYPredictedLocal(planeID) > firstRow*maxPitchY) && (data.getYPredictedLocal(planeID) < (lastRow+1)*maxPitchY)) &&
       ((data.getXPredictedLocal(planeID) < firstColPitch) || (data.getXPredictedLocal(planeID) > (firstColPitch + (lastCol-1)*maxPitchX))))
     {
       if (data.getXPredictedLocal(planeID) < firstColPitch)
@@ -1034,18 +1034,18 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
 
   if (!pass) return;
 
-  int           colPredicted = data.getColPredicted(planeID);
-  float         maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
-  float         maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
-  float         yResUp       = 0.;
-  float         yResDown     = 0.;
-  int           clusterSize  = data.getClusterSize(planeID);
+  int   colPredicted = data.getColPredicted(planeID);
+  float maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
+  float maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
+  float yResUp       = 0.;
+  float yResDown     = 0.;
+  int   clusterSize  = data.getClusterSize(planeID);
 
 
   // #################################
   // # Check if tracks are in window #
   // #################################
-  if (((data.getXPredictedLocal(planeID) > firstCol*maxPitchX) && (data.getXPredictedLocal(planeID) < lastCol*maxPitchX)) &&
+  if (((data.getXPredictedLocal(planeID) > firstCol*maxPitchX) && (data.getXPredictedLocal(planeID) < (lastCol+1)*maxPitchX)) &&
       ((data.getYPredictedLocal(planeID) < firstRowPitch) || (data.getYPredictedLocal(planeID) > (firstRowPitch + (lastRow-1)*maxPitchY))))
     {
       if (data.getYPredictedLocal(planeID) < firstRowPitch)
