@@ -959,11 +959,7 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
 
   if (!pass) return;
 
-  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
   int           rowPredicted = data.getRowPredicted(planeID);
-  int           colPredicted = data.getColPredicted(planeID);
-  int           run          = data.getRunNumber();
-  int           event        = data.getEventChewieNumber();
   float         maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
   float         maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
   float         xResRight    = 0.;
@@ -1038,10 +1034,7 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
 
   if (!pass) return;
 
-  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
   int           colPredicted = data.getColPredicted(planeID);
-  int           run          = data.getRunNumber();
-  int           event        = data.getEventChewieNumber();
   float         maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
   float         maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
   float         yResUp       = 0.;
