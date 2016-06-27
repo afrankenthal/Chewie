@@ -101,6 +101,8 @@ class ChargeUniMiB : public Analysis
   // ##############
   std::vector<TH1F*>    hClusterSize_;
   std::vector<TH1F*>    hCellLandau_;
+  std::vector<TH1F*>    hCellLandauOdd_;
+  std::vector<TH1F*>    hCellLandauEven_;
 
   std::vector<TH1F*>    hLandauClusterSize1_;
   std::vector<TH1F*>    hLandauClusterSize2_;
@@ -121,13 +123,18 @@ class ChargeUniMiB : public Analysis
 
 
   std::vector<TH2F*>    h2DCellCharge_;
-  std::vector<TH2F*>    h2DCellChargeNum_;
+  std::vector<TH2F*>    h2DCellChargeNorm_;
+
+  std::vector<TH2F*>    h2DCellChargeOdd_;
+  std::vector<TH2F*>    h2DCellChargeOddNorm_;
+
+  std::vector<TH2F*>    h2DCellChargeEven_;
+  std::vector<TH2F*>    h2DCellChargeEvenNorm_;
 
   std::vector<TH2F*>    h4CellsCharge_;
   std::vector<TH2F*>    h4CellsChargeNorm_;
 
   std::vector<TH2F*>    h2DClusterSize_;
-  std::vector<TH2F*>    h2DCellChargeNorm_;
 
   std::vector<TH2F*>    h2DXcellCharge_;
   std::vector<TH2F*>    h2DXcellChargeSecondHit_;
