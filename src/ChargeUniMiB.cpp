@@ -576,7 +576,7 @@ void ChargeUniMiB::xAsimmetry(bool pass, int planeID, const Data& data, int thre
   float maxPitchX;
 
 
-  if (!pass || !data.getIsInDetector(planeID)|| !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
+  if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
   int clusterSize = data.getClusterSize(planeID);
 
   maxPitchX = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
@@ -596,8 +596,8 @@ void ChargeUniMiB::xAsimmetry(bool pass, int planeID, const Data& data, int thre
   for (int h = 0; h < clusterSize; h++)
     {
       if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
-	  || !data.getIsPixelCalibrated(h,planeID)                                                           // Pixels are calibrated
-	  ||  data.getClusterPixelCol    (h,planeID) != rowPredicted                                         // Hits are on the same column (sharing is along the column - y direction)
+	  || !data.getIsPixelCalibrated  (h,planeID)                                                         // Pixels are calibrated
+	  ||  data.getClusterPixelRow    (h,planeID) != rowPredicted                                         // Hits are on the same column (sharing is along the column - y direction)
 	  ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // Charge is over threshold
 	  ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // Maximum allowed charge for this physics
 	return;
@@ -736,7 +736,7 @@ void ChargeUniMiB::yAsimmetry(bool pass, int planeID, const Data& data, int thre
   float maxPitchY;
 
 
-  if (!pass || !data.getIsInDetector(planeID)|| !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
+  if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
   int clusterSize = data.getClusterSize(planeID);
 
   maxPitchY = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
@@ -756,7 +756,7 @@ void ChargeUniMiB::yAsimmetry(bool pass, int planeID, const Data& data, int thre
   for (int h = 0; h < clusterSize; h++)
     {
       if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
-	  || !data.getIsPixelCalibrated(h,planeID)                                                           // Pixels are calibrated
+	  || !data.getIsPixelCalibrated  (h,planeID)                                                         // Pixels are calibrated
 	  ||  data.getClusterPixelCol    (h,planeID) != colPredicted                                         // Hits are on the same column (sharing is along the column - y direction)
 	  ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // Charge is over threshold
 	  ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // Maximum allowed charge for this physics
