@@ -322,11 +322,16 @@ bool EventManager::readEventsTree(std::string fileName)
     std::stringstream ss;
     std::stringstream eventsTreeName;
     std::stringstream eventsHeaderName;
+    QString           tempTreeName;
 
     std::string treeName = fileName.substr(fileName.rfind("/")+1,fileName.size());
-
-    QStringList treeNameList = QString(treeName.c_str()).split("_");
-    QString tempTreeName = treeNameList.at(0) + "_" + treeNameList.at(1);
+    if (treeName.find("_") != std::string::npos)
+    {
+        QStringList treeNameList = QString(treeName.c_str()).split("_");
+                    tempTreeName = treeNameList.at(0) + "_" + treeNameList.at(1);
+    }
+    else
+                    tempTreeName = QString(treeName.c_str());
     tempTreeName.remove(".root");
 
     eventsTreeName   << tempTreeName.toStdString()<<".root" << "Events";
