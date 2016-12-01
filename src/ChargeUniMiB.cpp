@@ -285,8 +285,8 @@ void ChargeUniMiB::cellLandau(bool pass, int planeID, const Data& data, int thre
   if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
 
   if (!theWindow->checkWindow(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber()) // Hits are in the window
-      ||  data.getClusterPixelRow    (h,planeID) != rowPredicted                                                         // Track is on cluster
-      ||  data.getClusterPixelCol    (h,planeID) != colPredicted                                                         // Track is on cluster
+      ||  data.getClusterPixelRow    (0,planeID) != rowPredicted                                                         // Track is on cluster
+      ||  data.getClusterPixelCol    (0,planeID) != colPredicted                                                         // Track is on cluster
       || !data.getIsPixelCalibrated  (0,planeID)                                                                         // Pixels are calibrated
       ||  data.getClusterPixelCharge (0,planeID) < standardCutsPixelMinimumCharge_                                       // Charge is over threshold
       ||  data.getClusterPixelCharge (0,planeID) > standardCutsPixelMaximumCharge_)                                      // Maximum allowed charge for this physics
