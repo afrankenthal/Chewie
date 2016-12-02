@@ -86,6 +86,7 @@ HEADERS       	     = include/analyzerdlg.h					  \
               	       ../Monicelli/include/Geometry.h  			  \
                        ../Monicelli/include/mdisubwindow.h			  \
                        ../Monicelli/include/ROC.h				  \
+                       ../Monicelli/include/KalmanPlaneInfo.h                     \
                        ../Monicelli/plugins/customCheckBox/customCheckBox.h	  \
                        ../Monicelli/plugins/customComboBox/customComboBox.h	  \
                        ../Monicelli/plugins/customLineEdit/customLineEdit.h	  \
@@ -141,7 +142,8 @@ SOURCES       	     = src/Analysis.cpp 		 			  \
                        ../Monicelli/src/EventHeader.cpp  			  \
               	       ../Monicelli/src/Geometry.cpp	 			  \
                        ../Monicelli/src/mdisubwindow.cpp 			  \
-                       ../Monicelli/src/ROC.cpp
+                       ../Monicelli/src/ROC.cpp                                   \
+                       ../Monicelli/src/KalmanPlaneInfo.cpp
 
 RESOURCES    	     = Chewie.qrc
 
@@ -211,7 +213,8 @@ contains(ROOTVERSION, "FIVE") {
 trees.depends        = ../Monicelli/include/Event.h                               \
                        ../Monicelli/include/Geometry.h                            \
                        ../Monicelli/include/Detector.h                            \
-                       ../Monicelli/include/ROC.h
+                       ../Monicelli/include/ROC.h                                 \
+                       ../Monicelli/include/KalmanPlaneInfo.h
 
 trees.target         = tmp/EventDict.C
 
@@ -221,14 +224,16 @@ contains(ROOTVERSION, "FIVE") {
                                 -c ../Monicelli/include/Event.h+                  \
                                    ../Monicelli/include/Geometry.h+               \
                                    ../Monicelli/include/Detector.h+               \
-                                   ../Monicelli/include/ROC.h+
+                                   ../Monicelli/include/ROC.h+                    \
+                                   ../Monicelli/include/KalmanPlaneInfo.h+
 } else {
  trees.commands      = @echo "------ ROOT6 commands --------"                  && \
                        rootcint -f tmp/EventDict.C                                \
                                 -c ../Monicelli/include/Event.h+                  \
                                    ../Monicelli/include/Geometry.h+               \
                                    ../Monicelli/include/Detector.h+               \
-                                   ../Monicelli/include/ROC.h+                 && \
+                                   ../Monicelli/include/ROC.h+                    \
+                                   ../Monicelli/include/KalmanPlaneInfo.h+     && \
                        cp tmp/*.pcm .
 }
 
