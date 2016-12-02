@@ -101,9 +101,8 @@ int main (int argc, char** argv)
 
   gROOT->SetBatch(true);
   TApplication tApp("App",&argc,argv);
+  STDLINE("=== Using a TApplication only ===" ,ACRed);
 
-  STDLINE("=== Using a QCoreApplication only ===" ,ACRed);
-  
   ExpressXmlParser theExpressXmlParser;
   
   std::string configFileName = "./xml/ExpressConfiguration.xml";
