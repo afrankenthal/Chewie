@@ -403,9 +403,10 @@ void EfficiencyUniMiB::endJob(void)
       error      = sqrt(efficiency * (1 - efficiency) / Ntracks);
 
       ss.str("");
-      ss << "Detector: "    << std::setw(27) << thePlaneMapping_->getPlaneName(p)
-	 << " efficiency: " << std::setw(4)  << std::setprecision(7) << efficiency*100.
-	 << " +- "          << std::setw(4)  << std::setprecision(3) << error*100.;
+      ss << "Detector: " << std::setw(27) << thePlaneMapping_->getPlaneName(p)
+      << " Efficiency: " << std::setw(4)  << std::setprecision(7) << efficiency*100.
+      << " +- "          << std::setw(4)  << std::setprecision(3) << error*100.
+      << " Entries: "    << hEfficiencyRefNorm_[p]->GetBinContent(1);
 
       STDLINE(ss.str(),ACLightPurple);
     }

@@ -1199,6 +1199,11 @@ void ChargeUniMiB::endJob(void)
       STDLINE("fYAsimmetryFit",ACWhite);
       TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-ETAhalfRANGE,ETAhalfRANGE);
       if (h1DYcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"R");
+
+      ss.str("");
+      ss << "Detector: " << thePlaneMapping_->getPlaneName(p)
+      << " cellLandau mean value: " << hCellLandau_[p]->GetMean();
+      STDLINE(ss.str(),ACLightPurple);
     }
 }
 
