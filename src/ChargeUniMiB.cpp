@@ -849,7 +849,7 @@ bool ChargeUniMiB::passBadPlanesCut(int planeID, const Data &data)
       if (aWindow->getNumberOfEvents() > maxNumberOfEvents) maxNumberOfEvents = aWindow->getNumberOfEvents();
     }
 
-  int minHits   = 8;
+  int minHits   = 7;
   int excludeMe = 0;
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)
     minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
@@ -877,7 +877,7 @@ bool ChargeUniMiB::passStandardCuts(int planeID, const Data &data)
   if (!theXmlParser_->getAnalysesFromString("Charge")->applyStandardCuts()) return true;
   if (theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes())   return passBadPlanesCut(planeID, data);
 
-  int minHits   = 8;
+  int minHits   = 7;
   int excludeMe = 0;
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)
     minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
@@ -1199,11 +1199,6 @@ void ChargeUniMiB::endJob(void)
       STDLINE("fYAsimmetryFit",ACWhite);
       TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-ETAhalfRANGE,ETAhalfRANGE);
       if (h1DYcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"R");
-
-      ss.str("");
-      ss << "Detector: " << thePlaneMapping_->getPlaneName(p)
-      << " cellLandau mean value: " << hCellLandau_[p]->GetMean();
-      STDLINE(ss.str(),ACLightPurple);
     }
 }
 
