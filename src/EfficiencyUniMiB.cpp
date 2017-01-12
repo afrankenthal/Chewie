@@ -1120,45 +1120,12 @@ void EfficiencyUniMiB::setCutsFormula(std::map<std::string,std::string> cutsList
 bool EfficiencyUniMiB::passStandardCuts(int planeID, const Data &data)
 {
   if (!theXmlParser_->getAnalysesFromString("Efficiency")->applyStandardCuts()) return true;
-  if (theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes())       return passBadPlanesCut(planeID, data);
 
   int minHits   = atoi(theXmlParser_->getAnalysesFromString("Efficiency")->getMinHits().c_str()) - 1;
   int excludeMe = 0;
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits += 1;
-  else if(data.getHasHit(planeID) && data.getClusterSize(planeID) <= 2) excludeMe = 1;
+  else if (data.getHasHit(planeID) && data.getClusterSize(planeID) <= 2) excludeMe = 1;
 
   if (data.getNumberOfTelescopeClustersSizeLE2() - excludeMe >= minHits) return true;
   else                                                                   return false;
-}
-
-//=======================================================================
-bool EfficiencyUniMiB::passBadPlanesCut (int planeID, const Data &data)
-{
-  int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
-
-  int maxNumberOfEvents = 0;
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
-    {
-      HistogramWindow* aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
-      if (aWindow->getNumberOfEvents() > maxNumberOfEvents) maxNumberOfEvents = aWindow->getNumberOfEvents();
-    }
-  
-  int minHits   = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str())-1;
-  int excludeMe = 0;
-  if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits += 1;
-  else if(data.getHasHit(planeID))
-    {
-      if ((data.getClusterSize(planeID) == 1) || (data.getClusterSize(planeID) == 2 && (data.getClusterPixelRow(0,planeID) == data.getClusterPixelRow(1,planeID)
-											|| data.getClusterPixelCol(0,planeID) == data.getClusterPixelCol(1,planeID))))
-	excludeMe = 1;
-    }
-  
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
-    {
-      HistogramWindow* aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
-      if (!data.getHasHit(p) && (float)aWindow->getNumberOfEvents() < (float)maxNumberOfEvents * badPlanesCut / 100) excludeMe += 1;
-    }
-  
-  if (data.getNumberOfTelescopeHits() - excludeMe >= minHits) return true;
-  else                                                        return false;
 }

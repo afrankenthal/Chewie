@@ -487,7 +487,7 @@ void ResolutionUniMiB::setCutsFormula(std::map<std::string,std::string> cutsList
       formulasVector.clear();
       if ((it->second).size() != 0)
         {
-	  for(unsigned int t = 0; t < tree.size(); t++)
+	  for (unsigned int t = 0; t < tree.size(); t++)
 	    formulasVector.push_back(new TTreeFormula((it->second).c_str(),(it->second).c_str(),tree[t]));
  	  cutsFormulas_[it->first] = formulasVector;
         }
@@ -497,47 +497,14 @@ void ResolutionUniMiB::setCutsFormula(std::map<std::string,std::string> cutsList
 //=======================================================================
 bool ResolutionUniMiB::passStandardCuts(int planeID, const Data &data)
 {
-  if (!theXmlParser_->getAnalysesFromString("Charge")->applyStandardCuts()) return true;
-  if (theXmlParser_->getAnalysesFromString("Charge")->excludeBadPlanes())   return passBadPlanesCut(planeID, data);
+  if (!theXmlParser_->getAnalysesFromString("Resolution")->applyStandardCuts()) return true;
 
-  int minHits = 7;
+  int minHits = 7; // In order to have 8 telescope hits
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)
     minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
 
   if (data.getNumberOfTelescopeHits() >= minHits) return true;
   else                                            return false;
-}
-
-//=======================================================================
-bool ResolutionUniMiB::passBadPlanesCut (int planeID, const Data &data)
-{
-  int badPlanesCut = theXmlParser_->getAnalysesFromString("Charge")->getBadPlanesCut();
-
-  int maxNumberOfEvents = 0;
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
-    {
-      HistogramWindow* aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
-      if (aWindow->getNumberOfEvents() > maxNumberOfEvents) maxNumberOfEvents = aWindow->getNumberOfEvents();
-    }
-
-  int minHits   = 7;
-  int excludeMe = 0;
-  if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
-  else if(data.getHasHit(planeID))
-    {
-      if ((data.getClusterSize(planeID) == 1) || (data.getClusterSize(planeID) == 2 && (data.getClusterPixelRow(0,planeID) == data.getClusterPixelRow(1,planeID)
-											|| data.getClusterPixelCol(0,planeID) == data.getClusterPixelCol(1,planeID))))
-	excludeMe = 1;
-    }
-
-  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes() - 2; p++) // -2 is to exclude DUTs
-    {
-      HistogramWindow* aWindow = (HistogramWindow*)theAnalysisManager_->getWindowsManager()->getWindow(p);
-      if (!data.getHasHit(p) && (float)aWindow->getNumberOfEvents() < (float)maxNumberOfEvents * badPlanesCut / 100) excludeMe += 1;
-    }
-  
-  if (data.getNumberOfTelescopeHits() - excludeMe >= minHits) return true;
-  else                                                        return false;
 }
 
 //=======================================================================
