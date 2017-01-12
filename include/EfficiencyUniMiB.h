@@ -60,7 +60,6 @@ class EfficiencyUniMiB : public Analysis
 
   void setCutsFormula   (std::map<std::string,std::string> cutsList, std::vector<TTree*> tree);
   bool passStandardCuts (int planeID, const Data& data);
-  bool passBadPlanesCut (int planeID, const Data& data);
 
  private:
   void book            (void);

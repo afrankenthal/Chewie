@@ -61,7 +61,7 @@ public:
     virtual bool passStandardCuts       (int, 
                                          const            Data&             ) = 0;
     virtual bool passBadPlanesCut       (int, 
-                                         const            Data&             ) = 0;
+                                         const            Data&             ){return true;         }
             void setDoNotDelete         (bool flag                          ){fDoNotDelete_ = flag;}
     virtual void getInFile              (TFile *                            ){                     }
 
