@@ -54,155 +54,70 @@
 #include <iostream>
 #include <cmath>
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TracksAfter::TracksAfter(AnalysisManager* analysisManager, int nOfThreads) :
-    Analysis          (analysisManager, nOfThreads)
-  , thePlaneMapping_  (0)
-{
-    thePlaneMapping_ = new PlanesMapping();
-    inFile_ = 0;
 
-/*    for(int p=0; p<4; p++)
-    {
-        parMin_      [p] = 0;
-        parMax_      [p] = 0;
-        isMinToLimit_[p] = 0;
-        isMaxToLimit_[p] = 0;
-    }
-    totEventsControl_ = 0;   */
+TracksAfter::TracksAfter(AnalysisManager* analysisManager, int nOfThreads) :
+  Analysis(analysisManager, nOfThreads), thePlaneMapping_(0)
+{
+  thePlaneMapping_ = new PlanesMapping();
+  inFile_ = 0;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TracksAfter::~TracksAfter(void)
 {
-    if(thePlaneMapping_)
+  if(thePlaneMapping_)
     {
-        delete thePlaneMapping_;
-        thePlaneMapping_ = 0;
+      delete thePlaneMapping_;
+      thePlaneMapping_ = 0;
     }
-
-    destroy();
+  
+  destroy();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::destroy(void)
 {
-    if(Analysis::fDoNotDelete_) return;
-
-    /*--------------------------------------------------------------------------------------------Cluster size--------------------------------------------------------------------------------------------------*/
-//    for(std::vector<TH1F*>::iterator it=hClusterSize_                           .begin(); it!=hClusterSize_                           .end(); it++) delete *it; hClusterSize_                           .clear();
+  if(Analysis::fDoNotDelete_) return;
 }
 
 bool TracksAfter::passCalibrationsCut(int planeID, const Data &/*data*/)
 {
-    XmlParser* theParser = theAnalysisManager_->getXmlParser();
-
-    if(!(theParser->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->useCalibrations())
-        return true;
-
-    bool pass = true;
- 
-    //std::stringstream ss;
-
-    //isMinToLimit = true  - isMaxToLimit = true  : min <= parValue <= max
-    //isMinToLimit = false - isMaxToLimit = true  : parValue <= max
-    //isMinToLimit = true  - isMaxToLimit = false : parValue >= min
-    //isMinToLimit = false - isMaxToLimit = false : nothing!
-/*
-    int    row;
-    int    col;
-//    bool   pass = false;
-//    double parValue;
-    for(int h=0; h<data.getClusterSize(planeID); h++)
-    {
-        row = data.getClusterPixelRow(h,planeID);
-        col = data.getClusterPixelCol(h,planeID);
-        for(int p=0; p<4; p++)
-        {
-            parValue = h2DparsPlots_[p]->GetBinContent(h2DparsPlots_[p]->GetXaxis()->FindBin(col),h2DparsPlots_[p]->GetYaxis()->FindBin(row));
-            if(isMinToLimit_[p]==false && isMaxToLimit_[p]==false)
-                continue;
-            else if(isMinToLimit_[p]==true && isMaxToLimit_[p]== true)
-            {
-                if(parValue>parMin_[p] && parValue<parMax_[p])
-                    pass = true;
-            }
-            else if(isMinToLimit_[p]==true && isMaxToLimit_[p]==false)
-            {
-                if(parValue>parMin_[p])
-                    pass = true;
-            }
-            else if(isMinToLimit_[p]==false && isMaxToLimit_[p]==true)
-            {
-                if(parValue<parMax_[p])
-                    pass = true;
-            }  
-        }
-    }
-*/
-    return pass;
+  XmlParser* theParser = theAnalysisManager_->getXmlParser();
+  
+  if(!(theParser->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->useCalibrations())
+    return true;
+  
+  bool pass = true;
+  return pass;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::getInFile (TFile * infile)
 {
-    if (inFile_) delete inFile_;
-    inFile_ = infile;
+  if (inFile_) delete inFile_;
+  inFile_ = infile;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool TracksAfter::passStandardCuts(int planeID, const Data &data)
 {
-    XmlParser* theParser = theAnalysisManager_->getXmlParser();
-    if(!theParser->getAnalysesFromString("Charge")->applyStandardCuts())
-        return true;
-
-    int minHits = 7;//To calculate efficiency on the telescope
-    int excludeMe = 0;
-    if(thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) //Dut case
-        minHits = atoi(theParser->getAnalysesFromString("Charge")->getMinHits().c_str());
-    else if(data.getHasHit(planeID))//Telescope case
-    {
-        if(data.getClusterSize(planeID) == 1)
-            excludeMe = 1;
-        else if(data.getClusterSize(planeID) == 2
-                && (data.getClusterPixelRow(0,planeID) == data.getClusterPixelRow(1,planeID)
-                    || data.getClusterPixelCol(0,planeID) == data.getClusterPixelCol(1,planeID)))
-            excludeMe = 1;
-    }
-
-    if(data.getNumberOfTelescopeHits()-excludeMe >= minHits) {
-        return true;
-    }
-    else
-        return false;
+  XmlParser* theXmlParser_ = theAnalysisManager_->getXmlParser();
+  if (!theXmlParser_->getAnalysesFromString("Charge")->applyStandardCuts()) return true;
+  
+  int minHits   = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str()) - 1;
+  int excludeMe = 0;
+  if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits += 1;
+  else if (data.getHasHit(planeID) && data.getClusterSize(planeID) <= 2) excludeMe = 1;
+  
+  if (data.getNumberOfTelescopeClustersSizeLE2() - excludeMe >= minHits) return true;
+  else                                                                   return false;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::beginJob(void)
 {
-/*    XmlParser* theParser = theAnalysisManager_->getXmlParser();
-    threshold_    = theParser->getAnalyses()["Tracks"]->getThreshold();
-    maxTracks_    = theParser->getAnalyses()["Tracks"]->getMaxTracks();
-    minTotTracks_ = theParser->getAnalyses()["Tracks"]->getMinTotTracks();
-    maxTotTracks_ = theParser->getAnalyses()["Tracks"]->getMaxTotTracks();   */
-
-    book();
-
-//    setParsLimits();
+  book();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::positionUnfolded (int planeID)
 {
     float pn1x, pc1x, pn2x, pc2x;
     float pn1y, pc1y, pn2y, pc2y;
-/*    for (int i = 0; i < hXChargedistribution1D_[planeID]->GetNbinsX(); ++i) {
-        for (int j = 0; j < hXChargedistribution1D_[planeID]->GetNbinsY(); ++j) {
-            XProbabilityFunc_[planeID]->Fill();
-        }
-    }
-*/
     float binSize = 5;
     float pixelLengthX = 150;
     float pixelLengthY = 100;
@@ -238,24 +153,23 @@ void TracksAfter::positionUnfolded (int planeID)
 
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 float TracksAfter::findMaxHisto2DX (int planeID, float charge)
 {
-    float binSize = 5;
-    float pixelLengthX = 150;
-
-    float x = -pixelLengthX/2 + binSize/2;
-    float xmax = x;
-    float val = XProbabilityFunc_[planeID]->GetBinContent(hXChargedistribution1D_[planeID]->FindBin(x, charge));
-    float valmax = val;
-    for (x += binSize; x < pixelLengthX/2 + binSize/2; x += binSize) {
-        val = XProbabilityFunc_[planeID]->GetBinContent(hXChargedistribution1D_[planeID]->FindBin(x, charge));
-        if (val > valmax) {
-            valmax = val;
-            xmax = x;
-        }
+  float binSize = 5;
+  float pixelLengthX = 150;
+  
+  float x = -pixelLengthX/2 + binSize/2;
+  float xmax = x;
+  float val = XProbabilityFunc_[planeID]->GetBinContent(hXChargedistribution1D_[planeID]->FindBin(x, charge));
+  float valmax = val;
+  for (x += binSize; x < pixelLengthX/2 + binSize/2; x += binSize) {
+    val = XProbabilityFunc_[planeID]->GetBinContent(hXChargedistribution1D_[planeID]->FindBin(x, charge));
+    if (val > valmax) {
+      valmax = val;
+      xmax = x;
     }
-    return xmax;
+  }
+  return xmax;
 }
 
 float TracksAfter::findMaxHisto2DY (int planeID, float charge)
@@ -279,12 +193,12 @@ float TracksAfter::findMaxHisto2DY (int planeID, float charge)
 
 void TracksAfter::unfold (int planeID, float charge, float xp, float yp, int threadNumber)
 {
-    float xr = findMaxHisto2DX (planeID, charge);
-    float yr = findMaxHisto2DY (planeID, charge);
-
-    THREADED(XYReconstructed_[planeID])->Fill(xr, yr);
-    THREADED(XResidualsReconstructed_[planeID])->Fill(xp - xr);
-    THREADED(YResidualsReconstructed_[planeID])->Fill(yp - yr);
+  float xr = findMaxHisto2DX (planeID, charge);
+  float yr = findMaxHisto2DY (planeID, charge);
+  
+  THREADED(XYReconstructed_[planeID])->Fill(xr, yr);
+  THREADED(XResidualsReconstructed_[planeID])->Fill(xp - xr);
+  THREADED(YResidualsReconstructed_[planeID])->Fill(yp - yr);
 }
 
 void TracksAfter::fitEtaFunc (int planeID, std::string type)
@@ -305,77 +219,51 @@ void TracksAfter::fitEtaFunc (int planeID, std::string type)
     XAsimmetryFuncInv_[planeID]->SetParName(1, "Slope    ");
 
     if (type == "Size2")
-    {
+      {
         XAsimmetryFunc_[planeID]->SetRange(-20., 20.);
-
         XAsimmetryFunc_[planeID]->FixParameter(5, 1. );
-/*        XAsimmetryFunc_[planeID]->SetParameter(4, 3 );
-        XAsimmetryFunc_[planeID]->SetParLimits(4, 0.1, 100);
-        XAsimmetryFunc_[planeID]->SetParameter(3, 525);
-        XAsimmetryFunc_[planeID]->SetParLimits(3, 510, 600);
-        XAsimmetryFunc_[planeID]->SetParameter(2, 25 );
-        XAsimmetryFunc_[planeID]->SetParLimits(2, 10 , 100);
-        XAsimmetryFunc_[planeID]->SetParameter(1, 2 );
-        XAsimmetryFunc_[planeID]->SetParLimits(2, 0.1 , 100);
-//        XAsimmetryFunc_[planeID]->SetParameter(0, 100);
-//        XAsimmetryFunc_[planeID]->SetParLimits(0, 50 , 500);  */
         XAsimmetryFunc_[planeID]->FixParameter(0, 500);
         XAsimmetryFunc_[planeID]->FixParameter(1, 0.02);
         XAsimmetryFunc_[planeID]->FixParameter(2, 5.);
         XAsimmetryFunc_[planeID]->FixParameter(3, 505.);
-        XAsimmetryFunc_[planeID]->FixParameter(4, 0.09);
-
-    }
-
+        XAsimmetryFunc_[planeID]->FixParameter(4, 0.09);	
+      }    
     else if (type == "SizeLE2")
-    {
+      {
         XAsimmetryFunc_[planeID]->FixParameter(5, 1. );
-/*        XAsimmetryFunc_[planeID]->SetParameter(4, 0.01 );
-        XAsimmetryFunc_[planeID]->SetParLimits(4, 0.001, 3);
-        XAsimmetryFunc_[planeID]->SetParameter(3, 525);
-        XAsimmetryFunc_[planeID]->SetParLimits(3, 510, 600);
-        XAsimmetryFunc_[planeID]->SetParameter(2, 25 );
-        XAsimmetryFunc_[planeID]->SetParLimits(2, 10 , 100);
-        XAsimmetryFunc_[planeID]->SetParameter(1, 0.5 );
-        XAsimmetryFunc_[planeID]->SetParLimits(2, 0.01 , 9);
-//        XAsimmetryFunc_[planeID]->SetParameter(0, 100);
-//        XAsimmetryFunc_[planeID]->SetParLimits(0, 50 , 500);  */
         XAsimmetryFunc_[planeID]->FixParameter(0, 500);
         XAsimmetryFunc_[planeID]->FixParameter(1, 1.5);
         XAsimmetryFunc_[planeID]->FixParameter(2, 5.);
         XAsimmetryFunc_[planeID]->FixParameter(3, 505.);
         XAsimmetryFunc_[planeID]->FixParameter(4, 0.07);
-
-    }
-
+      }    
     else if (type == "SizeLE2Inv")
-    {
+      {
         XAsimmetryFuncInv_[planeID]->SetLineColor(kBlue); //No need to worry about fixing/setting parameters, fitting a rect should be easy... It's just a check
-    }
-
+      }    
     else {
-        STDLINE("Type of size constraint not recognized!", ACRed);
-        return;
+      STDLINE("Type of size constraint not recognized!", ACRed);
+      return;
     }
-
+    
     STDLINE("Fitting eta function in coordinate x for plane " + thePlaneMapping_->getPlaneName(planeID) + ", size constraint: " + type, ACGreen);
-
+    
     if (type == "Size2")
-    {
+      {
         if (planeID == 9)
-            hXAsimmetry_[planeID]->Fit(XAsimmetryFunc_[planeID], ""); // fitting method "QRBL"?
-    }
+	  hXAsimmetry_[planeID]->Fit(XAsimmetryFunc_[planeID], ""); // fitting method "QRBL"?
+      }
     else if (type == "SizeLE2")
-    {
+      {
         if (planeID == 9)
-            hXAsimmetryLE2_[planeID]->Fit(XAsimmetryFunc_[planeID], "L"); // fitting method "QRBL"?
-    }
+	  hXAsimmetryLE2_[planeID]->Fit(XAsimmetryFunc_[planeID], "L"); // fitting method "QRBL"?
+      }
     else if (type == "SizeLE2Inv")
-    {
+      {
         if (planeID == 9)
-            hXAsimmetryInv_[planeID]->Fit(XAsimmetryFuncInv_[planeID], "", "", -0.7, 0.7); // fitting method "QRBL"?
-    }
-
+	  hXAsimmetryInv_[planeID]->Fit(XAsimmetryFuncInv_[planeID], "", "", -0.7, 0.7); // fitting method "QRBL"?
+      }
+    
     ss.str("");
     ss << XAsimmetryFunc_[planeID]->GetParameter(0) << " +/- " << XAsimmetryFunc_[planeID]->GetParError(0);
     STDLINE("Thickness (um):                         " + ss.str(), ACYellow);
@@ -403,78 +291,52 @@ void TracksAfter::fitEtaFunc (int planeID, std::string type)
     YAsimmetryFunc_[planeID]->SetParName(5, "ScaleFactor                      ");
 
     YAsimmetryFuncInv_[planeID]->SetParName(0, "Intercept");
-    //[planeID]->SetParName(1, "Slope    ");
 
     if (type == "Size2")
     {
         YAsimmetryFunc_[planeID]->FixParameter(5, 1.);
-/*        YAsimmetryFunc_[planeID]->SetParameter(4, 3. );
-        YAsimmetryFunc_[planeID]->SetParLimits(4, 0.1, 100);
-        YAsimmetryFunc_[planeID]->SetParameter(3, 525);
-        YAsimmetryFunc_[planeID]->SetParLimits(3, 510, 600);
-        YAsimmetryFunc_[planeID]->SetParameter(2, 25 );
-        YAsimmetryFunc_[planeID]->SetParLimits(2, 10 , 100);
-        YAsimmetryFunc_[planeID]->SetParameter(1, 2. );
-        YAsimmetryFunc_[planeID]->SetParLimits(1, 0.1 , 100);
-//        YAsimmetryFunc_[planeID]->SetParameter(0, 100);
-//        YAsimmetryFunc_[planeID]->SetParLimits(0, 50 , 500); */
         YAsimmetryFunc_[planeID]->FixParameter(0, 500);
         YAsimmetryFunc_[planeID]->FixParameter(1, 0.02);
         YAsimmetryFunc_[planeID]->FixParameter(2, 5.);
         YAsimmetryFunc_[planeID]->FixParameter(3, 505.);
-        YAsimmetryFunc_[planeID]->FixParameter(4, 0.09);
-
+        YAsimmetryFunc_[planeID]->FixParameter(4, 0.09);	
     }
-
     else if (type == "SizeLE2")
-    {
+      {
         YAsimmetryFunc_[planeID]->FixParameter(5, 1.);
-/*        YAsimmetryFunc_[planeID]->SetParameter(4, 0.01 );
-        YAsimmetryFunc_[planeID]->SetParLimits(4, 0.001, 0.3);
-        YAsimmetryFunc_[planeID]->SetParameter(3, 525);
-        YAsimmetryFunc_[planeID]->SetParLimits(3, 510, 600);
-        YAsimmetryFunc_[planeID]->SetParameter(2, 25 );
-        YAsimmetryFunc_[planeID]->SetParLimits(2, 10 , 100);
-        YAsimmetryFunc_[planeID]->SetParameter(1, 1 );
-        YAsimmetryFunc_[planeID]->SetParLimits(1, 0.1 , 9);
-//        YAsimmetryFunc_[planeID]->SetParameter(0, 100);
-//        YAsimmetryFunc_[planeID]->SetParLimits(0, 50 , 500);  */
         YAsimmetryFunc_[planeID]->FixParameter(0, 500);
         YAsimmetryFunc_[planeID]->FixParameter(1, 1.5);
         YAsimmetryFunc_[planeID]->FixParameter(2, 5.);
         YAsimmetryFunc_[planeID]->FixParameter(3, 505.);
         YAsimmetryFunc_[planeID]->FixParameter(4, 0.07);
-
-    }
-
+      }    
     else if (type == "SizeLE2Inv")
-    {
+      {
         XAsimmetryFuncInv_[planeID]->SetLineColor(kBlue); //No need to worry about fixing/setting parameters, fitting a rect should be easy... It's just a check
-    }
-
+      }    
     else {
-        STDLINE("Type of size constraint not recognized!", ACRed);
-        return;
+      STDLINE("Type of size constraint not recognized!", ACRed);
+      return;
     }
-
+    
     STDLINE("Fitting eta function in coordinate y for plane " + thePlaneMapping_->getPlaneName(planeID) + ", size constraint: " + type, ACGreen);
-
+    
     if (type == "Size2")
-    {
+      {
         if (planeID == 9)
-            hYAsimmetry_[planeID]->Fit(YAsimmetryFunc_[planeID], ""); // fitting method "QRBL"?
-    }
+	  hYAsimmetry_[planeID]->Fit(YAsimmetryFunc_[planeID], ""); // fitting method "QRBL"?
+      }
     else if (type == "SizeLE2")
-    {
+      {
         if (planeID == 9)
-            hYAsimmetryLE2_[planeID]->Fit(YAsimmetryFunc_[planeID], "L"); // fitting method "QRBL"?
-    }
+	  hYAsimmetryLE2_[planeID]->Fit(YAsimmetryFunc_[planeID], "L"); // fitting method "QRBL"?
+      }
     else if (type == "SizeLE2Inv")
-    {
+      {
         if (planeID == 9)
-            hYAsimmetryInv_[planeID]->Fit(YAsimmetryFuncInv_[planeID], "", "", -0.6, 0.6); // fitting method "QRBL"?
-    }
-
+	  hYAsimmetryInv_[planeID]->Fit(YAsimmetryFuncInv_[planeID], "", "", -0.6, 0.6); // fitting method "QRBL"?
+      }
+    
     ss.str("");
     ss << YAsimmetryFunc_[planeID]->GetParameter(0) << " +/- " << YAsimmetryFunc_[planeID]->GetParError(0);
     STDLINE("Thickness (um):                         " + ss.str(), ACYellow);
@@ -497,423 +359,405 @@ void TracksAfter::fitEtaFunc (int planeID, std::string type)
 
 void TracksAfter::testPredictedFunc (void)
 {
-//    double binSize = 5;
-//    double pixelLengthX = 150;
-    double pixelLengthY = 100;
-    double * xt = new double;
-    int n = 0;
-    double parameters[6] = {500.,0.5, 70., 570., 0.002, 1.};
-    double parameters2[5] = {4.75, 9.81, 1312., 0., 98.};
-    double parameters3[9] = {500.,6.5, 0.07, 1., 4.76, 9.28, 1312, 0, 98};
-    double sum = 0;
-    for (float x = -pixelLengthY/2; x < pixelLengthY/2; x += 1) {
-        *xt = x;
-        funcPredicted_->SetBinContent(n, Utilities::uniformCenterSmearedPlusConstantNorm(xt, parameters2));
-        sum += Utilities::uniformCenterSmearedPlusConstantNorm(xt, parameters2)*1;
-//        std::cout << "Test point: " << x << ", " << Utilities::etaFitFunc(xt, parameters) << "!!!!\n";
-        funcPredicted2_->SetBinContent(n, Utilities::etaSmeared(xt, parameters3));
-        funcPredicted3_->SetBinContent(n, Utilities::etaInverseFitFunc(xt, parameters));
-        ++n;
-    }
-    std::stringstream ss;
-    ss << "The area of the normalized function is " << sum;
-    STDLINE(ss.str(), ACYellow);
+  double pixelLengthY = 100;
+  double * xt = new double;
+  int n = 0;
+  double parameters[6] = {500.,0.5, 70., 570., 0.002, 1.};
+  double parameters2[5] = {4.75, 9.81, 1312., 0., 98.};
+  double parameters3[9] = {500.,6.5, 0.07, 1., 4.76, 9.28, 1312, 0, 98};
+  double sum = 0;
+  for (float x = -pixelLengthY/2; x < pixelLengthY/2; x += 1) {
+    *xt = x;
+    funcPredicted_->SetBinContent(n, Utilities::uniformCenterSmearedPlusConstantNorm(xt, parameters2));
+    sum += Utilities::uniformCenterSmearedPlusConstantNorm(xt, parameters2)*1;
+    funcPredicted2_->SetBinContent(n, Utilities::etaSmeared(xt, parameters3));
+    funcPredicted3_->SetBinContent(n, Utilities::etaInverseFitFunc(xt, parameters));
+    ++n;
+  }
+  std::stringstream ss;
+  ss << "The area of the normalized function is " << sum;
+  STDLINE(ss.str(), ACYellow);
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void TracksAfter::loadEtaFunc (std::string type)
 {
-    float x, y;
-
-    double fitParameters[6];
-    for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); ++p)
+  float x, y;
+  
+  double fitParameters[6];
+  for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); ++p)
     {
-        STDLINE("Loading eta functions for plane " + thePlaneMapping_->getPlaneName(p), ACGreen);
-
-        if (p != 9) continue;
-        if (p != 10) continue;//to avoid any loading when not required
-
-        if (type == "Size2")
+      STDLINE("Loading eta functions for plane " + thePlaneMapping_->getPlaneName(p), ACGreen);
+      
+      if (p != 9) continue;
+      if (p != 10) continue;//to avoid any loading when not required
+      
+      if (type == "Size2")
         {
-//            if (p != 10) continue;//to avoid any loading when not required
-
-            XAsimmetryFunc_[p]->GetParameters(fitParameters);
-            for (int n = 0; n < computedEtaFuncXSize2_[p]->GetNbinsX()+1; ++n)
+	  XAsimmetryFunc_[p]->GetParameters(fitParameters);
+	  for (int n = 0; n < computedEtaFuncXSize2_[p]->GetNbinsX()+1; ++n)
             {
-                x = computedEtaFuncXSize2_[p]->GetBinCenter(n);
-                computedEtaFuncXSize2_[p]->Fill(x, XAsimmetryFunc_[p]->Eval(x));
+	      x = computedEtaFuncXSize2_[p]->GetBinCenter(n);
+	      computedEtaFuncXSize2_[p]->Fill(x, XAsimmetryFunc_[p]->Eval(x));
             }
-
-            YAsimmetryFunc_[p]->GetParameters(fitParameters);
-            for (int m = 0; m < computedEtaFuncYSize2_[p]->GetNbinsX()+1; ++m)
+	  
+	  YAsimmetryFunc_[p]->GetParameters(fitParameters);
+	  for (int m = 0; m < computedEtaFuncYSize2_[p]->GetNbinsX()+1; ++m)
             {
-                y = computedEtaFuncYSize2_[p]->GetBinCenter(m);
-                computedEtaFuncYSize2_[p]->Fill(y, YAsimmetryFunc_[p]->Eval(y));
+	      y = computedEtaFuncYSize2_[p]->GetBinCenter(m);
+	      computedEtaFuncYSize2_[p]->Fill(y, YAsimmetryFunc_[p]->Eval(y));
             }
         }
-
-        else if (type == "SizeLE2")
+      
+      else if (type == "SizeLE2")
         {
-            XAsimmetryFunc_[p]->GetParameters(fitParameters);
-            for (int n = 0; n < computedEtaFuncXSizeLE2_[p]->GetNbinsX()+1; ++n)
+	  XAsimmetryFunc_[p]->GetParameters(fitParameters);
+	  for (int n = 0; n < computedEtaFuncXSizeLE2_[p]->GetNbinsX()+1; ++n)
             {
-                x = computedEtaFuncXSizeLE2_[p]->GetBinCenter(n);
-                computedEtaFuncXSizeLE2_[p]->Fill(x, XAsimmetryFunc_[p]->Eval(x));
+	      x = computedEtaFuncXSizeLE2_[p]->GetBinCenter(n);
+	      computedEtaFuncXSizeLE2_[p]->Fill(x, XAsimmetryFunc_[p]->Eval(x));
             }
-
-            YAsimmetryFunc_[p]->GetParameters(fitParameters);
-            for (int m = 0; m < computedEtaFuncYSizeLE2_[p]->GetNbinsX()+1; ++m)
+	  
+	  YAsimmetryFunc_[p]->GetParameters(fitParameters);
+	  for (int m = 0; m < computedEtaFuncYSizeLE2_[p]->GetNbinsX()+1; ++m)
             {
-                y = computedEtaFuncYSizeLE2_[p]->GetBinCenter(m);
-                computedEtaFuncYSizeLE2_[p]->Fill(y, YAsimmetryFunc_[p]->Eval(y));
+	      y = computedEtaFuncYSizeLE2_[p]->GetBinCenter(m);
+	      computedEtaFuncYSizeLE2_[p]->Fill(y, YAsimmetryFunc_[p]->Eval(y));
             }
         }
-
-        else {
-            STDLINE("Type of size constraint not recognized!", ACRed);
-            return;
-        }
-
+      
+      else {
+	STDLINE("Type of size constraint not recognized!", ACRed);
+	return;
+      }
+      
     }
-
+  
 }
 
 double TracksAfter::invertInHisto (int planeID, double etaValue, std::string coordinate, std::string type)
 {
-    float eta;
-    float pos;
-    double posFound = 1000;
-    double etaFound = 1000;
-    std::stringstream ss;
-
-    if (planeID != 9) return 55;
-    if (planeID != 10) return 55; //to avoid inverting when histo is not defined (see similar statement in loadEtaFunc
-
-    if (coordinate == "x")
+  float eta;
+  float pos;
+  double posFound = 1000;
+  double etaFound = 1000;
+  std::stringstream ss;
+  
+  if (planeID != 9) return 55;
+  if (planeID != 10) return 55; //to avoid inverting when histo is not defined (see similar statement in loadEtaFunc
+  
+  if (coordinate == "x")
     {
-        if (type == "Size2")
+      if (type == "Size2")
         {
-//            return 55;
-
-            for (int i = 0; i < computedEtaFuncXSize2_[planeID]->GetNbinsX(); ++i)
+	  for (int i = 0; i < computedEtaFuncXSize2_[planeID]->GetNbinsX(); ++i)
             {
-                eta = computedEtaFuncXSize2_[planeID]->GetBinContent(i);
-                pos = computedEtaFuncXSize2_[planeID]->GetBinCenter(i);
-                if (fabs(eta-etaValue) < fabs(etaFound-etaValue)) {
-                    etaFound = eta;
-                    posFound = pos;
+	      eta = computedEtaFuncXSize2_[planeID]->GetBinContent(i);
+	      pos = computedEtaFuncXSize2_[planeID]->GetBinCenter(i);
+	      if (fabs(eta-etaValue) < fabs(etaFound-etaValue)) {
+		etaFound = eta;
+		posFound = pos;
                 }
             }
-            if (posFound != 1000) return posFound;
-            else {
-                ss << etaValue;
-                STDLINE("Couldn't invert eta funtion (x) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
-                return 1000;
-            }
+	  if (posFound != 1000) return posFound;
+	  else {
+	    ss << etaValue;
+	    STDLINE("Couldn't invert eta funtion (x) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
+	    return 1000;
+	  }
         }
-
-        else if (type == "SizeLE2")
+      
+      else if (type == "SizeLE2")
         {
-//            return 55;
-
-            for (int i = 0; i < computedEtaFuncXSizeLE2_[planeID]->GetNbinsX(); ++i)
+	  for (int i = 0; i < computedEtaFuncXSizeLE2_[planeID]->GetNbinsX(); ++i)
             {
-                eta = computedEtaFuncXSizeLE2_[planeID]->GetBinContent(i);
-                pos = computedEtaFuncXSizeLE2_[planeID]->GetBinCenter(i);
-                if (fabs(eta-etaValue) < fabs(etaFound-etaValue)) {
-                    etaFound = eta;
-                    posFound = pos;
-                }
+	      eta = computedEtaFuncXSizeLE2_[planeID]->GetBinContent(i);
+	      pos = computedEtaFuncXSizeLE2_[planeID]->GetBinCenter(i);
+	      if (fabs(eta-etaValue) < fabs(etaFound-etaValue)) {
+		etaFound = eta;
+		posFound = pos;
+	      }
             }
-            if (posFound != 1000) return posFound;
-            else {
-                ss << etaValue;
-                STDLINE("Couldn't invert eta funtion (x) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
-                return 1000;
-            }
-        }
-
-        else {
-            STDLINE("Type of size constraint not recognized!", ACRed);
-            return 1000;
-        }
-
+	  if (posFound != 1000) return posFound;
+	  else {
+	    ss << etaValue;
+	    STDLINE("Couldn't invert eta funtion (x) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
+	    return 1000;
+	  }
+        }      
+      else {
+	STDLINE("Type of size constraint not recognized!", ACRed);
+	return 1000;
+      }
+      
     }
-    else if (coordinate == "y")
+  else if (coordinate == "y")
     {
-        if (type == "Size2")
+      if (type == "Size2")
         {
-//            return 55;
-
-            for (int i = 0; i < computedEtaFuncYSize2_[planeID]->GetEntries(); ++i)
+	  for (int i = 0; i < computedEtaFuncYSize2_[planeID]->GetEntries(); ++i)
             {
-                eta = computedEtaFuncYSize2_[planeID]->GetBinContent(i);
-                pos = computedEtaFuncYSize2_[planeID]->GetBinCenter(i);
-                if (fabs(eta-etaValue) < fabs(etaFound - etaValue)) {
-                    etaFound = eta;
-                    posFound = pos;
-                }
+	      eta = computedEtaFuncYSize2_[planeID]->GetBinContent(i);
+	      pos = computedEtaFuncYSize2_[planeID]->GetBinCenter(i);
+	      if (fabs(eta-etaValue) < fabs(etaFound - etaValue)) {
+		etaFound = eta;
+		posFound = pos;
+	      }
             }
-            if (posFound != 1000) return posFound;
-            else {
-                ss << etaValue;
-                STDLINE("Couldn't invert eta funtion (y) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
-                return 1000;
-            }
+	  if (posFound != 1000) return posFound;
+	  else {
+	    ss << etaValue;
+	    STDLINE("Couldn't invert eta funtion (y) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
+	    return 1000;
+	  }
         }
-
-        else if (type == "SizeLE2")
+      
+      else if (type == "SizeLE2")
         {
-            for (int i = 0; i < computedEtaFuncYSizeLE2_[planeID]->GetEntries(); ++i)
+	  for (int i = 0; i < computedEtaFuncYSizeLE2_[planeID]->GetEntries(); ++i)
             {
-//                return 55;
-
-                eta = computedEtaFuncYSizeLE2_[planeID]->GetBinContent(i);
-                pos = computedEtaFuncYSizeLE2_[planeID]->GetBinCenter(i);
-                if (fabs(eta-etaValue) < fabs(etaFound - etaValue)) {
-                    etaFound = eta;
-                    posFound = pos;
-                }
+	      eta = computedEtaFuncYSizeLE2_[planeID]->GetBinContent(i);
+	      pos = computedEtaFuncYSizeLE2_[planeID]->GetBinCenter(i);
+	      if (fabs(eta-etaValue) < fabs(etaFound - etaValue)) {
+		etaFound = eta;
+		posFound = pos;
+	      }
             }
-            if (posFound != 1000) return posFound;
-            else {
-                ss << etaValue;
-                STDLINE("Couldn't invert eta funtion (y) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
-                return 1000;
-            }
-        }
-
-        else {
-            STDLINE("Type of size constraint not recognized!", ACRed);
-            return 1000;
-        }
-
+	  if (posFound != 1000) return posFound;
+	  else {
+	    ss << etaValue;
+	    STDLINE("Couldn't invert eta funtion (y) for eta value " + ss.str() + " in plane " + thePlaneMapping_->getPlaneName(planeID), ACRed);
+	    return 1000;
+	  }
+        }      
+      else {
+	STDLINE("Type of size constraint not recognized!", ACRed);
+	return 1000;
+      }
+      
     }
-    else
+  else
     {
-        STDLINE("Coordinate " + coordinate + " not recognized!", ACRed);
-        return 0;
+      STDLINE("Coordinate " + coordinate + " not recognized!", ACRed);
+      return 0;
     }
 }
 
 double TracksAfter::invertInHistoSingle (double etaValue, TH1F * histo)
 {
-    float eta;
-    float pos;
-    double posFound = 1000;
-    double etaFound = 1000;
-    std::stringstream ss;
-
-    for (int i = 0; i < histo->GetNbinsX(); ++i)
+  float eta;
+  float pos;
+  double posFound = 1000;
+  double etaFound = 1000;
+  std::stringstream ss;
+  
+  for (int i = 0; i < histo->GetNbinsX(); ++i)
     {
-        eta = histo->GetBinContent(i);
-        pos = histo->GetBinCenter(i);
-        if (fabs(eta-etaValue) < fabs(etaFound-etaValue)) {
-            etaFound = eta;
-            posFound = pos;
-        }
+      eta = histo->GetBinContent(i);
+      pos = histo->GetBinCenter(i);
+      if (fabs(eta-etaValue) < fabs(etaFound-etaValue)) {
+	etaFound = eta;
+	posFound = pos;
+      }
     }
-    if (posFound != 1000) return posFound;
-    else {
-        ss << histo->GetName() << " for eta value " << etaValue;
-        STDLINE("Couldn't invert eta funtion in graph " +  ss.str(), ACRed);
-        return 1000;
-    }
+  if (posFound != 1000) return posFound;
+  else {
+    ss << histo->GetName() << " for eta value " << etaValue;
+    STDLINE("Couldn't invert eta funtion in graph " +  ss.str(), ACRed);
+    return 1000;
+  }
 }
 
 double TracksAfter::calculateInHisto (double value, TH1F *histo)
 {
-    int bin = histo->FindBin(value);
-    return histo->GetBinContent(bin);
+  int bin = histo->FindBin(value);
+  return histo->GetBinContent(bin);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::calculateXResiduals (const Data &data, int planeID, int threadNumber)
 {
-    if( !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ))
-        return;
-    if (data.getClusterCharge(planeID) > 20000)
-        return;
-
-    const Window* theWindow = theAnalysisManager_->getWindowsManager()->getWindow (planeID);
-    int           row       = data.getRowPredicted                                (planeID);
-    int           col       = data.getColPredicted                                (planeID);
-    int           run       = data.getRunNumber                                   ()       ;
-
-    int   hitID             = -1;
-    int   totalCharge       = 0 ;
-    int   chargeLeft        = 0 ;
-    int   chargeRight       = 0 ;
-    float Asimmetry         = 0 ;
-
-    if( !theWindow->checkWindow(col,row,run) ) {
-        return;
-    }
-
-    if (data.getClusterSize(planeID) == 2)
+  if( !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ))
+    return;
+  if (data.getClusterCharge(planeID) > 20000)
+    return;
+  
+  const Window* theWindow = theAnalysisManager_->getWindowsManager()->getWindow (planeID);
+  int           row       = data.getRowPredicted                                (planeID);
+  int           col       = data.getColPredicted                                (planeID);
+  int           run       = data.getRunNumber                                   ()       ;
+  
+  int   hitID             = -1;
+  int   totalCharge       = 0 ;
+  int   chargeLeft        = 0 ;
+  int   chargeRight       = 0 ;
+  float Asimmetry         = 0 ;
+  
+  if( !theWindow->checkWindow(col,row,run) ) {
+    return;
+  }
+  
+  if (data.getClusterSize(planeID) == 2)
     {
-        for(int h=0; h<2; ++h)
+      for(int h=0; h<2; ++h)
         {
-            if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
-                || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
-                ||  data.getClusterPixelRow  (h,planeID) != row )                                                 //hits are on the same row (sharing is along the row - x direction)
-                return;
+	  if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
+		 || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
+		 ||  data.getClusterPixelRow  (h,planeID) != row )                                                 //hits are on the same row (sharing is along the row - x direction)
+	    return;
         }
-
-        for(int h=0; h<2; ++h)
+      
+      for(int h=0; h<2; ++h)
         {
-            if(data.getClusterPixelCol(h,planeID) == col)//mi assicuro che ci sia la cella predetta in uno dei due hit
+	  if(data.getClusterPixelCol(h,planeID) == col)//mi assicuro che ci sia la cella predetta in uno dei due hit
             {
-                hitID   = h   ;
-                break;
+	      hitID   = h   ;
+	      break;
             }
         }
-        if( hitID == -1 )
-            return;
-
-        for(int h=0; h<2; ++h)
+      if( hitID == -1 )
+	return;
+      
+      for(int h=0; h<2; ++h)
         {
-            if( h == hitID )
-                continue;
-            if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)//il secondo hit e' a DX della predetta
+	  if( h == hitID )
+	    continue;
+	  if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == -1)//il secondo hit e' a DX della predetta
             {
                 chargeRight  = data.getClusterPixelCharge(h    ,planeID);
                 chargeLeft = data.getClusterPixelCharge(hitID,planeID);
                 break;
             }
-            else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(h,planeID)) == +1)//il secondo hit e' a SX della predetta
+	  else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(h,planeID)) == +1)//il secondo hit e' a SX della predetta
             {
-                chargeRight = data.getClusterPixelCharge(hitID,planeID);
-                chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
-                break;
+	      chargeRight = data.getClusterPixelCharge(hitID,planeID);
+	      chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
+	      break;
             }
-            else if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == +1)
+	  else if(data.getXPixelResidualLocal(planeID) > 0 && (col - data.getClusterPixelCol(h,planeID)) == +1)
             {
-                chargeRight = data.getClusterPixelCharge(hitID,planeID);
-                chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
-                break;
+	      chargeRight = data.getClusterPixelCharge(hitID,planeID);
+	      chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
+	      break;
             }
-            else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(h,planeID)) ==  -1)
+	  else if(data.getXPixelResidualLocal(planeID) <= 0 && (col - data.getClusterPixelCol(h,planeID)) ==  -1)
             {
-                chargeRight  = data.getClusterPixelCharge(h    ,planeID);
-                chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
-                break;
+	      chargeRight  = data.getClusterPixelCharge(h    ,planeID);
+	      chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
+	      break;
             }
-            else
+	  else
                 return;
         }
-
-        float Xp = 0;
-
-        if(data.getXPixelResidualLocal( planeID ) > 0)
-            Xp = -data.getXPitchLocal( planeID )/2 + data.getXPixelResidualLocal( planeID );
-        else if(data.getXPixelResidualLocal( planeID ) <= 0)
-            Xp = (data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
-
-        totalCharge = chargeLeft + chargeRight;
-        Asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
-        if(Asimmetry >= -0.7 && Asimmetry <= 0.7 && totalCharge <= 30000) {
-//            float Xm = invertInHisto(planeID, Asimmetry, "x", "Size2");
-            float XmLE2 = invertInHisto(planeID, Asimmetry, "x", "SizeLE2");
-            float Xm = XAsimmetryFuncInv_[planeID]->GetParameter(0) + Asimmetry*XAsimmetryFuncInv_[planeID]->GetParameter(1);
-//            float Xm = (-XAsimmetryFuncRect_[planeID]->GetParameter(0) + Asimmetry)/XAsimmetryFuncRect_[planeID]->GetParameter(1);
-//            float Xp = data.getXPixelResidualLocal(planeID);
-            THREADED(hXResidualsAsimmetry_[planeID])->Fill(Xm - Xp);
-            THREADED(hXResidualsAsimmetryLE2_[planeID])->Fill(XmLE2 - Xp);
-        }
+      
+      float Xp = 0;
+      
+      if(data.getXPixelResidualLocal( planeID ) > 0)
+	Xp = -data.getXPitchLocal( planeID )/2 + data.getXPixelResidualLocal( planeID );
+      else if(data.getXPixelResidualLocal( planeID ) <= 0)
+	Xp = (data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
+      
+      totalCharge = chargeLeft + chargeRight;
+      Asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
+      if(Asimmetry >= -0.7 && Asimmetry <= 0.7 && totalCharge <= 30000) {
+	//            float Xm = invertInHisto(planeID, Asimmetry, "x", "Size2");
+	float XmLE2 = invertInHisto(planeID, Asimmetry, "x", "SizeLE2");
+	float Xm = XAsimmetryFuncInv_[planeID]->GetParameter(0) + Asimmetry*XAsimmetryFuncInv_[planeID]->GetParameter(1);
+	//            float Xm = (-XAsimmetryFuncRect_[planeID]->GetParameter(0) + Asimmetry)/XAsimmetryFuncRect_[planeID]->GetParameter(1);
+	//            float Xp = data.getXPixelResidualLocal(planeID);
+	THREADED(hXResidualsAsimmetry_[planeID])->Fill(Xm - Xp);
+	THREADED(hXResidualsAsimmetryLE2_[planeID])->Fill(XmLE2 - Xp);
+      }
     }
-
-    else if (data.getClusterSize(planeID) == 1)
+  
+  else if (data.getClusterSize(planeID) == 1)
     {
-        float Xm = (data.getColPredicted(planeID) + 0.5)*data.getXPitchLocal(planeID);
-//        float Xp = data.getXPixelResidualLocal(planeID);
-        float Xp = 0;
-        if(data.getXPixelResidualLocal( planeID ) > 0)
-            Xp = -data.getXPitchLocal( planeID )/2 + data.getXPixelResidualLocal( planeID );
-        else if(data.getXPixelResidualLocal( planeID ) <= 0)
-            Xp = (data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
-
-        THREADED(hXResidualsAsimmetryLE2_[planeID])->Fill(Xm - Xp);
+      float Xm = (data.getColPredicted(planeID) + 0.5)*data.getXPitchLocal(planeID);
+      //        float Xp = data.getXPixelResidualLocal(planeID);
+      float Xp = 0;
+      if(data.getXPixelResidualLocal( planeID ) > 0)
+	Xp = -data.getXPitchLocal( planeID )/2 + data.getXPixelResidualLocal( planeID );
+      else if(data.getXPixelResidualLocal( planeID ) <= 0)
+	Xp = (data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
+      
+      THREADED(hXResidualsAsimmetryLE2_[planeID])->Fill(Xm - Xp);
     }
-
-    else return;
+  
+  else return;
 }
 
 void TracksAfter::calculateYResiduals (const Data &data, int planeID, int threadNumber)
 {
-    if( !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ) || data.getClusterSize( planeID ) != 2 )
-        return;
-    if (data.getClusterCharge(planeID) > 20000)
-        return;
-
-    const Window* theWindow = theAnalysisManager_->getWindowsManager()->getWindow(planeID);
-    int           row       = data.getRowPredicted                               (planeID);
-    int           col       = data.getColPredicted                               (planeID);
-    int           run       = data.getRunNumber                                  ()       ;
-
-
-    if( !theWindow->checkWindow(col,row,run) ) {
-        return;
-    }
-
-    for(int h=0; h<2; ++h)
+  if( !data.getIsInDetector( planeID ) || !data.getHasHit( planeID ) || data.getClusterSize( planeID ) != 2 )
+    return;
+  if (data.getClusterCharge(planeID) > 20000)
+    return;
+  
+  const Window* theWindow = theAnalysisManager_->getWindowsManager()->getWindow(planeID);
+  int           row       = data.getRowPredicted                               (planeID);
+  int           col       = data.getColPredicted                               (planeID);
+  int           run       = data.getRunNumber                                  ()       ;
+  
+  
+  if( !theWindow->checkWindow(col,row,run) ) {
+    return;
+  }
+  
+  for(int h=0; h<2; ++h)
     {
-        if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
-            || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
-            ||  data.getClusterPixelCol  (h,planeID) != col )                                                 //hits are on the same col (sharing is along the row - x direction)
-            return;
+      if(    !theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) //hits are in the window
+	     || !data.getIsPixelCalibrated(h,planeID)                                                          //pixels are calibrated
+	     ||  data.getClusterPixelCol  (h,planeID) != col )                                                 //hits are on the same col (sharing is along the row - x direction)
+	return;
     }
-
-    int   hitID       =     -1 ;
-    int   totalCharge =      0 ;
-    int   chargeLeft  =      0 ;
-    int   chargeRight =      0 ;
-    float Asimmetry   =      0 ;
-
-    if (data.getClusterSize(planeID) == 2)
+  
+  int   hitID       =     -1 ;
+  int   totalCharge =      0 ;
+  int   chargeLeft  =      0 ;
+  int   chargeRight =      0 ;
+  float Asimmetry   =      0 ;
+  
+  if (data.getClusterSize(planeID) == 2)
     {
-        for(int h=0; h<2; ++h)
+      for(int h=0; h<2; ++h)
         {
-            if(data.getClusterPixelRow(h,planeID) == row)//mi assicuro che ci sia la cella predetta in uno dei due hit
+	  if(data.getClusterPixelRow(h,planeID) == row)//mi assicuro che ci sia la cella predetta in uno dei due hit
             {
-                hitID   = h   ;
-                break;
+	      hitID   = h   ;
+	      break;
             }
         }
-        if( hitID == -1 )
-            return;
-
-        for(int h=0; h<2; ++h)
+      if( hitID == -1 )
+	return;
+      
+      for(int h=0; h<2; ++h)
         {
-            if( h == hitID )
-                continue;
-            if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)//il secondo hit e' a DX della predetta
+	  if( h == hitID )
+	    continue;
+	  if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == -1)//il secondo hit e' a DX della predetta
             {
-                chargeRight = data.getClusterPixelCharge(h    ,planeID);
-                chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
-                break;
+	      chargeRight = data.getClusterPixelCharge(h    ,planeID);
+	      chargeLeft  = data.getClusterPixelCharge(hitID,planeID);
+	      break;
             }
-            else if(data.getYPixelResidualLocal(planeID) <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)//il secondo hit e' a SX della predetta
+	  else if(data.getYPixelResidualLocal(planeID) <= 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)//il secondo hit e' a SX della predetta
             {
-                chargeRight = data.getClusterPixelCharge(hitID,planeID);
+	      chargeRight = data.getClusterPixelCharge(hitID,planeID);
                 chargeLeft  = data.getClusterPixelCharge(h    ,planeID);
                 break;
             }
-            else if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
+	  else if(data.getYPixelResidualLocal(planeID) > 0 && (row - data.getClusterPixelRow(h,planeID)) == 1)
             {
-                chargeRight       = data.getClusterPixelCharge(hitID,planeID);
-                chargeLeft        = data.getClusterPixelCharge(h    ,planeID);
-                break;
+	      chargeRight       = data.getClusterPixelCharge(hitID,planeID);
+	      chargeLeft        = data.getClusterPixelCharge(h    ,planeID);
+	      break;
             }
-            else if(data.getYPixelResidualLocal(planeID) < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
+	  else if(data.getYPixelResidualLocal(planeID) < 0 && (row - data.getClusterPixelRow(h,planeID)) ==  -1)
             {
-                chargeRight       = data.getClusterPixelCharge(h    ,planeID);
-                chargeLeft        = data.getClusterPixelCharge(hitID,planeID);
-                break;
+	      chargeRight       = data.getClusterPixelCharge(h    ,planeID);
+	      chargeLeft        = data.getClusterPixelCharge(hitID,planeID);
+	      break;
             }
-            else
-                return;
+	  else
+	    return;
         }
 
         float Xp = 0;
@@ -926,11 +770,8 @@ void TracksAfter::calculateYResiduals (const Data &data, int planeID, int thread
         totalCharge = chargeLeft + chargeRight;
         Asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
         if(Asimmetry >= -0.7 && Asimmetry <= 0.7 && totalCharge <= 30000) {
-//            float Xm = invertInHisto(planeID, Asimmetry, "y", "Size2");
             float XmLE2 = invertInHisto(planeID, Asimmetry, "y", "SizeLE2");
             float Xm = YAsimmetryFuncInv_[planeID]->GetParameter(0) + Asimmetry*YAsimmetryFuncInv_[planeID]->GetParameter(1);
-//            float Xm = (-YAsimmetryFuncRect_[planeID]->GetParameter(0) + Asimmetry)/YAsimmetryFuncRect_[planeID]->GetParameter(1);
-//        float Xpp = data.getYPixelResidualLocal(planeID);
             THREADED(hYResidualsAsimmetry_[planeID])->Fill(Xm - Xp);
             THREADED(hYResidualsAsimmetryLE2_[planeID])->Fill(XmLE2 - Xp);
         }
@@ -939,7 +780,6 @@ void TracksAfter::calculateYResiduals (const Data &data, int planeID, int thread
     else if (data.getClusterSize(planeID) == 1)
     {
         float Xm = (data.getRowPredicted(planeID) + 0.5)*data.getYPitchLocal(planeID);
-//        float Xp = data.getXPixelResidualLocal(planeID);
         float Xp = 0;
         if(data.getYPixelResidualLocal( planeID ) > 0)
             Xp = -data.getYPitchLocal( planeID )/2 + data.getYPixelResidualLocal( planeID );
@@ -952,7 +792,6 @@ void TracksAfter::calculateYResiduals (const Data &data, int planeID, int thread
     else return;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::profileChi2Par (double *par, int parNumber, double liminf, double limsup)
 {
     std::stringstream ss;
@@ -970,12 +809,9 @@ void TracksAfter::profileChi2Par (double *par, int parNumber, double liminf, dou
     par[parNumber] = parTemp;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::computeEtaDerivative (int planeID)
 {
     double etaD, eta, pos;
-//    double error, Neta, Npos;
-//    int posHisto = 0;
 
     for (int i = 0; i < hXEtaDistribution_[planeID]->GetXaxis()->GetNbins()+1; ++i)
     {
@@ -1015,33 +851,14 @@ void TracksAfter::computeEtaDerivative (int planeID)
         pos = calculateInHisto(eta, hYAsimmetryInv_[planeID]);
         computedEtaDerivativeYDataSize2Inv_[planeID]->Fill(pos, etaD);
         computedEtaDerivativeYDataSize2InvNorm_[planeID]->Fill(pos);
-/*        Neta = calculateInHisto(eta, hYEtaDistribution_[planeID]);
-        posHisto = projYSize2[planeID]->FindBin(pos);
-        Npos = projYSize2[planeID]->GetBinContent(posHisto);
-        error = etaD*etaD*sqrt((1/Neta) + (1/Npos));
-        computedEtaDerivativeYDataSize2Inv_[planeID]->SetBinError(error); */
     }
-
-/*    for (int i = 0; i < computedEtaDerivativeYDataSize2Inv_[planeID]->GetXaxis()->GetNbins()+1; ++i)
-    {
-        Neta = calculateInHisto(eta, hXEtaDistribution_[planeID]);
-        posHisto = projXSize2[planeID]->FindBin(pos);
-        Npos = projXSize2[planeID]->GetBinContent(posHisto);
-        error = etaD*etaD*sqrt((1/Neta) + (1/Npos));
-        computedEtaDerivativeXDataSize2Inv_[planeID]->SetBinError(i, error);
-    } */
-
+    
     computedEtaDerivativeXDataSize2Inv_[planeID]->Divide(computedEtaDerivativeXDataSize2InvNorm_[planeID]);
     computedEtaDerivativeYDataSize2Inv_[planeID]->Divide(computedEtaDerivativeYDataSize2InvNorm_[planeID]);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::analyze(const Data& data, int threadNumber)//WARNING: You can't change this name (threadNumber) or the MACRO THREAD won't compile
 {
-//    bool cellTracksYCut = true;
-//    if(cutsFormulas_.find("cell Tracks Y") != cutsFormulas_.end())
-//        cellTracksYCut = cutsFormulas_["cell Tracks Y"][threadNumber]->EvalInstance();
-
     for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
     {
         if(!passStandardCuts(p,data))
@@ -1052,24 +869,15 @@ void TracksAfter::analyze(const Data& data, int threadNumber)//WARNING: You can'
             if(!passCalibrationsCut(p,data))
                 return;
         }
-
-//        unfold (p, data.getClusterCharge(p), data.getXPixelResidualLocal(p), data.getYPixelResidualLocal(p), threadNumber);
-
         calculateXResiduals(data, p, threadNumber);
         calculateYResiduals(data, p, threadNumber);
     }
 }
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::endJob(void)
 {
-//    std::stringstream ss;
-
     for(unsigned int i=0; i<thePlaneMapping_->getNumberOfPlanes(); i++)
     {
-//        std::string planeName = thePlaneMapping_->getPlaneName(i);
-
         ADD_THREADED(XYReconstructed_[i]        );
         ADD_THREADED(XResidualsReconstructed_[i]);
         ADD_THREADED(YResidualsReconstructed_[i]);
@@ -1128,7 +936,6 @@ void TracksAfter::endJob(void)
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TracksAfter::preBook (void)
 {
 
@@ -1246,27 +1053,6 @@ void TracksAfter::preBook (void)
         computedEtaFuncYSizeLE2_.push_back(new TH1F(hName.c_str(), hTitle.c_str(), 1000, -pixelLengthY/2, pixelLengthY/2));
 
     }
-/*
-    for (unsigned int i=0; i<thePlaneMapping_->getNumberOfPlanes(); i++)
-    {
-        positionUnfolded(i);
-        fitEtaFunc(i, "Size2");
-    }
-
-    loadEtaFunc("Size2");
-
-    for (unsigned int i=0; i<thePlaneMapping_->getNumberOfPlanes(); i++)
-    {
-        fitEtaFunc(i, "SizeLE2");
-    }
-
-    loadEtaFunc("SizeLE2");
-
-    for (unsigned int i=0; i<thePlaneMapping_->getNumberOfPlanes(); i++)
-    {
-        fitEtaFunc(i, "SizeLE2Inv");
-    }
-*/
 }
 
 void TracksAfter::book(void)
@@ -1382,21 +1168,5 @@ void TracksAfter::book(void)
         hName = "computedDerivativeYDataSize2InvNorm_" + planeName;
         hTitle = "Number of events to normalize eta derivative from eta distribution, with unfitted eta function of size 2 inverted, coordinate y, " + planeName;
         computedEtaDerivativeYDataSize2InvNorm_.push_back(new TH1F (hName.c_str(), hTitle.c_str(), nBinsY*5, -pixelLengthY/2, pixelLengthY/2));
-
-//        computeEtaDerivative(p);
-
     }
-/*
-    double pars[7] = {500, 0.5, 70, 570, 0.002, 1, 0.0001};
-    double limsInf[7] = {100, 0.05, 10, 510, 0.0005, 0.1, 0.00005};
-    double limsSup[7] = {900, 2, 100, 600, 0.05, 10, 0.005};
-    std::stringstream sss;
-
-    for (int n = 0; n < 7; ++n)
-    {
-        sss.str("");
-        sss << n;
-        STDLINE("Tracing chi2 profile for parameter " + sss.str(), ACGreen);
-        profileChi2Par(pars, n, limsInf[n], limsSup[n]);
-    } */
 }

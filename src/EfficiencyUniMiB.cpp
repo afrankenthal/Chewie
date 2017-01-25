@@ -52,7 +52,7 @@
 
 
 // @@@ Hard coded parameters @@@
-#define ONLYdoubleHITS false // Process only clusters of size 2
+#define ONLYdoubleHITS true // Process only clusters of size 2
 #define firstColPitch 300
 #define lastColPitch  300
 #define firstRowPitch 100
@@ -178,7 +178,7 @@ void EfficiencyUniMiB::analyze(const Data& data, int threadNumber)
       // ######################################################
       if (ONLYdoubleHITS == true)
 	for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
-	  if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
+	  if ((thePlaneMapping_->getPlaneName(p).find("Telescope") != std::string::npos) && (data.getClusterSize(p) != 2)) return;
 	  
 	  
       planeEfficiency (passMainCut           ,p,data,threadNumber);

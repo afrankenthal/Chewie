@@ -546,7 +546,7 @@ void ResolutionUniMiB::analyze(const Data& data, int threadNumber)
       // ######################################################
       if (ONLYdoubleHITS == true)
 	for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
-	  if ((p > 7) && (p < 16) && (data.getClusterSize(p) != 2)) return;
+	  if ((thePlaneMapping_->getPlaneName(p).find("Telescope") != std::string::npos) && (data.getClusterSize(p) != 2)) return;
 	
 	
       calculateXresiduals (xResolutionCut,p,data,threadNumber);

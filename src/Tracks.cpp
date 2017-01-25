@@ -206,63 +206,23 @@ void Tracks::setCutsFormula(std::map<std::string, std::string>, std::vector<TTre
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Tracks::passStandardCuts(int  , const Data& data)
+bool Tracks::passStandardCuts(int , const Data& data)
 {
-    STDLINE("=======================================================================",ACCyan) ;
-    XmlParser* theParser = theAnalysisManager_->getXmlParser();
-    if(!theParser->getAnalysesFromString("Charge")->applyStandardCuts())
-        return true;
-
-    int minHits = atoi(theParser->getAnalysesFromString("Charge")->getMinHits().c_str());//To calculate efficiency on the telescope
-
-    int hitsontelescope = 0;
-//    bool HitsClusterLE2 = true;
-    for (unsigned int i = 0; i < 8; i++) {
-        if (data.getHasHit(i) == true && thePlaneMapping_->getPlaneName(i).find("Dut") == std::string::npos) hitsontelescope++;
-        if (data.getClusterSize(i) > 2) {
-//            HitsClusterLE2 = false;
-        }
-    }
-
-    if(data.getNumberOfTelescopeHits() >= minHits)
-        return true;
-    else
-        return false;
-/*
-    XmlParser* theParser = theAnalysisManager_->getXmlParser();
-
-    if(!theParser->getAnalyses()["Tracks"]->applyStandardCuts())
-        return true;
-
-    unsigned int  minHits = atoi(theParser->getAnalyses()["Tracks"]->getMinHits().c_str());
-    unsigned int  hits    = 0;
-
-    for(unsigned int pp=0; pp<thePlaneMapping_->getNumberOfPlanes(); pp++)
-    {
-        if(data.getHasHit(pp) && thePlaneMapping_->getPlaneName(pp).find("Telescope") != std::string::npos && data.getClusterSize(pp)<=2)
-        {
-            if(data.getClusterSize(pp)==1)
-                hits++;
-            if(data.getClusterSize(pp)==2)
-            {
-                if(data.getClusterPixelCol(0,pp)==data.getClusterPixelCol(1,pp) || data.getClusterPixelRow(0,pp)==data.getClusterPixelRow(1,pp))
-                    hits++;
-            }
-        }
-    }
-
-    if(hits>=minHits)
-        return true;
-    else
-        return false;
-*/
+  STDLINE("=======================================================================",ACCyan);
+  XmlParser* theXmlParser_ = theAnalysisManager_->getXmlParser();
+  if (!theXmlParser_->getAnalysesFromString("Charge")->applyStandardCuts()) return true;
+  
+  int minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
+  
+  if (data.getNumberOfTelescopeHits() >= minHits) return true;
+  else                                            return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Tracks::beginJob(void)
 {
-    STDLINE("=======================================================================",ACCyan) ;
-    book();
+  STDLINE("=======================================================================",ACCyan) ;
+  book();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -270,9 +230,6 @@ void Tracks::PositionUnfolded_prepare   (int planeID, const Data &data, int thre
 {
     STDLINE("=======================================================================",ACCyan) ;
     if (!data.getHasHit(planeID)) return;
-
-//    float pixelLengthX = 150;
-//    float pixelLengthY = 100;
 
     int size = data.getClusterSize(planeID);
     if (size > 2) return;
