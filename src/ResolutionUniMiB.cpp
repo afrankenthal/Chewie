@@ -536,24 +536,25 @@ void ResolutionUniMiB::analyze(const Data& data, int threadNumber)
     yResolutionCut = cutsFormulas_["Y resolution"][threadNumber]->EvalInstance();
 
 
+  // ######################################################
+  // # Require all telescope planes with cluster size = 2 #
+  // ######################################################
+  if (ONLYdoubleHITS == true)
+    for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+      if ((thePlaneMapping_->getPlaneName(p).find("Dut")   == std::string::npos) && 
+	  (thePlaneMapping_->getPlaneName(p).find("Strip") == std::string::npos) &&
+	  (data.getClusterSize(p) != 2)) return;
+
+
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       if (!passStandardCuts(p,data)) continue;
-	
-	
-      // ######################################################
-      // # Require all telescope planes with cluster size = 2 #
-      // ######################################################
-      if (ONLYdoubleHITS == true)
-	for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
-	  if ((thePlaneMapping_->getPlaneName(p).find("Telescope") != std::string::npos) && (data.getClusterSize(p) != 2)) return;
-	
 	
       calculateXresiduals (xResolutionCut,p,data,threadNumber);
       calculateYresiduals (yResolutionCut,p,data,threadNumber);
       xResolution         (xResolutionCut,p,data,threadNumber);
       yResolution         (yResolutionCut,p,data,threadNumber);
-
+      
       if (thePlaneMapping_->getPlaneName(p).find("Dut") != std::string::npos)
 	predictedErrors(errorsCut,p,data,threadNumber);
     }

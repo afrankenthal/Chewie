@@ -892,6 +892,17 @@ void ChargeUniMiB::analyze(const Data& data, int threadNumber)
   if(cutsFormulas_.find("cell charge Y") != cutsFormulas_.end())
     cellChargeYCut = cutsFormulas_["cell charge Y"][threadNumber]->EvalInstance();
     
+
+  // ######################################################
+  // # Require all telescope planes with cluster size = 2 #
+  // ######################################################
+  if (ONLYdoubleHITS == true)
+    for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+      if ((thePlaneMapping_->getPlaneName(p).find("Dut")   == std::string::npos) && 
+	  (thePlaneMapping_->getPlaneName(p).find("Strip") == std::string::npos) &&
+	  (data.getClusterSize(p) != 2)) return;
+
+
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       if (!passStandardCuts(p,data)) continue;
@@ -901,15 +912,6 @@ void ChargeUniMiB::analyze(const Data& data, int threadNumber)
 	  std::cout << __PRETTY_FUNCTION__ << "Calibration check not passed" << std::endl;
 	  return;
 	}
-
-
-      // ######################################################
-      // # Require all telescope planes with cluster size = 2 #
-      // ######################################################
-      if (ONLYdoubleHITS == true)
-	for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
-	  if ((thePlaneMapping_->getPlaneName(p).find("Telescope") != std::string::npos) && (data.getClusterSize(p) != 2)) return;
-
 
       clusterLandau   (clusterLandauCut,p,data,threadNumber);
       cellLandau      (cellLandauCut,   p,data,threadNumber);

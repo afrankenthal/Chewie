@@ -168,18 +168,19 @@ void EfficiencyUniMiB::analyze(const Data& data, int threadNumber)
     passYCellEfficiencyCut = cutsFormulas_["cell efficiency Y"][threadNumber]->EvalInstance();
 
 
+  // ######################################################
+  // # Require all telescope planes with cluster size = 2 #
+  // ######################################################
+  if (ONLYdoubleHITS == true)
+    for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
+      if ((thePlaneMapping_->getPlaneName(p).find("Dut")   == std::string::npos) && 
+	  (thePlaneMapping_->getPlaneName(p).find("Strip") == std::string::npos) &&
+	  (data.getClusterSize(p) != 2)) return;
+
+
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       if (!passStandardCuts(p,data)) continue;
-	  
-	  
-      // ######################################################
-      // # Require all telescope planes with cluster size = 2 #
-      // ######################################################
-      if (ONLYdoubleHITS == true)
-	for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
-	  if ((thePlaneMapping_->getPlaneName(p).find("Telescope") != std::string::npos) && (data.getClusterSize(p) != 2)) return;
-	  
 	  
       planeEfficiency (passMainCut           ,p,data,threadNumber);
       cellEfficiency  (passCellEfficiencyCut ,p,data,threadNumber);
