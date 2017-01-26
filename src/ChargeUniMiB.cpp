@@ -1357,4 +1357,3 @@ void ChargeUniMiB::book(void)
       h2DYcellChargeAsimmetryInv_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), nBinsCell, -1.1, 1.1, (int)yPitch, -(yPitch/2), yPitch/2)));
     }
 }
-
