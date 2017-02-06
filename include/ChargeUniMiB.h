@@ -101,7 +101,11 @@ class ChargeUniMiB : public Analysis
   std::vector<TH1F*>    hClusterSize_;
   std::vector<TH1F*>    hCellLandau_;
   std::vector<TH1F*>    hCellLandauOdd_;
+  std::vector<TH1F*>    hCellLandauOddLeft_;
+  std::vector<TH1F*>    hCellLandauOddRight_;
   std::vector<TH1F*>    hCellLandauEven_;
+  std::vector<TH1F*>    hCellLandauEvenLeft_;
+  std::vector<TH1F*>    hCellLandauEvenRight_;
 
   std::vector<TH1F*>    hLandauClusterSize1_;
   std::vector<TH1F*>    hLandauClusterSize2_;
