@@ -455,8 +455,8 @@ void EfficiencyUniMiB::book(void)
       lowerRow  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerRow ()).c_str());
       higherRow = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherRow()).c_str());
 
-      nBinsX = abs(lowerCol - higherCol);
-      nBinsY = abs(lowerRow - higherRow);
+      nBinsX = abs(lowerCol - higherCol) + 1;
+      nBinsY = abs(lowerRow - higherRow) + 1;
 
       if (nBinsY <= 0) nBinsY = 1; // Planes which are not in the geometry file have lowerRow = higherRow = 0,
                                    // this produces an unexpected warning
@@ -554,20 +554,20 @@ void EfficiencyUniMiB::book(void)
       // #################
       hName  = "2DEfficiency_"                                          + planeName;
       hTitle = "2D efficiency distribution "                            + planeName;
-      h2DEfficiency_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol,nBinsY,lowerRow,higherRow)));
+      h2DEfficiency_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
 
       hName  = "2DEfficiencyNorm_"                                      + planeName;
       hTitle = "2D efficiency normalization "                           + planeName;
-      h2DEfficiencyNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol,nBinsY,lowerRow,higherRow)));
+      h2DEfficiencyNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
 
 
       hName  = "2DEfficiencyRef_"                                       + planeName;
       hTitle = "2D efficiency distribution ref. "                       + planeName;
-      h2DEfficiencyRef_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol,nBinsY,lowerRow,higherRow)));
+      h2DEfficiencyRef_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
 
       hName  = "2DEfficiencyRefNorm_"                                   + planeName;
       hTitle = "2D efficiency ref. normalization "                      + planeName;
-      h2DEfficiencyRefNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol,nBinsY,lowerRow,higherRow)));
+      h2DEfficiencyRefNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
 
 
 
@@ -999,8 +999,6 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
       std::string clusterPosition = "none";
       for (int h = 0; h < clusterSize; h++)
 	{
-	  if (!data.getIsPixelCalibrated(h,planeID)) return;
-	  
 	  if ((data.getClusterPixelRow(h,planeID) >= firstRow) && (data.getClusterPixelRow(h,planeID) <= lastRow))
 	    {
 	      if      (data.getClusterPixelCol(h,planeID) == firstCol) clusterPosition = "first";
@@ -1074,8 +1072,6 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
       std::string clusterPosition = "none";
       for (int h = 0; h < clusterSize; h++)
 	{
-	  if (!data.getIsPixelCalibrated(h,planeID)) return;
-	  
 	  if ((data.getClusterPixelCol(h,planeID) >= firstCol) && (data.getClusterPixelCol(h,planeID) <= lastCol))
 	    {
 	      if      (data.getClusterPixelRow(h,planeID) == firstRow) clusterPosition = "first";

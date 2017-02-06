@@ -92,7 +92,11 @@ void ChargeUniMiB::destroy()
 
   for(it1=hCellLandau_                   .begin(); it1!=hCellLandau_                   .end(); it1++) delete *it1; hCellLandau_                  .clear();
   for(it1=hCellLandauOdd_                .begin(); it1!=hCellLandauOdd_                .end(); it1++) delete *it1; hCellLandauOdd_               .clear();
+  for(it1=hCellLandauOddLeft_            .begin(); it1!=hCellLandauOddLeft_            .end(); it1++) delete *it1; hCellLandauOddLeft_           .clear();
+  for(it1=hCellLandauOddRight_           .begin(); it1!=hCellLandauOddRight_           .end(); it1++) delete *it1; hCellLandauOddRight_          .clear();
   for(it1=hCellLandauEven_               .begin(); it1!=hCellLandauEven_               .end(); it1++) delete *it1; hCellLandauEven_              .clear();
+  for(it1=hCellLandauEvenLeft_           .begin(); it1!=hCellLandauEvenLeft_           .end(); it1++) delete *it1; hCellLandauEvenLeft_          .clear();
+  for(it1=hCellLandauEvenRight_          .begin(); it1!=hCellLandauEvenRight_          .end(); it1++) delete *it1; hCellLandauEvenRight_         .clear();
   for(it1=hClusterSize_                  .begin(); it1!=hClusterSize_                  .end(); it1++) delete *it1; hClusterSize_                 .clear();
 
   for(it1=hLandauClusterSize1_           .begin(); it1!=hLandauClusterSize1_           .end(); it1++) delete *it1; hLandauClusterSize1_          .clear();
@@ -295,8 +299,20 @@ void ChargeUniMiB::cellLandau(bool pass, int planeID, const Data& data, int thre
 
   THREADED(hCellLandau_[planeID])->Fill(data.getClusterCharge(planeID));
 
-  if (((int)colPredicted)%2 == 0) THREADED(hCellLandauEven_[planeID])->Fill(data.getClusterCharge(planeID));
-  else                            THREADED(hCellLandauOdd_[planeID])->Fill(data.getClusterCharge(planeID));
+  if (((int)colPredicted)%2 == 0)
+    {
+      THREADED(hCellLandauEven_[planeID])->Fill(data.getClusterCharge(planeID));
+
+      if (data.getXPixelResidualLocal(planeID) > 0) THREADED(hCellLandauEvenRight_[planeID])->Fill(data.getClusterCharge(planeID));
+      else                                          THREADED(hCellLandauEvenLeft_[planeID])->Fill(data.getClusterCharge(planeID));
+    }
+  else
+    {
+      THREADED(hCellLandauOdd_[planeID])->Fill(data.getClusterCharge(planeID));
+
+      if (data.getXPixelResidualLocal(planeID) > 0) THREADED(hCellLandauOddRight_[planeID])->Fill(data.getClusterCharge(planeID));
+      else                                          THREADED(hCellLandauOddLeft_[planeID])->Fill(data.getClusterCharge(planeID));
+    }
 }
 
 //=======================================================================
@@ -935,6 +951,7 @@ void ChargeUniMiB::analyze(const Data& data, int threadNumber)
 void ChargeUniMiB::endJob(void)
 {
   std::stringstream ss;
+  double charge;
 
   STDLINE("",ACWhite);
 
@@ -946,7 +963,11 @@ void ChargeUniMiB::endJob(void)
 
       ADD_THREADED(hCellLandau_                             [p]);
       ADD_THREADED(hCellLandauOdd_                          [p]);
+      ADD_THREADED(hCellLandauOddLeft_                      [p]);
+      ADD_THREADED(hCellLandauOddRight_                     [p]);
       ADD_THREADED(hCellLandauEven_                         [p]);
+      ADD_THREADED(hCellLandauEvenLeft_                     [p]);
+      ADD_THREADED(hCellLandauEvenRight_                    [p]);
       ADD_THREADED(hClusterSize_                            [p]);
 
       ADD_THREADED(hLandauClusterSize1_                     [p]);
@@ -1058,7 +1079,11 @@ void ChargeUniMiB::endJob(void)
       hClusterSize_              [p]->GetXaxis()->SetTitle("cluster size"      );
       hCellLandau_               [p]->GetXaxis()->SetTitle("charge (electrons)");
       hCellLandauOdd_            [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hCellLandauOddLeft_        [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hCellLandauOddRight_       [p]->GetXaxis()->SetTitle("charge (electrons)");
       hCellLandauEven_           [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hCellLandauEvenLeft_       [p]->GetXaxis()->SetTitle("charge (electrons)");
+      hCellLandauEvenRight_      [p]->GetXaxis()->SetTitle("charge (electrons)");
 
       hLandauClusterSize1_       [p]->GetXaxis()->SetTitle("charge (electrons)");
       hLandauClusterSize2_       [p]->GetXaxis()->SetTitle("charge (electrons)");
@@ -1163,6 +1188,17 @@ void ChargeUniMiB::endJob(void)
       STDLINE("fYAsimmetryFit",ACWhite);
       TF1* fYAsimmetryFit  = new TF1("fYAsimmetryFit","pol1",-ETAhalfRANGE,ETAhalfRANGE);
       if (h1DYcellChargeAsimmetryInv_[p]->GetEntries() != 0) h1DYcellChargeAsimmetryInv_[p]->Fit(fYAsimmetryFit,"R");
+
+
+      // ###############################
+      // # Print mean charge on screen #
+      // ###############################
+      charge = hCellLandau_[p]->GetMean();
+
+      ss.str("");
+      ss << "Detector: " << std::setw(27) << thePlaneMapping_->getPlaneName(p) << " Mean charge: " << std::setw(4) << charge;
+
+      STDLINE(ss.str(),ACLightPurple);
     }
 }
 
@@ -1214,9 +1250,25 @@ void ChargeUniMiB::book(void)
       hTitle = "Charge distribution for single hits in a fiducial window - odd columns " + planeName;
       hCellLandauOdd_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
+      hName  = "hCellLandauOddLeft_"                                                          + planeName;
+      hTitle = "Charge distribution for single hits in a fiducial window - odd-left columns " + planeName;
+      hCellLandauOddLeft_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
+
+      hName  = "hCellLandauOddRight_"                                                          + planeName;
+      hTitle = "Charge distribution for single hits in a fiducial window - odd-right columns " + planeName;
+      hCellLandauOddRight_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
+
       hName  = "hCellLandauEven_"                                                         + planeName;
       hTitle = "Charge distribution for single hits in a fiducial window - even columns " + planeName;
       hCellLandauEven_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
+
+      hName  = "hCellLandauEvenLeft_"                                                          + planeName;
+      hTitle = "Charge distribution for single hits in a fiducial window - even-left columns " + planeName;
+      hCellLandauEvenLeft_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
+
+      hName  = "hCellLandauEvenRight_"                                                          + planeName;
+      hTitle = "Charge distribution for single hits in a fiducial window - even-right columns " + planeName;
+      hCellLandauEvenRight_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
       hName  = "hLandauClusterSize1_"                                      + planeName;
       hTitle = "Charge distribution for clusters of size 1 "               + planeName;
