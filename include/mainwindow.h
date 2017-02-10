@@ -33,6 +33,7 @@
 #include <QMainWindow>
 #include <TApplication.h>
 #include <TCollection.h>
+#include <TSystem.h>
 #include <sstream>
 
 class HNavigator   ;
@@ -58,8 +59,16 @@ public:
     HNavigator   *  getHNavigator         (void                    ) {return theHNavigator_   ;}
     AnalyzerDlg  *  getAnalyzer           (void                    ) {return theAnalyzer_     ;}
     HanSoloFitter*  getHanSoloFitter      (void                    ) {return theHanSoloFitter_;}
+
+
 protected:
     void            closeEvent            (QCloseEvent  * event    );
+    QTimer          * fRootTimer_ ;
+
+
+public slots:
+    void            handle_root_events       (void                    );
+
 
 private slots:
     void            openAnalyzer             (void                    );
