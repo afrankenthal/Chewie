@@ -63,6 +63,13 @@ MainWindow::MainWindow() :
     connect(windowMapper_, SIGNAL(mapped(QWidget*)),
             this, SLOT(setActiveSubWindow(QWidget*)));
 
+    fRootTimer_ = new QTimer();
+    QObject::connect(fRootTimer_,
+		     SIGNAL(timeout()),
+		     this,
+		     SLOT(handle_root_events()));
+    fRootTimer_->start(20);
+    
     createActions  ();
     createMenus    ();
     createToolBars ();
@@ -319,6 +326,7 @@ void MainWindow::openAnalyzer()
         subWindow->show();
     }
 }
+
 //===========================================================================
 void MainWindow::openHNavigator()
 {
@@ -339,6 +347,7 @@ void MainWindow::openHNavigator()
         subWindow->show() ;
     }
 }
+
 //===========================================================================
 void MainWindow::openHanSoloFitter()
 {
@@ -351,4 +360,10 @@ void MainWindow::openHanSoloFitter()
         subWindow->setGeometry(100,0,theHanSoloFitter_->width()+8,theHanSoloFitter_->height()+40) ;
         subWindow->show() ;
     }
+}
+
+//===========================================================================
+void MainWindow::handle_root_events()
+{
+  gSystem->ProcessEvents();
 }
