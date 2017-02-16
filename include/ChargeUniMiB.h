@@ -74,10 +74,10 @@ class ChargeUniMiB : public Analysis
   void yLandau             (bool pass, int planeID, const Data& data, int threadNumber);
 
   void xChargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
-  void xAsimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
+  void xAsymmetry          (bool pass, int planeID, const Data& data, int threadNumber);
 
   void yChargeDivision     (bool pass, int planeID, const Data& data, int threadNumber);
-  void yAsimmetry          (bool pass, int planeID, const Data& data, int threadNumber);
+  void yAsymmetry          (bool pass, int planeID, const Data& data, int threadNumber);
 
   bool passCalibrationsCut (int  planeID, const Data& data);
   void setErrorsBar        (int  planeID);
@@ -146,15 +146,15 @@ class ChargeUniMiB : public Analysis
   std::vector<TH2F*>    h2DYcellChargeSecondHit_;
 
 
-  std::vector<TH2F*>    h2DXcellChargeAsimmetry_;
-  std::vector<TH1F*>    h1DXcellChargeAsimmetry_;
-  std::vector<TH2F*>    h2DXcellChargeAsimmetryInv_;
-  std::vector<TH1F*>    h1DXcellChargeAsimmetryInv_;
+  std::vector<TH2F*>    h2DXcellChargeAsymmetry_;
+  std::vector<TH1F*>    h1DXcellChargeAsymmetry_;
+  std::vector<TH2F*>    h2DXcellChargeAsymmetryInv_;
+  std::vector<TH1F*>    h1DXcellChargeAsymmetryInv_;
 
-  std::vector<TH2F*>    h2DYcellChargeAsimmetry_;
-  std::vector<TH1F*>    h1DYcellChargeAsimmetry_;
-  std::vector<TH2F*>    h2DYcellChargeAsimmetryInv_;
-  std::vector<TH1F*>    h1DYcellChargeAsimmetryInv_;
+  std::vector<TH2F*>    h2DYcellChargeAsymmetry_;
+  std::vector<TH1F*>    h1DYcellChargeAsymmetry_;
+  std::vector<TH2F*>    h2DYcellChargeAsymmetryInv_;
+  std::vector<TH1F*>    h1DYcellChargeAsymmetryInv_;
 };
 
 #endif

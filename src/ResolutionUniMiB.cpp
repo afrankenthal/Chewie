@@ -179,7 +179,7 @@ void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &d
   int   totalCharge =  0;
   int   chargeLeft  =  0;
   int   chargeRight =  0;
-  float asimmetry   =  0;
+  float asymmetry   =  0;
   float xMeasured;
 
 
@@ -231,20 +231,20 @@ void ResolutionUniMiB::calculateXresiduals(bool pass, int planeID, const Data &d
     }
 
   totalCharge = chargeLeft + chargeRight;
-  asimmetry   = (float)(chargeLeft - chargeRight) / totalCharge;
+  asymmetry   = (float)(chargeLeft - chargeRight) / totalCharge;
 
-  if (asimmetry >= -1. && asimmetry <= 1.)
+  if (asymmetry >= -1. && asymmetry <= 1.)
     {
-      toGet = "Charge/" + planeName +  "/XAsimmetry/h1DXcellChargeAsimmetryInv_" + planeName;
+      toGet = "Charge/" + planeName +  "/XAsymmetry/h1DXcellChargeAsymmetryInv_" + planeName;
 
       if ((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))
 	{
 	  // #########################
-	  // # Correct for asimmetry #
+	  // # Correct for asymmetry #
 	  // #########################
-	  if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit") != NULL)
+	  if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsymmetryFit") != NULL)
 	    {
-	      xMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit"))->Eval(asimmetry);
+	      xMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsymmetryFit"))->Eval(asymmetry);
 	      if (size == 2) THREADED(hXResidualCalculatedSize2_[planeID])->Fill(xMeasured - xPixelEdgeResidual);
 	    }
 	}
@@ -312,7 +312,7 @@ void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &d
   int   totalCharge =  0;
   int   chargeDown  =  0;
   int   chargeUp    =  0;
-  float asimmetry   =  0;
+  float asymmetry   =  0;
   float yMeasured;
 
 
@@ -364,20 +364,20 @@ void ResolutionUniMiB::calculateYresiduals(bool pass, int planeID, const Data &d
     }
 
   totalCharge = chargeDown + chargeUp;
-  asimmetry   = (float)(chargeDown - chargeUp)/totalCharge;
+  asymmetry   = (float)(chargeDown - chargeUp)/totalCharge;
 
-  if (asimmetry >= -1. && asimmetry <= 1.)
+  if (asymmetry >= -1. && asymmetry <= 1.)
     {
-      toGet = "Charge/" + planeName +  "/YAsimmetry/h1DYcellChargeAsimmetryInv_" + planeName;
+      toGet = "Charge/" + planeName +  "/YAsymmetry/h1DYcellChargeAsymmetryInv_" + planeName;
 	
       if ((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))
 	{
 	  // #########################
-	  // # Correct for asimmetry #
+	  // # Correct for asymmetry #
 	  // #########################
-	  if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit") != NULL)
+	  if ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsymmetryFit") != NULL)
 	    {
-	      yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit"))->Eval(asimmetry);
+	      yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsymmetryFit"))->Eval(asymmetry);
 	      if (size == 2) THREADED(hYResidualCalculatedSize2_[planeID])->Fill(yMeasured - yPixelEdgeResidual);
 	    }
 	}
@@ -733,7 +733,7 @@ void ResolutionUniMiB::book(void)
       hXResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), nBins, -halfWidth, halfWidth)));
 
       hName  = "hXResidualCalculatedSize2_"                                   + planeName;
-      hTitle = "X residuals calculated from asimmetry fit (Clusters Size 2) " + planeName;
+      hTitle = "X residuals calculated from asymmetry fit (Clusters Size 2) " + planeName;
       hXResidualCalculatedSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBins, -halfWidth, halfWidth)));
       
       hName  = "hXResidualsClusterSize2_"                   + planeName;
@@ -749,7 +749,7 @@ void ResolutionUniMiB::book(void)
       hYResiduals_.push_back(NEW_THREADED(TH1F(hName.c_str(),hTitle.c_str(), nBins, -halfWidth, halfWidth)));
 
       hName  = "hYResidualCalculatedSize2_"                                  + planeName;
-      hTitle = "Y residuals calculated from asimmetry fit (Cluster Size 2) " + planeName;
+      hTitle = "Y residuals calculated from asymmetry fit (Cluster Size 2) " + planeName;
       hYResidualCalculatedSize2_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBins, -halfWidth, halfWidth)));
 
       hName  = "hYResidualsClusterSize2_"                   + planeName;
