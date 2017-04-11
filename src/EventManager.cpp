@@ -325,17 +325,18 @@ bool EventManager::readEventsTree(std::string fileName)
     QString           tempTreeName;
 
     std::string treeName = fileName.substr(fileName.rfind("/")+1,fileName.size());
-    if (treeName.find("_") != std::string::npos)
-    {
-        QStringList treeNameList = QString(treeName.c_str()).split("_");
-                    tempTreeName = treeNameList.at(0) + "_" + treeNameList.at(1);
-    }
-    else
-                    tempTreeName = QString(treeName.c_str());
+//    if (treeName.find("_") != std::string::npos)
+//    {
+//        QStringList treeNameList = QString(treeName.c_str()).split("_");
+//                    tempTreeName = treeNameList.at(0) + "_" + treeNameList.at(1);
+//    }
+//    else
+    tempTreeName = QString(treeName.c_str());
     tempTreeName.remove(".root");
 
-    eventsTreeName   << tempTreeName.toStdString()<<".root" << "Events";
-    eventsHeaderName << tempTreeName.toStdString()<<".root" << "Header";
+    eventsTreeName   << tempTreeName.toStdString() << ".root" << "Events";
+//    std::cout << __PRETTY_FUNCTION__ << eventsTreeName.str() << std::endl;
+    eventsHeaderName << tempTreeName.toStdString( )<< ".root" << "Header";
 
     bool atLeastOneBranchFound = false ;
 
@@ -343,9 +344,9 @@ bool EventManager::readEventsTree(std::string fileName)
     {
         theEventsTree_    ->SetBranchAddress("EventBranch",    &theEvent_      );
         entriesList_[fileName] = theEventsTree_->GetEntries();
-        //ss.str("");
-        //ss << "Found " << entriesList_[fileName] << " events on file";
-        //STDLINE(ss.str(),ACGreen);
+        ss.str("");
+        ss << "Found " << entriesList_[fileName] << " events on file";
+        STDLINE(ss.str(),ACGreen);
 
         inputEventHeader_ = (TTree*)inFilesList_[fileName]->Get(eventsHeaderName.str().c_str()) ;
 

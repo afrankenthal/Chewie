@@ -188,10 +188,10 @@ void EfficiencyUniMiB::analyze(const Data& data, int threadNumber)
 	  
       planeEfficiency (passMainCut           ,p,data,threadNumber);
       cellEfficiency  (passCellEfficiencyCut ,p,data,threadNumber);
-      xCellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
-      yCellEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
-      xEdgeEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
-      yEdgeEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
+//      xCellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
+//      yCellEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
+//      xEdgeEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
+//      yEdgeEfficiency (passYCellEfficiencyCut,p,data,threadNumber);
     }
 }
 
@@ -848,7 +848,7 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
 	  else
 	    {
 	      isOk = false;
-	      for (int h = 0; h < data.getClusterSize(planeID); h++)
+          for (int h = 0; h < data.getClusterSize(planeID); h++)
 		{
 		  if (data.getClusterPixelRow(h,planeID) == rowPredicted)
 		    {
@@ -972,7 +972,7 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
   float xResLeft     = 0.;
   int   clusterSize  = data.getClusterSize(planeID);
 
-
+  //std::cout << clusterSize << std::endl;
   // #################################
   // # Check if tracks are in window #
   // #################################
@@ -998,7 +998,8 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
       // ###############################
       std::string clusterPosition = "none";
       for (int h = 0; h < clusterSize; h++)
-	{
+    {
+      std::cout << clusterSize << std::endl;
 	  if ((data.getClusterPixelRow(h,planeID) >= firstRow) && (data.getClusterPixelRow(h,planeID) <= lastRow))
 	    {
 	      if      (data.getClusterPixelCol(h,planeID) == firstCol) clusterPosition = "first";
