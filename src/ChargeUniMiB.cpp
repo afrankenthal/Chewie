@@ -1299,7 +1299,7 @@ void ChargeUniMiB::book(void)
       hLandauClusterSize2sameCol_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
       hName  = "hCellLandauSinglePixel_"                                   + planeName;
-      hTitle = "Charge distribution of all pixel charges "                 + planeName;
+      hTitle = "Charge distribution of the pointed pixel in the cluster "  + planeName;
       hCellLandauSinglePixel_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
 
