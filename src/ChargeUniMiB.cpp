@@ -325,6 +325,7 @@ void ChargeUniMiB::clusterLandau(bool pass, int planeID, const Data& data, int t
   // # Internal constant #
   // #####################
   int maxClusterSize = 4;
+  int pixelCell = -1;
 
 
   if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
@@ -348,13 +349,15 @@ void ChargeUniMiB::clusterLandau(bool pass, int planeID, const Data& data, int t
 	  ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // Charge is over threshold
 	  ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // Maximum allowed charge for this physics
       	return;
-      
-      THREADED(hCellLandauSinglePixel_[planeID])->Fill(data.getClusterPixelCharge(h, planeID));
+
+      if (data.getClusterPixelRow(h,planeID) == rowPredicted && data.getClusterPixelCol(h,planeID) == colPredicted) pixelCell = h;
     }
 
 
   if      (clusterSize == 1) THREADED(hLandauClusterSize1_[planeID])->Fill(data.getClusterCharge(planeID));
   else if (clusterSize == 2) THREADED(hLandauClusterSize2_[planeID])->Fill(data.getClusterCharge(planeID));
+
+  if      (pixelCell != -1)  THREADED(hCellLandauSinglePixel_[planeID])->Fill(data.getClusterPixelCharge(pixelCell, planeID));
 }
 
 //=======================================================================
