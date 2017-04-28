@@ -104,6 +104,8 @@ void ChargeUniMiB::destroy()
   for(it1=hLandauClusterSize2_           .begin(); it1!=hLandauClusterSize2_           .end(); it1++) delete *it1; hLandauClusterSize2_          .clear();
   for(it1=hLandauClusterSize2sameCol_    .begin(); it1!=hLandauClusterSize2sameCol_    .end(); it1++) delete *it1; hLandauClusterSize2sameCol_   .clear();
   for(it1=hLandauClusterSize2sameRow_    .begin(); it1!=hLandauClusterSize2sameRow_    .end(); it1++) delete *it1; hLandauClusterSize2sameRow_   .clear();
+  for(it1=hCellLandauSinglePixel_        .begin(); it1!=hCellLandauSinglePixel_        .end(); it1++) delete *it1; hCellLandauSinglePixel_       .clear();
+
 
   for(it1=h1DXcellCharge_                .begin(); it1!=h1DXcellCharge_                .end(); it1++) delete *it1; h1DXcellCharge_               .clear();
   for(it1=h1DXcellChargeNorm_            .begin(); it1!=h1DXcellChargeNorm_            .end(); it1++) delete *it1; h1DXcellChargeNorm_           .clear();
@@ -346,9 +348,11 @@ void ChargeUniMiB::clusterLandau(bool pass, int planeID, const Data& data, int t
 	  ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // Charge is over threshold
 	  ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // Maximum allowed charge for this physics
       	return;
+      
+      THREADED(hCellLandauSinglePixel_[planeID])->Fill(data.getClusterPixelCharge(h, planeID));
     }
-  
-  
+
+
   if      (clusterSize == 1) THREADED(hLandauClusterSize1_[planeID])->Fill(data.getClusterCharge(planeID));
   else if (clusterSize == 2) THREADED(hLandauClusterSize2_[planeID])->Fill(data.getClusterCharge(planeID));
 }
@@ -975,6 +979,8 @@ void ChargeUniMiB::endJob(void)
       ADD_THREADED(hLandauClusterSize2_                     [p]);
       ADD_THREADED(hLandauClusterSize2sameRow_              [p]);
       ADD_THREADED(hLandauClusterSize2sameCol_              [p]);
+      ADD_THREADED(hCellLandauSinglePixel_                  [p]);
+
 
       ADD_THREADED(h1DXcellCharge_                          [p]);
       ADD_THREADED(h1DXcellChargeNorm_                      [p]);
@@ -1090,6 +1096,8 @@ void ChargeUniMiB::endJob(void)
       hLandauClusterSize2_       [p]->GetXaxis()->SetTitle("charge (electrons)");
       hLandauClusterSize2sameRow_[p]->GetXaxis()->SetTitle("charge (electrons)");
       hLandauClusterSize2sameCol_[p]->GetXaxis()->SetTitle("charge (electrons)");
+      hCellLandauSinglePixel_    [p]->GetXaxis()->SetTitle("charge (electrons)");
+
 
       h2DClusterSize_            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
       h2DClusterSize_            [p]->GetYaxis()->SetTitle("short pitch (um)"  );
@@ -1286,6 +1294,10 @@ void ChargeUniMiB::book(void)
       hName  = "hLandauClusterSize2sameCol_"                               + planeName;
       hTitle = "Charge distribution for clusters of size 2 on same col "   + planeName;
       hLandauClusterSize2sameCol_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
+
+      hName  = "hCellLandauSinglePixel_"                                   + planeName;
+      hTitle = "Charge distribution of all pixel charges "                 + planeName;
+      hCellLandauSinglePixel_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
 
       theAnalysisManager_->cd("Charge/" + planeName);

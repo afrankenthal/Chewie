@@ -111,6 +111,7 @@ class ChargeUniMiB : public Analysis
   std::vector<TH1F*>    hLandauClusterSize2_;
   std::vector<TH1F*>    hLandauClusterSize2sameCol_;
   std::vector<TH1F*>    hLandauClusterSize2sameRow_;
+  std::vector<TH1F*>    hCellLandauSinglePixel_;
 
   std::vector<TH1F*>    h1DXcellCharge_;
   std::vector<TH1F*>    h1DXcellChargeNorm_;
