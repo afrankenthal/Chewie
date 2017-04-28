@@ -185,7 +185,7 @@ void EfficiencyUniMiB::analyze(const Data& data, int threadNumber)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       if (!passStandardCuts(p,data)) continue;
-      
+
       planeEfficiency (passMainCut           ,p,data,threadNumber);
       cellEfficiency  (passCellEfficiencyCut ,p,data,threadNumber);
       xCellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);
@@ -961,9 +961,10 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
   int lastRow  = 78;
   int firstCol =  0;
   int lastCol  = 51;
+  int maxClusterSize = 4;
 
 
-  if (!pass) return;
+  if ((!pass) || (data.getClusterSize(planeID) > maxClusterSize)) return;
 
   int   rowPredicted = data.getRowPredicted(planeID);
   float maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
@@ -1034,9 +1035,10 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
   int lastRow  = 79;
   int firstCol =  1;
   int lastCol  = 50;
+  int maxClusterSize = 4;
 
 
-  if (!pass) return;
+  if ((!pass) || (data.getClusterSize(planeID) > maxClusterSize)) return;
 
   int   colPredicted = data.getColPredicted(planeID);
   float maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
