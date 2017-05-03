@@ -7,6 +7,7 @@
 
 #include <TApplication.h>
 #include <TROOT.h>
+#include <TSystem.h>
 
 #include <QDomDocument>
 #include <QFile>
@@ -20,6 +21,8 @@
 
 
 using namespace std;
+
+std::string filesPath;
 
 
 class XmlDefaults;
@@ -52,14 +55,14 @@ class XmlDefaults
 public:
   XmlDefaults (QDomNode& node);
   ~XmlDefaults(void) {;}
-
+  
   QDomNode&   getNode(void) {return thisNode_;}
-
+  
   std::string filesPath_;
   bool        convert_;
   bool        runAnalysis_;
   int         numberOfEvents_;     
-
+  
 private:
   QDomNode    thisNode_;
 };
@@ -69,9 +72,9 @@ class XmlFiles
 public:
   XmlFiles (QDomNode& node);
   ~XmlFiles(void) {;}
-
+  
   QDomNode& getNode(void) {return thisNode_;}
-
+  
   vector<XmlFile*> fileNames_;
   std::string configurationName_;
   std::string outFileName_;
@@ -85,9 +88,9 @@ class XmlFile
 public:
   XmlFile (QDomNode& node);
   ~XmlFile(void) {;}
-
+  
   QDomNode& getNode(void) {return thisNode_;}
-
+  
   std::string fileName_;
   
 private:
@@ -102,7 +105,7 @@ int main (int argc, char** argv)
   gROOT->SetBatch(true);
   TApplication tApp("App",&argc,argv);
   STDLINE("=== Using a TApplication only ===" ,ACRed);
-
+  
   ExpressXmlParser theExpressXmlParser;
   
   std::string configFileName = "./xml/ExpressConfiguration.xml";
@@ -121,7 +124,7 @@ int main (int argc, char** argv)
   theExpressXmlParser.parseDocument(configFileName.c_str());
   
   XmlParser* theChewieXmlParser = new XmlParser();    
-  const string filesPath 	= theExpressXmlParser.getDefaults()->filesPath_     ;
+  filesPath 	                = theExpressXmlParser.getDefaults()->filesPath_     ;
   bool   convert         	= theExpressXmlParser.getDefaults()->convert_	    ;
   bool   runAnalysis     	= theExpressXmlParser.getDefaults()->runAnalysis_   ;
   int    numberOfEvents  	= theExpressXmlParser.getDefaults()->numberOfEvents_;
@@ -143,7 +146,7 @@ int main (int argc, char** argv)
       theEventManager   ->setConfiguration(theChewieXmlParser);
       theAnalysisManager->setConfiguration(theChewieXmlParser);
       
-      //Setting the number of events
+      // Setting the number of events
       if(numberOfEvents != -1)
 	{
 	  QDomAttr maxEvents = theChewieXmlParser->getDocument()->createAttribute("maxEvents");
@@ -155,7 +158,7 @@ int main (int argc, char** argv)
 	}
       
       //////////////////////////////////////////
-      //Open Monicelli File
+      // Open Monicelli File
       std::vector<std::string> monicelliFileList;
       std::vector<std::string> convertedFileList;
       QStringList convertedFileNames;
@@ -206,10 +209,10 @@ ExpressXmlParser::~ExpressXmlParser()
 void ExpressXmlParser::parseDocument(std::string xmlFileName)
 {
   if (document_) delete document_;
-  
+
   document_ = new QDomDocument( "ConfigurationFile" );
   QFile xmlFile(xmlFileName.c_str());
-  if (!xmlFile.open(QIODevice::ReadOnly | QIODevice::Text ))
+  if (!xmlFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
       STDLINE(std::string("Could not open ") + xmlFile.fileName().toStdString(),ACRed);
       return;
@@ -235,6 +238,8 @@ void ExpressXmlParser::parseDocument(std::string xmlFileName)
   theDefaults_ = new XmlDefaults(defaults);
 
   QDomNodeList filesList = document_->elementsByTagName("Files");
+
+  filesPath = getDefaults()->filesPath_;
 
   for (int fs = 0; fs < filesList.size(); ++fs)
     {
@@ -270,12 +275,24 @@ XmlFiles::XmlFiles(QDomNode& node)
 
   QDomNodeList fileList = node.childNodes();
 
+  Long_t *id    = NULL;
+  Long_t *size  = NULL;
+  Long_t *flags = NULL;
+  Long_t *mt    = NULL;
+
   for (int f = 0; f < fileList.size(); ++f)
     {
       QDomNode fileNode = fileList.at(f);
 
       if (!fileNode.isComment())
-        fileNames_.push_back(new XmlFile(fileNode));
+	{
+	  string tmpStr = filesPath + fileNode.toElement().attribute("Name").toStdString();
+
+	  if (gSystem->GetPathInfo(tmpStr.c_str(),id,size,flags,mt) == 0)
+	    fileNames_.push_back(new XmlFile(fileNode));
+	  else
+	    STDLINE(string("WARNING: file ") + tmpStr + string(" not found"),ACRed);
+	}
     }
 }
 
