@@ -69,6 +69,7 @@ class ChargeUniMiB : public Analysis
   void clusterSize         (int planeID, const Data& data, int threadNumber);
   void cellLandau          (bool pass, int planeID, const Data& data, int threadNumber);
   void clusterLandau       (bool pass, int planeID, const Data& data, int threadNumber);
+  void planeCharge         (bool pass, int planeID, const Data& data, int threadNumber);
   void cellCharge          (bool pass, int planeID, const Data& data, int threadNumber);
   void xLandau             (bool pass, int planeID, const Data& data, int threadNumber);
   void yLandau             (bool pass, int planeID, const Data& data, int threadNumber);
@@ -124,6 +125,10 @@ class ChargeUniMiB : public Analysis
   
   std::vector<TH1F*>    h1DYcellChargeSecondHit_;
   std::vector<TH1F*>    h1DYcellChargeSecondHitNorm_;
+
+
+  std::vector<TH2F*>    h2DCharge_;
+  std::vector<TH2F*>    h2DChargeNorm_;
 
 
   std::vector<TH2F*>    h2DCellCharge_;

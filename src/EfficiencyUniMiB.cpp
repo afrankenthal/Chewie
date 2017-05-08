@@ -137,9 +137,9 @@ void EfficiencyUniMiB::destroy(void)
 void EfficiencyUniMiB::beginJob(void)
 {
   theWindowsManager_ = theAnalysisManager_->getWindowsManager();
-  
+
   if (theXmlParser_->getScan()->getScanValues().size() == 0) book();
-  else                                                       
+  else
     {
       STDLINE("Unknown option: scan values",ACRed);
       exit(EXIT_FAILURE);
@@ -446,6 +446,9 @@ void EfficiencyUniMiB::book(void)
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
       planeName = thePlaneMapping_->getPlaneName(p);
+      theAnalysisManager_->cd("Efficiency");
+      theAnalysisManager_->mkdir(planeName);
+
 
       xPitch    = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
       yPitch    = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
@@ -455,14 +458,15 @@ void EfficiencyUniMiB::book(void)
       lowerRow  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerRow ()).c_str());
       higherRow = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherRow()).c_str());
 
-      nBinsX = abs(lowerCol - higherCol) + 1;
-      nBinsY = abs(lowerRow - higherRow) + 1;
+      nBinsX    = abs(lowerCol - higherCol) + 1;
+      nBinsY    = abs(lowerRow - higherRow) + 1;
 
       if (nBinsY <= 0) nBinsY = 1; // Planes which are not in the geometry file have lowerRow = higherRow = 0,
                                    // this produces an unexpected warning
 
-      theAnalysisManager_->cd("Efficiency");
-      theAnalysisManager_->mkdir(planeName);
+
+
+
       theAnalysisManager_->mkdir("Efficiency");
 
 

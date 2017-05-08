@@ -30,9 +30,12 @@
 #ifndef XMLPARSER_H
 #define XMLPARSER_H
 
+#include "XmlPlane.h"
+
 #include <sstream>
 #include <map>
 #include <string>
+
 #include <QDomNode>
 #include <QString>
 

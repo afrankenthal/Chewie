@@ -122,6 +122,9 @@ void ChargeUniMiB::destroy()
 
   for(it2=h2DClusterSize_                .begin(); it2!=h2DClusterSize_                .end(); it2++) delete *it2; h2DClusterSize_               .clear();
 
+  for(it2=h2DCharge_                     .begin(); it2!=h2DCharge_                     .end(); it2++) delete *it2; h2DCharge_                    .clear();
+  for(it2=h2DChargeNorm_                 .begin(); it2!=h2DChargeNorm_                 .end(); it2++) delete *it2; h2DChargeNorm_                .clear();
+
   for(it2=h2DCellCharge_                 .begin(); it2!=h2DCellCharge_                 .end(); it2++) delete *it2; h2DCellCharge_                .clear();
   for(it2=h2DCellChargeNorm_             .begin(); it2!=h2DCellChargeNorm_             .end(); it2++) delete *it2; h2DCellChargeNorm_            .clear();
 
@@ -358,6 +361,55 @@ void ChargeUniMiB::clusterLandau(bool pass, int planeID, const Data& data, int t
   else if (clusterSize == 2) THREADED(hLandauClusterSize2_[planeID])->Fill(data.getClusterCharge(planeID));
 
   if      (pixelCell != -1)  THREADED(hCellLandauSinglePixel_[planeID])->Fill(data.getClusterPixelCharge(pixelCell, planeID));
+}
+
+//=======================================================================
+void ChargeUniMiB::planeCharge(bool pass, int planeID, const Data& data, int threadNumber)
+{
+  // #####################
+  // # Internal constant #
+  // #####################
+  int maxClusterSize = 4;
+  bool foundCluster = false;
+
+
+  if (!pass || !data.getIsInDetector(planeID) || !data.getHasHit(planeID) || data.getClusterSize(planeID) > maxClusterSize) return;
+  int clusterSize = data.getClusterSize(planeID);
+
+
+  // #########################################
+  // # Check if track and hits are in window #
+  // #########################################
+  const Window* theWindow    = theWindowsManager_->getWindow(planeID);
+  int           rowPredicted = data.getRowPredicted(planeID);
+  int           colPredicted = data.getColPredicted(planeID);
+  int           run          = data.getRunNumber();
+
+  if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
+
+  for (int h = 0; h < clusterSize; h++)
+    {
+      if (!theWindow->checkWindow(data.getClusterPixelCol(h,planeID),data.getClusterPixelRow(h,planeID),run) // Hits are in the window
+	  || !data.getIsPixelCalibrated  (h,planeID)                                                         // Pixels are calibrated
+	  ||  data.getClusterPixelCharge (h,planeID) < standardCutsPixelMinimumCharge_                       // Charge is over threshold
+	  ||  data.getClusterPixelCharge (h,planeID) > standardCutsPixelMaximumCharge_)                      // Maximum allowed charge for this physics
+	return;
+
+      if ((data.getClusterPixelRow(h,planeID) == rowPredicted) &&
+	  (data.getClusterPixelCol(h,planeID) == colPredicted))
+	foundCluster = true;
+    }
+  if (foundCluster == false) return;
+
+
+  // #########################################################################
+  // # Compute efficiency only for cells that are surrounded by "good" cells #
+  // #########################################################################
+  if (theWindow->checkWindowAbout(colPredicted,rowPredicted,run,thePlaneMapping_->getPlaneType(planeID)))
+    {
+      THREADED(h2DChargeNorm_[planeID])->Fill(colPredicted,rowPredicted);
+      if (data.getHasHit(planeID)) THREADED(h2DCharge_[planeID])->Fill(colPredicted,rowPredicted);
+    }
 }
 
 //=======================================================================
@@ -885,7 +937,7 @@ void ChargeUniMiB::beginJob(void)
   
   theWindowsManager_      = theAnalysisManager_->getWindowsManager();
   theCalibrationsManager_ = theAnalysisManager_->getCalibrationsManager();
-  
+
   book();
 }
 
@@ -999,6 +1051,10 @@ void ChargeUniMiB::endJob(void)
 
 
       ADD_THREADED(h2DClusterSize_                          [p]);
+
+      ADD_THREADED(h2DCharge_              	            [p]);
+      ADD_THREADED(h2DChargeNorm_          	            [p]);
+
       ADD_THREADED(h2DCellCharge_                           [p]);
       ADD_THREADED(h2DCellChargeNorm_                       [p]);
 
@@ -1036,6 +1092,7 @@ void ChargeUniMiB::endJob(void)
       h1DYcellChargeSecondHit_      [p]->Divide(h1DYcellChargeSecondHitNorm_ [p]);
 
       h2DCellCharge_                [p]->Divide(h2DCellChargeNorm_           [p]);
+      h2DCharge_                    [p]->Divide(h2DChargeNorm_               [p]);
       h2DCellChargeOdd_             [p]->Divide(h2DCellChargeOddNorm_        [p]);
       h2DCellChargeEven_            [p]->Divide(h2DCellChargeEvenNorm_       [p]);
       h2DClusterSize_               [p]->Divide(h2DCellChargeNorm_           [p]);
@@ -1104,6 +1161,13 @@ void ChargeUniMiB::endJob(void)
 
       h2DClusterSize_            [p]->GetXaxis()->SetTitle("long pitch (um)"   );
       h2DClusterSize_            [p]->GetYaxis()->SetTitle("short pitch (um)"  );
+
+
+      h2DCharge_                 [p]->GetXaxis()->SetTitle("column");
+      h2DCharge_                 [p]->GetYaxis()->SetTitle("row"   );
+
+      h2DChargeNorm_             [p]->GetXaxis()->SetTitle("column");
+      h2DChargeNorm_             [p]->GetYaxis()->SetTitle("row"   );
 
 
       h2DCellCharge_             [p]->GetXaxis()->SetTitle("long pitch (um)"   );
@@ -1224,14 +1288,25 @@ void ChargeUniMiB::book(void)
   std::string planeName;
   std::stringstream ss;
 
+  int nBinsX;
+  int nBinsY;
+
   float xPitch;
   float yPitch;
-  float binSize   = 5; // [um]
+  float binSize = 5; // [um]
+
+  int lowerCol;
+  int higherCol;
+  int lowerRow;
+  int higherRow;
+
   int nBinsCharge = 500;
   int nBinsCell   = 100;
 
+
   theAnalysisManager_->cd("/");
   theAnalysisManager_->mkdir("Charge");
+
 
   for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
@@ -1240,20 +1315,43 @@ void ChargeUniMiB::book(void)
       theAnalysisManager_->mkdir(planeName);
 
 
-      xPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
-      yPitch = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
+      xPitch    = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().first).c_str());
+      yPitch    = atof(((theXmlParser_->getPlanes())[planeName]->getCellPitches().second).c_str());
+
+      lowerCol  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerCol ()).c_str());
+      higherCol = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherCol()).c_str());
+      lowerRow  = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getLowerRow ()).c_str());
+      higherRow = atoi(((theXmlParser_->getPlanes())[planeName]->getWindow()->getHigherRow()).c_str());
+
+      nBinsX    = abs(lowerCol - higherCol) + 1;
+      nBinsY    = abs(lowerRow - higherRow) + 1;
+
+      if (nBinsY <= 0) nBinsY = 1; // Planes which are not in the geometry file have lowerRow = higherRow = 0,
+                                   // this produces an unexpected warning
+
+
 
 
       theAnalysisManager_->mkdir("ClusterSize");
 
+
+      // #################
+      // # 1D histograms #
+      // #################
       hName  = "hClusterSize_"              + planeName;
       hTitle = "Cluster size distribution " + planeName;
       hClusterSize_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), 10, 0, 10)));
 
 
+
+
       theAnalysisManager_->cd("Charge/" + planeName);
       theAnalysisManager_->mkdir("Landau");
 
+
+      // #################
+      // # 1D histograms #
+      // #################
       hName  = "hCellLandau_"                                              + planeName;
       hTitle = "Charge distribution for single hits in a fiducial window " + planeName;
       hCellLandau_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
@@ -1303,9 +1401,33 @@ void ChargeUniMiB::book(void)
       hCellLandauSinglePixel_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), nBinsCharge, 0, 50000)));
 
 
+
+
+      theAnalysisManager_->cd("Charge/" + planeName);
+      theAnalysisManager_->mkdir("2DCharge");
+
+
+      // #################
+      // # 2D histograms #
+      // #################
+      hName  = "2DCharge_"                                          + planeName;
+      hTitle = "2D charge distribution "                            + planeName;
+      h2DCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
+
+      hName  = "2DChargeNorm_"                                      + planeName;
+      hTitle = "2D charge normalization "                           + planeName;
+      h2DChargeNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
+
+
+
+
       theAnalysisManager_->cd("Charge/" + planeName);
       theAnalysisManager_->mkdir("2DCellCharge");
 
+
+      // #################
+      // # 2D histograms #
+      // #################
       hName  = "h2DCellCharge_"                  + planeName;
       hTitle = "Cell charge 2D distribution "    + planeName;
       h2DCellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/binSize, -(xPitch/2), xPitch/2, (int)yPitch/binSize, -(yPitch/2), yPitch/2)));
@@ -1343,9 +1465,15 @@ void ChargeUniMiB::book(void)
       h2DClusterSize_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/binSize, -(xPitch/2), xPitch/2, (int)yPitch/binSize, -(yPitch/2), yPitch/2)));
 
 
+
+
       theAnalysisManager_->cd("Charge/" + planeName);
       theAnalysisManager_->mkdir("XcellCharge2D");
 
+
+      // #################
+      // # 2D histograms #
+      // #################
       hName  = "h2DXcellCharge_"                                      + planeName;
       hTitle = "Predicted cell charge vs. X coordinate "              + planeName;
       h2DXcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2, -(xPitch/2), xPitch/2, nBinsCharge, 0, 50000)));
@@ -1355,9 +1483,15 @@ void ChargeUniMiB::book(void)
       h2DXcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch/2, -(xPitch/2), xPitch/2, nBinsCharge, 0, 50000)));
 
 
+
+
       theAnalysisManager_->cd("Charge/" + planeName);
       theAnalysisManager_->mkdir("YcellCharge2D");
 
+
+      // #################
+      // # 2D histograms #
+      // #################
       hName  = "h2DYcellCharge_"                                      + planeName;
       hTitle = "Predicted cell charge vs. Y coordinate "              + planeName;
       h2DYcellCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2, -(yPitch/2), yPitch/2, nBinsCharge, 0, 50000)));
@@ -1367,9 +1501,15 @@ void ChargeUniMiB::book(void)
       h2DYcellChargeSecondHit_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)yPitch/2, -(yPitch/2), yPitch/2, nBinsCharge, 0, 50000)));
 
 
+
+
       theAnalysisManager_->cd("Charge/" + planeName);
       theAnalysisManager_->mkdir("XcellCharge1D");
 
+
+      // #################
+      // # 1D histograms #
+      // #################
       hName  = "h1DXcellCharge_"                                                             + planeName;
       hTitle = "Predicted cell charge - X coordinate (normalized to hits) "                  + planeName;
       h1DXcellCharge_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), (int)xPitch/2,-(xPitch/2),xPitch/2)));
@@ -1387,9 +1527,15 @@ void ChargeUniMiB::book(void)
       h1DXcellChargeSecondHitNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), (int)xPitch/2,-(xPitch/2),xPitch/2)));
 
 
+
+
       theAnalysisManager_->cd("Charge/" + planeName);
       theAnalysisManager_->mkdir("YcellCharge1D");
 
+
+      // #################
+      // # 1D histograms #
+      // #################
       hName  = "h1DYcellCharge_"                                                             + planeName;
       hTitle = "Predicted cell charge - Y coordinate (normalized to hits) "                  + planeName;
       h1DYcellCharge_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), (int)yPitch/2,-(yPitch/2),yPitch/2)));
@@ -1407,9 +1553,15 @@ void ChargeUniMiB::book(void)
       h1DYcellChargeSecondHitNorm_.push_back(NEW_THREADED(TH1F(hName.c_str(), hTitle.c_str(), (int)yPitch/2,-(yPitch/2),yPitch/2)));
 
 
+
+
       theAnalysisManager_->cd("Charge/" + planeName);
       theAnalysisManager_->mkdir("XAsymmetry");
 
+
+      // #################
+      // # 1D histograms #
+      // #################
       hName  = "h2DXcellChargeAsymmetry_"                                         + planeName;
       hTitle = "L/R charge asymmetry - X coordinate "                             + planeName;
       h2DXcellChargeAsymmetry_.push_back(NEW_THREADED(TH2F(hName.c_str(), hTitle.c_str(), (int)xPitch, -(xPitch/2), xPitch/2, nBinsCell, -1.1, 1.1)));

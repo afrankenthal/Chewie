@@ -30,6 +30,8 @@
 #ifndef XMLPLANE_H
 #define XMLPLANE_H
 
+#include "XmlWindow.h"
+
 #include <string>
 
 #include <QWidget>
