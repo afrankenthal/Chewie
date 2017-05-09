@@ -402,13 +402,13 @@ void ChargeUniMiB::planeCharge(bool pass, int planeID, const Data& data, int thr
   if (foundCluster == false) return;
 
 
-  // #########################################################################
-  // # Compute efficiency only for cells that are surrounded by "good" cells #
-  // #########################################################################
+  // #####################################################################
+  // # Compute charge only for cells that are surrounded by "good" cells #
+  // #####################################################################
   if (theWindow->checkWindowAbout(colPredicted,rowPredicted,run,thePlaneMapping_->getPlaneType(planeID)))
     {
       THREADED(h2DChargeNorm_[planeID])->Fill(colPredicted,rowPredicted);
-      if (data.getHasHit(planeID)) THREADED(h2DCharge_[planeID])->Fill(colPredicted,rowPredicted);
+      if (data.getHasHit(planeID)) THREADED(h2DCharge_[planeID])->Fill(colPredicted,rowPredicted,data.getClusterCharge(planeID));
     }
 }
 
@@ -996,6 +996,7 @@ void ChargeUniMiB::analyze(const Data& data, int threadNumber)
       clusterLandau   (clusterLandauCut,p,data,threadNumber);
       cellLandau      (cellLandauCut,   p,data,threadNumber);
       cellCharge      (cellChargeCut,   p,data,threadNumber);
+      planeCharge     (true,            p,data,threadNumber);
 
       xLandau         (cellChargeXCut,  p,data,threadNumber);
       xChargeDivision (cellChargeXCut,  p,data,threadNumber);
