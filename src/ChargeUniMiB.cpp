@@ -923,8 +923,8 @@ bool ChargeUniMiB::passStandardCuts(int planeID, const Data &data)
   if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits += 1;
   else if (data.getHasHit(planeID) && data.getClusterSize(planeID) <= 2) excludeMe = 1;
 
-  if (data.getNumberOfTelescopeClustersSizeLE2() - excludeMe >= minHits) return true;
-  else                                                                   return false;
+  if (data.getNumberOfTelescopeHits() - excludeMe >= minHits) return true;
+  else                                                        return false;
 }
 
 //=======================================================================

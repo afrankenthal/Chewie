@@ -499,12 +499,13 @@ bool ResolutionUniMiB::passStandardCuts(int planeID, const Data &data)
 {
   if (!theXmlParser_->getAnalysesFromString("Resolution")->applyStandardCuts()) return true;
 
-  int minHits = 7; // In order to have 8 telescope hits
-  if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos)
-    minHits = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str());
+  int minHits   = atoi(theXmlParser_->getAnalysesFromString("Charge")->getMinHits().c_str()) - 1;
+  int excludeMe = 0;
+  if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos) minHits += 1;
+  else if (data.getHasHit(planeID) && data.getClusterSize(planeID) <= 2) excludeMe = 1;
 
-  if (data.getNumberOfTelescopeHits() >= minHits) return true;
-  else                                            return false;
+  if (data.getNumberOfTelescopeHits() - excludeMe >= minHits) return true;
+  else                                                        return false;
 }
 
 //=======================================================================
