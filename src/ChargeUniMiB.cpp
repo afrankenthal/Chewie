@@ -1411,11 +1411,11 @@ void ChargeUniMiB::book(void)
       // #################
       // # 2D histograms #
       // #################
-      hName  = "2DCharge_"                                          + planeName;
+      hName  = "h2DCharge_"                                         + planeName;
       hTitle = "2D charge distribution "                            + planeName;
       h2DCharge_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
 
-      hName  = "2DChargeNorm_"                                      + planeName;
+      hName  = "h2DChargeNorm_"                                     + planeName;
       hTitle = "2D charge normalization "                           + planeName;
       h2DChargeNorm_.push_back(NEW_THREADED(TH2F(hName.c_str(),hTitle.c_str(),nBinsX,lowerCol,higherCol + 1,nBinsY,lowerRow,higherRow + 1)));
 
