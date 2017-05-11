@@ -52,7 +52,7 @@
 
 
 // @@@ Hard coded parameters @@@
-#define ONLYdoubleHITS true // Process only clusters of size 2
+#define ONLYdoubleHITS false // Process only clusters of size 2
 #define firstColPitch 300
 #define lastColPitch  300
 #define firstRowPitch 100
