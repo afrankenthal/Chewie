@@ -31,7 +31,11 @@
 
 setenv BASEDATADIR ../data/2015_10_October
 
+echo "This is ${HOSTNAME}";
+
 if(${HOSTNAME} == "hal9000.mib.infn.it") then
+
+  echo "Compiling on ${HOSTNAME}";
 
   if	  ( ${USER} == "menasce" ) then
    setenv BASEDATADIR /user/gr1/e831/menasce/MonicelliNew/data/2015_10_October
@@ -77,7 +81,59 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   alias qtcreator ${QTCREATORDIR}/qtcreator
 
 endif
+#============================================================================
+if(${HOSTNAME} == "cip.mib.infn.it") then
+
+  echo "Compiling on ${HOSTNAME}";
+  
+  if(     ${USER} == "menasce") then
+   setenv BASEDATADIR /raid1/menasce/data/TestBeamData_PlanarRadBatch01_PlanarRadBatch02_3DBatch01/
+  else if(${USER} == "dinardo") then
+   setenv BASEDATADIR /raid2/data1/vtx1/dinardo/TestBeamFBKPlanarBeforeRad_Batch01
+  else if(${USER} == "dzuolo") then
+   setenv BASEDATADIR ../data/TestBeamFBKPlanarAfterRad_Batch01_02
+  endif
+  
+  setenv PATH /opt/rh/devtoolset-2/root/usr/bin:/bin:/usr/bin:/usr/local/bin:/usr/printmi/bin
+
+  #===== Local directories
+  setenv CHEWIEDIR		   `pwd`
+  setenv CHEWIEDATADIR  	   ${BASEDATADIR}/MonicelliOutput
+  setenv CHEWIEINPUTDIR 	   ${BASEDATADIR}/ChewieInput
+  setenv CHEWIEOUTPUTDIR	   ${BASEDATADIR}/ChewieOutput
+  setenv CHEWIEXMLDIR		   ${CHEWIEDIR}/xml
+
+  setenv MonicelliDir             `cd ../Monicelli/; pwd; cd $CHEWIEDIR`
+  setenv Monicelli_CalSample_Dir  ${BASEDATADIR}/Calibrations  
+
+  #===== Location of the ROOT components
+  setenv ROOTVER                   SIX
+  setenv ROOTSYS		   /user/service/root-6.04.10/
+  setenv ROOTINC		   $ROOTSYS/include/root
+  setenv ROOTLIB		   $ROOTSYS/lib/root
+
+  #===== Location of the Qt components
+  setenv QTDIR  		   /usr/local/Trolltech/Qt-4.8.5/
+  setenv QTCREATORDIR		   /opt/local/qtcreator-2.7.1/bin
+
+  #===== Location of the BOOST components
+  setenv BOOSTINC		   /usr/local/include/boost
+  setenv BOOSTLIB		   /usr/local/lib
+
+  #===== Location of the XERCES components
+  setenv XERCESCINC		   /opt/local/xerces/include
+  setenv XERCESCLIB		   /opt/local/xerces/lib
+  
+  #===== C++ flags
+  setenv CPLUSPLUSFLAGS            -std=c++11
+
+  setenv LD_LIBRARY_PATH	   
+  
+  alias  qtcreator                 ${QTCREATORDIR}/qtcreator
+    
+endif
+
 
 #===== Final PATH definitions
 setenv PATH		${ROOTSYS}/bin:${QTDIR}/bin:${QTCREATORDIR}/bin:${PATH}
-setenv LD_LIBRARY_PATH  ${ROOTLIB}:${BOOSTLIB}:${QTDIR}/lib:${QTCREATORDIR}/${XERCESCLIB}/:${MonicelliDir}/plugins/libs/:${MonicelliDir}/test/customWidgets/libs:${LD_LIBRARY_PATH}
+setenv LD_LIBRARY_PATH  ${ROOTLIB}:${BOOSTLIB}:${QTDIR}/lib:${QTCREATORDIR}/${XERCESCLIB}/:${MonicelliDir}/plugins/libs/:${MonicelliDir}/customWidgets/libs:${LD_LIBRARY_PATH}

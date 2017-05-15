@@ -75,6 +75,7 @@ void WindowsManager::destroy(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void WindowsManager::beginJob(void)
 {
+    STDLINE("Beginning WindowsManager",ACGreen) ;
     theXmlParser_      = theAnalysisManager_->getXmlParser();
     destroy();
     theAnalysisManager_->mkdir("Windows");
@@ -102,25 +103,33 @@ void WindowsManager::beginJob(void)
 
         windows_.push_back(new HistogramWindow(thePlanesMapping_->getPlaneName(w), lowerCol, higherCol, lowerRow, higherRow, runNumberEntries_));
     }
+    STDLINE("Done",ACGreen) ;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void WindowsManager::analyze(const Data& data, int )//threadNumber)//WARNING: You can't change this name (threadNumber) or the MACRO THREAD won't compile
 {
     int lowerCol, higherCol, lowerRow, higherRow;
-
+// std::stringstream ss ;
+// ss << "NumberOfPlanes " << thePlanesMapping_->getNumberOfPlanes() ;
+// STDLINE(ss.str(),ACWhite) ;
     for(unsigned int w=0; w<thePlanesMapping_->getNumberOfPlanes(); w++)
     {
         lowerCol  = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getLowerCol()).c_str());
         higherCol = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getHigherCol()).c_str());
         lowerRow  = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getLowerRow()).c_str());
         higherRow = atoi(((theXmlParser_->getPlanes())[thePlanesMapping_->getPlaneName(w)]->getWindow()->getHigherRow()).c_str());
+// ss.str("") ;
+// ss << lowerCol << " " << higherCol << " " << lowerRow << " " << higherRow ;
+// STDLINE(ss.str(),ACWhite) ;
         windows_[w]->calculateWindow(w,data,lowerCol,higherCol,lowerRow,higherRow);
     }
+//     STDLINE("Done",ACGreen) ;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void WindowsManager::endJob(void)
 {
+    STDLINE("Ending WindowsManager",ACGreen) ;
     for(unsigned int w=0; w<thePlanesMapping_->getNumberOfPlanes(); w++)
     {
         theXmlParser_->getPlanes()[thePlanesMapping_->getPlaneName(w)]->getWindow()->setRemovedPixels();
@@ -132,6 +141,7 @@ void WindowsManager::endJob(void)
         windows_[w]->calculateTimeEfficiency();
         windows_[w]->sumThreaded();
     }
+    STDLINE("Done",ACGreen) ;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

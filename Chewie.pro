@@ -199,12 +199,12 @@ ROOTVERSION          = $$(ROOTVER)
 
 contains(ROOTVERSION, "FIVE") {
  message("Setting up Makefile for ROOT5")  
- header.commands     = @echo "------ ROOT5 header ----------"                  && \
+ header.commands     = @echo "'[1;33m------ ROOT5 header ----------[0;m'"  && \
                        rootcint -f tmp/EventHeaderDict.C                          \
                                 -c ../Monicelli/include/EventHeader.h+
 } else {
  message("Setting up Makefile for ROOT6")  
- header.commands     = @echo "------ ROOT6 header ----------"                  && \
+ header.commands     = @echo "'[1;33m------ ROOT6 header ----------[0;m'"  && \
                        rootcint -f tmp/EventHeaderDict.C                          \
                                 -c ../Monicelli/include/EventHeader.h+         && \
                        cp tmp/*.pcm .
@@ -219,15 +219,15 @@ trees.depends        = ../Monicelli/include/Event.h                             
 trees.target         = tmp/EventDict.C
 
 contains(ROOTVERSION, "FIVE") {
- trees.commands      = @echo "------ ROOT5 commands --------"                  && \
+ trees.commands      = @echo "'[1;33m------ ROOT5 commands --------[0;m'"  && \
                        rootcint -f tmp/EventDict.C                                \
                                 -c ../Monicelli/include/Event.h+                  \
                                    ../Monicelli/include/Geometry.h+               \
                                    ../Monicelli/include/Detector.h+               \
                                    ../Monicelli/include/ROC.h+                    \
-                                   ../Monicelli/include/KalmanPlaneInfo.h+
+                                   ../Monicelli/include/KalmanPlaneInfo.h+        \
 } else {
- trees.commands      = @echo "------ ROOT6 commands --------"                  && \
+ trees.commands      = @echo "'[1;33m------ ROOT6 commands --------[0;0m'" && \
                        rootcint -f tmp/EventDict.C                                \
                                 -c ../Monicelli/include/Event.h+                  \
                                    ../Monicelli/include/Geometry.h+               \

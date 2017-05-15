@@ -381,6 +381,8 @@ bool EventManager::readGeometry()
 
     bool atLeastOneBranchFound = false ;
 
+    STDLINE(geometryTreeName.str(),ACCyan) ;
+
     if ( (TTree*)geoFile_->Get(geometryTreeName.str().c_str()) )
     {
         inputGeometryTree_ = (TTree*)geoFile_->Get(geometryTreeName.str().c_str());

@@ -817,7 +817,7 @@ void EfficiencyUniMiB::xCellEfficiency(bool pass, int planeID, const Data& data,
 
   if (data.getXPitchLocal(planeID) == maxPitchX)
     {
-      if (data.getXPixelResidualLocal(planeID) > 0)       xRes = data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
+      if      (data.getXPixelResidualLocal(planeID) > 0)  xRes = data.getXPixelResidualLocal(planeID) - data.getXPitchLocal(planeID)/2;
       else if (data.getXPixelResidualLocal(planeID) <= 0) xRes = data.getXPixelResidualLocal(planeID) + data.getXPitchLocal(planeID)/2;
     }
   else return;

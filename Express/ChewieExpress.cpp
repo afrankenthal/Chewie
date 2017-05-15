@@ -19,17 +19,16 @@
 #include <sstream>
 #include <vector>
 
-
 using namespace std;
 
 std::string filesPath;
 
-
+//==============================================================
 class XmlDefaults;
 class XmlFiles;
 class XmlFile;
 
-
+//==============================================================
 class ExpressXmlParser
 {
 public:
@@ -50,6 +49,7 @@ private:
   stringstream ss_;
 };
 
+//==============================================================
 class XmlDefaults
 {
 public:
@@ -67,6 +67,7 @@ private:
   QDomNode    thisNode_;
 };
 
+//==============================================================
 class XmlFiles
 {
 public:
@@ -83,6 +84,7 @@ private:
   QDomNode thisNode_;
 };
 
+//==============================================================
 class XmlFile
 {
 public:
@@ -103,24 +105,46 @@ int main (int argc, char** argv)
   stringstream ss;
 
   gROOT->SetBatch(true);
-  TApplication tApp("App",&argc,argv);
-  STDLINE("=== Using a TApplication only ===" ,ACRed);
-  
+
+  std::string color = std::string(ACYellow)+std::string(ACBold)+std::string(ACReverse) ;
+  STDLINE("",color);
+  STDLINE("+--------------------------------------------------+",color);
+  STDLINE("|                                                  |",color);
+  STDLINE("|                W e l c o m e  t o                |",color);
+  STDLINE("|           C h e w i e   E x p r e s s            |",color);
+  STDLINE("|                                                  |",color);
+  STDLINE("|      The MTEST pixel-telescope tracks            |",color);
+  STDLINE("|              data analysis code                  |",color);
+  STDLINE("|    at Fermi National Accelerator Laboratory      |",color);
+  STDLINE("|                                                  |",color);
+  STDLINE("|        D. Menasce, L. Moroni, S. Terzo           |",color);
+  STDLINE("|      J. Ngadiuba, L. Uplegger, L. Vigani         |",color);
+  STDLINE("|                                                  |",color);
+  STDLINE("+--------------------------------------------------+",color);
+  STDLINE("",color);
+
   ExpressXmlParser theExpressXmlParser;
   
-  std::string configFileName = "./xml/ExpressConfiguration.xml";
-  if (argc == 2) configFileName = std::string("./xml/") + argv[1];
+  std::string configFileName = "ExpressConfiguration.xml";
+
+  if (argc == 2) 
+  {
+    configFileName = std::string("./xml/") + argv[1];
+    STDLINE(configFileName,ACCyan) ;
+  }
   else if (argc > 2)
-    {
-      ss.str("");
-      ss << "Usage: ./ChewieExpress optional(configuration file)";
-      STDLINE(ss.str(),ACRed);
-      exit(EXIT_SUCCESS);
-    }
+  {
+    ss.str("");
+    ss << "Usage: ./ChewieExpress [cfile] (existing configuration file in ./xml)";
+    STDLINE(ss.str(),ACRed);
+    exit(EXIT_SUCCESS);
+  }
   ss.str("");
-  ss << "Using: " << configFileName << " configuration.";
+  ss << "Using : " << configFileName << " configuration.";
   STDLINE(ss.str(),ACGreen);
   
+  TApplication tApp("App",&argc,argv);
+
   theExpressXmlParser.parseDocument(configFileName.c_str());
   
   XmlParser* theChewieXmlParser = new XmlParser();    
@@ -132,7 +156,6 @@ int main (int argc, char** argv)
   string chewieDataDir   	= getenv("CHEWIEDATADIR"  );
   string chewieOutputDir 	= getenv("CHEWIEOUTPUTDIR");
   string chewieInputDir  	= getenv("CHEWIEINPUTDIR" );
-  
   if (chewieInputDir[chewieInputDir.size()-1] != '/')
     chewieInputDir += '/';
   
@@ -166,6 +189,7 @@ int main (int argc, char** argv)
       for (unsigned int f=0;f<theExpressXmlParser.getFilesList()[fs]->fileNames_.size();f++)
 	{
 	  std::string fileToAnalyze = theExpressXmlParser.getFilesList()[fs]->fileNames_[f]->fileName_;
+	  STDLINE(fileToAnalyze,ACCyan);
 	  std::string fileName      = filesPath + fileToAnalyze;
 	  STDLINE(fileName,ACRed);
 	  monicelliFileList.push_back(fileName);
@@ -280,6 +304,7 @@ XmlFiles::XmlFiles(QDomNode& node)
   Long_t *flags = NULL;
   Long_t *mt    = NULL;
 
+  STDLINE("List of files to analyze",ACCyan) ;
   for (int f = 0; f < fileList.size(); ++f)
     {
       QDomNode fileNode = fileList.at(f);

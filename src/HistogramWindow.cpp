@@ -205,15 +205,33 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
     int   entry = data.getEventChewieNumber();
     int   size  = data.getClusterSize(planeID);
 
+    std::stringstream ss ;
 
+    
     if (data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol)
-    {
-        theH2TimeWindow_norm_.find(run)->second->Fill(col,entry);
-        if (data.getHasHit(planeID)) theH2TimeWindow_.find(run)->second->Fill(col,entry);
+    {     
+    	if(theH2TimeWindow_norm_.find(run)  ==theH2TimeWindow_norm_.end()  ||
+    	   theH2TimeWindow_.find(run)	    ==theH2TimeWindow_.end()	   )
+    	{
+    	 static bool alreadySeen = false ;
+    	 if(  alreadySeen ) return ;
+    	 if( !alreadySeen ) alreadySeen = true ;
+    	 STDLINE("Time Window or ClusterSize data missing: skipping event (this message will NOT be repeated...)",ACRed) ;
+    	}
+	else
+	{
+         theH2TimeWindow_norm_.find(run)->second->Fill(col,entry);
+         if (data.getHasHit(planeID)) theH2TimeWindow_.find(run)->second->Fill(col,entry);
+	}
     }
 
 
-    if (data.getHasHit(planeID) && data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol)
+    if (data.getHasHit(planeID)       && 
+        data.getIsInDetector(planeID) && 
+	row >= lowerRow               && 
+	col >= lowerCol               && 
+	row <= higherRow              && 
+	col <= higherCol)
     {
         if (nRow == 1 && nCol == 1)
         {
