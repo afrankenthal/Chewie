@@ -453,7 +453,7 @@
    <property name="geometry">
     <rect>
      <x>4</x>
-     <y>72</y>
+     <y>68</y>
      <width>1021</width>
      <height>641</height>
     </rect>
@@ -623,7 +623,7 @@
         <x>4</x>
         <y>280</y>
         <width>81</width>
-        <height>31</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="palette">
@@ -1040,6 +1040,11 @@
          </colorrole>
         </disabled>
        </palette>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="toolTip">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1068,9 +1073,9 @@ list</string>
       <property name="geometry">
        <rect>
         <x>4</x>
-        <y>16</y>
+        <y>24</y>
         <width>81</width>
-        <height>46</height>
+        <height>61</height>
        </rect>
       </property>
       <property name="palette">
@@ -1487,6 +1492,11 @@ list</string>
          </colorrole>
         </disabled>
        </palette>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="toolTip">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1575,8 +1585,8 @@ file(s)</string>
      <widget class="customSpinBox" name="convertMaxEventsSB">
       <property name="geometry">
        <rect>
-        <x>408</x>
-        <y>16</y>
+        <x>492</x>
+        <y>28</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -1597,9 +1607,9 @@ file(s)</string>
      <widget class="QLabel" name="convertTotalEventsLB">
       <property name="geometry">
        <rect>
-        <x>96</x>
-        <y>16</y>
-        <width>97</width>
+        <x>116</x>
+        <y>28</y>
+        <width>125</width>
         <height>22</height>
        </rect>
       </property>
@@ -1619,8 +1629,8 @@ file(s)</string>
      <widget class="QLineEdit" name="convertTotalEventsLE">
       <property name="geometry">
        <rect>
-        <x>196</x>
-        <y>16</y>
+        <x>244</x>
+        <y>28</y>
         <width>96</width>
         <height>21</height>
        </rect>
@@ -1834,7 +1844,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>8</x>
-        <y>16</y>
+        <y>28</y>
         <width>81</width>
         <height>20</height>
        </rect>
@@ -2272,9 +2282,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="convertMaxThreadsLB">
       <property name="geometry">
        <rect>
-        <x>511</x>
-        <y>16</y>
-        <width>96</width>
+        <x>608</x>
+        <y>28</y>
+        <width>121</width>
         <height>22</height>
        </rect>
       </property>
@@ -2291,8 +2301,8 @@ p, li { white-space: pre-wrap; }
      <widget class="customSpinBox" name="convertMaxThreadsSB">
       <property name="geometry">
        <rect>
-        <x>609</x>
-        <y>16</y>
+        <x>732</x>
+        <y>28</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -2313,9 +2323,9 @@ p, li { white-space: pre-wrap; }
      <widget class="customCheckBox" name="convertMaxEventsCB">
       <property name="geometry">
        <rect>
-        <x>303</x>
-        <y>16</y>
-        <width>106</width>
+        <x>367</x>
+        <y>28</y>
+        <width>129</width>
         <height>21</height>
        </rect>
       </property>
@@ -2401,7 +2411,7 @@ p, li { white-space: pre-wrap; }
        <x>16</x>
        <y>180</y>
        <width>126</width>
-       <height>20</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="palette">
@@ -2874,6 +2884,11 @@ p, li { white-space: pre-wrap; }
         <height>22</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Parameters</string>
       </property>
@@ -2886,6 +2901,11 @@ p, li { white-space: pre-wrap; }
         <width>101</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Dispersion</string>
@@ -2989,9 +3009,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>148</x>
-        <y>64</y>
-        <width>853</width>
+        <x>155</x>
+        <y>68</y>
+        <width>840</width>
         <height>20</height>
        </rect>
       </property>
@@ -3174,9 +3194,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>148</x>
-        <y>16</y>
-        <width>853</width>
+        <x>155</x>
+        <y>20</y>
+        <width>840</width>
         <height>20</height>
        </rect>
       </property>
@@ -3356,9 +3376,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="openCalibrationPlotsPB">
       <property name="geometry">
        <rect>
-        <x>4</x>
-        <y>64</y>
-        <width>142</width>
+        <x>2</x>
+        <y>68</y>
+        <width>150</width>
         <height>20</height>
        </rect>
       </property>
@@ -3779,7 +3799,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="font">
        <font>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="toolTip">
@@ -3810,9 +3830,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>148</x>
-        <y>40</y>
-        <width>853</width>
+        <x>155</x>
+        <y>44</y>
+        <width>840</width>
         <height>20</height>
        </rect>
       </property>
@@ -3992,9 +4012,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="openCalibrationsFilePB">
       <property name="geometry">
        <rect>
-        <x>4</x>
-        <y>40</y>
-        <width>142</width>
+        <x>2</x>
+        <y>44</y>
+        <width>150</width>
         <height>20</height>
        </rect>
       </property>
@@ -4415,7 +4435,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="font">
        <font>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="toolTip">
@@ -4443,9 +4463,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="calibrationLoadGeoFilePB">
       <property name="geometry">
        <rect>
-        <x>4</x>
-        <y>16</y>
-        <width>142</width>
+        <x>2</x>
+        <y>20</y>
+        <width>150</width>
         <height>20</height>
        </rect>
       </property>
@@ -4866,7 +4886,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="font">
        <font>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="toolTip">
@@ -4938,7 +4958,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>4</x>
        <y>28</y>
-       <width>357</width>
+       <width>385</width>
        <height>125</height>
       </rect>
      </property>
@@ -5366,115 +5386,16 @@ p, li { white-space: pre-wrap; }
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
        <string>DUT0</string>
       </attribute>
-      <widget class="QGroupBox" name="removePixelDUT0GB">
+      <widget class="QGroupBox" name="groupBox_10">
        <property name="geometry">
         <rect>
-         <x>176</x>
-         <y>4</y>
-         <width>173</width>
-         <height>89</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Remove Pixels</string>
-       </property>
-       <widget class="QLabel" name="removeRowDUT0LB">
-        <property name="geometry">
-         <rect>
-          <x>8</x>
-          <y>33</y>
-          <width>36</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Sans Serif</family>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Row:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="removeRowDUT0LE">
-        <property name="geometry">
-         <rect>
-          <x>44</x>
-          <y>36</y>
-          <width>55</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="removeColDUT0LB">
-        <property name="geometry">
-         <rect>
-          <x>8</x>
-          <y>60</y>
-          <width>36</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Sans Serif</family>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Col:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="removeColDUT0LE">
-        <property name="geometry">
-         <rect>
-          <x>44</x>
-          <y>60</y>
-          <width>55</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="removePxlDUT0PB">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>60</y>
-          <width>61</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Remove</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="resetRemovedPxlsDUT0PB">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>36</y>
-          <width>61</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Reset</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
+         <x>4</x>
          <y>4</y>
          <width>173</width>
          <height>89</height>
@@ -5486,14 +5407,14 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="higherColDUT0LE">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="row0LB">
+       <widget class="QLabel" name="row0LB_5">
         <property name="geometry">
          <rect>
           <x>4</x>
@@ -5505,6 +5426,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5516,14 +5438,14 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="lowerColDUT0LE">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>48</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="col0LB">
+       <widget class="QLabel" name="col0LB_5">
         <property name="geometry">
          <rect>
           <x>4</x>
@@ -5535,6 +5457,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5546,14 +5469,14 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="lowerRowDUT0LE">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>48</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="higherEdge0LB">
+       <widget class="QLabel" name="higherEdge0LB_5">
         <property name="geometry">
          <rect>
           <x>112</x>
@@ -5564,6 +5487,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5572,7 +5496,7 @@ p, li { white-space: pre-wrap; }
          <string>Higher:</string>
         </property>
        </widget>
-       <widget class="QLabel" name="lowerEdge0LB">
+       <widget class="QLabel" name="lowerEdge0LB_5">
         <property name="geometry">
          <rect>
           <x>44</x>
@@ -5583,6 +5507,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5594,11 +5519,122 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="higherRowDUT0LE">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
          </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="removePixelDUT0GB_5">
+       <property name="geometry">
+        <rect>
+         <x>196</x>
+         <y>4</y>
+         <width>181</width>
+         <height>89</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Remove Pixels</string>
+       </property>
+       <widget class="QLabel" name="removeRowDUT0LB_5">
+        <property name="geometry">
+         <rect>
+          <x>8</x>
+          <y>33</y>
+          <width>36</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Sans Serif</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Row:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="removeRowDUT0LE">
+        <property name="geometry">
+         <rect>
+          <x>52</x>
+          <y>36</y>
+          <width>55</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="removeColDUT0LB_5">
+        <property name="geometry">
+         <rect>
+          <x>8</x>
+          <y>60</y>
+          <width>36</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Sans Serif</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Col:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="removeColDUT0LE">
+        <property name="geometry">
+         <rect>
+          <x>52</x>
+          <y>60</y>
+          <width>55</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="removePxlDUT0PB">
+        <property name="geometry">
+         <rect>
+          <x>112</x>
+          <y>60</y>
+          <width>61</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Remove</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="resetRemovedPxlsDUT0PB">
+        <property name="geometry">
+         <rect>
+          <x>112</x>
+          <y>36</y>
+          <width>61</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Reset</string>
         </property>
        </widget>
       </widget>
@@ -5610,9 +5646,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QGroupBox" name="removePixelDUT0GB_2">
        <property name="geometry">
         <rect>
-         <x>176</x>
+         <x>196</x>
          <y>4</y>
-         <width>173</width>
+         <width>181</width>
          <height>89</height>
         </rect>
        </property>
@@ -5631,6 +5667,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5642,7 +5679,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="removeRowDUT1LE">
         <property name="geometry">
          <rect>
-          <x>44</x>
+          <x>52</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
@@ -5661,6 +5698,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5672,7 +5710,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="removeColDUT1LE">
         <property name="geometry">
          <rect>
-          <x>44</x>
+          <x>52</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
@@ -5682,11 +5720,16 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="removePxlDUT1PB">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>60</y>
           <width>61</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Remove</string>
@@ -5695,11 +5738,16 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="resetRemovedPxlsDUT1PB">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>36</y>
           <width>61</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Reset</string>
@@ -5709,7 +5757,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QGroupBox" name="groupBox_4">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>4</x>
          <y>4</y>
          <width>173</width>
          <height>89</height>
@@ -5721,7 +5769,7 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="higherColDUT1LE">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
@@ -5740,6 +5788,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5751,7 +5800,7 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="lowerColDUT1LE">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>48</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
@@ -5770,6 +5819,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5781,7 +5831,7 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="lowerRowDUT1LE">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>48</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
@@ -5799,6 +5849,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5818,6 +5869,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5829,7 +5881,7 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="higherRowDUT1LE">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
@@ -5842,19 +5894,19 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>DUT2</string>
       </attribute>
-      <widget class="QGroupBox" name="removePixelDUT0GB_3">
+      <widget class="QGroupBox" name="removePixelDUT0GB_6">
        <property name="geometry">
         <rect>
-         <x>176</x>
+         <x>196</x>
          <y>4</y>
-         <width>173</width>
+         <width>181</width>
          <height>89</height>
         </rect>
        </property>
        <property name="title">
         <string>Remove Pixels</string>
        </property>
-       <widget class="QLabel" name="removeRowDUT0LB_3">
+       <widget class="QLabel" name="removeRowDUT0LB_6">
         <property name="geometry">
          <rect>
           <x>8</x>
@@ -5866,6 +5918,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5877,14 +5930,14 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="removeRowDUT2LE">
         <property name="geometry">
          <rect>
-          <x>44</x>
+          <x>52</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="removeColDUT0LB_3">
+       <widget class="QLabel" name="removeColDUT0LB_6">
         <property name="geometry">
          <rect>
           <x>8</x>
@@ -5896,6 +5949,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5907,7 +5961,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="removeColDUT2LE">
         <property name="geometry">
          <rect>
-          <x>44</x>
+          <x>52</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
@@ -5917,11 +5971,16 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="removePxlDUT2PB">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>60</y>
           <width>61</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Remove</string>
@@ -5930,21 +5989,26 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="resetRemovedPxlsDUT2PB">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>36</y>
           <width>61</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Reset</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_5">
+      <widget class="QGroupBox" name="groupBox_11">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>4</x>
          <y>4</y>
          <width>173</width>
          <height>89</height>
@@ -5956,7 +6020,147 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="higherColDUT2LE">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
+          <y>60</y>
+          <width>55</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="row0LB_6">
+        <property name="geometry">
+         <rect>
+          <x>4</x>
+          <y>36</y>
+          <width>36</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Sans Serif</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Row:</string>
+        </property>
+       </widget>
+       <widget class="customLineEdit" name="lowerColDUT2LE">
+        <property name="geometry">
+         <rect>
+          <x>48</x>
+          <y>60</y>
+          <width>55</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="col0LB_6">
+        <property name="geometry">
+         <rect>
+          <x>4</x>
+          <y>60</y>
+          <width>36</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Sans Serif</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Col:</string>
+        </property>
+       </widget>
+       <widget class="customLineEdit" name="lowerRowDUT2LE">
+        <property name="geometry">
+         <rect>
+          <x>48</x>
+          <y>36</y>
+          <width>55</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="higherEdge0LB_6">
+        <property name="geometry">
+         <rect>
+          <x>112</x>
+          <y>16</y>
+          <width>53</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Higher:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lowerEdge0LB_6">
+        <property name="geometry">
+         <rect>
+          <x>44</x>
+          <y>16</y>
+          <width>53</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Lower:</string>
+        </property>
+       </widget>
+       <widget class="customLineEdit" name="higherRowDUT2LE">
+        <property name="geometry">
+         <rect>
+          <x>112</x>
+          <y>36</y>
+          <width>55</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_9">
+      <attribute name="title">
+       <string>DUT3</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>4</y>
+         <width>173</width>
+         <height>89</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Windows</string>
+       </property>
+       <widget class="customLineEdit" name="higherColDUT3LE">
+        <property name="geometry">
+         <rect>
+          <x>112</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
@@ -5975,6 +6179,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -5983,10 +6188,10 @@ p, li { white-space: pre-wrap; }
          <string>Row:</string>
         </property>
        </widget>
-       <widget class="customLineEdit" name="lowerColDUT2LE">
+       <widget class="customLineEdit" name="lowerColDUT3LE">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>48</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
@@ -6005,6 +6210,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -6013,10 +6219,10 @@ p, li { white-space: pre-wrap; }
          <string>Col:</string>
         </property>
        </widget>
-       <widget class="customLineEdit" name="lowerRowDUT2LE">
+       <widget class="customLineEdit" name="lowerRowDUT3LE">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>48</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
@@ -6034,6 +6240,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -6053,142 +6260,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Lower:</string>
-        </property>
-       </widget>
-       <widget class="customLineEdit" name="higherRowDUT2LE">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>36</y>
-          <width>55</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_9">
-      <attribute name="title">
-       <string>DUT3</string>
-      </attribute>
-      <widget class="QGroupBox" name="groupBox_6">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>4</y>
-         <width>173</width>
-         <height>89</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Windows</string>
-       </property>
-       <widget class="customLineEdit" name="higherColDUT3LE">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>60</y>
-          <width>55</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="row0LB_4">
-        <property name="geometry">
-         <rect>
-          <x>4</x>
-          <y>36</y>
-          <width>36</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Sans Serif</family>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Row:</string>
-        </property>
-       </widget>
-       <widget class="customLineEdit" name="lowerColDUT3LE">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>60</y>
-          <width>55</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="col0LB_4">
-        <property name="geometry">
-         <rect>
-          <x>4</x>
-          <y>60</y>
-          <width>36</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Sans Serif</family>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Col:</string>
-        </property>
-       </widget>
-       <widget class="customLineEdit" name="lowerRowDUT3LE">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>36</y>
-          <width>55</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="higherEdge0LB_4">
-        <property name="geometry">
-         <rect>
-          <x>112</x>
-          <y>16</y>
-          <width>53</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Higher:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lowerEdge0LB_4">
-        <property name="geometry">
-         <rect>
-          <x>44</x>
-          <y>16</y>
-          <width>53</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -6200,7 +6272,7 @@ p, li { white-space: pre-wrap; }
        <widget class="customLineEdit" name="higherRowDUT3LE">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
@@ -6208,19 +6280,19 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="removePixelDUT0GB_4">
+      <widget class="QGroupBox" name="removePixelDUT0GB_3">
        <property name="geometry">
         <rect>
-         <x>176</x>
+         <x>196</x>
          <y>4</y>
-         <width>173</width>
+         <width>181</width>
          <height>89</height>
         </rect>
        </property>
        <property name="title">
         <string>Remove Pixels</string>
        </property>
-       <widget class="QLabel" name="removeRowDUT0LB_4">
+       <widget class="QLabel" name="removeRowDUT0LB_3">
         <property name="geometry">
          <rect>
           <x>8</x>
@@ -6232,6 +6304,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -6243,14 +6316,14 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="removeRowDUT3LE">
         <property name="geometry">
          <rect>
-          <x>44</x>
+          <x>52</x>
           <y>36</y>
           <width>55</width>
           <height>22</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="removeColDUT0LB_4">
+       <widget class="QLabel" name="removeColDUT0LB_3">
         <property name="geometry">
          <rect>
           <x>8</x>
@@ -6262,6 +6335,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <family>Sans Serif</family>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -6273,7 +6347,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="removeColDUT3LE">
         <property name="geometry">
          <rect>
-          <x>44</x>
+          <x>52</x>
           <y>60</y>
           <width>55</width>
           <height>22</height>
@@ -6283,11 +6357,16 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="removePxlDUT3PB">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>60</y>
           <width>61</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Remove</string>
@@ -6296,11 +6375,16 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="resetRemovedPxlsDUT3PB">
         <property name="geometry">
          <rect>
-          <x>104</x>
+          <x>112</x>
           <y>36</y>
           <width>61</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Reset</string>
@@ -6317,9 +6401,9 @@ p, li { white-space: pre-wrap; }
     <widget class="QGroupBox" name="efficiencyCutsGB">
      <property name="geometry">
       <rect>
-       <x>776</x>
+       <x>768</x>
        <y>4</y>
-       <width>237</width>
+       <width>245</width>
        <height>221</height>
       </rect>
      </property>
@@ -6331,9 +6415,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>4</x>
         <y>16</y>
-        <width>93</width>
+        <width>140</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>chi2/DOF</string>
@@ -6342,11 +6431,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="chi2EfficiencyCutSB">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>153</x>
         <y>16</y>
         <width>62</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="decimals">
        <number>1</number>
@@ -6369,9 +6463,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>4</x>
         <y>36</y>
-        <width>131</width>
+        <width>140</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Number of tracks</string>
@@ -6380,11 +6479,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QSpinBox" name="nTrackEfficiencyCutSB">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>153</x>
         <y>36</y>
         <width>62</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
@@ -6404,9 +6508,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>4</x>
         <y>76</y>
-        <width>141</width>
+        <width>140</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Y predicted error</string>
@@ -6415,11 +6524,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="yErrEfficiencyCutSB">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>153</x>
         <y>76</y>
         <width>62</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="decimals">
        <number>1</number>
@@ -6443,7 +6557,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>211</x>
+        <x>219</x>
         <y>112</y>
         <width>31</width>
         <height>22</height>
@@ -6452,6 +6566,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -6465,9 +6580,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>4</x>
         <y>56</y>
-        <width>141</width>
+        <width>140</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>X predicted error</string>
@@ -6476,11 +6596,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="xErrEfficiencyCutSB">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>153</x>
         <y>56</y>
         <width>62</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="decimals">
        <number>1</number>
@@ -6504,7 +6629,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>211</x>
+        <x>219</x>
         <y>96</y>
         <width>31</width>
         <height>22</height>
@@ -6513,6 +6638,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -6526,9 +6652,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>4</x>
         <y>96</y>
-        <width>130</width>
+        <width>140</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>X residual</string>
@@ -6537,11 +6668,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="yEfficiencyCutSB">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>153</x>
         <y>116</y>
         <width>62</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="decimals">
        <number>1</number>
@@ -6562,11 +6698,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="xEfficiencyCutSB">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>153</x>
         <y>96</y>
         <width>62</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="decimals">
        <number>1</number>
@@ -6589,9 +6730,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>4</x>
         <y>116</y>
-        <width>131</width>
+        <width>140</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Y residual</string>
@@ -6602,9 +6748,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>4</x>
         <y>136</y>
-        <width>131</width>
+        <width>140</width>
         <height>22</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Min hits</string>
@@ -6613,11 +6764,16 @@ p, li { white-space: pre-wrap; }
      <widget class="customSpinBox" name="hitsEfficiencyCutSB">
       <property name="geometry">
        <rect>
-        <x>145</x>
+        <x>153</x>
         <y>136</y>
         <width>62</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
@@ -6635,11 +6791,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>148</x>
         <y>160</y>
         <width>81</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>see Charge</string>
@@ -6654,6 +6815,11 @@ p, li { white-space: pre-wrap; }
         <height>22</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Standard cuts</string>
       </property>
@@ -6667,6 +6833,11 @@ p, li { white-space: pre-wrap; }
         <height>20</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Exclude bad working planes:</string>
       </property>
@@ -6677,7 +6848,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>4</x>
        <y>4</y>
-       <width>765</width>
+       <width>757</width>
        <height>221</height>
       </rect>
      </property>
@@ -6743,6 +6914,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -6800,6 +6972,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -6817,6 +6990,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -6837,6 +7011,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -6857,6 +7032,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -6917,6 +7093,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -6974,6 +7151,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -6991,6 +7169,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Sans Serif</family>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -7014,6 +7193,11 @@ p, li { white-space: pre-wrap; }
        <height>369</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Cuts</string>
      </property>
@@ -7022,7 +7206,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>17</y>
-        <width>84</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -7033,7 +7217,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="chi2ChargeCutSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>176</x>
         <y>17</y>
         <width>60</width>
         <height>20</height>
@@ -7063,7 +7247,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>40</y>
-        <width>134</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -7074,7 +7258,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QSpinBox" name="nTrackChargeCutSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>176</x>
         <y>40</y>
         <width>60</width>
         <height>20</height>
@@ -7101,7 +7285,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>64</y>
-        <width>133</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -7114,7 +7298,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>88</y>
-        <width>131</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -7125,7 +7309,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="xErrChargeCutSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>176</x>
         <y>64</y>
         <width>60</width>
         <height>20</height>
@@ -7153,7 +7337,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="yErrChargeCutSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>176</x>
         <y>88</y>
         <width>60</width>
         <height>20</height>
@@ -7184,7 +7368,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>212</x>
+        <x>240</x>
         <y>64</y>
         <width>31</width>
         <height>22</height>
@@ -7207,7 +7391,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>212</x>
+        <x>240</x>
         <y>88</y>
         <width>31</width>
         <height>22</height>
@@ -7229,7 +7413,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>112</y>
-        <width>87</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -7242,7 +7426,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>136</y>
-        <width>85</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -7253,7 +7437,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="xChargeCutSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>176</x>
         <y>112</y>
         <width>60</width>
         <height>20</height>
@@ -7281,7 +7465,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QDoubleSpinBox" name="yChargeCutSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>176</x>
         <y>136</y>
         <width>60</width>
         <height>20</height>
@@ -7312,7 +7496,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>212</x>
+        <x>240</x>
         <y>112</y>
         <width>31</width>
         <height>22</height>
@@ -7335,7 +7519,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>212</x>
+        <x>240</x>
         <y>136</y>
         <width>31</width>
         <height>22</height>
@@ -7355,7 +7539,7 @@ p, li { white-space: pre-wrap; }
      <widget class="customSpinBox" name="hitsChargeCutSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>176</x>
         <y>160</y>
         <width>60</width>
         <height>20</height>
@@ -7382,7 +7566,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>160</y>
-        <width>72</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -7393,14 +7577,17 @@ p, li { white-space: pre-wrap; }
      <widget class="customSpinBox" name="chargePixelMinimumChargeSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>156</x>
         <y>268</y>
-        <width>62</width>
+        <width>80</width>
         <height>20</height>
        </rect>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="minimum">
        <number>0</number>
@@ -7418,14 +7605,17 @@ p, li { white-space: pre-wrap; }
      <widget class="customSpinBox" name="chargeClusterMinimumChargeSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>156</x>
         <y>316</y>
-        <width>62</width>
+        <width>80</width>
         <height>20</height>
        </rect>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="minimum">
        <number>0</number>
@@ -7443,7 +7633,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="chargePixelMinimumChargeElectronLB">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>244</x>
         <y>268</y>
         <width>31</width>
         <height>22</height>
@@ -7456,7 +7646,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="chargeClusterMaximumChargeElectronLB">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>244</x>
         <y>340</y>
         <width>31</width>
         <height>22</height>
@@ -7469,14 +7659,17 @@ p, li { white-space: pre-wrap; }
      <widget class="customSpinBox" name="chargeClusterMaximumChargeSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>156</x>
         <y>340</y>
-        <width>62</width>
+        <width>80</width>
         <height>20</height>
        </rect>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="minimum">
        <number>0</number>
@@ -7494,7 +7687,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="chargeClusterMinimumChargeElectronLB">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>244</x>
         <y>316</y>
         <width>31</width>
         <height>22</height>
@@ -7507,14 +7700,17 @@ p, li { white-space: pre-wrap; }
      <widget class="customSpinBox" name="chargePixelMaximumChargeSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>156</x>
         <y>292</y>
-        <width>62</width>
+        <width>80</width>
         <height>20</height>
        </rect>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
       <property name="minimum">
        <number>0</number>
@@ -7532,7 +7728,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="chargePixelMaximumChargeElectronLB">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>244</x>
         <y>292</y>
         <width>31</width>
         <height>22</height>
@@ -7547,7 +7743,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>272</y>
-        <width>111</width>
+        <width>135</width>
         <height>17</height>
        </rect>
       </property>
@@ -7560,7 +7756,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>296</y>
-        <width>113</width>
+        <width>135</width>
         <height>17</height>
        </rect>
       </property>
@@ -7573,7 +7769,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>320</y>
-        <width>121</width>
+        <width>135</width>
         <height>17</height>
        </rect>
       </property>
@@ -7586,7 +7782,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>344</y>
-        <width>129</width>
+        <width>135</width>
         <height>17</height>
        </rect>
       </property>
@@ -7612,38 +7808,28 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>244</y>
-        <width>101</width>
+        <width>135</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>With less than</string>
+       <string>With &lt; %of hits</string>
       </property>
      </widget>
      <widget class="customSpinBox" name="chargeBadPlanesHitsSB">
       <property name="geometry">
        <rect>
-        <x>148</x>
+        <x>156</x>
         <y>244</y>
-        <width>61</width>
+        <width>80</width>
         <height>20</height>
        </rect>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
       <property name="value">
        <number>50</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>212</x>
-        <y>248</y>
-        <width>57</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>% of hits</string>
       </property>
      </widget>
      <widget class="customCheckBox" name="chargeStandardCutsCB">
@@ -7651,7 +7837,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>8</x>
         <y>188</y>
-        <width>131</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -8104,8 +8290,13 @@ p, li { white-space: pre-wrap; }
        </disabled>
       </palette>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
@@ -8203,7 +8394,7 @@ p, li { white-space: pre-wrap; }
          <x>63</x>
          <y>4</y>
          <width>81</width>
-         <height>22</height>
+         <height>20</height>
         </rect>
        </property>
       </widget>
@@ -8216,7 +8407,7 @@ p, li { white-space: pre-wrap; }
          <x>63</x>
          <y>28</y>
          <width>81</width>
-         <height>22</height>
+         <height>20</height>
         </rect>
        </property>
       </widget>
@@ -8247,7 +8438,7 @@ p, li { white-space: pre-wrap; }
          <x>63</x>
          <y>4</y>
          <width>81</width>
-         <height>22</height>
+         <height>20</height>
         </rect>
        </property>
       </widget>
@@ -8273,7 +8464,7 @@ p, li { white-space: pre-wrap; }
          <x>63</x>
          <y>28</y>
          <width>81</width>
-         <height>22</height>
+         <height>20</height>
         </rect>
        </property>
       </widget>
@@ -8781,6 +8972,11 @@ p, li { white-space: pre-wrap; }
        <height>181</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Expressions</string>
      </property>
@@ -8790,9 +8986,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>130</x>
         <y>44</y>
-        <width>600</width>
+        <width>590</width>
         <height>22</height>
        </rect>
       </property>
@@ -8866,9 +9062,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>130</x>
         <y>124</y>
-        <width>600</width>
+        <width>590</width>
         <height>22</height>
        </rect>
       </property>
@@ -8941,14 +9137,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>5</x>
         <y>16</y>
-        <width>106</width>
+        <width>120</width>
         <height>22</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -8963,9 +9159,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>130</x>
         <y>16</y>
-        <width>600</width>
+        <width>590</width>
         <height>22</height>
        </rect>
       </property>
@@ -9039,9 +9235,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>130</x>
         <y>98</y>
-        <width>600</width>
+        <width>590</width>
         <height>22</height>
        </rect>
       </property>
@@ -9114,14 +9310,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>5</x>
         <y>98</y>
-        <width>105</width>
+        <width>120</width>
         <height>22</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -9135,14 +9331,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>5</x>
         <y>72</y>
-        <width>113</width>
+        <width>120</width>
         <height>22</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -9157,9 +9353,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>130</x>
         <y>72</y>
-        <width>600</width>
+        <width>590</width>
         <height>22</height>
        </rect>
       </property>
@@ -9232,14 +9428,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>5</x>
         <y>124</y>
-        <width>105</width>
+        <width>120</width>
         <height>22</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -9253,14 +9449,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>5</x>
         <y>152</y>
-        <width>105</width>
+        <width>120</width>
         <height>22</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -9274,14 +9470,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>5</x>
         <y>44</y>
-        <width>113</width>
+        <width>120</width>
         <height>22</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>9</pointsize>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -9296,9 +9492,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>130</x>
         <y>152</y>
-        <width>600</width>
+        <width>590</width>
         <height>22</height>
        </rect>
       </property>
@@ -9380,6 +9576,11 @@ p, li { white-space: pre-wrap; }
        <width>241</width>
        <height>229</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
      <property name="title">
       <string>Cuts</string>
@@ -9672,6 +9873,11 @@ p, li { white-space: pre-wrap; }
        <width>765</width>
        <height>129</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
      <property name="title">
       <string>Expressions</string>
@@ -10070,9 +10276,9 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>4</x>
-       <y>444</y>
+       <y>440</y>
        <width>521</width>
-       <height>169</height>
+       <height>173</height>
       </rect>
      </property>
      <property name="palette">
@@ -10130,7 +10336,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>6</x>
         <y>76</y>
-        <width>91</width>
+        <width>114</width>
         <height>21</height>
        </rect>
       </property>
@@ -10146,7 +10352,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>6</x>
         <y>98</y>
-        <width>83</width>
+        <width>114</width>
         <height>21</height>
        </rect>
       </property>
@@ -10159,7 +10365,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>6</x>
         <y>120</y>
-        <width>93</width>
+        <width>114</width>
         <height>22</height>
        </rect>
       </property>
@@ -10172,7 +10378,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>6</x>
         <y>52</y>
-        <width>83</width>
+        <width>114</width>
         <height>21</height>
        </rect>
       </property>
@@ -10188,7 +10394,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>6</x>
         <y>30</y>
-        <width>83</width>
+        <width>114</width>
         <height>21</height>
        </rect>
       </property>
@@ -10205,10 +10411,10 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>405</x>
-        <y>140</y>
-        <width>101</width>
-        <height>20</height>
+        <x>373</x>
+        <y>131</y>
+        <width>133</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="palette">
@@ -10640,7 +10846,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="runMaxThreadsLB">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>320</x>
         <y>60</y>
         <width>96</width>
         <height>21</height>
@@ -10648,6 +10854,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="font">
        <font>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -10711,6 +10918,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="font">
        <font>
+        <pointsize>8</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -10936,11 +11144,16 @@ p, li { white-space: pre-wrap; }
      <widget class="customCheckBox" name="runMaxEventsCB">
       <property name="geometry">
        <rect>
-        <x>320</x>
+        <x>306</x>
         <y>36</y>
         <width>106</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Max Events:</string>
@@ -10954,7 +11167,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>6</x>
         <y>144</y>
-        <width>101</width>
+        <width>114</width>
         <height>21</height>
        </rect>
       </property>
@@ -10965,11 +11178,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>12</y>
+        <x>108</x>
+        <y>16</y>
         <width>101</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Priority List</string>
@@ -11071,11 +11289,16 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>208</x>
-        <y>12</y>
-        <width>101</width>
+        <x>204</x>
+        <y>16</y>
+        <width>65</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Do Fits:</string>
@@ -11086,7 +11309,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>198</x>
         <y>120</y>
-        <width>93</width>
+        <width>120</width>
         <height>22</height>
        </rect>
       </property>
@@ -11099,7 +11322,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>198</x>
         <y>98</y>
-        <width>83</width>
+        <width>120</width>
         <height>21</height>
        </rect>
       </property>
@@ -11112,7 +11335,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>198</x>
         <y>144</y>
-        <width>111</width>
+        <width>120</width>
         <height>21</height>
        </rect>
       </property>
@@ -11125,7 +11348,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>198</x>
         <y>76</y>
-        <width>91</width>
+        <width>120</width>
         <height>21</height>
        </rect>
       </property>
@@ -11144,7 +11367,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>198</x>
         <y>30</y>
-        <width>83</width>
+        <width>120</width>
         <height>21</height>
        </rect>
       </property>
@@ -11160,7 +11383,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>198</x>
         <y>52</y>
-        <width>83</width>
+        <width>120</width>
         <height>21</height>
        </rect>
       </property>
@@ -11177,6 +11400,11 @@ p, li { white-space: pre-wrap; }
        <width>141</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Use calibrations:</string>
@@ -11922,6 +12150,11 @@ p, li { white-space: pre-wrap; }
         </disabled>
        </palette>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
       <property name="toolTip">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -12370,6 +12603,11 @@ analyze</string>
         </disabled>
        </palette>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
       <property name="toolTip">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -12417,7 +12655,7 @@ p, li { white-space: pre-wrap; }
         <x>5</x>
         <y>225</y>
         <width>71</width>
-        <height>31</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="palette">
@@ -12835,6 +13073,11 @@ p, li { white-space: pre-wrap; }
         </disabled>
        </palette>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
       <property name="toolTip">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -12867,6 +13110,11 @@ list</string>
        <width>209</width>
        <height>89</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
      <property name="title">
       <string>Analysis template modules</string>
@@ -13809,6 +14057,11 @@ list</string>
        </disabled>
       </palette>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>Load file to scan list</string>
      </property>
@@ -14256,6 +14509,11 @@ list</string>
         </colorrole>
        </disabled>
       </palette>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Reset scan list</string>
@@ -15322,6 +15580,11 @@ list</string>
      </disabled>
     </palette>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
    <property name="toolTip">
     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -15952,6 +16215,11 @@ p, li { white-space: pre-wrap; }
      </disabled>
     </palette>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
    <property name="toolTip">
     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -15980,20 +16248,24 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="geometry">
     <rect>
-     <x>848</x>
+     <x>840</x>
      <y>52</y>
-     <width>133</width>
+     <width>137</width>
      <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <pointsize>8</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="text">
     <string>Running Threads:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLineEdit" name="runningThreadsLE">
@@ -16027,14 +16299,15 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="geometry">
     <rect>
-     <x>776</x>
+     <x>768</x>
      <y>32</y>
-     <width>137</width>
+     <width>149</width>
      <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <pointsize>8</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

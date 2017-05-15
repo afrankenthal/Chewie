@@ -36,162 +36,162 @@ QMAKE_CXXFLAGS_RELEASE = -g  $(CPLUSPLUSFLAGS)
 target.path   	     = ./
 sources.path  	     = ./
 
-HEADERS       	     = include/analyzerdlg.h					  \
-                       include/AnalysisManager.h				  \
-                       include/Analysis.h					  \
-                       include/ANSIColors.h					  \
-                       include/CalibrationsManager.h				  \
-                       include/CanvasWidget.h					  \
-                       include/Charge.h 					  \
-                       include/ChargeUniMiB.h 					  \
-                       include/CutsUtilities.h  				  \
-                       include/CutsUtilities.h  				  \
-                       include/Data.h						  \
-                       include/Efficiency.h					  \
-                       include/EfficiencyUniMiB.h				  \
-                       include/EventManager.h					  \
-                       include/EventConverter.h 				  \
-                       include/fitParamManagerWidget.h  			  \
-                       include/HanSoloFitter.h  				  \
-                       include/HanSoloTreeBrowser.h				  \
-                       include/HistogramWindow.h				  \
-                       include/hnavigator.h					  \
-                       include/hTreeBrowser.h                                     \
-                       include/mainwindow.h					  \
-                       include/MessageTools.h					  \
-                       include/PixelMatrix.h					  \
-                       include/PixelMatrixCut.h 				  \
-                       include/PixelMatrixCutButton.h				  \
-                       include/PlanesMapping.h  				  \
-                       include/qrootcanvas.h                                      \
-                       include/Resolution.h					  \
-                       include/ResolutionUniMiB.h			          \
-                       include/Threader.h					  \
-                       include/ThreadUtilities.h				  \
-                       include/Tracks.h 					  \
-                       include/TracksAfter.h					  \
-                       include/Utilities.h					  \
-                       include/XmlAnalysis.h					  \
-                       include/XmlConverter.h					  \
-                       include/XmlGeneral.h					  \
-                       include/XmlParser.h					  \
-              	       include/XmlPlane.h					  \
-              	       include/XmlScan.h					  \
-                       include/XmlWindow.h					  \
-                       include/Window.h 					  \
-                       include/WindowsManager.h 				  \
-                       ../Monicelli/include/Detector.h  			  \
-                       ../Monicelli/include/Event.h				  \
-                       ../Monicelli/include/EventHeader.h			  \
-              	       ../Monicelli/include/Geometry.h  			  \
-                       ../Monicelli/include/mdisubwindow.h			  \
-                       ../Monicelli/include/ROC.h				  \
-                       ../Monicelli/include/KalmanPlaneInfo.h                     \
-                       ../Monicelli/plugins/customCheckBox/customCheckBox.h	  \
-                       ../Monicelli/plugins/customComboBox/customComboBox.h	  \
-                       ../Monicelli/plugins/customLineEdit/customLineEdit.h	  \
-                       ../Monicelli/plugins/customSpinBox/customSpinBox.h	  \
-                       ../Monicelli/plugins/customTableWidget/customTableWidget.h \
+HEADERS       	     = include/analyzerdlg.h					  	\
+                       include/AnalysisManager.h				  	\
+                       include/Analysis.h					  	\
+                       include/ANSIColors.h					  	\
+                       include/CalibrationsManager.h				  	\
+                       include/CanvasWidget.h					  	\
+                       include/Charge.h 					  	\
+                       include/ChargeUniMiB.h 					  	\
+                       include/CutsUtilities.h  				  	\
+                       include/CutsUtilities.h  				  	\
+                       include/Data.h						  	\
+                       include/Efficiency.h					  	\
+                       include/EfficiencyUniMiB.h				  	\
+                       include/EventManager.h					  	\
+                       include/EventConverter.h 				  	\
+                       include/fitParamManagerWidget.h  			  	\
+                       include/HanSoloFitter.h  				  	\
+                       include/HanSoloTreeBrowser.h				  	\
+                       include/HistogramWindow.h				  	\
+                       include/hnavigator.h					  	\
+                       include/hTreeBrowser.h                                     	\
+                       include/mainwindow.h					  	\
+                       include/MessageTools.h					  	\
+                       include/PixelMatrix.h					  	\
+                       include/PixelMatrixCut.h 				  	\
+                       include/PixelMatrixCutButton.h				  	\
+                       include/PlanesMapping.h  				  	\
+                       include/qrootcanvas.h                                      	\
+                       include/Resolution.h					  	\
+                       include/ResolutionUniMiB.h			          	\
+                       include/Threader.h					  	\
+                       include/ThreadUtilities.h				  	\
+                       include/Tracks.h 					  	\
+                       include/TracksAfter.h					  	\
+                       include/Utilities.h					  	\
+                       include/XmlAnalysis.h					  	\
+                       include/XmlConverter.h					  	\
+                       include/XmlGeneral.h					  	\
+                       include/XmlParser.h					  	\
+              	       include/XmlPlane.h					  	\
+              	       include/XmlScan.h					  	\
+                       include/XmlWindow.h					  	\
+                       include/Window.h 					  	\
+                       include/WindowsManager.h 				  	\
+                       ../Monicelli/include/Detector.h  			  	\
+                       ../Monicelli/include/Event.h				  	\
+                       ../Monicelli/include/EventHeader.h			  	\
+              	       ../Monicelli/include/Geometry.h  			  	\
+                       ../Monicelli/include/mdisubwindow.h			  	\
+                       ../Monicelli/include/ROC.h				  	\
+                       ../Monicelli/include/KalmanPlaneInfo.h                     	\
+                       ../Monicelli/plugins/customCheckBox/customCheckBox.h	  	\
+                       ../Monicelli/plugins/customComboBox/customComboBox.h	  	\
+                       ../Monicelli/plugins/customLineEdit/customLineEdit.h	  	\
+                       ../Monicelli/plugins/customSpinBox/customSpinBox.h	  	\
+                       ../Monicelli/plugins/customTableWidget/customTableWidget.h 	\
                        ../Monicelli/plugins/customTextEdit/customTextEdit.h
 
-SOURCES       	     = src/Analysis.cpp 		 			  \
-                       src/AnalysisManager.cpp  	 			  \
-                       src/analyzerdlg.cpp		 			  \
-                       src/CalibrationsManager.cpp	 			  \
-                       src/CanvasWidget.cpp		 			  \
-                       src/Charge.cpp			 			  \
-                       src/ChargeUniMiB.cpp			 		  \
-                       src/Data.cpp			 			  \
-                       src/Efficiency.cpp		 			  \
-                       src/EfficiencyUniMiB.cpp		 			  \
-                       src/EventManager.cpp		 			  \
-              	       src/EventConverter.cpp		 			  \
-                       src/fitParamManagerWidget.cpp	 			  \
-                       src/HanSoloFitter.cpp		 			  \
-                       src/HanSoloTreeBrowser.cpp	 			  \
-                       src/HistogramWindow.cpp  	 			  \
-                       src/hnavigator.cpp		 			  \
-                       src/hTreeBrowser.cpp                                       \
-                       src/mainwindow.cpp		 			  \
-                       src/main.cpp			 			  \
-                       src/Tracks.cpp			 			  \
-                       src/TracksAfter.cpp		 			  \
-                       src/Threader.cpp 		 			  \
-              	       src/ThreadUtilities.cpp  	 			  \
-                       src/PixelMatrix.cpp		 			  \
-                       src/PixelMatrixCut.cpp		 			  \
-                       src/PixelMatrixCutButton.cpp	 			  \
-                       src/PlanesMapping.cpp		 	 		  \
-                       src/qrootcanvas.cpp                                        \
-                       src/Resolution.cpp		 			  \
-                       src/ResolutionUniMiB.cpp		 			  \
-                       src/Utilities.cpp		 			  \
-                       src/XmlAnalysis.cpp		 			  \
-                       src/XmlConverter.cpp		 			  \
-                       src/XmlGeneral.cpp		 			  \
-              	       src/XmlWindow.cpp		 			  \
-                       src/XmlParser.cpp		 			  \
-                       src/XmlPlane.cpp 		 			  \
-                       src/XmlScan.cpp  		 			  \
-                       src/Window.cpp			 			  \
-                       src/WindowsManager.cpp		 			  \
-                       tmp/EventDict.C  		 			  \
-              	       tmp/EventHeaderDict.C		 			  \
-                       ../Monicelli/src/Detector.cpp	 			  \
-                       ../Monicelli/src/Event.cpp	 			  \
-                       ../Monicelli/src/EventHeader.cpp  			  \
-              	       ../Monicelli/src/Geometry.cpp	 			  \
-                       ../Monicelli/src/mdisubwindow.cpp 			  \
-                       ../Monicelli/src/ROC.cpp                                   \
+SOURCES       	     = src/Analysis.cpp 		 			  	\
+                       src/AnalysisManager.cpp  	 			  	\
+                       src/analyzerdlg.cpp		 			  	\
+                       src/CalibrationsManager.cpp	 			  	\
+                       src/CanvasWidget.cpp		 			  	\
+                       src/Charge.cpp			 			  	\
+                       src/ChargeUniMiB.cpp			 		  	\
+                       src/Data.cpp			 			  	\
+                       src/Efficiency.cpp		 			  	\
+                       src/EfficiencyUniMiB.cpp		 			  	\
+                       src/EventManager.cpp		 			  	\
+              	       src/EventConverter.cpp		 			  	\
+                       src/fitParamManagerWidget.cpp	 			  	\
+                       src/HanSoloFitter.cpp		 			  	\
+                       src/HanSoloTreeBrowser.cpp	 			  	\
+                       src/HistogramWindow.cpp  	 			  	\
+                       src/hnavigator.cpp		 			  	\
+                       src/hTreeBrowser.cpp                                       	\
+                       src/mainwindow.cpp		 			  	\
+                       src/main.cpp			 			  	\
+                       src/Tracks.cpp			 			  	\
+                       src/TracksAfter.cpp		 			  	\
+                       src/Threader.cpp 		 			  	\
+              	       src/ThreadUtilities.cpp  	 			  	\
+                       src/PixelMatrix.cpp		 			  	\
+                       src/PixelMatrixCut.cpp		 			  	\
+                       src/PixelMatrixCutButton.cpp	 			  	\
+                       src/PlanesMapping.cpp		 	 		  	\
+                       src/qrootcanvas.cpp                                        	\
+                       src/Resolution.cpp		 			  	\
+                       src/ResolutionUniMiB.cpp		 			  	\
+                       src/Utilities.cpp		 			  	\
+                       src/XmlAnalysis.cpp		 			  	\
+                       src/XmlConverter.cpp		 			  	\
+                       src/XmlGeneral.cpp		 			  	\
+              	       src/XmlWindow.cpp		 			  	\
+                       src/XmlParser.cpp		 			  	\
+                       src/XmlPlane.cpp 		 			  	\
+                       src/XmlScan.cpp  		 			  	\
+                       src/Window.cpp			 			  	\
+                       src/WindowsManager.cpp		 			  	\
+                       tmp/EventDict.C  		 			  	\
+              	       tmp/EventHeaderDict.C		 			  	\
+                       ../Monicelli/src/Detector.cpp	 			  	\
+                       ../Monicelli/src/Event.cpp	 			  	\
+                       ../Monicelli/src/EventHeader.cpp  			  	\
+              	       ../Monicelli/src/Geometry.cpp	 			  	\
+                       ../Monicelli/src/mdisubwindow.cpp 			  	\
+                       ../Monicelli/src/ROC.cpp                                   	\
                        ../Monicelli/src/KalmanPlaneInfo.cpp
 
 RESOURCES    	     = Chewie.qrc
 
 DEFINES      	     = USE_QT
 
-INCLUDEPATH  	    += ./include						  \
-             	       ../Monicelli						  \
-             	       ../Monicelli/include					  \
-                       ../Monicelli/plugins/customCheckBox			  \
-                       ../Monicelli/plugins/customComboBox			  \
-                       ../Monicelli/plugins/customLineEdit			  \
-             	       ../Monicelli/plugins/customTextEdit			  \
-             	       ../Monicelli/plugins/customSpinBox			  \
-             	       ../Monicelli/plugins/customTableWidget			  \
-             	       -pthread $(ROOTINC)			                  \
-             	       $(QTDIR)/include/QtXml					  \
-             	       $(XERCESCINC)						  \
+INCLUDEPATH  	    += ./include						  	\
+             	       ../Monicelli						  	\
+             	       ../Monicelli/include					  	\
+                       ../Monicelli/plugins/customCheckBox			  	\
+                       ../Monicelli/plugins/customComboBox			  	\
+                       ../Monicelli/plugins/customLineEdit			  	\
+             	       ../Monicelli/plugins/customTextEdit			  	\
+             	       ../Monicelli/plugins/customSpinBox			  	\
+             	       ../Monicelli/plugins/customTableWidget			  	\
+             	       -pthread $(ROOTINC)			                  	\
+             	       $(QTDIR)/include/QtXml					  	\
+             	       $(XERCESCINC)						  	\
              	       $(BOOSTINC)/include/boost/
 
-LIBS         	    += -lTreePlayer						  \
+LIBS         	    += -lTreePlayer						  	\
 
-LIBS         	    += -L$(ROOTLIB)						  \
+LIBS         	    += -L$(ROOTLIB)						  	\
 
-LIBS         	    += -L$(BOOSTLIB)						  \
-             	       -lboost_regex						  \
-          	       -lboost_system  					          \
+LIBS         	    += -L$(BOOSTLIB)						  	\
+             	       -lboost_regex						  	\
+          	       -lboost_system  					          	\
              	       -lboost_filesystem     
 
 
-LIBS         	    += -L../Monicelli/plugins/libs				  \
-                       -lcustomCheckBox 					  \
-                       -lcustomComboBox 					  \
-                       -lcustomLineEdit 					  \
-             	       -lcustomTextEdit 					  \
-             	       -lcustomSpinBox  					  \
-             	       -lcustomTableWidget					  \
+LIBS         	    += -L../Monicelli/plugins/libs				  	\
+                       -lcustomCheckBox 					  	\
+                       -lcustomComboBox 					  	\
+                       -lcustomLineEdit 					  	\
+             	       -lcustomTextEdit 					  	\
+             	       -lcustomSpinBox  					  	\
+             	       -lcustomTableWidget					  	\
 
 # install
-sources.files        = $$SOURCES   						  \
-                       $$HEADERS   						  \
-		       $$RESOURCES 						  \
-		       $$FORMS     						  \
-		       Chewie.pro  						  \
+sources.files        = $$SOURCES   						  	\
+                       $$HEADERS   						  	\
+		       $$RESOURCES 						  	\
+		       $$FORMS     						  	\
+		       Chewie.pro  						  	\
 		       images
  
 INSTALLS            += target sources
 
-header.depends       = ../Monicelli/include/EventHeader.h                         \
+header.depends       = ../Monicelli/include/EventHeader.h                         	\
 
 header.target        = tmp/EventHeaderDict.C
 
@@ -200,49 +200,49 @@ ROOTVERSION          = $$(ROOTVER)
 contains(ROOTVERSION, "FIVE") {
  message("Setting up Makefile for ROOT5")  
  header.commands     = @echo "'[1;33m------ ROOT5 header ----------[0;m'"  && \
-                       rootcint -f tmp/EventHeaderDict.C                          \
+                       rootcint -f tmp/EventHeaderDict.C                                \
                                 -c ../Monicelli/include/EventHeader.h+
 } else {
  message("Setting up Makefile for ROOT6")  
  header.commands     = @echo "'[1;33m------ ROOT6 header ----------[0;m'"  && \
-                       rootcint -f tmp/EventHeaderDict.C                          \
-                                -c ../Monicelli/include/EventHeader.h+         && \
+                       rootcint -f tmp/EventHeaderDict.C                          	\
+                                -c ../Monicelli/include/EventHeader.h+               && \
                        cp tmp/*.pcm .
 }
 
-trees.depends        = ../Monicelli/include/Event.h                               \
-                       ../Monicelli/include/Geometry.h                            \
-                       ../Monicelli/include/Detector.h                            \
-                       ../Monicelli/include/ROC.h                                 \
+trees.depends        = ../Monicelli/include/Event.h                               	\
+                       ../Monicelli/include/Geometry.h                            	\
+                       ../Monicelli/include/Detector.h                            	\
+                       ../Monicelli/include/ROC.h                                 	\
                        ../Monicelli/include/KalmanPlaneInfo.h
 
 trees.target         = tmp/EventDict.C
 
 contains(ROOTVERSION, "FIVE") {
  trees.commands      = @echo "'[1;33m------ ROOT5 commands --------[0;m'"  && \
-                       rootcint -f tmp/EventDict.C                                \
-                                -c ../Monicelli/include/Event.h+                  \
-                                   ../Monicelli/include/Geometry.h+               \
-                                   ../Monicelli/include/Detector.h+               \
-                                   ../Monicelli/include/ROC.h+                    \
-                                   ../Monicelli/include/KalmanPlaneInfo.h+        \
+                       rootcint -f tmp/EventDict.C                                	\
+                                -c ../Monicelli/include/Event.h+                  	\
+                                   ../Monicelli/include/Geometry.h+               	\
+                                   ../Monicelli/include/Detector.h+               	\
+                                   ../Monicelli/include/ROC.h+                    	\
+                                   ../Monicelli/include/KalmanPlaneInfo.h+        	\
 } else {
  trees.commands      = @echo "'[1;33m------ ROOT6 commands --------[0;0m'" && \
-                       rootcint -f tmp/EventDict.C                                \
-                                -c ../Monicelli/include/Event.h+                  \
-                                   ../Monicelli/include/Geometry.h+               \
-                                   ../Monicelli/include/Detector.h+               \
-                                   ../Monicelli/include/ROC.h+                    \
-                                   ../Monicelli/include/KalmanPlaneInfo.h+     && \
+                       rootcint -f tmp/EventDict.C                                	\
+                                -c ../Monicelli/include/Event.h+                  	\
+                                   ../Monicelli/include/Geometry.h+               	\
+                                   ../Monicelli/include/Detector.h+               	\
+                                   ../Monicelli/include/ROC.h+                    	\
+                                   ../Monicelli/include/KalmanPlaneInfo.h+           && \
                        cp tmp/*.pcm .
 }
 
 QMAKE_EXTRA_TARGETS += trees
 QMAKE_EXTRA_TARGETS += header
 
-FORMS 		    += ui/analyzerdlg.ui				     	  \
-                       ui/hnavigator.ui 				     	  \
-                       ui/canvaswidget.ui				     	  \
+FORMS 		    += ui/analyzerdlg.ui				     	  	\
+                       ui/hnavigator.ui 				     	  	\
+                       ui/canvaswidget.ui				     	  	\
                        ui/hanSoloFitter.ui
 
 MOC_DIR             += mocFiles
@@ -253,7 +253,7 @@ QT                  *= xml
 
 DEPENDPATH          += . src include ../Monicelli/plugins/customTableWidget
 
-extraclean.commands  = rm -rf tmp/*                                               \
+extraclean.commands  = rm -rf tmp/*                                               	\
                        MakefileExpress                                            
 
 clean.depends        = extraclean
