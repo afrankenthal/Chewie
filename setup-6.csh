@@ -33,6 +33,7 @@ setenv BASEDATADIR ../data/2015_10_October
 
 echo "This is ${HOSTNAME}";
 
+#===============   Personalized configuration on this computer   ==============================================
 if(${HOSTNAME} == "hal9000.mib.infn.it") then
 
   echo "Compiling on ${HOSTNAME}";

@@ -31,7 +31,55 @@
 
 export BASEDATADIR=../data/2015_10_October
 
+# ================================================================================*/
 if [ ${HOSTNAME} == "hal9000.mib.infn.it" ]; then
+
+  if [ ${USER} == "menasce" ]; then
+      export BASEDATADIR=/user/gr1/e831/menasce/MonicelliNew/data/2015_10_October
+  elif [ ${USER} == "dinardo" ]; then
+      export BASEDATADIR=/raid2/data1/vtx1/dinardo/TestBeamFBK_PlanarBRadBatch01
+  fi
+
+  #===== Local directories
+  export CHEWIEDIR=`pwd`
+  export CHEWIEDATADIR=${BASEDATADIR}/MonicelliOutput
+  export CHEWIEINPUTDIR=${BASEDATADIR}/ChewieInput
+  export CHEWIEOUTPUTDIR=${BASEDATADIR}/ChewieOutput
+  export CHEWIEXMLDIR=${CHEWIEDIR}/xml
+
+  export MonicelliDir=`cd ../Monicelli/; pwd; cd $CHEWIEDIR`
+  export Monicelli_CalSample_Dir=${BASEDATADIR}/Calibrations  
+
+  #===== Location of the ROOT components
+  export ROOTVER=SIX
+  export ROOTSYS=/user/service/root-6.04.10/
+  export ROOTINC=$ROOTSYS/include/root
+  export ROOTLIB=$ROOTSYS/lib/root
+
+  #===== Location of the Qt components
+  export QTDIR=/usr/local/Trolltech/Qt-4.8.5/
+  export QTCREATORDIR=/opt/local/qtcreator-2.7.1/bin/
+  export QTROOTSYSDIR=`pwd`/qtrootsys
+  export QTROOT_INCLUDE_PATH=$ROOTSYS/include
+
+  #===== Location of the BOOST components
+  export BOOSTINC=/usr/local/include/boost
+  export BOOSTLIB=/usr/local/lib
+
+  #===== Location of the XERCES components
+  export XERCESCINC=/opt/local/xerces/include
+  export XERCESCLIB=/opt/local/xerces/lib
+  
+  #===== C++ flags
+  export CPLUSPLUSFLAGS=-std=c++11
+
+  export LD_LIBRARY_PATH=/usr/lib64
+
+  alias qtcreator=${QTCREATORDIR}/qtcreator
+
+fi
+# ================================================================================*/
+if [ ${HOSTNAME} == "cip.mib.infn.it" ]; then
 
   if [ ${USER} == "menasce" ]; then
       export BASEDATADIR=/user/gr1/e831/menasce/MonicelliNew/data/2015_10_October
