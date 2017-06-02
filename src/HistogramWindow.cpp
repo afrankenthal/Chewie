@@ -30,6 +30,7 @@
 #include "HistogramWindow.h"
 #include "Data.h"
 #include "MessageTools.h"
+#include "PlanesMapping.h"
 
 #include <TH2F.h>
 #include <TAxis.h>
@@ -43,8 +44,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 HistogramWindow::HistogramWindow(std::string name, int binXMin, int binXMax, int binYMin, int binYMax, std::map<int,int> runNumberEntries) :
-    Window(name)
+    Window(name),
+    thePlaneMapping_(0)
 {
+    thePlaneMapping_ = new PlanesMapping();
+
     nBinsX_ = binXMax - binXMin +1;
     nBinsY_ = binYMax - binYMin +1;
 
@@ -81,6 +85,8 @@ HistogramWindow::HistogramWindow(std::string name, int binXMin, int binXMax, int
 ///////////////////////////////////////////////////////////////////////////////////////////
 HistogramWindow::~HistogramWindow(void)
 {
+    if (thePlaneMapping_) delete thePlaneMapping_;
+
     for(std::map<int,TH2F*>::iterator it=theHWindow_.begin(); it != theHWindow_.end(); ++it){
         if(!Window::fDoNotDelete_ && it->second )
             delete it->second;
@@ -125,11 +131,53 @@ HistogramWindow::~HistogramWindow(void)
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
 {
+    //std::cout<<"Inside checkWindow, col = "<<col<<std::endl;
+    //std::cout<<"Inside checkWindow, row = "<<row<<std::endl;
+
     TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis();
     TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis();
 
+   // std::cout<<"theHWindow = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),yAxis->FindBin(row))<<std::endl;
+
     if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0) return true;
     return false;
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+
+bool HistogramWindow::checkWindow_v1(float col, float row, int runNumber, int planeID) const
+{
+    //std::cout<<"Inside checkWindow, col = "<<col<<std::endl;
+    //std::cout<<"Inside checkWindow, row = "<<row<<std::endl;
+
+    TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis();
+    TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis();
+
+    //if (!thePlaneMapping_->getPlaneName(planeID).find("Strip")){
+    //std::cout<<"-- checkWindow --"<<std::endl;
+    //std::cout<<"Looking in "<<thePlaneMapping_->getPlaneName(planeID)<<std::endl;
+    //std::cout<<"Registered column by the strip, col = "<<col<<std::endl;
+    //std::cout<<"Registered row by the strip , row = "<<row<<std::endl;
+    //std::cout<<"Maximum value of X, with column 640 = "<<theHWindow_.find(runNumber)->second->GetBinContent(640)<<std::endl;
+    //std::cout<<"theHWindow accepted ? = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1)<<std::endl;
+    //}
+    // what is this line doing?
+//    if (thePlaneMapping_->getPlaneType(planeID) == 1){
+//        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1) != 0){ return true;}
+//        else{
+//            return false;
+//        }
+//    }
+//    else{
+        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0)
+        {
+            return true;
+        }
+        else
+        {
+                return false;
+        }
+//    }
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -152,15 +200,28 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
         else
             return false;
     }
-    else if(type==1)
+    else if(type==1) //strip
     {
-        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(0.)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(0.)) != 0 &&
-                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(0.)) != 0 )
+        //std::cout<<"--cell efficiency window check about--"<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1)<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1)<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1)<<std::endl;
 
-            return true;
-        else
-            return false;
+        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1) != 0 )
+                return true;
+           else
+                return false;
+
+
+        //if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(0.)) != 0 &&
+        //        theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(0.)) != 0 &&
+        //        theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(0.)) != 0 )
+
+        //    return true;
+        //else
+        //    return false;
 
     }
     else
@@ -205,7 +266,16 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
     int   entry = data.getEventChewieNumber();
     int   size  = data.getClusterSize(planeID);
 
-    std::stringstream ss ;
+//    if (thePlaneMapping_->getPlaneName(planeID).find("Dut") != std::string::npos){
+//    std::cout<<"-- Calculate Window --"<<std::endl;
+//    std::cout<<"Looking at "<<thePlaneMapping_->getPlaneName(planeID)<<std::endl;
+//    std::cout<<"data.getMeanCol ("<<planeID<<") = "<<data.getMeanCol(planeID)<<std::endl;
+//    std::cout<<"data.getMeanRow ("<<planeID<<") = "<<data.getMeanRow(planeID)<<std::endl;
+//    std::cout<<"data.getNumberOfRows ("<<planeID<<") = "<<data.getNumberOfRows(planeID)<<std::endl;
+//    std::cout<<"data.getNumberOfCols ("<<planeID<<") = "<<data.getNumberOfCols(planeID)<<std::endl;
+//    std::cout<<"data.getRunNumber () = "<<data.getRunNumber()<<std::endl;
+//    std::cout<<"data.getClusterSize ("<<planeID<<") = "<<data.getClusterSize(planeID)<<std::endl;
+//    }
 
     
     if (data.getIsInDetector(planeID) && row >= lowerRow && col >= lowerCol && row <= higherRow && col <= higherCol)
@@ -233,6 +303,7 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
 	row <= higherRow              && 
 	col <= higherCol)
     {
+
         if (nRow == 1 && nCol == 1)
         {
             theHWindow_.find(run)->second->Fill(col,row);
@@ -250,7 +321,7 @@ void HistogramWindow::calculateWindow(int planeID, const Data& data, int lowerCo
         {
             if (ceil(nRow/2.) != nRow/2.) // nRow odd
             {
-                theHWindow_.find(run)->second->Fill(col,row);
+                if(planeID==22 || planeID==23)
 
                 if (size == 1)
                     theHWindowClusterSize1_.find(run)->second->Fill(col,row);

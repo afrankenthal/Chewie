@@ -49,6 +49,7 @@ HEADERS       	     = include/analyzerdlg.h					  	\
                        include/Data.h						  	\
                        include/Efficiency.h					  	\
                        include/EfficiencyUniMiB.h				  	\
+                       include/EfficiencyOuterTracker.h				  	\
                        include/EventManager.h					  	\
                        include/EventConverter.h 				  	\
                        include/fitParamManagerWidget.h  			  	\
@@ -66,6 +67,7 @@ HEADERS       	     = include/analyzerdlg.h					  	\
                        include/qrootcanvas.h                                      	\
                        include/Resolution.h					  	\
                        include/ResolutionUniMiB.h			          	\
+                       include/ResolutionOuterTracker.h			          	\
                        include/Threader.h					  	\
                        include/ThreadUtilities.h				  	\
                        include/Tracks.h 					  	\
@@ -104,6 +106,7 @@ SOURCES       	     = src/Analysis.cpp 		 			  	\
                        src/Data.cpp			 			  	\
                        src/Efficiency.cpp		 			  	\
                        src/EfficiencyUniMiB.cpp		 			  	\
+                       src/EfficiencyOuterTracker.cpp	 			  	\
                        src/EventManager.cpp		 			  	\
               	       src/EventConverter.cpp		 			  	\
                        src/fitParamManagerWidget.cpp	 			  	\
@@ -125,6 +128,7 @@ SOURCES       	     = src/Analysis.cpp 		 			  	\
                        src/qrootcanvas.cpp                                        	\
                        src/Resolution.cpp		 			  	\
                        src/ResolutionUniMiB.cpp		 			  	\
+                       src/ResolutionOuterTracker.cpp    			  	\
                        src/Utilities.cpp		 			  	\
                        src/XmlAnalysis.cpp		 			  	\
                        src/XmlConverter.cpp		 			  	\

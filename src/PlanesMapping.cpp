@@ -59,7 +59,7 @@ PlanesMapping::PlanesMapping()
     planeToPosition_["Dut0"]                        = 22;
     planeToPosition_["Dut1"]                        = 23;
     planeToPosition_["Dut2"]                        = 24;
-    //planeToPosition_["Dut3"]                        = 25;
+    planeToPosition_["Dut3"]                        = 25;
 
     positionToPlane_[0 ]  = "Strip_Telescope_Upstream0"  ;
     positionToPlane_[1 ]  = "Strip_Telescope_Upstream1"  ;
@@ -86,7 +86,7 @@ PlanesMapping::PlanesMapping()
     positionToPlane_[22]  = "Dut0"                       ;
     positionToPlane_[23]  = "Dut1"                       ;
     positionToPlane_[24]  = "Dut2"                       ;
-    //positionToPlane_[25] = "Dut3"                        ;
+    positionToPlane_[25]  = "Dut3"                       ;
 
     positionToMonicelliPlane_[0 ]  = "Station: 5 - Plaq: 0";
     positionToMonicelliPlane_[1 ]  = "Station: 5 - Plaq: 1";
@@ -112,8 +112,8 @@ PlanesMapping::PlanesMapping()
     positionToMonicelliPlane_[21]  = "Station: 7 - Plaq: 5";
     positionToMonicelliPlane_[22]  = "Station: 4 - Plaq: 0";
     positionToMonicelliPlane_[23]  = "Station: 4 - Plaq: 1";
-    positionToMonicelliPlane_[24]  = "Station: 4 - Plaq: 2";
-    //positionToMonicelliPlane_[25] = "Station: 4 - Plaq: 3";
+    positionToMonicelliPlane_[24]  = "Station: 1 - Plaq: 0";
+    positionToMonicelliPlane_[25]  = "Station: 1 - Plaq: 1";
 
     positionToStation_[0 ]  = 5;
     positionToStation_[1 ]  = 5;
@@ -139,8 +139,8 @@ PlanesMapping::PlanesMapping()
     positionToStation_[21]  = 7;
     positionToStation_[22]  = 4;
     positionToStation_[23]  = 4;
-    positionToStation_[24]  = 4;
-    //positionToMonicelliPlane_[25] = 4;
+    positionToStation_[24]  = 1;
+    positionToStation_[25]  = 1;
 
     positionToPlaquette_[0 ]  = 0;
     positionToPlaquette_[1 ]  = 1;
@@ -166,8 +166,8 @@ PlanesMapping::PlanesMapping()
     positionToPlaquette_[21]  = 5;
     positionToPlaquette_[22]  = 0;
     positionToPlaquette_[23]  = 1;
-    positionToPlaquette_[24]  = 2;
-    //positionToPlaquette_[25] = 3;
+    positionToPlaquette_[24]  = 0;
+    positionToPlaquette_[25]  = 1;
 
     positionToType_[0 ]  = 1;
     positionToType_[1 ]  = 1;
@@ -192,9 +192,9 @@ PlanesMapping::PlanesMapping()
     positionToType_[20]  = 1;
     positionToType_[21]  = 1;
     positionToType_[22]  = 0;
-    positionToType_[23]  = 0;
-    positionToType_[24]  = 0;
-    //positionToType_[25] = 3;
+    positionToType_[23]  = 0; //1 is strip 0 is pixels
+    positionToType_[24]  = 1;
+    positionToType_[25]  = 1;
 
 }
 

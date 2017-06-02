@@ -153,6 +153,9 @@ void AnalyzerDlg::setInnerGeometry(void)
     ui->lowerColDUT3LE       ->setInnerGeometry(ui->lowerColDUT3LE      ->geometry());
     ui->higherRowDUT3LE      ->setInnerGeometry(ui->higherRowDUT3LE     ->geometry());
     ui->higherColDUT3LE      ->setInnerGeometry(ui->higherColDUT3LE     ->geometry());
+    ui->chargeModuleLE       ->setInnerGeometry(ui->chargeModuleLE      ->geometry());
+    ui->resolutionModuleLE   ->setInnerGeometry(ui->resolutionModuleLE  ->geometry());
+    ui->efficiencyModuleLE   ->setInnerGeometry(ui->efficiencyModuleLE  ->geometry());
     ui->convertMaxEventsSB           ->init();
     ui->convertMaxThreadsSB          ->init();
     ui->runMaxEventsSB               ->init();
@@ -796,9 +799,24 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     XmlParser::analysesDef_ theAnalyses = theXmlParser_->getAnalyses() ;
     for(XmlParser::analysesDef_::iterator it=theAnalyses.begin(); it!=theAnalyses.end(); ++it)
     {
-        if( it->second.first == "Charge"    ) ui->chargeModuleLE    ->setText(QString(it->second.second->getModule().c_str())) ;
-        if( it->second.first == "Efficiency") ui->efficiencyModuleLE->setText(QString(it->second.second->getModule().c_str())) ;
-        if( it->second.first == "Resolution") ui->resolutionModuleLE->setText(QString(it->second.second->getModule().c_str())) ;
+        if( it->second.first == "Charge"    )
+        {
+            ui->chargeModuleLE    ->textIsAttribute (true	);
+            ui->chargeModuleLE    ->setText         ("Module",it->second.second->getModule());
+            ui->chargeModuleLE    ->assignXmlElement((theXmlParser_->getAnalysesFromString("Charge"))->getNode());
+        }
+        if( it->second.first == "Efficiency")
+        {
+            ui->efficiencyModuleLE->textIsAttribute (true	);
+            ui->efficiencyModuleLE->setText         ("Module",it->second.second->getModule());
+            ui->efficiencyModuleLE->assignXmlElement((theXmlParser_->getAnalysesFromString("Efficiency"))->getNode());
+        }
+        if( it->second.first == "Resolution")
+        {
+            ui->resolutionModuleLE->textIsAttribute (true	);
+            ui->resolutionModuleLE->setText         ("Module",it->second.second->getModule());
+            ui->resolutionModuleLE->assignXmlElement((theXmlParser_->getAnalysesFromString("Resolution"))->getNode());
+        }
     }
 
     ui->convertMaxEventsSB->setEnabled                (ui->convertMaxEventsCB->isChecked()                                                          );

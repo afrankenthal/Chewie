@@ -1,12 +1,12 @@
 /*===============================================================================
  * Chewie: the FERMILAB MTEST telescope and DUT anaysis tool
- * 
- * Copyright (C) 2014 
+ *
+ * Copyright (C) 2014
  *
  * Authors:
  *
- * Mauro Dinardo      (Universita' Bicocca) 
- * Dario Menasce      (INFN) 
+ * Mauro Dinardo      (Universita' Bicocca)
+ * Dario Menasce      (INFN)
  * Jennifer Ngadiuba  (INFN)
  * Lorenzo Uplegger   (FNAL)
  * Luigi Vigani       (INFN)
@@ -30,10 +30,12 @@
 #include "AnalysisManager.h"
 #include "Efficiency.h"
 #include "EfficiencyUniMiB.h"
+#include "EfficiencyOuterTracker.h"
 #include "Charge.h"
 #include "ChargeUniMiB.h"
 #include "Resolution.h"
 #include "ResolutionUniMiB.h"
+#include "ResolutionOuterTracker.h"
 #include "Tracks.h"
 #include "TracksAfter.h"
 #include "Data.h"
@@ -118,7 +120,7 @@ int AnalysisManager::initializeTree(std::string fileName)
         threadedTrees_ [threadNumber][treeNumber] = treeFilesList_[fileName];
         if(threadedData_.find(threadNumber) == threadedData_.end()
                 && threadedData_[threadNumber].find(treeNumber) == threadedData_[threadNumber].end())
-                 threadedData_  [threadNumber][treeNumber] = Data();
+            threadedData_  [threadNumber][treeNumber] = Data();
 
         threadedData_  [threadNumber][treeNumber].setBranchAddress(treeFilesList_[fileName]);
         threadedCurrentEntries_[threadNumber][treeNumber] = 0     ;
@@ -366,31 +368,23 @@ Analysis* AnalysisManager::addAnalysis(int         analysisPriority,
 
         if(     analysisName == "Charge")
             if( module == "UniMiB")
-            {
-                analyses_[analysisPriority].second = new ChargeUniMiB    (this,nOfThreads_);
-            }
-        else
-            {
-                analyses_[analysisPriority].second = new Charge          (this,nOfThreads_);
-            }
+                analyses_[analysisPriority].second = new ChargeUniMiB      (this,nOfThreads_);
+            else
+                analyses_[analysisPriority].second = new Charge            (this,nOfThreads_);
         else if(analysisName == "Efficiency")
             if( module == "UniMiB")
-            {
-                analyses_[analysisPriority].second = new EfficiencyUniMiB(this,nOfThreads_);
-            }
-        else
-            {
-                analyses_[analysisPriority].second = new Efficiency      (this,nOfThreads_);
-            }
+                analyses_[analysisPriority].second = new EfficiencyUniMiB      (this,nOfThreads_);
+            else if( module == "OuterTracker")
+                analyses_[analysisPriority].second = new EfficiencyOuterTracker(this,nOfThreads_);
+            else
+                analyses_[analysisPriority].second = new Efficiency            (this,nOfThreads_);
         else if(analysisName == "Resolution")
             if( module == "UniMiB")
-            {
                 analyses_[analysisPriority].second = new ResolutionUniMiB(this,nOfThreads_);
-            }
-        else
-            {
+            else if( module == "OuterTracker")
+                analyses_[analysisPriority].second = new ResolutionOuterTracker(this,nOfThreads_);
+            else
                 analyses_[analysisPriority].second = new Resolution      (this,nOfThreads_);
-            }
         else if(analysisName == "Tracks")
             analyses_[analysisPriority].second = new Tracks      (this,nOfThreads_);
         else if(analysisName == "TracksAfter")
@@ -541,7 +535,7 @@ void AnalysisManager::startSequence(void)
         //if (analyses[it].first.find("After") != std::string::npos)
         //{
         //    writeOutFile();
-            analyses_[it].second->getInFile(outFile_);
+        analyses_[it].second->getInFile(outFile_);
         //}
 
         currentOperation_ = "Begin " + analyses_[it].first + " job ";
@@ -705,10 +699,10 @@ void AnalysisManager::setThreadEvents(void)
             for(std::map<int, TTree*>::iterator itt=it->second.begin(); itt!=it->second.end(); itt++)
             {
                 if(maxEvents_ <= 0)
-                        threadedMaxEntries_[it->first][itt->first] = itt->second->GetEntries();
+                    threadedMaxEntries_[it->first][itt->first] = itt->second->GetEntries();
                 else
                 {
-                        threadedMaxEntries_[it->first][itt->first] = maxEvents_/inFilesList_.size();
+                    threadedMaxEntries_[it->first][itt->first] = maxEvents_/inFilesList_.size();
                     if(it == threadedTrees_.begin() && itt == it->second.begin())
                         threadedMaxEntries_[it->first][itt->first] += maxEvents_%inFilesList_.size();
                     if( threadedMaxEntries_[it->first][itt->first] > itt->second->GetEntries())

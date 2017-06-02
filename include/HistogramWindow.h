@@ -38,6 +38,7 @@
 class TTree;
 class TH2F;
 class TH1F;
+class PlanesMapping;
 
 class HistogramWindow : public Window
 {
@@ -45,7 +46,8 @@ public:
     HistogramWindow (std::string name, int binXMin, int binXMax, int binYMin, int binYMax, std::map<int,int> runNumberEntries);
     ~HistogramWindow(void                                                   );
 
-    bool checkWindow            (float col, float row      , int runNumber  ) const;
+    bool checkWindow            (float col, float row      , int runNumber) const;
+    bool checkWindow_v1         (float col, float row      , int runNumber , int planeID  ) const;
     bool checkWindowAbout       (float col, float row      , int runNumber , int type ) const;
     bool checkTimeWindow        (float col, int eventNumber, int runNumber  ) const;
     bool checkTimeWindowAbout   (float col, int eventNumber, int runNumber  ) const;
@@ -59,6 +61,7 @@ public:
     int  getNumberOfEvents      (void                                       );
 
     std::pair<int,int> getNbins(void)const {return std::make_pair(nBinsX_,nBinsY_);}
+    PlanesMapping*                                     thePlaneMapping_;
 
 private:
     std::map<int,TH2F*> theHWindow_            ;

@@ -63,6 +63,7 @@ public:
     void         setYSigmaSlope                     (double        v       ){ySigmaSlope_                         = v;}
     void         setDataType                        (int           v, int p){dataType_                        [p] = v;}
     void         setHasHit	                    (bool          v, int p){hasHit_  	                      [p] = v;}
+    void         setHasStub	                        (bool          v, int p){hasStub_  	                      [p] = v;}
     void         setBelongsToTrack                  (bool          v, int p){belongsToTrack_                  [p] = v;}
     void         setIsInDetector                    (bool          v, int p){isInDetector_                    [p] = v;}
     void         setIsInDetectorUnconstrained       (bool          v, int p){isInDetectorUnconstrained_       [p] = v;}
@@ -143,6 +144,7 @@ public:
     double       getYSlope  	                    (void            )const {return ySlope_                             ;}
     double       getYSigmaSlope                     (void            )const {return ySigmaSlope_                        ;}
     bool         getHasHit  	                    (int  p          )const {return hasHit_                          [p];}
+    bool         getHasStub  	                    (int  p          )const {return hasStub_                         [p];}
     int          getDataType  	                    (int  p          )const {return dataType_                        [p];}
     bool         getBelongsToTrack                  (int  p          )const {return belongsToTrack_                  [p];}
     bool         getIsInDetector                    (int  p          )const {return isInDetector_                    [p];}
@@ -227,6 +229,7 @@ private:
     double       ySigmaSlope_                                  ;//Error on y Slope
     int          dataType_                          [nOfPlanes];//Data type 0 pixel 1 strip
     bool         hasHit_                            [nOfPlanes];//Detector has a hit (cluster)
+    bool         hasStub_                           [nOfPlanes];//Detector has a stub (specific for Outer Tracker 2S module)
     bool         belongsToTrack_                    [nOfPlanes];//Hit belongs to track
     bool         isInDetector_                      [nOfPlanes];//Predicted impact point is inside detector area
     bool         isInDetectorUnconstrained_         [nOfPlanes];//Predicted impact point of unconstrained track is inside detector area
