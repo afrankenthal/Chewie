@@ -242,7 +242,8 @@ void EventConverter::convert(Event& event,int e)
                             ++clustersSizeLE2;
                     }
                     dataVector[t].setHasHit	       (true,p);
-                    dataVector[t].setHasStub	   ((bool)clusters[planeName][clusterID]["stub"],p);
+                    if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
+                        dataVector[t].setHasStub	   ((bool)clusters[planeName][clusterID]["stub"],p);
                     dataVector[t].setDataType	   ((int)clusters[planeName][clusterID]["dataType"], p);
                     dataVector[t].setBelongsToTrack(true,p);
                     dataVector[t].setClusterSize   ((int)trackCandidates[t][planeName]["size"],p);
@@ -416,7 +417,8 @@ void EventConverter::convert(Event& event,int e)
                     }
 
                     dataVector[t].setHasHit  	   (false,p);
-                    dataVector[t].setHasStub  	   (false,p);
+                    if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
+                        dataVector[t].setHasStub  	   (false,p);
                     //std::cout<<"datatype 2 "<<	 clusters[planeName][clusterID]["dataType"] <<" plane "<<p<<" name "<<planeName<<std::endl;
                     dataVector[t].setDataType      ((int)-1,p);
                     dataVector[t].setBelongsToTrack(false,p);
@@ -493,7 +495,8 @@ void EventConverter::convert(Event& event,int e)
                                         {
                                             clusterID = itC->first;
                                             dataVector[t].setHasHit(true,p);
-                                            dataVector[t].setHasStub((*hits)["stub"],p);
+                                            if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
+                                                dataVector[t].setHasStub((*hits)["stub"],p);
                                             //dataVector[t].setDataType((int)clusters[planeName][clusterID]["dataType"],p);
                                             isGood = true;
                                             break;
