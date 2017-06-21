@@ -34,7 +34,6 @@
 
 #include <mdisubwindow.h>
 #include <QtWidgets/QApplication>
-//#include <QtWidgets/QtGui>
 #include <QtCore/QSettings>
 #include <QtCore/QSignalMapper>
 #include <QtWidgets/QMdiArea>
@@ -43,8 +42,6 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
-
-//#include "MessageTools.h"
 
 //===========================================================================
 MainWindow::MainWindow() :
@@ -100,15 +97,6 @@ MainWindow::~MainWindow()
 //===========================================================================
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    TObjLink *lnk = TApplication::GetApplications()->FirstLink();
-    while (lnk)
-    {
-     ss_.str(""); ss_ << "Terminating " << lnk->GetObject()->GetName();STDLINE(ss_.str(),ACWhite) ;
-     ((TApplication*)lnk->GetObject())->Terminate() ;
-     lnk = lnk->Next();
-    }
-
-    mdiArea_->closeAllSubWindows();
     if (mdiArea_->currentSubWindow())
     {
         event->ignore();
@@ -118,6 +106,16 @@ void MainWindow::closeEvent(QCloseEvent *event)
         event->accept();
     }
     STDLINE("Terminating Chewie",ACWhite) ;
+
+    TObjLink *lnk = TApplication::GetApplications()->FirstLink();
+    while (lnk)
+    {
+     ss_.str(""); ss_ << "Terminating " << lnk->GetObject()->GetName();STDLINE(ss_.str(),ACWhite) ;
+     ((TApplication*)lnk->GetObject())->Terminate() ;
+     lnk = lnk->Next();
+    }
+
+    mdiArea_->closeAllSubWindows();
 }
 
 //===========================================================================
@@ -291,7 +289,6 @@ void MainWindow::writeSettings()
 {
     QSettings settings("Trolltech", "Chewie Analyzer");
     settings.setValue("pos",  pos ());
-    //cout << __LINE__ << "] " << this->size().width() << " " << this->size().height() << endl ;
     settings.setValue("size", size());
 }
 

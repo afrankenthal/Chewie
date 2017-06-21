@@ -27,7 +27,19 @@
 # * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ================================================================================*/
 
+# Initialization recipe:
+# 
+# On hal9000:
 # scl enable devtoolset-2 tcsh
+# source setup-6.csh
+#
+# On cip:
+# source setup-6.csh
+#
+# To switch from one to the other:
+# qmake
+# make [-f MakefileAll] distclean 
+# qmake && make [-f MakefileAll] 
 
 setenv BASEDATADIR ../data/2015_10_October
 
@@ -109,7 +121,7 @@ if(${HOSTNAME} == "cip.mib.infn.it") then
   setenv ROOTVER                   SIX
   setenv ROOTSYS		   /usr
   setenv ROOTINC		   $ROOTSYS/include/root
-  setenv ROOTLIB		   $ROOTSYS/lib/root
+  setenv ROOTLIB		   $ROOTSYS/lib64/root
 
   #===== Location of the Qt components
   setenv QTDIR  		   /user/service/Qt-5.6.2/5.6/gcc_64
