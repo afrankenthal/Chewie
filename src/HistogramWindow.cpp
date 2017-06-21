@@ -144,7 +144,7 @@ bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-bool HistogramWindow::checkWindow_v1(float col, float row, int runNumber, int planeID) const
+bool HistogramWindow::checkWindow_v1(float col, float row, int runNumber, int /*planeID*/) const
 {
     //std::cout<<"Inside checkWindow, col = "<<col<<std::endl;
     //std::cout<<"Inside checkWindow, row = "<<row<<std::endl;

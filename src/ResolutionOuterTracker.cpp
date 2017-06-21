@@ -612,10 +612,10 @@ void ResolutionOuterTracker::calculateXresiduals(bool pass, int planeID, const D
     else if (xPixelResidual <= 0)
       xPixelEdgeResidual = (xPixelResidual + data.getXPitchLocal(planeID)/2);
 
-    const Window* theWindow = theWindowsManager_->getWindow(planeID);
-    int           row       = data.getRowPredicted   ( planeID)     ;
+//     const Window* theWindow = theWindowsManager_->getWindow(planeID);
+//     int           row       = data.getRowPredicted   ( planeID)     ;
     int           col       = data.getColPredicted   ( planeID )    ;
-    int           run       = data.getRunNumber()                   ;
+//     int           run       = data.getRunNumber()                   ;
     
     //if (!theWindow->checkWindow(col,row,run)) return;
 
@@ -736,7 +736,7 @@ void ResolutionOuterTracker::calculateXresiduals(bool pass, int planeID, const D
     asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
     
     
-    float xMeasured;
+    float xMeasured = 0 ;
     if (asimmetry >= -1. && asimmetry <= 1.)
       {
         toGet = "Charge/" + planeName +  "/XAsimmetry/h1DXcellChargeAsimmetryInv_" + planeName;
@@ -933,7 +933,7 @@ void ResolutionOuterTracker::calculateYresiduals(bool pass, int planeID, const D
     asimmetry  = (float)(chargeDown - chargeUp)/totalCharge;
 
 
-    float yMeasured;
+    float yMeasured = 0 ;
     if (asimmetry >= -1. && asimmetry <= 1.)
       {
         toGet = "Charge/" + planeName +  "/YAsimmetry/h1DYcellChargeAsimmetryInv_" + planeName;
@@ -1016,7 +1016,7 @@ void ResolutionOuterTracker::xResolutionOuterTracker(bool pass, int planeID, con
 
     int   size    = data.getClusterSize(planeID);
     int   maxHits = 4; //Irene modified. Before it was maxHits = 3;
-    float Xp;
+    float Xp      = 0 ;
 
     if(size > maxHits)
         return;
@@ -1128,7 +1128,7 @@ void ResolutionOuterTracker::yResolutionOuterTracker(bool pass, int planeID, con
 
     int   size    = data.getClusterSize(planeID);
     int   maxHits = 4; //Irene modified. Before it was 2.
-    float Yp;
+    float Yp      = 0;
 
     if(size > maxHits)
         return;

@@ -211,8 +211,6 @@ void EventConverter::convert(Event& event,int e)
                 dataVector[t].setXSigmaSlopeUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](0,0))   , p);
                                                           dataVector[t].setYSlopeUnconstrained(unconstrainedFittedTracks[t][planeName][2],p);
                 dataVector[t].setYSigmaSlopeUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](2,2))   , p);
-                                                          int dummyline1=0;//These are just dummy lines because qtcreator messes up the indentation
-                        int dummyline2=0;//These are just dummy lines because qtcreator messes up the indentation
                 if(trackCandidates[t].find(planeName) != trackCandidates[t].end())
                 {
                     clusterID = (int)trackCandidates[t][planeName]["cluster ID"];

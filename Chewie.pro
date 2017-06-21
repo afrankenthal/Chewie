@@ -36,6 +36,8 @@ QMAKE_CXXFLAGS_RELEASE = -O4 $(CPLUSPLUSFLAGS)
 target.path   	     = ./
 sources.path  	     = ./
 
+QT                  += widgets
+
 HEADERS       	     = include/analyzerdlg.h					  	\
                        include/AnalysisManager.h				  	\
                        include/Analysis.h					  	\

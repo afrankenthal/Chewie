@@ -887,12 +887,12 @@ void Utilities::customProfileX(TH2F *h2DHist, TH1F *profile, const char* /*outpu
 
     for(int i=1; i<=nXBin; i++){
 
-        float mean=0.;
-        float mean_std;
-        float error=0.;
-        float sigma=0.;
-        float weight=0.;
-        int   entries=0.;
+        float mean     = 0.;
+        float mean_std = 0.;
+        float error    = 0.;
+        float sigma    = 0.;
+        float weight   = 0.;
+        int   entries  = 0.;
 
         for(int j=yBinMin; j<=yBinMax ; j++){
 

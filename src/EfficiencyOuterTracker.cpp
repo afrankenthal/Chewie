@@ -163,9 +163,9 @@ void EfficiencyOuterTracker::analyze(const Data& data, int threadNumber)
   if (cutsFormulas_.find("cell efficiency X") != cutsFormulas_.end())
     passXCellEfficiencyCut = cutsFormulas_["cell efficiency X"][threadNumber]->EvalInstance();
       
-  bool passYCellEfficiencyCut = true;
-  if (cutsFormulas_.find("cell efficiency Y") != cutsFormulas_.end())
-    passYCellEfficiencyCut = cutsFormulas_["cell efficiency Y"][threadNumber]->EvalInstance();
+//   bool passYCellEfficiencyCut = true;
+//   if (cutsFormulas_.find("cell efficiency Y") != cutsFormulas_.end())
+//     passYCellEfficiencyCut = cutsFormulas_["cell efficiency Y"][threadNumber]->EvalInstance();
 
 
   // ######################################################

@@ -736,7 +736,7 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
     asimmetry   = (float)(chargeLeft - chargeRight)/totalCharge;
     
     
-    float xMeasured;
+    float xMeasured = 0 ;
     if (asimmetry >= -1. && asimmetry <= 1.)
       {
         toGet = "Charge/" + planeName +  "/XAsimmetry/h1DXcellChargeAsimmetryInv_" + planeName;
@@ -750,6 +750,10 @@ void Resolution::calculateXresiduals(bool pass, int planeID, const Data &data, i
 	      {
                 xMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fXAsimmetryFit"))->Eval(asimmetry);
 	      }
+              else
+              {
+                xMeasured = 0 ;
+              }
 	  }
 	
         THREADED(hXResidualCalculated_[planeID])->Fill( xMeasured - xPixelEdgeResidual);
@@ -933,7 +937,7 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
     asimmetry  = (float)(chargeDown - chargeUp)/totalCharge;
 
 
-    float yMeasured;
+    float yMeasured = 0 ;
     if (asimmetry >= -1. && asimmetry <= 1.)
       {
         toGet = "Charge/" + planeName +  "/YAsimmetry/h1DYcellChargeAsimmetryInv_" + planeName;
@@ -947,6 +951,10 @@ void Resolution::calculateYresiduals(bool pass, int planeID, const Data &data, i
 	      {
 		yMeasured = ((TF1*)((TH1F*)theAnalysisManager_->getOutFile_()->Get(toGet.c_str()))->GetFunction("fYAsimmetryFit"))->Eval(asimmetry);
 	      }
+              else
+              {
+                yMeasured = 0 ;
+              }
 	  }
 
         THREADED(hYResidualCalculated_[planeID])->Fill( yMeasured - yPixelEdgeResidual);
@@ -1068,7 +1076,8 @@ void Resolution::xResolution(bool pass, int planeID, const Data& data, int threa
             Xp = -data.getXPitchLocal( planeID )/2 + data.getXPixelResidualLocal( planeID );
         else if(data.getXPixelResidualLocal( planeID ) <= 0)
             Xp = (data.getXPixelResidualLocal( planeID ) + data.getXPitchLocal( planeID )/2);
-
+        else
+            Xp = 0 ;
         THREADED(hX2DResidualsDigital_[planeID])->Fill(xHit-xRes,Xp);
 
     }
@@ -1179,7 +1188,8 @@ void Resolution::yResolution(bool pass, int planeID, const Data& data, int threa
             Yp = -data.getYPitchLocal( planeID )/2 + data.getYPixelResidualLocal( planeID );
         else if(data.getYPixelResidualLocal( planeID ) <= 0)
             Yp = (data.getYPixelResidualLocal( planeID ) + data.getYPitchLocal( planeID )/2);
-
+        else
+            Yp = 0 ;
         THREADED(hY2DResidualsDigital_[planeID])->Fill(yHit-yRes,Yp);
 
     }
