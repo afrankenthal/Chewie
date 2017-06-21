@@ -30,8 +30,8 @@
 #ifndef XMLGENERAL_H
 #define XMLGENERAL_H
 
-#include <QWidget>
-#include <QDomNode>
+#include <QtWidgets/QWidget>
+#include <QtXml/QDomNode>
 #include <MessageTools.h>
 
 class XmlGeneral /*: public QWidget */

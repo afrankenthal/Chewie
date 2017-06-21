@@ -55,7 +55,7 @@
 #include <TFile.h>
 #include <TROOT.h>
 
-#include <QRegExp>
+#include <QtCore/QRegExp>
 
 #include <iostream>
 #include <sstream>

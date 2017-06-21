@@ -30,17 +30,17 @@
 #ifndef _PIXELMATRIX
 #define _PIXELMATRIX
 
-#include <qwidget.h>
-#include <QScrollArea>
-#include <qspinbox.h>
-#include <qstatusbar.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qbuttongroup.h>
-#include <qregexp.h>
+#include <QtWidgets/qwidget.h>
+#include <QtWidgets/QScrollArea>
+#include <QtWidgets/qspinbox.h>
+#include <QtWidgets/qstatusbar.h>
+#include <QtWidgets/qpushbutton.h>
+#include <QtWidgets/qradiobutton.h>
+#include <QtWidgets/qbuttongroup.h>
+#include <QtCore/qregexp.h>
 #include <map>
-#include <qstring.h>
-#include <TQtWidget.h>
+#include <QtCore/qstring.h>
+//#include <TQtWidget.h>
 #include <TF1.h>
 #include <TH1.h>
 #include <TH2.h>
@@ -174,8 +174,8 @@ private:
    Formatter      * theFormatter ;
    //Chronos        * theTimer ;
    //QMainWindow    * theMw ;
-   TQtWidget      * HistoCanvas ;
-   TQtWidget      * bigHistoCanvas ;
+//   TQtWidget      * HistoCanvas ;
+//   TQtWidget      * bigHistoCanvas ;
    
    TArrayD        * errorData ;
    TVirtualFitter * fitter ;

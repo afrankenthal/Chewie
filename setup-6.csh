@@ -61,10 +61,8 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
   setenv ROOTLIB		  $ROOTSYS/lib/root
 
   #===== Location of the Qt components
-  setenv QTDIR  		  /usr/local/Trolltech/Qt-4.8.5/
-  setenv QTCREATORDIR		  /opt/local/qtcreator-2.7.1/bin/
-  setenv QTROOTSYSDIR		  `pwd`/qtrootsys
-  setenv QTROOT_INCLUDE_PATH	  $ROOTSYS/include
+  setenv QTDIR  		  /user/service/Qt-5.6.2/5.6/gcc_64/
+  setenv QTCREATORDIR		  /raid1/menasce/qt-creator-opensource-src-4.3.0
 
   #===== Location of the BOOST components
   setenv BOOSTINC		  /usr/local/include/boost
@@ -79,7 +77,7 @@ if(${HOSTNAME} == "hal9000.mib.infn.it") then
 
   setenv LD_LIBRARY_PATH          /usr/lib64
 
-  alias qtcreator ${QTCREATORDIR}/qtcreator
+#  alias qtcreator ${QTCREATORDIR}/qtcreator
 
 endif
 #============================================================================
@@ -88,7 +86,7 @@ if(${HOSTNAME} == "cip.mib.infn.it") then
   echo "Compiling on ${HOSTNAME}";
   
   if(     ${USER} == "menasce") then
-   setenv BASEDATADIR /raid1/menasce/data/TestBeamData_PlanarRadBatch01_PlanarRadBatch02_3DBatch01/
+   setenv BASEDATADIR /raid1/menasce/AnalysisTBF/data/TestBeamData_PlanarRadBatch01_PlanarRadBatch02_3DBatch01/
   else if(${USER} == "dinardo") then
    setenv BASEDATADIR /raid2/data1/vtx1/dinardo/TestBeamFBKPlanarBeforeRad_Batch01
   else if(${USER} == "dzuolo") then
@@ -109,13 +107,13 @@ if(${HOSTNAME} == "cip.mib.infn.it") then
 
   #===== Location of the ROOT components
   setenv ROOTVER                   SIX
-  setenv ROOTSYS		   /user/service/root-6.04.10/
+  setenv ROOTSYS		   /usr
   setenv ROOTINC		   $ROOTSYS/include/root
   setenv ROOTLIB		   $ROOTSYS/lib/root
 
   #===== Location of the Qt components
-  setenv QTDIR  		   /usr/local/Trolltech/Qt-4.8.5/
-  setenv QTCREATORDIR		   /opt/local/qtcreator-2.7.1/bin
+  setenv QTDIR  		   /user/service/Qt-5.6.2/5.6/gcc_64
+  setenv QTCREATORDIR		   /user/service/QtCreator-4.3.0/
 
   #===== Location of the BOOST components
   setenv BOOSTINC		   /usr/local/include/boost
@@ -130,7 +128,7 @@ if(${HOSTNAME} == "cip.mib.infn.it") then
 
   setenv LD_LIBRARY_PATH	   
   
-  alias  qtcreator                 ${QTCREATORDIR}/qtcreator
+#  alias  qtcreator                 ${QTCREATORDIR}/qtcreator
     
 endif
 

@@ -33,7 +33,16 @@
 #include "HanSoloFitter.h"
 
 #include <mdisubwindow.h>
-#include <QtGui>
+#include <QtWidgets/QApplication>
+//#include <QtWidgets/QtGui>
+#include <QtCore/QSettings>
+#include <QtCore/QSignalMapper>
+#include <QtWidgets/QMdiArea>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QToolBar>
 
 //#include "MessageTools.h"
 

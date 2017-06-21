@@ -60,14 +60,14 @@
 #include "ui_hanSoloFitter.h"
 #include "Utilities.h"
 #include "analyzerdlg.h"
-#include <QDialog>
-#include <QString>
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QListWidgetItem>
-#include <QMenuBar>
+#include <QtWidgets/QDialog>
+#include <QtCore/QString>
+#include <QtCore/QFuture>
+#include <QtCore/QFutureWatcher>
+#include <QtWidgets/QListWidgetItem>
+#include <QtWidgets/QMenuBar>
 #include "MessageTools.h"
-#include <QMdiSubWindow>
+#include <QtWidgets/QMdiSubWindow>
 #include <set>
 #include <string>
 #include <TKey.h>
@@ -84,8 +84,8 @@
 #include <TIterator.h>
 #include <TClass.h>
 #include <vector>
-#include <QFileDialog>
-#include <QList>
+#include <QtWidgets/QFileDialog>
+#include <QtCore/QList>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -93,7 +93,7 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <QStandardItem>
+#include <QtGui/QStandardItem>
 #include "XmlParser.h"
 #include "XmlWindow.h"
 #include "XmlPlane.h"
@@ -102,9 +102,9 @@
 #include "XmlConverter.h"
 #include "XmlScan.h"
 #include <limits>
-#include <QTextStream>
-#include <QFile>
-#include <QtXml>
+#include <QtCore/QTextStream>
+#include <QtCore/QFile>
+#include <QtXml/QtXml>
 
 HanSoloFitter::HanSoloFitter(QWidget *parent ) :
     QDialog                     (                       parent)
@@ -1661,8 +1661,8 @@ void HanSoloFitter::on_openFilePB_clicked()
         return;
     for(int f=0; f<fileNames.size(); f++)
     {
-        TFile* file=TFile::Open(fileNames[f].toAscii(),"READ");
-        this->addFile(fileNames[f].toStdString(),file);
+        TFile* file=TFile::Open(fileNames[f].toStdString().c_str(),"READ");
+        this->addFile(fileNames[f].toStdString().c_str(),file);
     }
 
 }

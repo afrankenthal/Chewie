@@ -30,7 +30,7 @@
 #ifndef MDISUBWINDOW_H
 #define MDISUBWINDOW_H
 
-#include <QMdiSubWindow>
+#include <QtWidgets/QMdiSubWindow>
 
 class QMdiSubWindow;
 class QResizeEvent ;

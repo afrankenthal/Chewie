@@ -30,8 +30,8 @@
 #include <assert.h>
 #include <utility>
 
-#include <QTextStream>
-#include <QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QFile>
 
 #include "MessageTools.h"
 #include "XmlConverter.h"

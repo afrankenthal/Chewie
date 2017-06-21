@@ -27,9 +27,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#include <QtGui>
-#include <QTreeWidgetItem>
-#include <QMdiArea>
+#include <QtGui/QtGui>
+#include <QtWidgets/QTreeWidgetItem>
+#include <QtWidgets/QMdiArea>
 
 #include <TDirectory.h>
 #include <TDirectoryFile.h>
@@ -71,11 +71,11 @@ HanSoloTreeBrowser::HanSoloTreeBrowser(QWidget *parent, MainWindow * mainWindow)
     QStringList labels;
     labels << tr("Folder Name") << tr("Object Type") << tr("Entries");
     this->setHeaderLabels(labels);
-    this->header()->setResizeMode(0, QHeaderView::Interactive);
-    this->header()->setResizeMode(1, QHeaderView::Interactive);
-    this->header()->setResizeMode(2, QHeaderView::Interactive);
+//     this->header()->setResizeMode(0, QHeaderView::Interactive);
+//     this->header()->setResizeMode(1, QHeaderView::Interactive);
+//     this->header()->setResizeMode(2, QHeaderView::Interactive);
 
-    this->header()->setDefaultSectionSize(200);
+//    this->header()->setDefaultSectionSize(200);
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 

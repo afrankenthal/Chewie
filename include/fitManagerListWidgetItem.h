@@ -32,11 +32,11 @@
 
 #include <sstream>
 
-#include <QWidget>
-#include <QListWidgetItem>
-#include <QLineEdit>
-#include <QDoubleSpinBox>
-#include <QLabel>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QListWidgetItem>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QLabel>
 #include "TCanvas.h"
 
 #include "fitParamManagerWidget.h"

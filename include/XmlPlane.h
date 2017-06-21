@@ -34,8 +34,8 @@
 
 #include <string>
 
-#include <QWidget>
-#include <QDomNode>
+#include <QtWidgets/QWidget>
+#include <QtXml/QDomNode>
 
 class XmlWindow;
 

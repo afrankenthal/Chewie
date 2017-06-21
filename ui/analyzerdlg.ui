@@ -496,7 +496,7 @@
     </palette>
    </property>
    <property name="currentIndex">
-    <number>7</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="converterT">
     <attribute name="title">

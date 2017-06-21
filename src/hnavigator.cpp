@@ -50,9 +50,9 @@
 #include <TIterator.h>
 #include <TClass.h>
 
-#include <QFileDialog>
-#include <QList>
-//#include <QVBoxLayout>
+#include <QtWidgets/QFileDialog>
+#include <QtCore/QList>
+#include <QtWidgets/QVBoxLayout>
 
 //===========================================================================
 HNavigator::HNavigator (QWidget * parent                 ) :
@@ -168,7 +168,7 @@ void HNavigator::on_openFilePB_clicked()
         return;
     for(int f=0; f<fileNames.size(); f++)
     {
-        TFile* file=TFile::Open(fileNames[f].toAscii(),"READ");
+        TFile* file=TFile::Open(fileNames[f].toStdString().c_str(),"READ");
         this->addFile(fileNames[f].toStdString(),file);
     }
 }

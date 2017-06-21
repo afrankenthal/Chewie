@@ -30,7 +30,7 @@
 #ifndef PIXELMATRIXCUT_H
 #define PIXELMATRIXCUT_H
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 #include <map>
 #include "PixelMatrixCutButton.h"
 #include "TH2F.h"

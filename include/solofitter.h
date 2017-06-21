@@ -32,12 +32,12 @@
 
 #include <sstream>
 
-#include <QTabWidget>
-#include <QTimer>
+#include <QtWidgets/QTabWidget>
+#include <QtCore/QTimer>
 #include <TBrowser.h>
 #include <TFolder.h>
 
-#include <QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
 
 //#include "fileEater.h"
 //#include "HManager.h"

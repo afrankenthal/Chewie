@@ -48,12 +48,12 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QtConcurrentRun>
-#include <QTimer>
-#include <QRegExp>
-#include <QStandardItem>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtConcurrent/QtConcurrentRun>
+#include <QtCore/QTimer>
+#include <QtCore/QRegExp>
+#include <QtGui/QStandardItem>
 
 //============================================================================================================================================
 AnalyzerDlg::AnalyzerDlg(QWidget *parent) :
@@ -67,14 +67,14 @@ AnalyzerDlg::AnalyzerDlg(QWidget *parent) :
   , theAnalysisManager_(new AnalysisManager     )
 {
     ui->setupUi(this);
-    setWindowTitle(QApplication::translate("AnalyzerDlg", "Chewie Analyzer", 0, QApplication::UnicodeUTF8));
+    setWindowTitle(QApplication::translate("AnalyzerDlg", "Chewie Analyzer", 0, 0));
 
     setInnerGeometry();
 
     ui->studiesTW->setCurrentWidget(ui->runT);
     //Settings
     ui->progressBar ->reset();
-    ui->scanListTW  ->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+//    ui->scanListTW  ->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
     ui->dutsListLW  ->addItem("Dut0");
     ui->dutsListLW  ->addItem("Dut1");
     ui->dutsListLW_2->addItem("Dut0");
@@ -781,7 +781,13 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
 
     if(!theXmlParser_->parseDocument(fileName))
     {
-        QMessageBox::information(this, tr("Chewie"), tr((QString("There was a problem parsing ") + fileName + ". Check the Standard output for error message!").toAscii()));
+        QMessageBox::information(
+                                 this                                                     ,
+                                 "Chewie"                                                 ,
+                                  QString("There was a problem parsing ")                 +
+                                  fileName                                                +
+                                  QString(". Check the Standard output for error message!")
+                                );
         return;
     }
 

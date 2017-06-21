@@ -30,8 +30,8 @@
 #ifndef XMLSCAN_H
 #define XMLSCAN_H
 
-#include <QWidget>
-#include <QDomNode>
+#include <QtWidgets/QWidget>
+#include <QtXml/QDomNode>
 
 #include <map>
 #include <string>

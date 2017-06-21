@@ -35,10 +35,10 @@
 #include <sstream>
 #include <vector>
 
-#include <QIcon>
-#include <QTimer>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+#include <QtGui/QIcon>
+#include <QtCore/QTimer>
+#include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QTreeWidgetItem>
 
 #include <TDirectory.h>
 #include <TFolder.h>

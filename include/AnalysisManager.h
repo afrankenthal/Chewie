@@ -34,7 +34,7 @@
 
 #include "TTree.h"
 
-#include <QSpinBox>
+#include <QtWidgets/QSpinBox>
 
 #include <string>
 #include <map>

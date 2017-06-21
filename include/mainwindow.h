@@ -30,7 +30,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <TApplication.h>
 #include <TCollection.h>
 #include <TSystem.h>

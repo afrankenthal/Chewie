@@ -28,10 +28,10 @@
 # * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ================================================================================*/
 
-include("$(ROOTINC)/rootcint.pri")
+# include("$(ROOTINC)/rootcint.pri")
 
-QMAKE_CFLAGS_RELEASE   = -O3 $(CPLUSPLUSFLAGS)
-QMAKE_CXXFLAGS_RELEASE = -g  $(CPLUSPLUSFLAGS)
+QMAKE_CFLAGS_RELEASE   = -O4 $(CPLUSPLUSFLAGS)
+QMAKE_CXXFLAGS_RELEASE = -O4 $(CPLUSPLUSFLAGS)
 
 target.path   	     = ./
 sources.path  	     = ./
@@ -154,6 +154,7 @@ RESOURCES    	     = Chewie.qrc
 DEFINES      	     = USE_QT
 
 INCLUDEPATH  	    += ./include						  	\
+                       ./uiFiles                                                        \
              	       ../Monicelli						  	\
              	       ../Monicelli/include					  	\
                        ../Monicelli/plugins/customCheckBox			  	\
@@ -176,6 +177,21 @@ LIBS         	    += -L$(BOOSTLIB)						  	\
           	       -lboost_system  					          	\
              	       -lboost_filesystem     
 
+LIBS                += -L$(ROOTLIB)                              	      		   \
+                       -lCore                                                              \
+                       -lRIO                                                               \
+                       -lNet                                                               \
+                       -lHist                                                              \
+                       -lGraf                                                              \
+                       -lGraf3d                                                            \
+                       -lGpad                                                              \
+                       -lTree                                                              \
+                       -lRint                                                              \
+                       -lPostscript                                                        \
+                       -lMatrix                                                            \
+                       -lPhysics                                                           \
+                       -lMathCore                                                          \
+                       -lThread
 
 LIBS         	    += -L../Monicelli/plugins/libs				  	\
                        -lcustomCheckBox 					  	\
@@ -185,6 +201,13 @@ LIBS         	    += -L../Monicelli/plugins/libs				  	\
              	       -lcustomSpinBox  					  	\
              	       -lcustomTableWidget					  	\
 
+LIBS                += -L$(QTDIR)                                                          \
+                       -lQt5Widgets                                                        \
+                       -lQt5Gui                                                            \
+                       -lQt5Xml                                                            \
+                       -lQt5Core                                                           \
+                       -lQt5OpenGL
+                       
 # install
 sources.files        = $$SOURCES   						  	\
                        $$HEADERS   						  	\
@@ -202,12 +225,12 @@ header.target        = tmp/EventHeaderDict.C
 ROOTVERSION          = $$(ROOTVER)
 
 contains(ROOTVERSION, "FIVE") {
- message("Setting up Makefile for ROOT5")  
+ message("[1;33mSetting up Makefile for ROOT5[0;m")  
  header.commands     = @echo "'[1;33m------ ROOT5 header ----------[0;m'"  && \
                        rootcint -f tmp/EventHeaderDict.C                                \
                                 -c ../Monicelli/include/EventHeader.h+
 } else {
- message("Setting up Makefile for ROOT6")  
+ message("[1;33mSetting up Makefile for ROOT6[0;m")  
  header.commands     = @echo "'[1;33m------ ROOT6 header ----------[0;m'"  && \
                        rootcint -f tmp/EventHeaderDict.C                          	\
                                 -c ../Monicelli/include/EventHeader.h+               && \

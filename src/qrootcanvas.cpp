@@ -28,13 +28,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
  
-#include <QPushButton>
-#include <QLayout>
-#include <QTimer>
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QMouseEvent>
-#include <QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLayout>
+#include <QtCore/QTimer>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QMouseEvent>
+#include <QtWidgets/QMessageBox>
 
 #include <stdlib.h>
 #include <iostream>

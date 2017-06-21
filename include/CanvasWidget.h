@@ -32,8 +32,8 @@
 
 #include <sstream>
 #include <mainwindow.h>
-#include <QWidget>
-#include <QResizeEvent>
+#include <QtWidgets/QWidget>
+#include <QtGui/QResizeEvent>
 #include "TCanvas.h"
 //#include <HanSoloFitter.h>
 #include "qrootcanvas.h"

@@ -33,7 +33,7 @@
 
 #include <iostream>
 #include <string>
-#include <QWidget>
+#include <QtWidgets/QWidget>
 
 class QPaintEvent;
 class QResizeEvent;

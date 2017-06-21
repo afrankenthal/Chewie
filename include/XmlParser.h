@@ -36,8 +36,8 @@
 #include <map>
 #include <string>
 
-#include <QDomNode>
-#include <QString>
+#include <QtXml/QDomNode>
+#include <QtCore/QString>
 
 class QDomElement ;
 class QFile       ;

@@ -30,8 +30,8 @@
 #ifndef XMLCONVERTER_H
 #define XMLCONVERTER_H
 
-#include <QWidget>
-#include <QDomNode>
+#include <QtWidgets/QWidget>
+#include <QtXml/QDomNode>
 #include <MessageTools.h>
 
 class XmlConverter /*: public QWidget*/

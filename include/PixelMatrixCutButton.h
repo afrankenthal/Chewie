@@ -30,9 +30,9 @@
 #ifndef PIXELMATRIXCUTBUTTON_H
 #define PIXELMATRIXCUTBUTTON_H
 
-#include "QPushButton"
-#include <QWidget>
-#include "QPaintEvent"
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QWidget>
+#include <QtGui/QPaintEvent>
 #include <iostream>
 
 class PixelMatrixCut;

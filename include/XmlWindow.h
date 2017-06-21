@@ -30,8 +30,8 @@
 #ifndef XMLWINDOW_H
 #define XMLWINDOW_H
 
-#include <QWidget>
-#include <QDomNode>
+#include <QtWidgets/QWidget>
+#include <QtXml/QDomNode>
 
 #include <vector>
 #include <map>

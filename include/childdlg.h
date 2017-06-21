@@ -30,7 +30,7 @@
 #ifndef CHILDDLG_H
 #define CHILDDLG_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
 class childDlg : public QDialog
 {

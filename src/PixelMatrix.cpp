@@ -39,25 +39,25 @@
 #include "math.h"
 #include <qpainter.h> 
 #include <iostream>
-#include <qlineedit.h>
-#include <qapplication.h>
-#include <qeventloop.h>
-#include <qprogressbar.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qtabwidget.h>
+#include <QtWidgets/qlineedit.h>
+#include <QtWidgets/qapplication.h>
+#include <QtCore/qeventloop.h>
+#include <QtWidgets/qprogressbar.h>
+#include <QtWidgets/qcheckbox.h>
+#include <QtWidgets/qcombobox.h>
+#include <QtWidgets/qtabwidget.h>
 //#include <qtable.h>
 //#include <qlistbox.h>
-#include <qcursor.h>
-#include <qlabel.h>
+#include <QtGui/qcursor.h>
+#include <QtWidgets/qlabel.h>
 
 #include <TStyle.h>
 #include <TMath.h>
 
 #include <unistd.h>
 #include "MessageTools.h"
-#include <QHBoxLayout>
-#include <QGroupBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QGroupBox>
 
 
 using namespace std;

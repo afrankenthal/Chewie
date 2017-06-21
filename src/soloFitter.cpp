@@ -50,9 +50,9 @@
 #include <TIterator.h>
 #include <TClass.h>
 
-#include <QFileDialog>
-#include <QList>
-//#include <QVBoxLayout>
+#include <QtWidgets/QFileDialog>
+#include <QtCore/QList>
+#include <QtWidgets/QVBoxLayout>
 
 //===========================================================================
 SoloFitter::SoloFitter(QWidget * parent) :

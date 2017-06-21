@@ -33,12 +33,12 @@
 #include <sstream>
 #include <string.h>
 
-#include <QWidget>
-#include <QListWidgetItem>
-#include <QLineEdit>
-#include <QDoubleSpinBox>
-#include <QLabel>
-#include <QCheckBox>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QListWidgetItem>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QCheckBox>
 
 namespace Ui {
     class FitParamManagerWidget;

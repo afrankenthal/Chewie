@@ -27,9 +27,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ================================================================================*/
 
-#include <QApplication>
-#include <QFile>
-#include <QPlastiqueStyle>
+#include <QtWidgets/QApplication>
+#include <QtCore/QFile>
+//#include <QPlastiqueStyle>
 #include "MessageTools.h"
 #include <sstream>
 #include "mainwindow.h"
@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
 
     std::stringstream ss_ ;
 
-    QApplication::setStyle(new QPlastiqueStyle()) ;
     QApplication app(argc, argv);
+    app.setStyle("fusion") ;
 
     char* envVariables;
     bool missingEnvVariable = false;

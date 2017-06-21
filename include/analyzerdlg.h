@@ -30,11 +30,11 @@
 #ifndef ANALYZERDLG_H
 #define ANALYZERDLG_H
 
-#include <QDialog>
-#include <QString>
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QListWidgetItem>
+#include <QtWidgets/QDialog>
+#include <QtCore/QString>
+#include <QtCore/QFuture>
+#include <QtCore/QFutureWatcher>
+#include <QtWidgets/QListWidgetItem>
 
 #include <sstream>
 #include <string>

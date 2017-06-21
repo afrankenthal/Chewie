@@ -30,8 +30,8 @@
 #ifndef XMLANALYSIS_H
 #define XMLANALYSIS_H
 
-#include <QWidget>
-#include <QDomNode>
+#include <QtWidgets/QWidget>
+#include <QtXml/QDomNode>
 
 #include "MessageTools.h"
 
