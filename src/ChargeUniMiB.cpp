@@ -481,7 +481,7 @@ void ChargeUniMiB::cellCharge(bool pass, int planeID, const Data& data, int thre
 	      THREADED(h2DCellChargeOddNorm_[planeID])->Fill(xPixelResidual,yPixelResidual);
 	    }
 
-	  THREADED(h2DClusterSize_   [planeID])->Fill(xPixelResidual,yPixelResidual,data.getClusterSize(planeID));
+	  THREADED(h2DClusterSize_[planeID])->Fill(xPixelResidual,yPixelResidual,data.getClusterSize(planeID));
 	}
     }
 }
