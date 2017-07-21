@@ -52,6 +52,8 @@ if [ $HOSTNAME == "hal9000.mib.infn.it" ]; then
       export BASEDATADIR=/user/gr1/e831/dinardo/TestBeamData_PlanarRadBatch01_PlanarRadBatch02_3DBatch01
   fi
 
+  export PATH=/opt/rh/devtoolset-2/root/usr/bin:/bin:/usr/bin:/usr/local/bin:/usr/printmi/bin
+
   #===== Local directories
   export CHEWIEDIR=`pwd`
   export CHEWIEDATADIR=$BASEDATADIR/MonicelliOutput
@@ -71,6 +73,8 @@ if [ $HOSTNAME == "hal9000.mib.infn.it" ]; then
   #===== Location of the Qt components
   export QTDIR=/user/service/Qt-5.6.2/5.6/gcc_64/
   export QTCREATORDIR=/raid1/menasce/qt-creator-opensource-src-4.3.0
+  export QTLIB=$QTDIR/lib
+  export QTINC=$QTDIR/include
 
   #===== Location of the BOOST components
   export BOOSTINC=/usr/local/include/boost
@@ -109,7 +113,7 @@ if [ $HOSTNAME == "cip.mib.infn.it" ]; then
 
   #===== Location of the ROOT components
   export ROOTVER=SIX
-  export ROOTSYS=/usr
+  export ROOTSYS=/user/service/root-6.04.10/
   export ROOTINC=$ROOTSYS/include/root
   export ROOTLIB=$ROOTSYS/lib64/root
 
