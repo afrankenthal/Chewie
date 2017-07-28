@@ -115,7 +115,7 @@ if [ $HOSTNAME == "cip.mib.infn.it" ]; then
   export ROOTVER=SIX
   export ROOTSYS=/user/service/root-6.04.10/
   export ROOTINC=$ROOTSYS/include/root
-  export ROOTLIB=$ROOTSYS/lib64/root
+  export ROOTLIB=$ROOTSYS/lib/root
 
   #===== Location of the Qt components
   export QTDIR=/user/service/Qt-5.6.2/5.6/gcc_64
