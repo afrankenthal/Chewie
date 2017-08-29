@@ -1,0 +1,7 @@
+mocFiles
+objFiles
+uiFiles
+Makefile
+Chewie
+qrc_*
+*.pcm
