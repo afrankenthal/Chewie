@@ -179,20 +179,20 @@ LIBS         	    += -L$(BOOSTLIB)						  	\
           	       -lboost_system  					          	\
              	       -lboost_filesystem     
 
-LIBS                += -L$(ROOTLIB)                              	      		   \
-                       -lCore                                                              \
-                       -lRIO                                                               \
-                       -lNet                                                               \
-                       -lHist                                                              \
-                       -lGraf                                                              \
-                       -lGraf3d                                                            \
-                       -lGpad                                                              \
-                       -lTree                                                              \
-                       -lRint                                                              \
-                       -lPostscript                                                        \
-                       -lMatrix                                                            \
-                       -lPhysics                                                           \
-                       -lMathCore                                                          \
+LIBS                += -L$(ROOTLIB)                              	      		\
+                       -lCore                                                           \
+                       -lRIO                                                            \
+                       -lNet                                                            \
+                       -lHist                                                           \
+                       -lGraf                                                           \
+                       -lGraf3d                                                         \
+                       -lGpad                                                           \
+                       -lTree                                                           \
+                       -lRint                                                           \
+                       -lPostscript                                                     \
+                       -lMatrix                                                         \
+                       -lPhysics                                                        \
+                       -lMathCore                                                       \
                        -lThread
 
 LIBS         	    += -L../Monicelli/plugins/libs				  	\
@@ -203,11 +203,11 @@ LIBS         	    += -L../Monicelli/plugins/libs				  	\
              	       -lcustomSpinBox  					  	\
              	       -lcustomTableWidget					  	\
 
-LIBS                += -L$(QTDIR)                                                          \
-                       -lQt5Widgets                                                        \
-                       -lQt5Gui                                                            \
-                       -lQt5Xml                                                            \
-                       -lQt5Core                                                           \
+LIBS                += -L$(QTDIR)                                                       \
+                       -lQt5Widgets                                                     \
+                       -lQt5Gui                                                         \
+                       -lQt5Xml                                                         \
+                       -lQt5Core                                                        \
                        -lQt5OpenGL
                        
 # install
@@ -220,7 +220,11 @@ sources.files        = $$SOURCES   						  	\
  
 INSTALLS            += target sources
 
-header.depends       = ../Monicelli/include/EventHeader.h                         	\
+mkdirtmp.target      = $$OUT_PWD/tmp
+mkdirtmp.commands    = $(MKDIR) $$OUT_PWD/tmp
+
+header.depends       = mkdirtmp                                                         \
+                       ../Monicelli/include/EventHeader.h
 
 header.target        = tmp/EventHeaderDict.C
 
@@ -228,18 +232,19 @@ ROOTVERSION          = $$(ROOTVER)
 
 contains(ROOTVERSION, "FIVE") {
  message("[1;33mSetting up Makefile for ROOT5[0;m")  
- header.commands     = @echo "'[1;33m------ ROOT5 header ----------[0;m'"  && \
+ header.commands     = @echo "'[1;33m------ ROOT5 header ----------[0;m'"        && \
                        rootcint -f tmp/EventHeaderDict.C                                \
                                 -c ../Monicelli/include/EventHeader.h+
 } else {
  message("[1;33mSetting up Makefile for ROOT6[0;m")  
- header.commands     = @echo "'[1;33m------ ROOT6 header ----------[0;m'"  && \
+ header.commands     = @echo "'[1;33m------ ROOT6 header ----------[0;m'"        && \
                        rootcint -f tmp/EventHeaderDict.C                          	\
                                 -c ../Monicelli/include/EventHeader.h+               && \
                        cp tmp/*.pcm .
 }
 
-trees.depends        = ../Monicelli/include/Event.h                               	\
+trees.depends        = mkdirtmp                                                         \
+                       ../Monicelli/include/Event.h                               	\
                        ../Monicelli/include/Geometry.h                            	\
                        ../Monicelli/include/Detector.h                            	\
                        ../Monicelli/include/ROC.h                                 	\
@@ -248,7 +253,7 @@ trees.depends        = ../Monicelli/include/Event.h                             
 trees.target         = tmp/EventDict.C
 
 contains(ROOTVERSION, "FIVE") {
- trees.commands      = @echo "'[1;33m------ ROOT5 commands --------[0;m'"  && \
+ trees.commands      = @echo "'[1;33m------ ROOT5 commands --------[0;m'"        && \
                        rootcint -f tmp/EventDict.C                                	\
                                 -c ../Monicelli/include/Event.h+                  	\
                                    ../Monicelli/include/Geometry.h+               	\
@@ -256,7 +261,7 @@ contains(ROOTVERSION, "FIVE") {
                                    ../Monicelli/include/ROC.h+                    	\
                                    ../Monicelli/include/KalmanPlaneInfo.h+        	\
 } else {
- trees.commands      = @echo "'[1;33m------ ROOT6 commands --------[0;0m'" && \
+ trees.commands      = @echo "'[1;33m------ ROOT6 commands --------[0;0m'"       && \
                        rootcint -f tmp/EventDict.C                                	\
                                 -c ../Monicelli/include/Event.h+                  	\
                                    ../Monicelli/include/Geometry.h+               	\
@@ -266,8 +271,9 @@ contains(ROOTVERSION, "FIVE") {
                        cp tmp/*.pcm .
 }
 
-QMAKE_EXTRA_TARGETS += trees
+QMAKE_EXTRA_TARGETS += mkdirtmp
 QMAKE_EXTRA_TARGETS += header
+QMAKE_EXTRA_TARGETS += trees
 
 FORMS 		    += ui/analyzerdlg.ui				     	  	\
                        ui/hnavigator.ui 				     	  	\
