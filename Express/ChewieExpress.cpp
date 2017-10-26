@@ -207,6 +207,7 @@ int main (int argc, char** argv)
       if (runAnalysis)
 	{
 	  theAnalysisManager->setOutputFileName(outFileName);
+	  if(numberOfEvents != -1) theAnalysisManager->setMaxEvents(numberOfEvents);
 	  theAnalysisManager->startSequence();
 	}
       
