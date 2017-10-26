@@ -281,70 +281,21 @@ void HistogramWindow::label(int runNumber) const
     //       theHWindow_[p]->GetXaxis()->SetTitle("x (um)"          );
     //}
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkGoodRun(int runNumber, int entry) const
 {
     if(entry > EfficiencyVsEventGood2D_.find(runNumber)->second->GetXaxis()->GetXmax()) return false;
     else return true;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 double HistogramWindow::runAverageEfficiency(int runNumber) const
 {
     double runMean = EfficiencyVsEventGood2D_.find(runNumber)->second->GetMean(2);
     return runMean;
 }
-///////////////////////////////////////////////////////////////////////////////////////////
-/*Alex's stuff, not in use
- *
- *void HistogramWindow::latencyPlots(int runNumber)
-{
-    ifstream csvFile("../OuterTrackerExtra/runLatencyData.csv");
-    if (csvFile.is_open()){
-        std::string lineStr;
-        //std::cout << "file is open!" << std::endl;
-        while (getline(csvFile, lineStr)){
-            unsigned int k = 0;
-            std::string toParse="";
-            std::string parsed;
-            std::vector<std::string> lineVec;
-            for(int i=0; i<3; i++){
-                //std::cout << 0 << std::endl;
-                if(i!=0){
-                    k = parsed.length();
-                    parsed.clear();
-                }
-                bool isParsing = true;
-                for(; k<lineStr.length(); k++){
-                    //while(isParsing){
-                    if(lineStr[k]!=','){
-                        toParse+=lineStr[k];
-                        //k++;
-                    }
-                    else{
-                        lineVec.push_back(toParse);
-                        parsed = toParse;
-                        toParse.clear();
-                        //k++;
-                        //++k;
-                        isParsing = false;
-                    }
-                }
-            }
-            if(atoi(lineVec[0].c_str())==runNumber){
-                //std::cout << lineVec[0] << std::endl;
-                int triggerLatency = atoi(lineVec[1].c_str());
-                if(lineVec[1]!=""){
-                    double runMeanEfficiency = runAverageEfficiency(runNumber);
-                    //std::cout << "filling plots" << std::endl;
-                    EfficiencyVsTriggerLatency_[runNumber]->Fill(triggerLatency, runMeanEfficiency);
-                    EfficiencyVsTriggerLatency_norm_[runNumber]->Fill(triggerLatency, 1);
-                    //std::cout << "Run " << runNumber << " has efficiency " << runMeanEfficiency << " with trigger latency " << lineVec[1] << std::endl;
-                }
-            }
-            lineVec.clear();
-        }
-    }
-}*/
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 void HistogramWindow::combineLatencyPlots(void)
 {
@@ -360,6 +311,7 @@ void HistogramWindow::combineLatencyPlots(void)
         }
     }
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
 {
@@ -374,11 +326,14 @@ bool HistogramWindow::checkWindow(float col, float row, int runNumber) const
     if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),yAxis->FindBin(row)) != 0) return true;
     return false;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::byPassCheckWindow() const
 {
     return true;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkWindow_v1(float col, float row, int runNumber, int/*planeID*/) const
 {
     //std::cout<<"Inside checkWindow, col = "<<col<<std::endl;
@@ -465,8 +420,8 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
         assert(0);
     }
 }
-////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::AnticheckWindowAbout(float col, float row, int runNumber, int type) const
 {
     TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
