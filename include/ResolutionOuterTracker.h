@@ -53,7 +53,7 @@ public:
     ~ResolutionOuterTracker (void                                                    );
 
     void beginJob            (void                                                                );
-    void analyze             (const Data&                       data    , int threadNumber        );
+    void analyze             (const Data&          data                         , int threadNumber);
     void endJob              (void                                                                );
     void setCutsFormula      (std::map<std::string,std::string> cutsList, std::vector<TTree*> tree);
     bool passStandardCuts    (int planeID                               , const Data& data        );
@@ -94,6 +94,7 @@ private:
     void yResolutionOuterTracker         (bool pass, int planeID, const Data& data, int threadNumber);
     void customProfileX      (std::vector<TH2F *>h2D, std::vector<TH1F *>prof, int planeID, const char* outputName, const char* outputTitle, int yBinMin, int yBinMax, int minNumberOfEntries);
 
+    int nevent;
 
     PlanesMapping*                                     thePlaneMapping_    ;
     std::map< std::string,std::vector<TTreeFormula*> > cutsFormulas_       ;
@@ -111,6 +112,7 @@ private:
     std::vector<TH1F*>          hXResidualsClusterSize1_                 ;
     std::vector<TH2F*>          hX2DResidualsClusterSize1_               ;
     std::vector<TH1F*>          hXResidualsClusterSize2_                 ;
+    std::vector<TH2F*>          hX2DResidualsClusterSize2_               ;
     std::vector<TH1F*>          hXResidualsClusterSize3_                 ;
     std::vector<TH1F*>          hXResidualsClusterSize4_                 ;
     std::vector<TH1F*>          hXResidualsDigital_                      ;

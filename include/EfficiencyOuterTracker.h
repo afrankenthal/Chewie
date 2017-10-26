@@ -65,12 +65,13 @@ class EfficiencyOuterTracker : public Analysis
   void book            (void);
   void destroy         (void);
 
-  void planeEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
-  void cellEfficiency  (bool pass, int planeID, const Data& data, int threadNumber);
-  void xCellEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
-  void yCellEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
-  void xEdgeEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
-  void yEdgeEfficiency (bool pass, int planeID, const Data& data, int threadNumber);
+  void planeEfficiency  (bool pass, int planeID, const Data& data, int threadNumber);
+  void cellEfficiency   (bool pass, int planeID, const Data& data, int threadNumber);
+  void xCellEfficiency  (bool pass, int planeID, const Data& data, int threadNumber);
+  void yCellEfficiency  (bool pass, int planeID, const Data& data, int threadNumber);
+  void xEdgeEfficiency  (bool pass, int planeID, const Data& data, int threadNumber);
+  void yEdgeEfficiency  (bool pass, int planeID, const Data& data, int threadNumber);
+  //void countClusterSize (int planeID, const Data &data);
 
   void setErrorsBar    (int  planeID);
 
@@ -79,6 +80,8 @@ class EfficiencyOuterTracker : public Analysis
   const WindowsManager*                              theWindowsManager_;
   XmlParser*                                         theXmlParser_;
 
+  float cumulative;
+  float nevent;
 
   // ##############
   // # Histograms #
@@ -89,11 +92,29 @@ class EfficiencyOuterTracker : public Analysis
   std::vector<TH1F*> hEfficiencyRef_;
   std::vector<TH1F*> hEfficiencyRefNorm_;
 
+  std::vector<TH1F*> hEfficiencyStub_;
+  std::vector<TH1F*> hEfficiencyStubNorm_;
+
+  std::vector<TH1F*> hEfficiencyStubRef_;
+  std::vector<TH1F*> hEfficiencyStubRefNorm_;
+
+  // nabin
+  std::vector<TH2F*> h2DClusterPositionLocal_;
+
   std::vector<TH2F*> h2DEfficiency_;
   std::vector<TH2F*> h2DEfficiencyNorm_;
 
   std::vector<TH2F*> h2DEfficiencyRef_;
   std::vector<TH2F*> h2DEfficiencyRefNorm_;
+
+  std::vector<TH2F*> h2DEfficiencyStub_;
+  std::vector<TH2F*> h2DEfficiencyStubNorm_;
+
+  std::vector<TH2F*> h2DEfficiencyStubRef_;
+  std::vector<TH2F*> h2DEfficiencyStubRefNorm_;
+
+  std::vector<TH2F*> h2DFakeHitsEfficiency_;
+  std::vector<TH2F*> h2DFakeHitsEfficiencyNorm_;
 
   std::vector<TH2F*> h2D4cellEfficiency_;
   std::vector<TH2F*> h2D4cellEfficiencyNorm_;
@@ -115,17 +136,18 @@ class EfficiencyOuterTracker : public Analysis
   std::vector<TH1F*> h1DYcellEfficiencySecondHit_;
   std::vector<TH1F*> h1DYcellEfficiencyNorm_;
 
-  std::vector<TH1F*> h1DXcellEdgeRightEfficiency_;
-  std::vector<TH1F*> h1DXcellEdgeRightEfficiencyNorm_;
+  std::vector<TH1F*> h1DclusterSizeVsXStripPosition_;
+  std::vector<TH1F*> h1DclusterSizes_;
+  std::vector<TH1F*> h1DclusterSizeVsXStripPosition_norm_;
 
-  std::vector<TH1F*> h1DXcellEdgeLeftEfficiency_;
-  std::vector<TH1F*> h1DXcellEdgeLeftEfficiencyNorm_;
+  std::vector<TH1F*> hAverageHitsperEvent_;
+  std::vector<TH1F*> TotalEvent_;
+  std::vector<TH1F*> checkineff_;
+  std::vector<TH1F*> diffFirstSecondHist_;
 
-  std::vector<TH1F*> h1DYcellEdgeUpEfficiency_;
-  std::vector<TH1F*> h1DYcellEdgeUpEfficiencyNorm_;
-
-  std::vector<TH1F*> h1DYcellEdgeDownEfficiency_;
-  std::vector<TH1F*> h1DYcellEdgeDownEfficiencyNorm_;
+  std::vector<TH1F*> dut23stub_;
+  //nabin
+  std::vector<TH1F*> hNumberOfClusters_;
 };
 
 #endif

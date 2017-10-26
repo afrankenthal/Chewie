@@ -100,6 +100,10 @@ void EventConverter::convert(Event& event,int e)
     Event::fittedTracksDef                        & fittedTracks                        = event.getFittedTracks                       ();
     Event::fittedTracksCovarianceDef              & fittedTracksCovariance              = event.getFittedTracksCovariance             ();
     Event::chi2VectorDef                          & fittedTracksChi2                    = event.getFittedTracksChi2                   ();
+
+    //THE UNCONSTRAINED TRACKS ARE MADE WHEN WE MAKE THE RESIDUALS IN MONICELLI.
+    //IF WE REMOVE FROM THE PROCESSING THE PART THAT MAKES THE RESIDUALS, THEN ALL THE VARIABLES RELATED TO
+    //THE UNCONTRAINED FITS ARE GARBAGE!
     Event::unconstrainedFittedTracksDef           & unconstrainedFittedTracks           = event.getUnconstrainedFittedTracks          ();
     Event::unconstrainedFittedTracksCovarianceDef & unconstrainedFittedTracksCovariance = event.getUnconstrainedFittedTracksCovariance();
     Event::unconstrainedChi2VectorDef             & unconstrainedFittedTracksChi2       = event.getUnconstrainedFittedTracksChi2      ();
@@ -188,20 +192,23 @@ void EventConverter::convert(Event& event,int e)
                                               dataVector[t].setYSlope         (fittedTracks[t][2]                      );
             dataVector[t].setYSigmaSlope    ( sqrt(fittedTracksCovariance[t](2,2))    );
                                               int nTelescopeHits  = 0;
-                    int clustersSizeLE2 = 0;
+                    int nStripHits = 0;
+            int clustersSizeLE2 = 0;
 
             for(unsigned int p=0; p<thePlanesMapping_.getNumberOfPlanes(); p++)
             {
+                detector  = theGeometry_->getDetector(thePlanesMapping_.getStation(p), thePlanesMapping_.getPlaquette(p));
+                if(detector == 0) continue;//The detector is in planeMapping but NOT in the geometry so continue!
+
+                planeName = thePlanesMapping_.getMonicelliPlaneName(p);
                 nRow.clear();
                 nCol.clear();
-                row       = 0;
-                col       = 0;
-                planeName = thePlanesMapping_.getMonicelliPlaneName(p);
-                detector  = theGeometry_->getDetector(thePlanesMapping_.getStation(p), thePlanesMapping_.getPlaquette(p));
+                row = 0;
+                col = 0;
 
-                if(detector == 0)
-                    continue;
-
+                //THE UNCONSTRAINED TRACKS ARE MADE WHEN WE MAKE THE RESIDUALS IN MONICELLI.
+                //IF WE REMOVE FROM THE PROCESSING THE PART THAT MAKES THE RESIDUALS, THEN ALL THE VARIABLES RELATED TO
+                //THE UNCONTRAINED FITS ARE GARBAGE!
                 dataVector[t].setChi2Unconstrained(unconstrainedFittedTracksChi2[t][planeName],p);
                 dataVector[t].setXInterceptUnconstrained(unconstrainedFittedTracks[t][planeName][1]*10,p);
                 dataVector[t].setXSigmaInterceptUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](1,1))*10, p);
@@ -211,9 +218,46 @@ void EventConverter::convert(Event& event,int e)
                 dataVector[t].setXSigmaSlopeUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](0,0))   , p);
                                                           dataVector[t].setYSlopeUnconstrained(unconstrainedFittedTracks[t][planeName][2],p);
                 dataVector[t].setYSigmaSlopeUnconstrained(sqrt(unconstrainedFittedTracksCovariance[t][planeName](2,2))   , p);
-                if(trackCandidates[t].find(planeName) != trackCandidates[t].end())
+                                                          int dummyline1=0;//These are just dummy lines because qtcreator messes up the indentation
+
+                        int dummyline2=0;//These are just dummy lines because qtcreator messes up the indentation
+
+//                std::cout << __PRETTY_FUNCTION__
+//                          << "Name: " << planeName
+//                          << std::endl
+//                          << " XIntC: " << dataVector[t].getXIntercept()
+//                          << " YIntC: " << dataVector[t].getYIntercept()
+//                          << " XSloC: " << dataVector[t].getXSlope()
+//                          << " XSloC: " << dataVector[t].getYSlope()
+//                          << std::endl
+//                          << " XIntU: " << dataVector[t].getXInterceptUnconstrained(p)
+//                          << " YIntU: " << dataVector[t].getYInterceptUnconstrained(p)
+//                          << " XSloU: " << dataVector[t].getXSlopeUnconstrained(p)
+//                          << " XSloU: " << dataVector[t].getYSlopeUnconstrained(p)
+//                          << std::endl;
+                dataVector[t].setNumberOfClusters(0,p);
+                //nabin
+                //dataVector[t].setXClusterMeasuredLocal(0,0,p);
+                //dataVector[t].setYClusterMeasuredLocal(0,0,p);
+
+                if(trackCandidates[t].find(planeName) != trackCandidates[t].end()) // the track in plane did not equal to the last track
                 {
-                    clusterID = (int)trackCandidates[t][planeName]["cluster ID"];
+                    //std::cout<<"trackCandidates[t].find(planeName) != trackCandidates[t].end()"<<std::endl;
+                    //std::cout << __PRETTY_FUNCTION__ << "Cluster size: " << clusters[planeName].size() << std::endl;
+                    dataVector[t].setNumberOfClusters(clusters[planeName].size(),p);
+
+                    unsigned int clusterNumber = 0;
+
+                    for(map<int, map<string, double> >::iterator clusterIt=clusters[planeName].begin(); clusterIt!=clusters[planeName].end(); clusterIt++, clusterNumber++)
+                    {
+                        dataVector[t].setXClusterMeasuredLocal(clusterIt->second["x"], clusterNumber, p);
+                        dataVector[t].setYClusterMeasuredLocal(clusterIt->second["y"], clusterNumber, p);
+                        //std::cout << "clusterIt->second: --> " << clusterIt->second["x"] << std::endl;
+
+                    }
+                    //nabin
+
+                    clusterID = (int)trackCandidates[t][planeName]["cluster ID"]; // accessing track candidate plaquette 's cluster ID
 
                     if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                     {
@@ -224,6 +268,9 @@ void EventConverter::convert(Event& event,int e)
                         detector->flipBackDistance(&xyErr.first,&xyErr.second);
                         dataVector[t].setXErrorPredictedLocal(sqrt(fabs(xyErr.first ))*10,p);
                         dataVector[t].setYErrorPredictedLocal(sqrt(fabs(xyErr.second))*10,p);
+                        ++nStripHits;
+                        //if ((int)trackCandidates[t][planeName]["size"]==56)
+                        //std::cout<<"trackcandidate size = "<< (int)trackCandidates[t][planeName]["size"]<<std::endl;
                     }
                     else
                     {
@@ -234,17 +281,26 @@ void EventConverter::convert(Event& event,int e)
                         dataVector[t].setYErrorPredictedLocal (-1,p);
                         ++nTelescopeHits;
                         if (trackCandidates[t][planeName]["size"] == 1)++clustersSizeLE2;
+                        //for size two cluster, check clusterID of 0 == clusterID of 1 in row and column
                         else if( (trackCandidates[t][planeName]["size"] == 2) &&
                                  (clustersHits[planeName][clusterID][0]["row"] == clustersHits[planeName][clusterID][1]["row"] ||
                                   clustersHits[planeName][clusterID][0]["col"] == clustersHits[planeName][clusterID][1]["col"]))
                             ++clustersSizeLE2;
                     }
-                    dataVector[t].setHasHit	       (true,p);
+
+                    if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                        //if (e==1242){
+                        // std::cout<<"colPredicted = "<<colPredicted<<std::endl;
+                        // std::cout<<"rowPredicted = "<<rowPredicted<<std::endl;
+                        // }
+                        //    std::cout << thePlanesMapping_.getPlaneName(p) << " has hit in event " << e << " trigger: " << event.getTrigger() << std::endl;
+
+                        dataVector[t].setHasHit	       (true,p); // both dut and telescope has hit
                     if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
                         dataVector[t].setHasStub	   ((bool)clusters[planeName][clusterID]["stub"],p);
                     dataVector[t].setDataType	   ((int)clusters[planeName][clusterID]["dataType"], p);
                     dataVector[t].setBelongsToTrack(true,p);
-                    dataVector[t].setClusterSize   ((int)trackCandidates[t][planeName]["size"],p);
+                    dataVector[t].setClusterSize   ((int)trackCandidates[t][planeName]["size"],p); // cluster size equal to the size of hit in plane which belong in track
                     dataVector[t].setClusterCharge ((int)clusters[planeName][clusterID]["charge"],p);
                     //                    if( planeName == "Station: 4 - Plaq: 0" && clusters[planeName][clusterID]["charge"] > 0)
                     //                    {
@@ -253,6 +309,7 @@ void EventConverter::convert(Event& event,int e)
 
                     size = (unsigned int)clustersHits[planeName][clusterID].size();
 
+                    // examine the clusterized hits in the plane, iterate it
                     for(unsigned int h=0; h<size; h++)
                     {
                         pixelRow = clustersHits[planeName][clusterID][h]["row"];
@@ -288,7 +345,7 @@ void EventConverter::convert(Event& event,int e)
                                 ss << "WARNING: fit failed for detector " << planeName;
                                 ss << " at row " << pixelRow << "," << " col " << pixelCol;
                                 ss << " of chip " << ROC->getID();
-                                STDSNAP(ss.str(),ACRed);
+                                //STDSNAP(ss.str(),ACRed);
                             }
                         }
 
@@ -297,13 +354,17 @@ void EventConverter::convert(Event& event,int e)
                     nRow.sort();
                     nCol.sort();
 
-                    nRow.unique();
+                    nRow.unique(); // remove replicate index
                     nCol.unique();
-                    dataVector[t].setMeanCol(col/size,p);
+                    dataVector[t].setMeanCol(col/size,p); // the mean of the collective column
+
                     //Strip case below because I want to use the row projected
                     if((int)clusters[planeName][clusterID]["dataType"] == 0) dataVector[t].setMeanRow(row/size,p);
                     dataVector[t].setNumberOfCols   (nCol.size(),p);
                     dataVector[t].setNumberOfRows   (nRow.size(),p);
+
+                    //std::cout<<"1.) nRow.size() = "<<nRow.size()<<std::endl;
+
                     dataVector[t].setXMeasuredLocal (clusters[planeName][clusterID]["x"]*10,p);
                     dataVector[t].setYMeasuredLocal (clusters[planeName][clusterID]["y"]*10,p);
                     dataVector[t].setXMeasuredGlobal(trackCandidates[t][planeName]["x"]*10,p);
@@ -336,7 +397,15 @@ void EventConverter::convert(Event& event,int e)
 
                     dataVector[t].setColPredicted(colPredicted,p);
                     dataVector[t].setRowPredicted(rowPredicted,p);
-                    if((int)clusters[planeName][clusterID]["dataType"] == 1) dataVector[t].setMeanRow(rowPredicted,p); //Strip Case
+
+                    if((int)clusters[planeName][clusterID]["dataType"] == 1){
+                        dataVector[t].setMeanRow(rowPredicted,p); //Strip Case
+
+                        //if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos){
+                        //    std::cout<<"Hits recorded: rowPredicted = "<<rowPredicted<<std::endl;
+                        //std::cout<<"Hits recorded: colPredicted = "<<colPredicted<<std::endl;
+                        //}
+                    }
 
                     if(colPredicted == -1 || rowPredicted == -1)
                     {
@@ -394,9 +463,12 @@ void EventConverter::convert(Event& event,int e)
                         dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
                     }
                 }
-                else
+
+                else // END of if(trackCandidates[t].find(planeName) != trackCandidates[t].end()) //IT MEANS THERE IS NO HIT ON THAT PLANE
                 {
+                    //std::cout<<"ELSE trackCandidates[t].find(planeName) != trackCandidates[t].end()"<<std::endl;
                     dataVector[t].setNdofUnconstrained(2*(trackCandidates[t].size()-2),p);
+
                     if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                     {
                         xyErr = detector->getTrackErrorsOnPlane(fittedTracks[t],fittedTracksCovariance[t]);
@@ -414,11 +486,13 @@ void EventConverter::convert(Event& event,int e)
                         dataVector[t].setYErrorPredictedLocal (-1,p);
                     }
 
-                    dataVector[t].setHasHit  	   (false,p);
+                    //if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                    //std::cout << thePlanesMapping_.getPlaneName(p) << " does not have hit in event " << e << " trigger: " << event.getTrigger() << std::endl;
+                    dataVector[t].setHasHit(false,p);
                     if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
-                        dataVector[t].setHasStub  	   (false,p);
-                    //std::cout<<"datatype 2 "<<	 clusters[planeName][clusterID]["dataType"] <<" plane "<<p<<" name "<<planeName<<std::endl;
-                    dataVector[t].setDataType      ((int)-1,p);
+                        dataVector[t].setHasStub(false,p);
+
+                    dataVector[t].setDataType      (thePlanesMapping_.getPlaneType(p), p);
                     dataVector[t].setBelongsToTrack(false,p);
 
                     detector->getPredictedGlobal(fittedTracks[t],xp,yp,zp);
@@ -438,20 +512,32 @@ void EventConverter::convert(Event& event,int e)
                     dataVector[t].setColPredicted(colPredicted,p);
                     dataVector[t].setRowPredicted(rowPredicted,p);
 
+
                     if(colPredicted == -1 || rowPredicted == -1)
                     {
                         dataVector[t].setIsInDetector(false,p);
-                        //			     continue;
+                        dataVector[t].setIsInDetectorUnconstrained(false,p);
+                        if(thePlanesMapping_.getPlaneType(p) == 1)
+                            dataVector[t].setMeanRow(-1,p);//Strip Case
+                        continue;
                     }
                     else
                     {
                         dataVector[t].setIsInDetector(true,p);
 
+
                         xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
                         yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
 
+                        if(thePlanesMapping_.getPlaneType(p) == 1)
+                            dataVector[t].setMeanRow(rowPredicted,p);//Strip Case done before everything else, at most I will overwrite it if pixels
+
                         dataVector[t].setXPitchLocal(xPixelPitch,p);
                         dataVector[t].setYPitchLocal(yPixelPitch,p);
+                        //I am using the fitted track because if I am here I didn't find a cluster on the detector
+                        //THEREFORE the unconstrained track IS THE SAME as the constrained
+                        dataVector[t].setXPixelPitchLocalUnconstrained(xPixelPitch,p);
+                        dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
                         detector->flipDistance(&xPixelPitch,&yPixelPitch);
                         dataVector[t].setXPitchGlobal(fabs(xPixelPitch),p);
                         dataVector[t].setYPitchGlobal(fabs(yPixelPitch),p);
@@ -464,19 +550,29 @@ void EventConverter::convert(Event& event,int e)
                         yRes = (yp - yPixelCenter)*10;
                         dataVector[t].setXPixelResidualLocal(xRes,p);
                         dataVector[t].setYPixelResidualLocal(yRes,p);
+                        //I am using the fitted track because if I am here I didn't find a cluster on the detector
+                        //THEREFORE the unconstrained track IS THE SAME as the constrained
+                        dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
+                        dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
 
                         detector->flipDistance(&xRes,&yRes);
                         dataVector[t].setXPixelResidualGlobal(xRes,p);
                         dataVector[t].setYPixelResidualGlobal(yRes,p);
 
                         isGood = false;
-                        for(std::vector<std::map<std::string,int> >::iterator hits  = theRawData[planeName].begin();
+
+                        for(std::vector<std::map<std::string,int> >::iterator hits = theRawData[planeName].begin();
                             hits != theRawData[planeName].end();
                             hits++)
                         {
-                            if((abs(colPredicted - (*hits)["col"]) <= 1) && (abs(rowPredicted - (*hits)["row"]) <= 1))
+                            //std::cout<<"ColP = " << colPredicted << " RowP = " << rowPredicted<<std::endl;
+                            //std::cout<<"ColH = " <<(*hits)["col"]<< " RowH = " << (*hits)["row"] << std::endl;
+
+                            if((abs(colPredicted - (*hits)["col"]) <= 1) && ((thePlanesMapping_.getPlaneType(p) == 1) || (abs(rowPredicted - (*hits)["row"]) <= 1)))//Check Row only if it is a pixel detector
                             {
                                 clusterID = -1;
+
+                                //std::cout<<"within the projected track and hit, different<1"<<std::endl;
 
                                 for(Event::aClusterHitsMapDef::iterator itC  = clustersHits[planeName].begin();
                                     itC != clustersHits[planeName].end() && clusterID == -1;
@@ -493,6 +589,7 @@ void EventConverter::convert(Event& event,int e)
                                         {
                                             clusterID = itC->first;
                                             dataVector[t].setHasHit(true,p);
+
                                             if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
                                                 dataVector[t].setHasStub((*hits)["stub"],p);
                                             //dataVector[t].setDataType((int)clusters[planeName][clusterID]["dataType"],p);
@@ -506,15 +603,12 @@ void EventConverter::convert(Event& event,int e)
 
                                 dataVector[t].setClusterSize  (size,p);
                                 dataVector[t].setClusterCharge((int)clusters[planeName][clusterID]["charge"],p);
-                                //                                if( planeName == "Station: 4 - Plaq: 0" && clusters[planeName][clusterID]["charge"] > 0)
-                                //                                {
-                                //                                 ss_.str("") ; ss_ << planeName << " " << clusterID << " " << clusters[planeName][clusterID]["charge"];  STDLINE(ss_.str(),ACCyan) ;
-                                //                                }
                                 row = 0;
                                 col = 0;
                                 nRow.clear();
                                 nCol.clear();
 
+                                //pixel row and col operation
                                 for(unsigned int h=0; h<size; h++)
                                 {
                                     pixelRow = clustersHits[planeName][clusterID][h]["row"];
@@ -547,53 +641,31 @@ void EventConverter::convert(Event& event,int e)
                                 nCol.unique();
 
                                 dataVector[t].setMeanCol (col/size,p);
-                                if((int)clusters[planeName][clusterID]["dataType"] == 0) dataVector[t].setMeanRow(row/size,p);
+                                if((int)clusters[planeName][clusterID]["dataType"] == 0)
+                                    dataVector[t].setMeanRow(row/size,p);
                                 //dataVector[t].setMeanRow (row/size,p);
                                 dataVector[t].setNumberOfCols(nCol.size(),p);
                                 dataVector[t].setNumberOfRows(nRow.size(),p);
+                                //std::cout<<"2.) nRow.size() = "<<nRow.size()<<std::endl;
                                 break;
                             }
                         }
                     }
-
-                    detector->getPredictedLocal(unconstrainedFittedTracks[t][planeName],xp,yp);
-                    rc = detector->getPixelCellFromLocal(xp,yp);
-                    rowPredicted = rc.first;
-                    colPredicted = rc.second;
-                    if((int)clusters[planeName][clusterID]["dataType"] == 1) dataVector[t].setMeanRow(rowPredicted,p);//Strip Case
-
-                    if(colPredicted == -1 || rowPredicted == -1)
-                    {
-                        dataVector[t].setIsInDetectorUnconstrained(false,p);
-                        //continue;
-                    }
-                    else
-                    {
-                        xPixelPitch = detector->getPixelPitchLocalX((unsigned int)colPredicted)*10;
-                        yPixelPitch = detector->getPixelPitchLocalY((unsigned int)rowPredicted)*10;
-                        dataVector[t].setXPixelPitchLocalUnconstrained(xPixelPitch,p);
-                        dataVector[t].setYPixelPitchLocalUnconstrained(yPixelPitch,p);
-                        xPixelCenter = detector->getPixelCenterLocalX((unsigned int)colPredicted);
-                        yPixelCenter = detector->getPixelCenterLocalY((unsigned int)rowPredicted);
-                        xRes = (xp - xPixelCenter)*10;
-                        yRes = (yp - yPixelCenter)*10;
-                        dataVector[t].setXPixelResidualLocalUnconstrained(xRes,p);
-                        dataVector[t].setYPixelResidualLocalUnconstrained(yRes,p);
-                    }
-
-                }
-            }
+                    //std::cout << __PRETTY_FUNCTION__ << "Name: " << planeName << " hasHit: " << dataVector[t].getHasHit(p) << std::endl;
+                }//else -> didn't find a hit on the track (ELSE trackCandidates[t].find(planeName) != trackCandidates[t].end())
+            }//END of for(unsigned int p=0; p<thePlanesMapping_.getNumberOfPlanes(); p++)
             dataVector[t].setNumberOfTelescopeHits(nTelescopeHits);
+            dataVector[t].setNumberOfStripHits(nStripHits);
             dataVector[t].setNumberOfTelescopeClustersSizeLE2(clustersSizeLE2);
-        }
+        }// Loop over planes on the track (p)
     }
-    //    STDLINE(trackCandidates.size(),ACRed) ;
+    //    STDLINE(trackCandidates.size(),ACRed) ; (t)
     for(unsigned int t=0; t<trackCandidates.size(); t++)
     {
         TThread::Lock();
         dataVector[t].setEventChewieNumber(outTree_->GetEntries());
         theData_= dataVector[t];
-        //        std::cout << __LINE__ << "] " << dataVector[t].getClusterCharge(22) << std::endl ;
+        //std::cout << __LINE__ << "] " << dataVector[t].getEventChewieNumber() << " -> Monicelli: " << dataVector[t].getEventNumber()<< std::endl ;
         outTree_->Fill();
         TThread::UnLock();
     }

@@ -47,22 +47,23 @@ public:
     void         setEventNumber	                    (int           v       ){eventNumber_                         = v;}
     void         setEventChewieNumber               (int           v       ){eventChewieNumber_                   = v;}
     void         setRunNumber	                    (int           v       ){runNumber_                           = v;}
-    void         setNumberOfTracks	            (int           v       ){numberOfTracks_                      = v;}
+    void         setNumberOfTracks	                (int           v       ){numberOfTracks_                      = v;}
     void         setTrackNumber	                    (int           v       ){trackNumber_	                      = v;}
     void         setNumberOfTelescopeHits           (int           v       ){numberOfTelescopeHits_	              = v;}
+    void         setNumberOfStripHits               (int           v       ){numberOfStripHits_                   = v;}
     void         setNumberOfTelescopeClustersSizeLE2(int           v       ){numberOfTelescopeClustersSizeLE2_	  = v;}
-    void         setNdof 	                    (int           v       ){ndof_	                              = v;}
-    void         setChi2 	                    (float         v       ){chi2_	                              = v;}
+    void         setNdof 	                        (int           v       ){ndof_	                              = v;}
+    void         setChi2 	                        (float         v       ){chi2_	                              = v;}
     void         setXIntercept	                    (double        v       ){xIntercept_	                      = v;}
     void         setXSigmaIntercept                 (double        v       ){xSigmaIntercept_                     = v;}
     void         setYIntercept	                    (double        v       ){yIntercept_	                      = v;}
     void         setYSigmaIntercept                 (double        v       ){ySigmaIntercept_                     = v;}
-    void         setXSlope	                    (double        v       ){xSlope_	                          = v;}
+    void         setXSlope	                        (double        v       ){xSlope_	                          = v;}
     void         setXSigmaSlope                     (double        v       ){xSigmaSlope_                         = v;}
-    void         setYSlope	                    (double        v       ){ySlope_                              = v;}
+    void         setYSlope	                        (double        v       ){ySlope_                              = v;}
     void         setYSigmaSlope                     (double        v       ){ySigmaSlope_                         = v;}
     void         setDataType                        (int           v, int p){dataType_                        [p] = v;}
-    void         setHasHit	                    (bool          v, int p){hasHit_  	                      [p] = v;}
+    void         setHasHit	                        (bool          v, int p){hasHit_  	                      [p] = v;}
     void         setHasStub	                        (bool          v, int p){hasStub_  	                      [p] = v;}
     void         setBelongsToTrack                  (bool          v, int p){belongsToTrack_                  [p] = v;}
     void         setIsInDetector                    (bool          v, int p){isInDetector_                    [p] = v;}
@@ -77,21 +78,26 @@ public:
     void         setXSigmaSlopeUnconstrained        (double        v, int p){xSigmaSlopeUnconstrained_        [p] = v;}
     void         setYSlopeUnconstrained             (double        v, int p){ySlopeUnconstrained_             [p] = v;}
     void         setYSigmaSlopeUnconstrained        (double        v, int p){ySigmaSlopeUnconstrained_        [p] = v;}
-    void         setClusterSize 	            (int	   v, int p){clusterSize_			  [p] = v;}
-    void         setNumberOfCols 	            (unsigned int  v, int p){numberOfCols_			  [p] = v;}
-    void         setNumberOfRows 	            (unsigned int  v, int p){numberOfRows_			  [p] = v;}
-    void         setClusterCharge	            (int	   v, int p){clusterCharge_			  [p] = v;}
-    void         setMeanCol		            (float         v, int p){meanCol_			      [p] = v;}
-    void         setMeanRow		            (float         v, int p){meanRow_			      [p] = v;}
+    // nabin
+    void         setNumberOfClusters                (unsigned int  v, int p){numberOfClusters_   	          [p] = v;}
+    void         setXClusterMeasuredLocal           (float v, int  h, int p){xClusterMeasuredLocal_        [h][p] = v;}
+    void         setYClusterMeasuredLocal           (float v, int  h, int p){yClusterMeasuredLocal_        [h][p] = v;}
+
+    void         setClusterSize 	                (int	       v, int p){clusterSize_			          [p] = v;}
+    void         setNumberOfCols 	                (unsigned int  v, int p){numberOfCols_			          [p] = v;}
+    void         setNumberOfRows 	                (unsigned int  v, int p){numberOfRows_			          [p] = v;}
+    void         setClusterCharge	                (int	       v, int p){clusterCharge_			          [p] = v;}
+    void         setMeanCol		                    (float         v, int p){meanCol_			              [p] = v;}
+    void         setMeanRow		                    (float         v, int p){meanRow_			              [p] = v;}
     void         setColPredicted                    (int           v, int p){colPredicted_                    [p] = v;}
     void         setRowPredicted                    (int           v, int p){rowPredicted_                    [p] = v;}
     void         setXPitchLocal                     (float         v, int p){xPitchLocal_                     [p] = v;}
     void         setYPitchLocal                     (float         v, int p){yPitchLocal_                     [p] = v;}
     void         setXPitchGlobal                    (float         v, int p){xPitchGlobal_                    [p] = v;}
     void         setYPitchGlobal                    (float         v, int p){yPitchGlobal_                    [p] = v;}
-    void         setXMeasuredLocal	            (float	   v, int p){xMeasuredLocal_		      [p] = v;}
-    void         setYMeasuredLocal	            (float	   v, int p){yMeasuredLocal_		      [p] = v;}
-    void         setXMeasuredGlobal	            (float	   v, int p){xMeasuredGlobal_		      [p] = v;}
+    void         setXMeasuredLocal	                (float	       v, int p){xMeasuredLocal_		          [p] = v;}
+    void         setYMeasuredLocal	                (float	       v, int p){yMeasuredLocal_		          [p] = v;}
+    void         setXMeasuredGlobal	                (float	       v, int p){xMeasuredGlobal_		          [p] = v;}
     void         setYMeasuredGlobal    	            (float         v, int p){yMeasuredGlobal_                 [p] = v;}
     void         setXPredictedLocal                 (float         v, int p){xPredictedLocal_                 [p] = v;}
     void         setYPredictedLocal                 (float         v, int p){yPredictedLocal_                 [p] = v;}
@@ -126,18 +132,19 @@ public:
     void         setYClusterPixelCenterGlobal       (float v,  int h, int p){yClusterPixelCenterGlobal_    [h][p] = v;}
     void         setIsPixelCalibrated               (bool  v,  int h, int p){isPixelCalibrated_            [h][p] = v;}
 
-    int          getEventNumber   	            (void            )const {return eventNumber_                        ;}
+    int          getEventNumber   	                (void            )const {return eventNumber_                        ;}
     int          getEventChewieNumber               (void            )const {return eventChewieNumber_                  ;}
-    int          getRunNumber   	            (void            )const {return runNumber_                          ;}
+    int          getRunNumber   	                (void            )const {return runNumber_                          ;}
     int          getNumberOfTracks  	            (void            )const {return numberOfTracks_                     ;}
-    int          getTrackNumber  	            (void            )const {return trackNumber_                        ;}
+    int          getTrackNumber  	                (void            )const {return trackNumber_                        ;}
     int          getNumberOfTelescopeHits           (void            )const {return numberOfTelescopeHits_	            ;}
+    int          getNumberOfStripHits               (void            )const {return numberOfStripHits_                  ;}
     int          getNumberOfTelescopeClustersSizeLE2(void            )const {return numberOfTelescopeClustersSizeLE2_   ;}
     int          getNdof    	                    (void            )const {return ndof_	                            ;}
     float        getChi2    	                    (void            )const {return chi2_	                            ;}
-    double       getXIntercept  	            (void            )const {return xIntercept_                         ;}
+    double       getXIntercept  	                (void            )const {return xIntercept_                         ;}
     double       getXSigmaIntercept                 (void            )const {return xSigmaIntercept_                    ;}
-    double       getYIntercept  	            (void            )const {return yIntercept_                         ;}
+    double       getYIntercept  	                (void            )const {return yIntercept_                         ;}
     double       getYSigmaIntercept                 (void            )const {return ySigmaIntercept_                    ;}
     double       getXSlope  	                    (void            )const {return xSlope_                             ;}
     double       getXSigmaSlope                     (void            )const {return xSigmaSlope_                        ;}
@@ -159,22 +166,28 @@ public:
     double       getXSigmaSlopeUnconstrained        (int  p          )const {return xSigmaSlopeUnconstrained_        [p];}
     double       getYSlopeUnconstrained             (int  p          )const {return ySlopeUnconstrained_             [p];}
     double       getYSigmaSlopeUnconstrained        (int  p          )const {return ySigmaSlopeUnconstrained_        [p];}
-    int	         getClusterSize    	            (int  p          )const {return clusterSize_                     [p];}
+    // nabin
+    float        getXClusterMeasuredLocal           (int  h, int  p  )const {if (h < maxClusters )return xClusterMeasuredLocal_  [h][p]; else {STDLINE("There's a problem with the maximum number of clusters, required = " + h, ACRed); assert(0);}}
+    float        getYClusterMeasuredLocal           (int  h, int  p  )const {if (h < maxClusters )return yClusterMeasuredLocal_  [h][p]; else {STDLINE("There's a problem with the maximum number of clusters, required = " + h, ACRed); assert(0);}}
+
+    unsigned int getNumberOfClusters    	        (int  p          )const {return numberOfClusters_                [p];}
+
+    int	         getClusterSize    	                (int  p          )const {return clusterSize_                     [p];}
     unsigned int getNumberOfCols    	            (int  p          )const {return numberOfCols_                    [p];}
     unsigned int getNumberOfRows    	            (int  p          )const {return numberOfRows_                    [p];}
-    int          getClusterCharge  	            (int  p	     )const {return clusterCharge_		     [p];}
-    float        getMeanCol     	            (int  p	     )const {return meanCol_			     [p];}
-    float        getMeanRow     	            (int  p	     )const {return meanRow_			     [p];}
+    int          getClusterCharge  	                (int  p	         )const {return clusterCharge_		             [p];}
+    float        getMeanCol     	                (int  p	         )const {return meanCol_			             [p];}
+    float        getMeanRow     	                (int  p	         )const {return meanRow_			             [p];}
     int          getColPredicted                    (int  p          )const {return colPredicted_                    [p];}
     int          getRowPredicted                    (int  p          )const {return rowPredicted_                    [p];}
     float        getXPitchLocal                     (int  p          )const {return xPitchLocal_                     [p];}
     float        getYPitchLocal                     (int  p          )const {return yPitchLocal_                     [p];}
     float        getXPitchGlobal                    (int  p          )const {return xPitchGlobal_                    [p];}
     float        getYPitchGlobal                    (int  p          )const {return yPitchGlobal_                    [p];}
-    float        getXMeasuredLocal	            (int  p	     )const {return xMeasuredLocal_		     [p];}
-    float        getYMeasuredLocal	            (int  p	     )const {return yMeasuredLocal_		     [p];}
-    float        getXMeasuredGlobal	            (int  p	     )const {return xMeasuredGlobal_		     [p];}
-    float        getYMeasuredGlobal	            (int  p	     )const {return yMeasuredGlobal_		     [p];}
+    float        getXMeasuredLocal	                (int  p	         )const {return xMeasuredLocal_		             [p];}
+    float        getYMeasuredLocal	                (int  p	         )const {return yMeasuredLocal_		             [p];}
+    float        getXMeasuredGlobal	                (int  p	         )const {return xMeasuredGlobal_		         [p];}
+    float        getYMeasuredGlobal	                (int  p	         )const {return yMeasuredGlobal_		         [p];}
     float        getXPredictedLocal                 (int  p          )const {return xPredictedLocal_                 [p];}
     float        getYPredictedLocal                 (int  p          )const {return yPredictedLocal_                 [p];}
     float        getXPredictedGlobal                (int  p          )const {return xPredictedGlobal_                [p];}
@@ -209,13 +222,14 @@ public:
     bool         getIsPixelCalibrated               (int  h, int p   )const {if (h < maxHits) return isPixelCalibrated_        [h][p]; else {STDLINE("There's a problem with the cluster size: max = 4, required = " + h, ACRed); assert(0);}}
 
 private:
-    enum {nOfPlanes = 25, maxHits = 4};
-    int          eventNumber_                                  ;//Event number
+    enum {nOfPlanes = 25, maxHits = 4, maxClusters = 6};
+    int          eventNumber_                                  ;//Event number in Monicelli
     int          eventChewieNumber_                            ;//Event Number in Chewie
     int          runNumber_                                    ;//Run number
     int          numberOfTracks_                               ;//Number of tracks in the event
     int          trackNumber_                                  ;//Track number in the event
     int          numberOfTelescopeHits_                        ;//Number of hits on the telescope
+    int          numberOfStripHits_                            ;//Number of hits on the strip
     int          numberOfTelescopeClustersSizeLE2_             ;//Number of clusters on the telescope with size less or equal 2
     int          ndof_                                         ;//Track degrees of fredom
     float        chi2_                                         ;//Track chisqr
@@ -243,22 +257,24 @@ private:
     double       xSigmaSlopeUnconstrained_          [nOfPlanes];//Error on x Slope without plane hit
     double       ySlopeUnconstrained_               [nOfPlanes];//Track y Slope without plane hit
     double       ySigmaSlopeUnconstrained_          [nOfPlanes];//Error on y Slope without plane hit
+    //
+    unsigned int numberOfClusters_                  [nOfPlanes];//Number of clusters on a plane for that event
     int          clusterSize_                       [nOfPlanes];//Number of pixels in cluster
     unsigned int numberOfCols_                      [nOfPlanes];//Number of columns of the cluster
     unsigned int numberOfRows_                      [nOfPlanes];//Number of rows of the cluster
     int          clusterCharge_                     [nOfPlanes];//Cluster charge
-    float        meanCol_	                    [nOfPlanes];//Mean value of cluster columns
-    float        meanRow_	                    [nOfPlanes];//Mean value of cluster rows
+    float        meanCol_	                        [nOfPlanes];//Mean value of cluster columns
+    float        meanRow_	                        [nOfPlanes];//Mean value of cluster rows
     int          colPredicted_                      [nOfPlanes];//Predicted impact column of the track
     int          rowPredicted_                      [nOfPlanes];//Predicted impact row of the track
     float        xPitchLocal_                       [nOfPlanes];//X pitch in local reference frame (150um)
     float        yPitchLocal_                       [nOfPlanes];//Y pitch in local reference frame (100um)
     float        xPitchGlobal_                      [nOfPlanes];//X pitch in global reference frame (depends by the z rotation)
     float        yPitchGlobal_                      [nOfPlanes];//Y pitch in global reference frame (depends by the z rotation)
-    float        xMeasuredLocal_	            [nOfPlanes];//X measured point in local reference frame
-    float        yMeasuredLocal_	            [nOfPlanes];//Y measured point in local reference frame
-    float        xMeasuredGlobal_	            [nOfPlanes];//X measured point in global reference frame
-    float        yMeasuredGlobal_	            [nOfPlanes];//Y measured point in global reference frame
+    float        xMeasuredLocal_	                [nOfPlanes];//X measured point in local reference frame
+    float        yMeasuredLocal_	                [nOfPlanes];//Y measured point in local reference frame
+    float        xMeasuredGlobal_	                [nOfPlanes];//X measured point in global reference frame
+    float        yMeasuredGlobal_	                [nOfPlanes];//Y measured point in global reference frame
     float        xPredictedLocal_                   [nOfPlanes];//X predicted impact point in local reference frame
     float        yPredictedLocal_                   [nOfPlanes];//Y predicted impact point in local reference frame
     float        xPredictedGlobal_                  [nOfPlanes];//X predicted impact point in global reference frame
@@ -283,6 +299,12 @@ private:
     float        yPixelResidualLocalUnconstrained_  [nOfPlanes];//Y unconstrained residual in the predicted pixel in local reference frame
     float        xPixelPitchLocalUnconstrained_     [nOfPlanes];//X pitch of the predicted pixel in local reference frame
     float        yPixelPitchLocalUnconstrained_     [nOfPlanes];//Y pitch of the predicted pixel in local reference frame
+    //int          clusterRow_          [maxClusters][nOfPlanes];//Rows of the clusters on the plane
+    //int          clusterCol_          [maxClusters][nOfPlanes];//Cols of the clusters on the plane
+
+    float        xClusterMeasuredLocal_ [maxClusters][nOfPlanes];//X measured of the clusters on the plane in local reference frame
+    float        yClusterMeasuredLocal_ [maxClusters][nOfPlanes];//Y measured of the clusters on the plane in local reference frame
+
     int          clusterPixelRow_          [maxHits][nOfPlanes];//Rows of the pixels in the cluster
     int          clusterPixelCol_          [maxHits][nOfPlanes];//Cols of the pixels in the cluster
     int          clusterPixelCharge_       [maxHits][nOfPlanes];//Charge of the pixels in the cluster

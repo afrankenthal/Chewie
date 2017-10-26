@@ -54,6 +54,7 @@ void Data::setBranchAddress(TTree* tree)
   tree->SetBranchAddress("numberOfTracks"                  , &numberOfTracks_	               );
   tree->SetBranchAddress("trackNumber"                     , &trackNumber_  	               );
   tree->SetBranchAddress("numberOfTelescopeHits"           , &numberOfTelescopeHits_           );
+  tree->SetBranchAddress("numberOfStripHits"               , &numberOfStripHits_               );
   tree->SetBranchAddress("numberOfTelescopeClustersSizeLE2", &numberOfTelescopeClustersSizeLE2_);
   tree->SetBranchAddress("ndof"                            , &ndof_ 		                   );
   tree->SetBranchAddress("chi2"                            , &chi2_ 		                   );
@@ -81,6 +82,11 @@ void Data::setBranchAddress(TTree* tree)
   tree->SetBranchAddress("xSigmaSlopeUnconstrained"        , &xSigmaSlopeUnconstrained_        );
   tree->SetBranchAddress("ySlopeUnconstrained"             , &ySlopeUnconstrained_             );
   tree->SetBranchAddress("ySigmaSlopeUnconstrained"        , &ySigmaSlopeUnconstrained_        );
+
+  tree->SetBranchAddress("xClusterMeasuredLocal"           , &xClusterMeasuredLocal_           );
+  tree->SetBranchAddress("yClusterMeasuredLocal"           , &yClusterMeasuredLocal_           );
+
+  tree->SetBranchAddress("numberOfClusters"                , &numberOfClusters_                );
   tree->SetBranchAddress("clusterSize"                     , &clusterSize_  	               );
   tree->SetBranchAddress("numberOfCols"                    , &numberOfCols_ 	               );
   tree->SetBranchAddress("numberOfRows"                    , &numberOfRows_ 	               );
@@ -140,6 +146,7 @@ void Data::branch(TTree* tree)
   tree->Branch("numberOfTracks"                  , &numberOfTracks_ 	             , "numberOfTracks/I"		               );
   tree->Branch("trackNumber"                     , &trackNumber_		             , "trackNumber/I"                         );
   tree->Branch("numberOfTelescopeHits"           , &numberOfTelescopeHits_           , "numberOfTelescopeHits/I"               );
+  tree->Branch("numberOfStripHits"               , &numberOfStripHits_               , "numberOfStripHits/I"                   );
   tree->Branch("numberOfTelescopeClustersSizeLE2", &numberOfTelescopeClustersSizeLE2_, "numberOfTelescopeClustersSizeLE2/I"    );
   tree->Branch("ndof"	                         , &ndof_			                 , "ndof/I"			                       );
   tree->Branch("chi2"	                         , &chi2_			                 , "chi2/F"			                       );
@@ -153,7 +160,7 @@ void Data::branch(TTree* tree)
   tree->Branch("ySigmaSlope"                     , &ySigmaSlope_		             , "ySigmaSlope/D" 		                   );
   tree->Branch("dataType"                        , &dataType_ 		                 , "dataType[25]/O"  		               );
   tree->Branch("hasHit"                          , &hasHit_ 		                 , "hasHit[25]/O"  		                   );
-  tree->Branch("hasStub"                         , &hasStub_ 		                 , "hasStub[25]/O"  		                   );
+  tree->Branch("hasStub"                         , &hasStub_ 		                 , "hasStub[25]/O"  		               );
   tree->Branch("belongsToTrack"                  , &belongsToTrack_ 	             , "belongsToTrack[25]/O"  	               );
   tree->Branch("isInDetector"                    , &isInDetector_		             , "isInDetector[25]/O"		               );
   tree->Branch("isInDetectorUnconstrained"       , &isInDetectorUnconstrained_	     , "isInDetectorUnconstrained[25]/O"       );
@@ -167,6 +174,11 @@ void Data::branch(TTree* tree)
   tree->Branch("xSigmaSlopeUnconstrained"        , &xSigmaSlopeUnconstrained_        , "xSigmaSlopeUnconstrained[25]/D"        );
   tree->Branch("ySlopeUnconstrained"	         , &ySlopeUnconstrained_	         , "ySlopeUnconstrained[25]/D"	           );
   tree->Branch("ySigmaSlopeUnconstrained"        , &ySigmaSlopeUnconstrained_        , "ySigmaSlopeUnconstrained[25]/D"        );
+
+  tree->Branch("xClusterMeasuredLocal"           , &xClusterMeasuredLocal_	         , "numberOfClusters[25]/i"	               );
+  tree->Branch("yClusterMeasuredLocal"           , &xClusterMeasuredLocal_	         , "numberOfClusters[25]/i"	               );
+
+  tree->Branch("numberOfClusters"                , &numberOfClusters_	             , "numberOfClusters[25]/i"	               );
   tree->Branch("clusterSize"	                 , &clusterSize_		             , "clusterSize[25]/I"		               );
   tree->Branch("numberOfCols"	                 , &numberOfCols_		             , "numberOfCols[25]/i"		               );
   tree->Branch("numberOfRows"	                 , &numberOfRows_		             , "numberOfRows[25]/i"		               );
