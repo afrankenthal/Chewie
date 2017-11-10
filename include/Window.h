@@ -45,19 +45,15 @@ public:
     virtual ~Window (void                                    );
 
     virtual bool               checkWindow            (float col     , float row        , int runNumber ) const = 0;
-    virtual bool               checkWindow_v1         (float col     , float row        , int runNumber, int planeID ) const = 0;
+    virtual bool               checkWindow_v1            (float col     , float row        , int runNumber, int planeID ) const = 0;
     virtual bool               checkWindowAbout       (float col     , float row        , int runNumber, int type ) const = 0;
     virtual bool               checkTimeWindow        (float col     , int eventNumber  , int runNumber ) const = 0;
-    virtual bool               byPassCheckWindow      (void                                             ) const = 0;
     virtual bool               checkTimeWindowAbout   (float col     , int eventNumber  , int runNumber ) const = 0;
-    virtual void               label                  (int runNumber                                    ) const = 0;
-    virtual bool               checkGoodRun           (int runNumber , int entry                        ) const = 0;
-    virtual bool               AnticheckWindowAbout   (float col, float row, int runNumber, int type    ) const = 0;
+
     virtual void               calculateWindow        (int   planeID , const Data& aData,
                                                        int   lowerCol, int   higherCol  ,
                                                        int   lowerRow, int   higher                     ) = 0;
     virtual void               calculateTimeEfficiency(void                                             ){;}
-    //virtual void               combineLatencyPlots    (void                                             ){;}
     virtual void               removePixel            (int   col     , int   row                        ) = 0;
     virtual void               sumThreaded            (void                                             ){;}
     virtual std::pair<int,int> getNbins               (void                                             ) const = 0;

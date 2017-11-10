@@ -1461,11 +1461,11 @@ void ResolutionOuterTracker::analyze(const Data& data, int threadNumber)//WARNIN
     for(unsigned int p=0; p<thePlaneMapping_->getNumberOfPlanes(); p++)
     {
         const Window* theWindow = theWindowsManager_->getWindow(p);
-        if(!theWindow->checkGoodRun(run,entry))
-        {
+        //if(!theWindow->checkGoodRun(run,entry))
+        //{
             //std::cout << __PRETTY_FUNCTION__ << "Not a good run!!" << std::endl;
-            continue;
-        }
+        //    continue;
+        //}
 
         //if(!passStandardCuts(p,data))
         //  continue;

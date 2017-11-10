@@ -204,7 +204,7 @@ void EfficiencyOuterTracker::analyze(const Data& data, int threadNumber)
     for (unsigned int p = 0; p < thePlaneMapping_->getNumberOfPlanes(); p++)
     {
         if (!passStandardCuts(p,data)) continue;
-        if (!theWindowsManager_->getWindow(p)->checkGoodRun(run,entry)) continue;
+        //if (!theWindowsManager_->getWindow(p)->checkGoodRun(run,entry)) continue;
         planeEfficiency (passMainCut           ,p,data,threadNumber);
         cellEfficiency  (passCellEfficiencyCut ,p,data,threadNumber);
         xCellEfficiency (passXCellEfficiencyCut,p,data,threadNumber);

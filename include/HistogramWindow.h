@@ -46,16 +46,10 @@ public:
     HistogramWindow (std::string name, int binXMin, int binXMax, int binYMin, int binYMax, std::map<int,int> runNumberEntries);
     ~HistogramWindow(void                                                   );
 
-
-
     bool checkWindow            (float col, float row      , int runNumber) const;
     bool checkWindow_v1         (float col, float row      , int runNumber , int planeID  ) const;
-    bool checkGoodRun           (int runNumber             , int entry                    ) const;
-    bool checkWindowAbout       (float col, float row      , int runNumber , int type     ) const;
-    bool byPassCheckWindow      (void                                         ) const;
+    bool checkWindowAbout       (float col, float row      , int runNumber , int type ) const;
     bool checkTimeWindow        (float col, int eventNumber, int runNumber  ) const;
-    bool AnticheckWindowAbout   (float col, float row, int runNumber, int type ) const;
-    void label                  (int runNumber                              ) const;
     bool checkTimeWindowAbout   (float col, int eventNumber, int runNumber  ) const;
     void calculateWindow        (int   planeID , const Data& aData,
                                  int   lowerCol, int   higherCol  ,
@@ -65,26 +59,12 @@ public:
     void sumThreaded            (void                                       ){;}
 
     int  getNumberOfEvents      (void                                       );
-    double runAverageEfficiency (int runNumber                              ) const;
-//    void latencyPlots           (int runNumber                              );
-    void combineLatencyPlots    (void                                       );
+
     std::pair<int,int> getNbins(void)const {return std::make_pair(nBinsX_,nBinsY_);}
     PlanesMapping*                                     thePlaneMapping_;
 
-    //void label                  (const Data& data                     );
-
 private:
-
-    int binXMaxv1;
-    int binXMinv1;
-    int binYMaxv1;
-    int binYMinv1;
-
-    int nBinsXv1_;
-    int nBinsYv1_;
-
     std::map<int,TH2F*> theHWindow_            ;
-    std::map<int,TH2F*> theHWindowV1_          ;
     std::map<int,TH2F*> theH2TimeWindow_       ;
     std::map<int,TH2F*> theH2TimeWindow_norm_  ;
     std::map<int,TH1F*> theH1TimeWindow_       ;
@@ -94,21 +74,7 @@ private:
     std::map<int,TH2F*> theHWindowClusterSize3_;
     std::map<int,TH2F*> theHWindowClusterSize4_;
 
-    std::map<int,TH1F*> theStripIndex_;
-    std::map<int,TH1F*> theRowIndex_;
-
-    std::map<int,TH1F*> EfficiencyVsEventFull_norm_;
-    std::map<int,TH1F*> EfficiencyVsEventFull_     ;
-    std::map<int,TH1F*> EfficiencyVsEventGood_     ;
-    std::map<int,TH2F*> EfficiencyVsEventFull2D_   ;
-    std::map<int,TH2F*> EfficiencyVsEventGood2D_   ;
-
-    std::map<int,TH1F*> EfficiencyVsTriggerLatency_;
-    std::map<int,TH1F*> EfficiencyVsTriggerLatency_norm_;
-    std::map<int,TH1F*> EfficiencyVsTriggerLatencyFull_;
-    std::map<int,TH1F*> EfficiencyVsTriggerLatencyFull_norm_;
-
-};
+}; 
 
 #endif
 
