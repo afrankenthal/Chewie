@@ -288,14 +288,14 @@ void EventConverter::convert(Event& event,int e)
                             ++clustersSizeLE2;
                     }
 
-                    if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                    //if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                         //if (e==1242){
                         // std::cout<<"colPredicted = "<<colPredicted<<std::endl;
                         // std::cout<<"rowPredicted = "<<rowPredicted<<std::endl;
                         // }
                         //    std::cout << thePlanesMapping_.getPlaneName(p) << " has hit in event " << e << " trigger: " << event.getTrigger() << std::endl;
 
-                        dataVector[t].setHasHit	       (true,p); // both dut and telescope has hit
+                    dataVector[t].setHasHit	       (true,p); // both dut and telescope has hit
                     if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
                         dataVector[t].setHasStub	   ((bool)clusters[planeName][clusterID]["stub"],p);
                     dataVector[t].setDataType	   ((int)clusters[planeName][clusterID]["dataType"], p);
