@@ -966,38 +966,37 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
   int firstCol =  0;
   int lastCol  = 51;
   int maxClusterSize = 4;
-
-
+  
+  
   if ((!pass) || (data.getClusterSize(planeID) > maxClusterSize)) return;
-
+  
   int   rowPredicted = data.getRowPredicted(planeID);
   float maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
   float maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
   float xResRight    = 0.;
   float xResLeft     = 0.;
   int   clusterSize  = data.getClusterSize(planeID);
-
-
+  
+  
   // #################################
   // # Check if tracks are in window #
   // #################################
   if (((data.getYPredictedLocal(planeID) > firstRow*maxPitchY) && (data.getYPredictedLocal(planeID) < (lastRow+1)*maxPitchY)) &&
-      ((data.getXPredictedLocal(planeID) < firstColPitch) || (data.getXPredictedLocal(planeID) > (firstColPitch + (lastCol-1)*maxPitchX))))
+      ((data.getXPredictedLocal(planeID) < firstColPitch + maxPitchX/2.) || (data.getXPredictedLocal(planeID) > firstColPitch + (lastCol-2)*maxPitchX + maxPitchX/2.)))
     {
-      if (data.getXPredictedLocal(planeID) < firstColPitch)
+      if (data.getXPredictedLocal(planeID) < firstColPitch + maxPitchX/2.)
 	{
 	  xResLeft = data.getXPredictedLocal(planeID);
-
 	  THREADED(h1DXcellEdgeLeftEfficiencyNorm_[planeID])->Fill(xResLeft);
 	}
+      
       else
 	{
-	  xResRight = firstColPitch + (lastCol-1)*maxPitchX + lastColPitch - data.getXPredictedLocal(planeID);
-
+	  xResRight = data.getXPredictedLocal(planeID) - (firstColPitch + (lastCol-1)*maxPitchX + lastColPitch);
 	  THREADED(h1DXcellEdgeRightEfficiencyNorm_[planeID])->Fill(xResRight);
 	}
-
-
+      
+      
       // ###############################
       // # Check if hits are in window #
       // ###############################
@@ -1006,22 +1005,22 @@ void EfficiencyUniMiB::xEdgeEfficiency(bool pass, int planeID, const Data& data,
 	{
 	  if ((data.getClusterPixelRow(h,planeID) >= firstRow) && (data.getClusterPixelRow(h,planeID) <= lastRow))
 	    {
-	      if      (data.getClusterPixelCol(h,planeID) == firstCol) clusterPosition = "first";
-	      else if (data.getClusterPixelCol(h,planeID) == lastCol)  clusterPosition = "last";
+	      if      ((data.getClusterPixelCol(h,planeID) == firstCol) || (data.getClusterPixelCol(h,planeID) == firstCol+1)) clusterPosition = "first";
+	      else if ((data.getClusterPixelCol(h,planeID) == lastCol)  || (data.getClusterPixelCol(h,planeID) == lastCol-1))  clusterPosition = "last";
 	    }
 	}
+      
       if (clusterPosition == "none") return;
-
-
+      
       if (data.getHasHit(planeID))
 	{
 	  for (int h = 0; h < clusterSize; h++)
 	    {
 	      if ((data.getClusterPixelRow(h,planeID) == rowPredicted) &&
-		  (((xResRight != 0) && (clusterPosition == "last")) || ((xResLeft != 0) && (clusterPosition == "first"))))
+		  (((xResRight != 0.) && (clusterPosition == "last")) || ((xResLeft != 0.) && (clusterPosition == "first"))))
 		{
-		  if (xResRight != 0) THREADED(h1DXcellEdgeRightEfficiency_[planeID])->Fill(xResRight);
-		  else                THREADED(h1DXcellEdgeLeftEfficiency_[planeID])->Fill(xResLeft);
+		  if (xResRight != 0.) THREADED(h1DXcellEdgeRightEfficiency_[planeID])->Fill(xResRight);
+		  else                 THREADED(h1DXcellEdgeLeftEfficiency_[planeID])->Fill(xResLeft);
 		  break;
 		}
 	    }
@@ -1040,38 +1039,37 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
   int firstCol =  1;
   int lastCol  = 50;
   int maxClusterSize = 4;
-
-
+  
+  
   if ((!pass) || (data.getClusterSize(planeID) > maxClusterSize)) return;
-
+  
   int   colPredicted = data.getColPredicted(planeID);
   float maxPitchX    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().first).c_str());
   float maxPitchY    = atof(((theXmlParser_->getPlanes())[thePlaneMapping_->getPlaneName(planeID)]->getCellPitches().second).c_str());
   float yResUp       = 0.;
   float yResDown     = 0.;
   int   clusterSize  = data.getClusterSize(planeID);
-
-
+  
+  
   // #################################
   // # Check if tracks are in window #
   // #################################
   if (((data.getXPredictedLocal(planeID) > firstCol*maxPitchX) && (data.getXPredictedLocal(planeID) < (lastCol+1)*maxPitchX)) &&
-      ((data.getYPredictedLocal(planeID) < firstRowPitch) || (data.getYPredictedLocal(planeID) > (firstRowPitch + (lastRow-1)*maxPitchY))))
+      ((data.getYPredictedLocal(planeID) < firstRowPitch + maxPitchY/2.) || (data.getYPredictedLocal(planeID) > firstRowPitch + (lastRow-2)*maxPitchY + maxPitchY/2.)))
     {
-      if (data.getYPredictedLocal(planeID) < firstRowPitch)
+      if (data.getYPredictedLocal(planeID) < firstRowPitch + maxPitchY/2.)
 	{
 	  yResDown = data.getYPredictedLocal(planeID);
-
 	  THREADED(h1DYcellEdgeDownEfficiencyNorm_[planeID])->Fill(yResDown);
 	}
+      
       else
 	{
-	  yResUp = firstRowPitch + (lastRow-1)*maxPitchY + lastRowPitch - data.getYPredictedLocal(planeID);
-
+	  yResUp = data.getYPredictedLocal(planeID) - (firstRowPitch + (lastRow-1)*maxPitchY + lastRowPitch);
 	  THREADED(h1DYcellEdgeUpEfficiencyNorm_[planeID])->Fill(yResUp);
 	}
-
-
+      
+      
       // ###############################
       // # Check if hits are in window #
       // ###############################
@@ -1080,22 +1078,22 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
 	{
 	  if ((data.getClusterPixelCol(h,planeID) >= firstCol) && (data.getClusterPixelCol(h,planeID) <= lastCol))
 	    {
-	      if      (data.getClusterPixelRow(h,planeID) == firstRow) clusterPosition = "first";
-	      else if (data.getClusterPixelRow(h,planeID) == lastRow)  clusterPosition = "last";
+	      if      ((data.getClusterPixelRow(h,planeID) == firstRow) || (data.getClusterPixelRow(h,planeID) == firstRow+1)) clusterPosition = "first";
+	      else if ((data.getClusterPixelRow(h,planeID) == lastRow)  || (data.getClusterPixelRow(h,planeID) == lastRow-1))  clusterPosition = "last";
 	    }
 	}
+      
       if (clusterPosition == "none") return;
-
       
       if (data.getHasHit(planeID))
 	{
 	  for (int h = 0; h < clusterSize; h++)
 	    {
 	      if ((data.getClusterPixelCol(h,planeID) == colPredicted) &&
-		  (((yResUp != 0) && (clusterPosition == "last")) || ((yResDown != 0) && (clusterPosition == "first"))))
+		  (((yResUp != 0.) && (clusterPosition == "last")) || ((yResDown != 0.) && (clusterPosition == "first"))))
 		{
-		  if (yResUp != 0) THREADED(h1DYcellEdgeUpEfficiency_[planeID])->Fill(yResUp);
-		  else             THREADED(h1DYcellEdgeDownEfficiency_[planeID])->Fill(yResDown);
+		  if (yResUp != 0.) THREADED(h1DYcellEdgeUpEfficiency_[planeID])->Fill(yResUp);
+		  else              THREADED(h1DYcellEdgeDownEfficiency_[planeID])->Fill(yResDown);
 		  break;
 		}
 	    }
@@ -1107,7 +1105,7 @@ void EfficiencyUniMiB::yEdgeEfficiency(bool pass, int planeID, const Data& data,
 void EfficiencyUniMiB::setCutsFormula(std::map<std::string,std::string> cutsList, std::vector<TTree*> tree)
 {
   std::vector<TTreeFormula*> formulasVector;
-
+  
   for (std::map<std::string,std::string>::iterator it = cutsList.begin(); it != cutsList.end(); it++)
     {
       if ((it->first) == "main cut" && (it->second).size() == 0)
