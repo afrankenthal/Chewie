@@ -288,14 +288,14 @@ void EventConverter::convert(Event& event,int e)
                             ++clustersSizeLE2;
                     }
 
-                    //if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
+                    if(thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                         //if (e==1242){
                         // std::cout<<"colPredicted = "<<colPredicted<<std::endl;
                         // std::cout<<"rowPredicted = "<<rowPredicted<<std::endl;
                         // }
                         //    std::cout << thePlanesMapping_.getPlaneName(p) << " has hit in event " << e << " trigger: " << event.getTrigger() << std::endl;
 
-                    dataVector[t].setHasHit	       (true,p); // both dut and telescope has hit
+                        dataVector[t].setHasHit	       (true,p); // both dut and telescope has hit
                     if(clusters[planeName][clusterID].find("stub") != clusters[planeName][clusterID].end())
                         dataVector[t].setHasStub	   ((bool)clusters[planeName][clusterID]["stub"],p);
                     dataVector[t].setDataType	   ((int)clusters[planeName][clusterID]["dataType"], p);
@@ -314,12 +314,12 @@ void EventConverter::convert(Event& event,int e)
                     {
                         pixelRow = clustersHits[planeName][clusterID][h]["row"];
                         pixelCol = clustersHits[planeName][clusterID][h]["col"];
+
                         row += (float)pixelRow;
                         col += (float)pixelCol;
                         nRow.push_back(pixelRow);
                         nCol.push_back(pixelCol);
 
-			                  //std::cout << "Size of cluster hits " << size << std::endl;
                         if(size<=4)
                         {
                             xPixelCenter = detector->getPixelCenterLocalX(pixelCol);
@@ -333,80 +333,19 @@ void EventConverter::convert(Event& event,int e)
                             dataVector[t].setXClusterPixelCenterGlobal(xPixelCenter*10,h,p);
                             dataVector[t].setYClusterPixelCenterGlobal(yPixelCenter*10,h,p);
                             ROC = detector->convertPixelToROC(&pixelRow,&pixelCol);
-                            //>> wsi 09/12/17
-                            //if (thePlanesMapping_.getPlaneName(p) == "Dut1")
-                            //{
-                            //    unsigned int pixelColTmp = 0;
-                            //    if (pixelCol%4 == 3)    pixelColTmp = (pixelCol+1)/6-1;
-                            //    else if (pixelCol%4 == 0) pixelColTmp = pixelCol/6;
-                            //    else if (pixelCol%4 == 2) pixelColTmp = (pixelCol+2)/6-2;
-                            //    else if (pixelCol%4 == 1) pixelColTmp = (pixelCol-1)/6+1;
-                            //    dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelColTmp),h,p);
-                            //}
-                            //else
-                            //{dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);}
-                            //<< wsi 09/12/17
-
-                            // wsi 16/1/18  Both Dut0 and Dut1 are 50x50um
-                            if (thePlanesMapping_.getPlaneName(p) == "Dut0" || thePlanesMapping_.getPlaneName(p) == "Dut1")
-                            {
-                              //unsigned int pixelColTmp = 0;
-                              //unsigned int pixelRowTmp = 0;
-                              //if ((pixelCol-9)%18==8 || (pixelCol-9)%18==9)
-                              //{
-                              //  if      ((pixelCol-9)%18==8) pixelColTmp = 3+(pixelCol-9)/18+2;
-                              //  else if ((pixelCol-9)%18==9) pixelColTmp = 3+(pixelCol-9)/18+3;
-                              //
-                              //  if      (pixelRow%12 == 4) pixelRowTmp = pixelRow/12+1;
-                              //  else if (pixelRow%12 == 5) pixelRowTmp = pixelRow/12+2;
-                              //  else if (pixelRow%12 == 6) pixelRowTmp = pixelRow/12+3;
-                              //  else if (pixelRow%12 == 7) pixelRowTmp = pixelRow/12+4;
-                              //}
-                              //else if ((pixelCol-9)%18==7 || (pixelCol-9)%18==10)
-                              //{
-                              //  if      ((pixelCol-9)%18==7) pixelColTmp = 3+(pixelCol-9)/18+1;
-                              //  else if ((pixelCol-9)%18==10) pixelColTmp = 3+(pixelCol-9)/18+4;
-                              //
-                              //  if      (pixelRow%12 == 4) pixelRowTmp = pixelRow/12+0;
-                              //  else if (pixelRow%12 == 5) pixelRowTmp = pixelRow/12+2;
-                              //  else if (pixelRow%12 == 6) pixelRowTmp = pixelRow/12+3;
-                              //  else if (pixelRow%12 == 7) pixelRowTmp = pixelRow/12+5;
-                              //}
-
-                              //if (((pixelCol-9)%18 == 7 || (pixelCol-9)%18 == 8 || (pixelCol-9)%18 == 9 || (pixelCol-9)%18 == 10) &&
-                              //    (pixelRow%12 == 4 || pixelRow%12 == 5 || pixelRow%12 == 6 || pixelRow%12 == 7) &&
-                              //    (pixelColTmp>2) && (pixelRowTmp<78))
-                              //{
-                              //  dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRowTmp,pixelColTmp),h,p);
-                              //}
-                              //else {dataVector[t].setIsPixelCalibrated(false,h,p);}
-                              //std::cout<<"before("<<pixelCol<<","<<pixelRow<<") : after("<<pixelColTmp<<","<<pixelRowTmp<<")"
-                              //        <<" : isCalibrated"<<ROC->isPixelCalibrated(pixelRowTmp,pixelColTmp)<<std::endl;
-                              /// All calibrated!
-                              dataVector[t].setIsPixelCalibrated(true,h,p);
-
+                            dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);
                             //+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			                      //std::cout << __LINE__ << "]\tplane: " << planeName
-				                    //    << " row:col " << pixelRow << ":" << pixelCol
-				                    //    << " -> " << ROC->isPixelCalibrated(pixelRow,pixelCol) << std::endl ;
-			                      //std::cout << __LINE__ << "]\tplane: " << planeName
-                            //                            << " row:col " << pixelRowTmp << ":" << pixelColTmp
-                            //                            << " -> " << ROC->isPixelCalibrated(pixelRowTmp,pixelColTmp) << std::endl ;
+                            //									    cout << __LINE__ << "]\tplane: " << planeName
+                            //										 << " row:col " << pixelRow << ":" << pixelCol
+                            //										 << " -> " << ROC->isPixelCalibrated(pixelRow,pixelCol) << endl ;
                             //+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            }
-                            else {dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);}
-
-
                             if(!ROC->isPixelCalibrated(pixelRow,pixelCol)&&thePlanesMapping_.getPlaneName(p).find("Dut") != std::string::npos)
                             {
-                                if (thePlanesMapping_.getPlaneName(p) != "Dut0" && thePlanesMapping_.getPlaneName(p) != "Dut1")
-                                {
-                                    ss.str("");
-                                    ss << "WARNING: fit failed for detector " << planeName;
-                                    ss << " at row " << pixelRow << "," << " col " << pixelCol;
-                                    ss << " of chip " << ROC->getID();
-                                    //STDSNAP(ss.str(),ACRed);
-                                }
+                                ss.str("");
+                                ss << "WARNING: fit failed for detector " << planeName;
+                                ss << " at row " << pixelRow << "," << " col " << pixelCol;
+                                ss << " of chip " << ROC->getID();
+                                //STDSNAP(ss.str(),ACRed);
                             }
                         }
 
@@ -691,58 +630,7 @@ void EventConverter::convert(Event& event,int e)
                                         dataVector[t].setXClusterPixelCenterGlobal(xPixelCenter*10,h,p);
                                         dataVector[t].setYClusterPixelCenterGlobal(yPixelCenter*10,h,p);
                                         ROC = detector->convertPixelToROC(&pixelRow,&pixelCol);
-                                        //>> wsi 09/12/17
-                                        //if (thePlanesMapping_.getPlaneName(p) == "Dut1")
-                                        //{
-                                        //    unsigned int pixelColTmp = 0;
-                                        //    if (pixelCol%4 == 3)    pixelColTmp = (pixelCol+1)/6-1;
-                                        //    else if (pixelCol%4 == 0) pixelColTmp = pixelCol/6;
-                                        //    else if (pixelCol%4 == 2) pixelColTmp = (pixelCol+2)/6-2;
-                                        //    else if (pixelCol%4 == 1) pixelColTmp = (pixelCol-1)/6+1;
-                                        //    dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelColTmp),h,p);
-                                        //}
-                                        //else
-                                        //{dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);}
-                                        //<< wsi 09/12/17
-
-
-                                        // wsi 16/1/18  Both Dut0 and Dut1 are 50x50um
-                                        if (thePlanesMapping_.getPlaneName(p) == "Dut0" || thePlanesMapping_.getPlaneName(p) == "Dut1")
-                                        {
-//                                          unsigned int pixelColTmp = 0;
-//                                          unsigned int pixelRowTmp = 0;
-//                                          if ((pixelCol-9)%18==8 || (pixelCol-9)%18==9)
-//                                          {
-//                                            if      ((pixelCol-9)%18==8) pixelColTmp = 3+(pixelCol-9)/18+2;
-//                                            else if ((pixelCol-9)%18==9) pixelColTmp = 3+(pixelCol-9)/18+3;
-                                    
-//                                            if      (pixelRow%12 == 4) pixelRowTmp = pixelRow/12+1;
-//                                            else if (pixelRow%12 == 5) pixelRowTmp = pixelRow/12+2;
-//                                            else if (pixelRow%12 == 6) pixelRowTmp = pixelRow/12+3;
-//                                            else if (pixelRow%12 == 7) pixelRowTmp = pixelRow/12+4;
-//                                          }
-//                                          else if ((pixelCol-9)%18==7 || (pixelCol-9)%18==10)
-//                                          {
-//                                            if      ((pixelCol-9)%18==7) pixelColTmp = 3+(pixelCol-9)/18+1;
-//                                            else if ((pixelCol-9)%18==10) pixelColTmp = 3+(pixelCol-9)/18+4;
-                                    
-//                                            if      (pixelRow%12 == 4) pixelRowTmp = pixelRow/12+0;
-//                                            else if (pixelRow%12 == 5) pixelRowTmp = pixelRow/12+2;
-//                                            else if (pixelRow%12 == 6) pixelRowTmp = pixelRow/12+3;
-//                                            else if (pixelRow%12 == 7) pixelRowTmp = pixelRow/12+5;
-//                                          }
-
-//                                          if (((pixelCol-9)%18 == 7 || (pixelCol-9)%18 == 8 || (pixelCol-9)%18 == 9 || (pixelCol-9)%18 == 10) &&
-//                                              (pixelRow%12 == 4 || pixelRow%12 == 5 || pixelRow%12 == 6 || pixelRow%12 == 7) &&
-//                                              (pixelColTmp>2) && (pixelRowTmp<78))
-//                                          {
-//                                            dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRowTmp,pixelColTmp),h,p);
-//                                          }
-//                                          else {dataVector[t].setIsPixelCalibrated(false,h,p);}
-                                            dataVector[t].setIsPixelCalibrated(true,h,p);
-                                        }
-                                        else {dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);}
-
+                                        dataVector[t].setIsPixelCalibrated(ROC->isPixelCalibrated(pixelRow,pixelCol),h,p);
                                     }
                                 }
 

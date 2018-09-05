@@ -47,8 +47,17 @@ public:
     virtual bool               checkWindow            (float col     , float row        , int runNumber ) const = 0;
     virtual bool               checkWindow_v1            (float col     , float row        , int runNumber, int planeID ) const = 0;
     virtual bool               checkWindowAbout       (float col     , float row        , int runNumber, int type ) const = 0;
+    virtual bool               checkWindowAbout50x50       (float col     , float row        , int runNumber, int type) const = 0;
+    //>> wsi 07/12/17
+    virtual bool               checkWindowAbout_check6(float col     , float row        , int runNumber, int type, bool isAmericanDUT ) const = 0;
+    //<< wsi 07/12/17
     virtual bool               checkTimeWindow        (float col     , int eventNumber  , int runNumber ) const = 0;
     virtual bool               checkTimeWindowAbout   (float col     , int eventNumber  , int runNumber ) const = 0;
+
+    //>> wsi 07/12/17
+    virtual bool               checkTimeWindowAbout_check2   (float col     , int eventNumber  , int runNumber, bool isAmericanDUT ) const = 0;
+    //<< wsi 07/12/17
+
 
     virtual void               calculateWindow        (int   planeID , const Data& aData,
                                                        int   lowerCol, int   higherCol  ,

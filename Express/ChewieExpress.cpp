@@ -156,8 +156,8 @@ int main (int argc, char** argv)
   string chewieDataDir   	= getenv("CHEWIEDATADIR"  );
   string chewieOutputDir 	= getenv("CHEWIEOUTPUTDIR");
   string chewieInputDir  	= getenv("CHEWIEINPUTDIR" );
-  if (chewieInputDir[chewieInputDir.size()-1] != '/')
-    chewieInputDir += '/';
+  //if (chewieInputDir[chewieInputDir.size()-1] != '/')
+   // chewieInputDir += '/';
   
   for (unsigned int fs=0; fs<theExpressXmlParser.getFilesList().size(); fs++)
     {

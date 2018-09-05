@@ -49,8 +49,15 @@ public:
     bool checkWindow            (float col, float row      , int runNumber) const;
     bool checkWindow_v1         (float col, float row      , int runNumber , int planeID  ) const;
     bool checkWindowAbout       (float col, float row      , int runNumber , int type ) const;
+    bool checkWindowAbout50x50  (float col, float row      , int runNumber , int type ) const;
+    //>> wsi 07/12/17
+    bool checkWindowAbout_check6(float col, float row      , int runNumber , int type, bool isAmericanDUT = false ) const;
+    //<< wsi 07/12/17
     bool checkTimeWindow        (float col, int eventNumber, int runNumber  ) const;
     bool checkTimeWindowAbout   (float col, int eventNumber, int runNumber  ) const;
+    //>> wsi 07/12/17
+    bool checkTimeWindowAbout_check2(float col, int eventNumber, int runNumber, bool isAmericanDUT = false) const;
+    //<< wsi 07/12/17
     void calculateWindow        (int   planeID , const Data& aData,
                                  int   lowerCol, int   higherCol  ,
                                  int   lowerRow, int   higherRow            );

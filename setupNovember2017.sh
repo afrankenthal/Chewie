@@ -41,45 +41,49 @@
 # make [-f MakefileAll] distclean
 # qmake && make [-f MakefileAll]
 
-export BASEDATADIR=/nfs/cms/mc1/as2872/TB_Data
+export BASEDATADIR=../data/2015_10_October
 
-#===== Local directories
-export CHEWIEDIR=`pwd`
-export CHEWIEDATADIR=$BASEDATADIR/MonicelliOutput
-export CHEWIEINPUTDIR=$BASEDATADIR/ChewieInput
-export CHEWIEOUTPUTDIR=$BASEDATADIR/ChewieOutput
-export CHEWIEXMLDIR=$CHEWIEDIR/xml
+# ================================================================================*/
+if [ $HOSTNAME == "rulinux04.dhcp.fnal.gov" ]; then
 
-export MonicelliDir=`cd ../Monicelli_Feb/; pwd; cd $CHEWIEDIR`
-export Monicelli_CalSample_Dir=$BASEDATADIR/Calibrations  
+  export BASEDATADIR=/data/TestBeam/2017_11_November
 
-#===== Location of the ROOT components
-export ROOTVER=SIX
-export ROOTSYS=/nfs/cms/mc1/as2872/TB_Software/root-6.06.06-build
-export ROOTINC=$ROOTSYS/include
-export ROOTLIB=$ROOTSYS/lib
+  #===== Local directories
+  export CHEWIEDIR=`pwd`
+  export CHEWIEDATADIR=$BASEDATADIR/MonicelliOutput
+  export CHEWIEINPUTDIR=$BASEDATADIR/ChewieInput
+  export CHEWIEOUTPUTDIR=$BASEDATADIR/ChewieOutput
+  export CHEWIEXMLDIR=$CHEWIEDIR/xml
 
-#===== Location of the Qt components
-export QTDIR=/nfs/opt/qt-5.7.1/5.7/gcc_64
-export QTCREATORDIR=/nfs/opt/qt-5.7.1/Tools/QtCreator
-export QTLIB=$QTDIR/lib
-export QTINC=$QTDIR/include
+  export MonicelliDir=`cd ../Monicelli_Jan/; pwd; cd $CHEWIEDIR`
+  export Monicelli_CalSample_Dir=$BASEDATADIR/Calibrations  
 
-#===== Location of the BOOST components
-export BOOSTINC=/usr/include/boost
-export BOOSTLIB=/usr/lib
+  #===== Location of the ROOT components
+  export ROOTVER=SIX
+  export ROOTSYS=/opt/local/root
+  export ROOTINC=$ROOTSYS/include
+  export ROOTLIB=$ROOTSYS/lib
 
-#===== Location of the XERCES components
-export XERCESCINC=/nfs/cms/mc1/as2872/local/include
-export XERCESCLIB=/nfs/cms/mc1/as2872/local/lib
+  #===== Location of the Qt components
+  export QTDIR=/opt/local/qt/5.9.1/gcc_64/
+  export QTCREATORDIR=/opt/local/qtcreator
+  export QTLIB=${QTDIR}/lib 
+  export QTINC=${QTDIR}/include 
+
+  #===== Location of the BOOST components
+  export BOOSTINC=/usr/include/boost
+  export BOOSTLIB=/usr/lib
+
+  #===== Location of the XERCES components
+  export XERCESCINC=/opt/local/xerces/include
+  export XERCESCLIB=/opt/local/xerces/lib
   
-#===== C++ flags
-export CPLUSPLUSFLAGS=-std=c++11
+  #===== C++ flags
+  export CPLUSPLUSFLAGS=-std=c++11
 
-export LD_LIBRARY_PATH=/usr/lib64
+  export LD_LIBRARY_PATH=/usr/lib64
 
-alias qtcreator=$QTCREATORDIR/bin/qtcreator
-
+fi
 
 #===== Final PATH definitions
 export PATH=$ROOTSYS/bin:$QTDIR/bin:$QTCREATORDIR/bin:$PATH

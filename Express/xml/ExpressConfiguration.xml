@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='iso-8859-1'?>
 <!DOCTYPE ChewieExpressConfiguration SYSTEM "./dtd/ExpressConfiguration.dtd">
 <ChewieExpressConfiguration>
-  <Defaults FilesPath="/raid2/data1/vtx1/dinardo/TestBeamData_PlanarRadBatch01_PlanarRadBatch02_3DBatch01/MonicelliOutput/"
+  <Defaults FilesPath="/data/TestBeam/2017_11_November/MonicelliOutput/"
             Convert="yes"
 	    RunAnalysis="yes"
 	    NumberOfEvents="-1"/>
-  <Files Configuration="ChewieConfiguration.xml" OutFileName="Chewie_Run355.root">
-    <File Name="Run355_Merged.root"/>
+  <Files Configuration="ChewieConfiguration.xml" OutFileName="Chewie_Run172.root">
+    <File Name="Run172_Merged.root"/>
   </Files>
 </ChewieExpressConfiguration>

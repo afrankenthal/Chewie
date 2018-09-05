@@ -30,11 +30,14 @@
 #include "AnalysisManager.h"
 #include "Efficiency.h"
 #include "EfficiencyUniMiB.h"
+#include "EfficiencyAmericans.h"
 #include "EfficiencyOuterTracker.h"
 #include "Charge.h"
 #include "ChargeUniMiB.h"
+#include "ChargeAmericans.h"
 #include "Resolution.h"
 #include "ResolutionUniMiB.h"
+#include "ResolutionAmericans.h"
 #include "ResolutionOuterTracker.h"
 #include "Tracks.h"
 #include "TracksAfter.h"
@@ -369,11 +372,15 @@ Analysis* AnalysisManager::addAnalysis(int         analysisPriority,
         if(     analysisName == "Charge")
             if( module == "UniMiB")
                 analyses_[analysisPriority].second = new ChargeUniMiB      (this,nOfThreads_);
-            else
+            else if( module == "Americans")
+                analyses_[analysisPriority].second = new ChargeAmericans(this,nOfThreads_);
+             else
                 analyses_[analysisPriority].second = new Charge            (this,nOfThreads_);
         else if(analysisName == "Efficiency")
             if( module == "UniMiB")
                 analyses_[analysisPriority].second = new EfficiencyUniMiB      (this,nOfThreads_);
+            else if( module == "Americans")
+                analyses_[analysisPriority].second = new EfficiencyAmericans(this,nOfThreads_);
             else if( module == "OuterTracker")
                 analyses_[analysisPriority].second = new EfficiencyOuterTracker(this,nOfThreads_);
             else
@@ -381,6 +388,8 @@ Analysis* AnalysisManager::addAnalysis(int         analysisPriority,
         else if(analysisName == "Resolution")
             if( module == "UniMiB")
                 analyses_[analysisPriority].second = new ResolutionUniMiB(this,nOfThreads_);
+            else if( module == "Americans")
+                analyses_[analysisPriority].second = new ResolutionAmericans(this,nOfThreads_);
             else if( module == "OuterTracker")
                 analyses_[analysisPriority].second = new ResolutionOuterTracker(this,nOfThreads_);
             else

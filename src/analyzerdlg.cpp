@@ -636,6 +636,7 @@ void AnalyzerDlg::on_openNtupleFilePB_clicked(void)
     theAnalysisManager_->setInFilesList(stdFileList);
 
     ui->runTotalEventsLE->setText(QString("%1").arg(theAnalysisManager_->calculateTotalEvents()));
+    ui->runMaxEventsCB->setEnabled(true);
 
     QString outputDir = this->getEnvPath("CHEWIEOUTPUTDIR");
     QString outFileName = "Chewie.root";
@@ -834,6 +835,7 @@ void AnalyzerDlg::on_openConfigurationFilePB_clicked(void)
     ui->runMaxThreadsSB->setValue                     ("Threads",theXmlParser_->getGeneral()->getNumberOfThreads()			    	                );
     ui->runMaxThreadsSB->assignXmlElement             (theXmlParser_->getGeneral()->getNode()						    	                        );
 
+    ui->runMaxEventsCB->setEnabled                    (true				    	                    );
     ui->runMaxEventsCB->setChecked                    ("IsToLimit",theXmlParser_->getGeneral()->isToLimit()				    	                    );
     ui->runMaxEventsCB->assignXmlElement              (theXmlParser_->getGeneral()->getNode()						    	                        );
 

@@ -1,5 +1,5 @@
 #/*===============================================================================
-# * Monicelli: the FERMILAB MTEST geometry builder and track reconstruction tool
+# * Monicelli_Feb: the FERMILAB MTEST geometry builder and track reconstruction tool
 # * 
 # * Copyright (C) 2014 
 # *
@@ -84,19 +84,25 @@ HEADERS       	     = include/analyzerdlg.h					  	\
                        include/XmlWindow.h					  	\
                        include/Window.h 					  	\
                        include/WindowsManager.h 				  	\
-                       ../Monicelli/include/Detector.h  			  	\
-                       ../Monicelli/include/Event.h				  	\
-                       ../Monicelli/include/EventHeader.h			  	\
-              	       ../Monicelli/include/Geometry.h  			  	\
-                       ../Monicelli/include/mdisubwindow.h			  	\
-                       ../Monicelli/include/ROC.h				  	\
-                       ../Monicelli/include/KalmanPlaneInfo.h                     	\
-                       ../Monicelli/plugins/customCheckBox/customCheckBox.h	  	\
-                       ../Monicelli/plugins/customComboBox/customComboBox.h	  	\
-                       ../Monicelli/plugins/customLineEdit/customLineEdit.h	  	\
-                       ../Monicelli/plugins/customSpinBox/customSpinBox.h	  	\
-                       ../Monicelli/plugins/customTableWidget/customTableWidget.h 	\
-                       ../Monicelli/plugins/customTextEdit/customTextEdit.h
+                       ../Monicelli_Feb/include/Detector.h  			  	\
+                       ../Monicelli_Feb/include/Event.h				  	\
+                       ../Monicelli_Feb/include/EventHeader.h			  	\
+              	       ../Monicelli_Feb/include/Geometry.h  			  	\
+                       ../Monicelli_Feb/include/mdisubwindow.h			  	\
+                       ../Monicelli_Feb/include/ROC.h				  	\
+                       ../Monicelli_Feb/include/KalmanPlaneInfo.h                     	\
+                       ../Monicelli_Feb/plugins/customCheckBox/customCheckBox.h	  	\
+                       ../Monicelli_Feb/plugins/customComboBox/customComboBox.h	  	\
+                       ../Monicelli_Feb/plugins/customLineEdit/customLineEdit.h	  	\
+                       ../Monicelli_Feb/plugins/customSpinBox/customSpinBox.h	  	\
+                       ../Monicelli_Feb/plugins/customTableWidget/customTableWidget.h 	\
+                       ../Monicelli_Feb/plugins/customTextEdit/customTextEdit.h \
+    include/EfficiencyAmericans.h \
+    include/ChargeAmericans.h \
+    include/ResolutionAmericans.h \
+    ../Monicelli_Feb/include/smallPitchTranslation25x100.h \
+    ../Monicelli_Feb/include/smallPitchTranslation50x50.h \
+    ../Monicelli_Feb/include/smallPitchTranslationBase.h
 
 SOURCES       	     = src/Analysis.cpp 		 			  	\
                        src/AnalysisManager.cpp  	 			  	\
@@ -143,13 +149,19 @@ SOURCES       	     = src/Analysis.cpp 		 			  	\
                        src/WindowsManager.cpp		 			  	\
                        tmp/EventDict.C  		 			  	\
               	       tmp/EventHeaderDict.C		 			  	\
-                       ../Monicelli/src/Detector.cpp	 			  	\
-                       ../Monicelli/src/Event.cpp	 			  	\
-                       ../Monicelli/src/EventHeader.cpp  			  	\
-              	       ../Monicelli/src/Geometry.cpp	 			  	\
-                       ../Monicelli/src/mdisubwindow.cpp 			  	\
-                       ../Monicelli/src/ROC.cpp                                   	\
-                       ../Monicelli/src/KalmanPlaneInfo.cpp
+                       ../Monicelli_Feb/src/Detector.cpp	 			  	\
+                       ../Monicelli_Feb/src/Event.cpp	 			  	\
+                       ../Monicelli_Feb/src/EventHeader.cpp  			  	\
+              	       ../Monicelli_Feb/src/Geometry.cpp	 			  	\
+                       ../Monicelli_Feb/src/mdisubwindow.cpp 			  	\
+                       ../Monicelli_Feb/src/ROC.cpp                                   	\
+                       ../Monicelli_Feb/src/KalmanPlaneInfo.cpp \
+    src/ResolutionAmericans.cpp \
+    src/ChargeAmericans.cpp \
+    src/EfficiencyAmericans.cpp \
+    ../Monicelli_Feb/src/smallPitchTranslation25x100.cpp \
+    ../Monicelli_Feb/src/smallPitchTranslation50x50.cpp \
+    ../Monicelli_Feb/src/smallPitchTranslationBase.cpp
 
 RESOURCES    	     = Chewie.qrc
 
@@ -157,14 +169,14 @@ DEFINES      	     = USE_QT
 
 INCLUDEPATH  	    += ./include						  	\
                        ./uiFiles                                                        \
-             	       ../Monicelli						  	\
-             	       ../Monicelli/include					  	\
-                       ../Monicelli/plugins/customCheckBox			  	\
-                       ../Monicelli/plugins/customComboBox			  	\
-                       ../Monicelli/plugins/customLineEdit			  	\
-             	       ../Monicelli/plugins/customTextEdit			  	\
-             	       ../Monicelli/plugins/customSpinBox			  	\
-             	       ../Monicelli/plugins/customTableWidget			  	\
+             	       ../Monicelli_Feb						  	\
+             	       ../Monicelli_Feb/include					  	\
+                       ../Monicelli_Feb/plugins/customCheckBox			  	\
+                       ../Monicelli_Feb/plugins/customComboBox			  	\
+                       ../Monicelli_Feb/plugins/customLineEdit			  	\
+             	       ../Monicelli_Feb/plugins/customTextEdit			  	\
+             	       ../Monicelli_Feb/plugins/customSpinBox			  	\
+             	       ../Monicelli_Feb/plugins/customTableWidget			  	\
              	       -pthread $(ROOTINC)			                  	\
              	       $(QTDIR)/include/QtXml					  	\
              	       $(XERCESCINC)						  	\
@@ -195,7 +207,7 @@ LIBS                += -L$(ROOTLIB)                              	      		\
                        -lMathCore                                                       \
                        -lThread
 
-LIBS         	    += -L../Monicelli/plugins/libs				  	\
+LIBS         	    += -L../Monicelli_Feb/plugins/libs				  	\
                        -lcustomCheckBox 					  	\
                        -lcustomComboBox 					  	\
                        -lcustomLineEdit 					  	\
@@ -224,7 +236,7 @@ mkdirtmp.target      = $$OUT_PWD/tmp
 mkdirtmp.commands    = $(MKDIR) $$OUT_PWD/tmp
 
 header.depends       = mkdirtmp                                                         \
-                       ../Monicelli/include/EventHeader.h
+                       ../Monicelli_Feb/include/EventHeader.h
 
 header.target        = tmp/EventHeaderDict.C
 
@@ -234,40 +246,40 @@ contains(ROOTVERSION, "FIVE") {
  message("[1;33mSetting up Makefile for ROOT5[0;m")  
  header.commands     = @echo "'[1;33m------ ROOT5 header ----------[0;m'"        && \
                        rootcint -f tmp/EventHeaderDict.C                                \
-                                -c ../Monicelli/include/EventHeader.h+
+                                -c ../Monicelli_Feb/include/EventHeader.h+
 } else {
  message("[1;33mSetting up Makefile for ROOT6[0;m")  
  header.commands     = @echo "'[1;33m------ ROOT6 header ----------[0;m'"        && \
                        rootcint -f tmp/EventHeaderDict.C                          	\
-                                -c ../Monicelli/include/EventHeader.h+               && \
+                                -c ../Monicelli_Feb/include/EventHeader.h+               && \
                        cp tmp/*.pcm .
 }
 
 trees.depends        = mkdirtmp                                                         \
-                       ../Monicelli/include/Event.h                               	\
-                       ../Monicelli/include/Geometry.h                            	\
-                       ../Monicelli/include/Detector.h                            	\
-                       ../Monicelli/include/ROC.h                                 	\
-                       ../Monicelli/include/KalmanPlaneInfo.h
+                       ../Monicelli_Feb/include/Event.h                               	\
+                       ../Monicelli_Feb/include/Geometry.h                            	\
+                       ../Monicelli_Feb/include/Detector.h                            	\
+                       ../Monicelli_Feb/include/ROC.h                                 	\
+                       ../Monicelli_Feb/include/KalmanPlaneInfo.h
 
 trees.target         = tmp/EventDict.C
 
 contains(ROOTVERSION, "FIVE") {
  trees.commands      = @echo "'[1;33m------ ROOT5 commands --------[0;m'"        && \
                        rootcint -f tmp/EventDict.C                                	\
-                                -c ../Monicelli/include/Event.h+                  	\
-                                   ../Monicelli/include/Geometry.h+               	\
-                                   ../Monicelli/include/Detector.h+               	\
-                                   ../Monicelli/include/ROC.h+                    	\
-                                   ../Monicelli/include/KalmanPlaneInfo.h+        	\
+                                -c ../Monicelli_Feb/include/Event.h+                  	\
+                                   ../Monicelli_Feb/include/Geometry.h+               	\
+                                   ../Monicelli_Feb/include/Detector.h+               	\
+                                   ../Monicelli_Feb/include/ROC.h+                    	\
+                                   ../Monicelli_Feb/include/KalmanPlaneInfo.h+        	\
 } else {
  trees.commands      = @echo "'[1;33m------ ROOT6 commands --------[0;0m'"       && \
                        rootcint -f tmp/EventDict.C                                	\
-                                -c ../Monicelli/include/Event.h+                  	\
-                                   ../Monicelli/include/Geometry.h+               	\
-                                   ../Monicelli/include/Detector.h+               	\
-                                   ../Monicelli/include/ROC.h+                    	\
-                                   ../Monicelli/include/KalmanPlaneInfo.h+           && \
+                                -c ../Monicelli_Feb/include/Event.h+                  	\
+                                   ../Monicelli_Feb/include/Geometry.h+               	\
+                                   ../Monicelli_Feb/include/Detector.h+               	\
+                                   ../Monicelli_Feb/include/ROC.h+                    	\
+                                   ../Monicelli_Feb/include/KalmanPlaneInfo.h+           && \
                        cp tmp/*.pcm .
 }
 
@@ -286,7 +298,7 @@ OBJECTS_DIR         += objFiles
 
 QT                  *= xml
 
-DEPENDPATH          += . src include ../Monicelli/plugins/customTableWidget
+DEPENDPATH          += . src include ../Monicelli_Feb/plugins/customTableWidget
 
 extraclean.commands  = rm -rf tmp/*                                               	\
                        MakefileExpress                                            

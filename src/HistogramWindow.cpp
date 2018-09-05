@@ -231,6 +231,168 @@ bool HistogramWindow::checkWindowAbout(float col, float row, int runNumber, int 
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+bool HistogramWindow::checkWindowAbout50x50(float col, float row, int runNumber, int type) const
+{
+
+    TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
+    TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
+    if(type==0)
+    {
+        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
+            return true;
+        // left edge of 4x4 block
+        else if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
+            return true;
+        // bottom edge
+        else if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
+            return true;
+        // right edge
+        else if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 )
+            return true;
+        // top edge
+        else if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 )
+            return true;
+        else
+            return false;
+    }
+    else if(type==1) //strip
+    {
+        //std::cout<<"--cell efficiency window check about--"<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1)<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1)<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1)<<std::endl;
+
+        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1) != 0 )
+                return true;
+           else
+                return false;
+
+
+        //if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(0.)) != 0 &&
+        //        theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(0.)) != 0 &&
+        //        theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(0.)) != 0 )
+
+        //    return true;
+        //else
+        //    return false;
+
+    }
+    else
+    {
+        std::cout << __PRETTY_FUNCTION__ << "I only know 2 types (0, 1) while this is type: " << type << ". IMPOSSIBLE!" << " row: " << row << " col: " << col << std::endl;
+        assert(0);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+bool HistogramWindow::checkWindowAbout_check6(float col, float row, int runNumber, int type, bool isAmericanDUT) const
+{
+    TAxis* xAxis = theHWindow_.find(runNumber)->second->GetXaxis() ;
+    TAxis* yAxis = theHWindow_.find(runNumber)->second->GetYaxis() ;
+    if(type==0)
+    {
+        if (!isAmericanDUT ||
+                (isAmericanDUT && (int(col)%4==0 || int(col)%4==3))) {
+            if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0 &&
+                    theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0 )
+                return true;
+            else
+                return false;
+        }
+        else if (isAmericanDUT && (int(col)%4==2 || int(col)%4==1))
+        {
+//            checking the following window pattern
+//            oo
+//            xo
+//            oo
+            if (int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row  )) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row  )) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row  )) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row-1)) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row-1)) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row-1)) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(row+1)) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(row+1)) != 0) +
+                int(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(row+1)) != 0) > 5)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+    else if(type==1) //strip
+    {
+        //std::cout<<"--cell efficiency window check about--"<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1)<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1)<<std::endl;
+        //std::cout<<"theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1) = "<<theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1)<<std::endl;
+
+        if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col),1) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),1) != 0 &&
+                theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),1) != 0 )
+                return true;
+           else
+                return false;
+
+
+        //if(theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col  ),yAxis->FindBin(0.)) != 0 &&
+        //        theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col-1),yAxis->FindBin(0.)) != 0 &&
+        //        theHWindow_.find(runNumber)->second->GetBinContent(xAxis->FindBin(col+1),yAxis->FindBin(0.)) != 0 )
+
+        //    return true;
+        //else
+        //    return false;
+
+    }
+    else
+    {
+        std::cout << __PRETTY_FUNCTION__ << "I only know 2 types (0, 1) while this is type: " << type << ". IMPOSSIBLE!" << " row: " << row << " col: " << col << std::endl;
+        assert(0);
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 bool HistogramWindow::checkTimeWindow(float col, int eventNumber, int runNumber) const
 {
@@ -252,6 +414,31 @@ bool HistogramWindow::checkTimeWindowAbout(float col, int eventNumber, int runNu
         return true;
     else
         return false;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+bool HistogramWindow::checkTimeWindowAbout_check2(float col, int eventNumber, int runNumber, bool isAmericanDUT) const
+{
+
+    if (isAmericanDUT && (int(col)%4==1 || int(col)%4==2)){
+        if((theH1TimeWindow_.find(runNumber)->second->GetBinContent(col-1) >=  eventNumber ||
+            theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+1) >=  eventNumber) &&
+                theH1TimeWindow_.find(runNumber)->second->GetBinContent(col  ) >=  eventNumber )
+            return true;
+        else
+            return false;
+    }
+    else if (!isAmericanDUT ||
+             (isAmericanDUT && (int(col)%4==0 || int(col)%4==3)))
+    {
+        if(theH1TimeWindow_.find(runNumber)->second->GetBinContent(col-1) >=  eventNumber &&
+           theH1TimeWindow_.find(runNumber)->second->GetBinContent(col+1) >=  eventNumber &&
+           theH1TimeWindow_.find(runNumber)->second->GetBinContent(col  ) >=  eventNumber )
+            return true;
+        else
+            return false;
+    }
 
 }
 

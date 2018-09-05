@@ -222,7 +222,10 @@ public:
     bool         getIsPixelCalibrated               (int  h, int p   )const {if (h < maxHits) return isPixelCalibrated_        [h][p]; else {STDLINE("There's a problem with the cluster size: max = 4, required = " + h, ACRed); assert(0);}}
 
 private:
-    enum {nOfPlanes = 25, maxHits = 4, maxClusters = 6};
+//    enum {nOfPlanes = 25, maxHits = 4, maxClusters = 6};
+    //>> wsi 11/12/17
+    enum {nOfPlanes = 25, maxHits = 12, maxClusters = 6};
+    //<< wsi 11/12/17
     int          eventNumber_                                  ;//Event number in Monicelli
     int          eventChewieNumber_                            ;//Event Number in Chewie
     int          runNumber_                                    ;//Run number
