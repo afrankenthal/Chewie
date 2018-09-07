@@ -5,3 +5,7 @@ Makefile
 Chewie
 qrc_*
 *.pcm
+Express/xml/2017November_ChewieExpress_Run*.xml
+*.qmake.stash
+*.pro.user
+*.pro.user.*

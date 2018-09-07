@@ -739,17 +739,6 @@ void ResolutionAmericans::analyze(const Data& data, int threadNumber)
           }
       }
       if (!kSmallPixel) continue;
-	
-      //>> wsi 15/12/17
-//      if (thePlaneMapping_->getPlaneName(p)=="Dut1")
-//      {
-//        int colPredicted = data.getColPredicted(p);
-//        if ( !((colPredicted+13)%24==0 || (colPredicted+13)%24==1) )
-//            return;
-////        std::cout<<"WSIWSI: colPredicted:"<<colPredicted<<std::endl;
-////        if (colPredicted<0) return;
-//      }
-      //<< wsi 15/12/17
 
       calculateXresiduals (xResolutionCut,p,data,threadNumber);
       calculateYresiduals (yResolutionCut,p,data,threadNumber);
@@ -757,7 +746,7 @@ void ResolutionAmericans::analyze(const Data& data, int threadNumber)
       yResolution         (yResolutionCut,p,data,threadNumber);
       
       if (thePlaneMapping_->getPlaneName(p).find("Dut") != std::string::npos)
-	predictedErrors(errorsCut,p,data,threadNumber);
+        predictedErrors(errorsCut,p,data,threadNumber);
     }
 }
 

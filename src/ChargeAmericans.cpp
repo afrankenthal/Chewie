@@ -466,14 +466,6 @@ void ChargeAmericans::cellLandau(bool pass, int planeID, const Data& data, int t
 
   if (!theWindow->checkWindow(colPredicted,rowPredicted,run)) return;
 
-  //wsi
-//  if (planeID==22 || planeID==23) {std::cout<<"Plane"<<planeID<<" : Predicted("<<colPredicted<<","<<rowPredicted<<") : clusterPostion("
-//    << data.getClusterPixelCol    (0,planeID)<<","<<data.getClusterPixelRow    (0,planeID)<<")"
-//      <<" : clustercharge"<<data.getClusterPixelCharge (0,planeID)
-//      <<" : checkwindow"<<theWindow->checkWindow(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber())
-//      <<" : pixelcalibrated"<<data.getIsPixelCalibrated  (0,planeID)
-//      <<std::endl;}
-
   if (!theWindow->checkWindow(data.getClusterPixelCol(0,planeID),data.getClusterPixelRow(0,planeID),data.getRunNumber()) // Hits are in the window
       ||  data.getClusterPixelRow    (0,planeID) != rowPredicted                                                         // Track is on cluster
       ||  data.getClusterPixelCol    (0,planeID) != colPredicted                                                         // Track is on cluster
@@ -777,8 +769,6 @@ void ChargeAmericans::cellCharge(bool pass, int planeID, const Data& data, int t
       }
 
   }
-
-
 
   //>> wsi 21/12/17
   //if (!theWindow->checkWindowAbout(colPredicted,rowPredicted,run,thePlaneMapping_->getPlaneType(planeID))) return;
